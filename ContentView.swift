@@ -14,7 +14,14 @@ struct ContentView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Image(systemName: "house")
+                    Image(systemName: "bolt")
+                    Text("Actions rapide")
+                }
+            
+            HomeView()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Paramètres")
                 }
         }
     }
