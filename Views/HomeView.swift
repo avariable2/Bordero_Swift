@@ -17,13 +17,11 @@ struct HomeView: View {
     }()
     
     @State private var showingAlert: Bool = false
-    @State private var nom : String = ""
-    @State private var prix : Float = 0
     
+    // Textfield pour l'utilisateur
+    @State private var nom : String = ""
     @State private var numberString: String = ""
     @State private var floatValue: Float?
-    
-    private var alertTitre : String = "Creer un type d'acte"
     
     private var disableForm: Bool {
         nom.isEmpty || floatValue == nil
@@ -39,31 +37,53 @@ struct HomeView: View {
                     } label: {
                         Label("Ajouter un type d'acte", systemImage: "pencil.and.list.clipboard")
                             .tint(.black)
-                    }.alert(Text(alertTitre),
-                            isPresented: $showingAlert) {
+                    }.sheet(isPresented: $showingAlert) {
                         
-                        TextField("Nom", text: $nom)
-                        
-                        TextField("Prix", text: $numberString)
-                            .keyboardType(.decimalPad)
-                            .onChange(of: numberString) {
-                                validateNumberString()
+                        VStack(alignment: .center, spacing: 10) {
+                             
+                            Text("Creer un type d'acte")
+                                .font(.title)
+                                .bold()
+                            
+                            VStack(spacing: 20) {
+                                TextField("Entrer un nom", text: $nom)
+                                    
+                                    
+                                TextField("Entrer un prix", text: $numberString)
+                                    .keyboardType(.decimalPad)
+                                    .onChange(of: numberString) {
+                                        validateNumberString()
+                                    }
+                                
+                                
                             }
-                        
-                        Button("Créer") {
-                            creerTypeActe()
+                            .textFieldStyle(.roundedBorder)
+                            .padding([.trailing, .leading], 20)
+                            
+                            VStack(spacing: 30) {
+                                
+                                Button("Créer") {
+                                    creerTypeActe()
+                                    showingAlert.toggle()
+                                }
+                                .disabled(disableForm)
+                                
+                                
+                                Button("Annuler", role: .destructive) {
+                                    numberString = ""
+                                    floatValue = nil
+                                    nom = ""
+                                    showingAlert.toggle()
+                                }
+                            }
+                            
                         }
-                        .disabled(disableForm)
+                        .presentationDetents([.medium, .large])
                         
-                        Button("Annuler", role: .cancel) {}
-                        
-                    } message: {
-                        Text("Les deux champs sont obligatoires")
                     }
                     
-                    
                     NavigationLink {
-                        EmptyView()
+                        ListTypeActeView()
                     } label: {
                         Label("Consulter tous les type d'acte", systemImage: "list.bullet.clipboard")
                     }
@@ -120,10 +140,23 @@ struct HomeView: View {
     }
     
     private func creerTypeActe() {
+        guard let prix = floatValue else {
+            print("Il y'a une erreur avec la valeur set dans la modal")
+            return
+        }
+        
         let typeActe = TypeActe(context: moc)
         typeActe.id = UUID()
         typeActe.name = nom
         typeActe.price = prix
+        
+        do {
+            try moc.save()
+            print("Success")
+        } catch let err {
+            print(err.localizedDescription)
+        }
+        
     }
 }
 
