@@ -67,15 +67,15 @@ struct FormTypeActeView: View {
                     }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        if !numberString.isEmpty || !nom.isEmpty {
-                            Button("Enregistrer") {
-                                saveTypeActe()
-                                
-                                activeSheet = nil
-                            }
-                            .disabled(disableForm)
+                        
+                        Button("OK") {
+                            saveTypeActe()
+                            
+                            activeSheet = nil
                         }
+                        .disabled(disableForm)
                     }
+                    
                 }
                 
             }
