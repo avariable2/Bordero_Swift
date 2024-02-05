@@ -8,25 +8,59 @@
 import SwiftUI
 
 struct ListTypeActeView: View {
+    @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var typeActes: FetchedResults<TypeActe>
+    @State private var showingAlert: Bool = false
+    
     var body: some View {
-        NavigationStack {
-            List {
+        List {
+            Section {
+                Button {
+                    showingAlert = true
+                } label: {
+                    Label("Ajouter un type d'acte", systemImage: "plus")
+                        
+                }.sheet(isPresented: $showingAlert) {
+                    CreateTypeActeView(showingAlert: $showingAlert)
+                        .presentationDetents([.medium])
+                }
+            } header: {
+                Text("Actions")
+            }
+            
+            
+            Section {
                 ForEach(typeActes, id:\.self) { type in
                     Text(type.name ?? "Inconnu")
                 }
                 .onDelete(perform: delete)
-                
+            } header: {
+                Text("Votre liste")
+            } footer: {
+                Text("Swipe à droite ou à gauche pour voir les actions disponibles.")
             }
-            .navigationTitle("Liste de tous les types d'actes")
-            .toolbar {
-                EditButton()
-            }
+            
+            
+        }
+        .navigationTitle("Type d'actes")
+        .toolbar {
+            EditButton()
         }
     }
     
     func delete(at offsets: IndexSet) {
-//        typeActes.nsSortDescriptors.remove(at: offsets.)
+        
+        for index in offsets {
+            let typeActe = typeActes[index]
+            moc.delete(typeActe)
+        }
+        
+        do {
+            try moc.save()
+            print("Success")
+        } catch let err {
+            print(err.localizedDescription)
+        }
     }
 }
 
