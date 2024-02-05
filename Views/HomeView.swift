@@ -10,20 +10,20 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.managedObjectContext) var moc
     
-    @State private var showingAlert: Bool = false
+    @State private var activeSheet: ActiveSheet?
     
     var body: some View {
         NavigationView {
             List {
                 Section("Type de séance") {
                     Button {
-                        showingAlert = true
+                        activeSheet = .createTypeActe
                     } label: {
                         Label("Ajouter un type d'acte", systemImage: "pencil.and.list.clipboard")
                             .tint(.black)
-                    }.sheet(isPresented: $showingAlert) {
+                    }.sheet(item: $activeSheet) {_ in
                         
-                        CreateTypeActeView(showingAlert: $showingAlert)
+                        FormTypeActeView(activeSheet: $activeSheet)
                             .presentationDetents([.medium])
                         
                     }
@@ -51,9 +51,6 @@ struct HomeView: View {
                 } header: {
                     Text("Clients")
                 }
-//                } footer: {
-//                    Text("")
-//                }
                 
                 Section("Documents") {
                     NavigationLink {

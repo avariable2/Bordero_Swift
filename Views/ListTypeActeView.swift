@@ -7,23 +7,37 @@
 
 import SwiftUI
 
+enum ActiveSheet : Identifiable {
+    case createTypeActe, editTypeActe(type : TypeActe)
+    
+    var id : Int {
+        switch self {
+        case.createTypeActe:
+            return 0
+            
+        case .editTypeActe(type: let type):
+            return type.hash
+        }
+    }
+}
+
 struct ListTypeActeView: View {
     @Environment(\.managedObjectContext) var moc
+    
     @FetchRequest(sortDescriptors: []) var typeActes: FetchedResults<TypeActe>
+    
     @State private var showingAlert: Bool = false
+    @State private var activeSheet : ActiveSheet?
     
     var body: some View {
         List {
             Section {
                 Button {
-                    showingAlert = true
+                    activeSheet = .createTypeActe
                 } label: {
                     Label("Ajouter un type d'acte", systemImage: "plus")
-                        
-                }.sheet(isPresented: $showingAlert) {
-                    CreateTypeActeView(showingAlert: $showingAlert)
-                        .presentationDetents([.medium])
                 }
+                
             } header: {
                 Text("Actions")
             }
@@ -31,17 +45,24 @@ struct ListTypeActeView: View {
             
             Section {
                 ForEach(typeActes, id:\.self) { type in
-                    VStack(alignment: .leading) {
-                        Text(type.name ?? "Inconnu")
-                            .font(.body)
-                        
-                        Text(String(format: "Prix : %.2f €", type.price))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
                     
+                    Button {
+                        activeSheet = .editTypeActe(type: type)
+                    } label: {
+                        VStack(alignment: .leading) {
+                            Text(type.name ?? "Inconnu")
+                                .font(.body)
+                                .tint(.black)
+                            
+                            Text(String(format: "Prix : %.2f €", type.price))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                
                 }
                 .onDelete(perform: delete)
+                
             } header: {
                 Text("Votre liste")
             } footer: {
@@ -54,6 +75,17 @@ struct ListTypeActeView: View {
         .toolbar {
             EditButton()
         }
+        .sheet(item: $activeSheet) { item in
+            switch item {
+            case .createTypeActe:
+                FormTypeActeView(activeSheet: $activeSheet)
+                    .presentationDetents([.medium])
+            case .editTypeActe(let type):
+                FormTypeActeView(typeActe: type, activeSheet: $activeSheet)
+                    .presentationDetents([.medium])
+            }
+        }
+        
     }
     
     func delete(at offsets: IndexSet) {
