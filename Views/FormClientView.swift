@@ -36,11 +36,11 @@ struct FormClientView: View {
                     
                     Section {
                         
-                        TextField("Entrer un nom", text: $nom)
+                        TextField("* Entrer un nom", text: $nom)
                             
-                        TextField("Entrer un prénom", text: $prenom)
+                        TextField("* Entrer un prénom", text: $prenom)
                     } footer: {
-                        Text("Ces champs sont obligatoires.")
+                        Text("* Ces champs sont obligatoires.")
                     }
                     
                     Section {

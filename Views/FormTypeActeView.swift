@@ -40,9 +40,9 @@ struct FormTypeActeView: View {
                 
                 Form {
                     Section {
-                        TextField("Entrer un nom", text: $nom)
+                        TextField("* Entrer un nom", text: $nom)
                             
-                        TextField("Entrer un prix", text: $numberString)
+                        TextField("* Entrer un prix", text: $numberString)
                             .keyboardType(.decimalPad)
                             .onChange(of: numberString) {
                                 validateNumberString()
@@ -53,14 +53,10 @@ struct FormTypeActeView: View {
                         Text("* Tous les champs sont obligatoires.")
                     }
                     
-                    Section {
-                        Button("Enregistrer") {
-                            saveTypeActe()
-                            
-                            activeSheet = nil
-                        }
-                        .disabled(disableForm)
-                        
+                }
+                .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
                         Button("Annuler", role: .destructive) {
                             numberString = ""
                             floatValue = nil
@@ -69,8 +65,18 @@ struct FormTypeActeView: View {
                             activeSheet = nil
                         }
                     }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        if !numberString.isEmpty || !nom.isEmpty {
+                            Button("Enregistrer") {
+                                saveTypeActe()
+                                
+                                activeSheet = nil
+                            }
+                            .disabled(disableForm)
+                        }
+                    }
                 }
-                .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
                 
             }
         }
