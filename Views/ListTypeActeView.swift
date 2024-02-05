@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-enum ActiveSheet : Identifiable {
-    case createTypeActe, editTypeActe(type : TypeActe)
-    
-    var id : Int {
-        switch self {
-        case.createTypeActe:
-            return 0
-            
-        case .editTypeActe(type: let type):
-            return type.hash
-        }
-    }
-}
-
 struct ListTypeActeView: View {
     @Environment(\.managedObjectContext) var moc
     
@@ -56,7 +42,7 @@ struct ListTypeActeView: View {
                             
                             Text(String(format: "Prix : %.2f €", type.price))
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .tint(.secondary)
                         }
                     }
                 
@@ -83,6 +69,8 @@ struct ListTypeActeView: View {
             case .editTypeActe(let type):
                 FormTypeActeView(typeActe: type, activeSheet: $activeSheet)
                     .presentationDetents([.medium])
+            default :
+                EmptyView() // IMPOSSIBLE
             }
         }
         

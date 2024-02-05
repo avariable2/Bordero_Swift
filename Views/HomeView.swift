@@ -21,11 +21,6 @@ struct HomeView: View {
                     } label: {
                         Label("Ajouter un type d'acte", systemImage: "pencil.and.list.clipboard")
                             .tint(.black)
-                    }.sheet(item: $activeSheet) {_ in
-                        
-                        FormTypeActeView(activeSheet: $activeSheet)
-                            .presentationDetents([.medium])
-                        
                     }
                     
                     NavigationLink {
@@ -37,10 +32,11 @@ struct HomeView: View {
                 }
                 
                 Section {
-                    NavigationLink {
-                        EmptyView()
+                    Button {
+                        activeSheet = .createClient
                     } label: {
                         Label("Ajouter un client", systemImage: "person")
+                            .tint(.black)
                     }
                     
                     NavigationLink {
@@ -65,6 +61,20 @@ struct HomeView: View {
                         Label("Consulter les documents", systemImage: "list.bullet")
                     }
                    
+                }
+                
+            }
+            .sheet(item: $activeSheet) { item in
+                
+                switch item {
+                case .createTypeActe:
+                    FormTypeActeView(activeSheet: $activeSheet)
+                        .presentationDetents([.medium])
+                case .createClient:
+                    FormClientView(activeSheet: $activeSheet)
+                        .presentationDetents([.large])
+                default:
+                    EmptyView() // IMPOSSIBLE
                 }
             }
             .navigationTitle("Actions rapide")

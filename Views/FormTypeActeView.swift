@@ -38,39 +38,39 @@ struct FormTypeActeView: View {
                     .ignoresSafeArea()
                     .overlay(.ultraThinMaterial)
                 
-                    Form {
-                        Section {
-                            TextField("Entrer un nom", text: $nom)
-                                
-                            TextField("Entrer un prix", text: $numberString)
-                                .keyboardType(.decimalPad)
-                                .onChange(of: numberString) {
-                                    validateNumberString()
-                                }
-                        } header: {
-                            Text("Champs à saisir")
-                        } footer: {
-                            Text("* Tous les champs sont obligatoires.")
-                        }
-                        
-                        Section {
-                            Button("Enregistrer") {
-                                saveTypeActe()
-                                
-                                activeSheet = nil
-                            }
-                            .disabled(disableForm)
+                Form {
+                    Section {
+                        TextField("Entrer un nom", text: $nom)
                             
-                            Button("Annuler", role: .destructive) {
-                                numberString = ""
-                                floatValue = nil
-                                nom = ""
-                                
-                                activeSheet = nil
+                        TextField("Entrer un prix", text: $numberString)
+                            .keyboardType(.decimalPad)
+                            .onChange(of: numberString) {
+                                validateNumberString()
                             }
+                    } header: {
+                        Text("Champs à saisir")
+                    } footer: {
+                        Text("* Tous les champs sont obligatoires.")
+                    }
+                    
+                    Section {
+                        Button("Enregistrer") {
+                            saveTypeActe()
+                            
+                            activeSheet = nil
+                        }
+                        .disabled(disableForm)
+                        
+                        Button("Annuler", role: .destructive) {
+                            numberString = ""
+                            floatValue = nil
+                            nom = ""
+                            
+                            activeSheet = nil
                         }
                     }
-                    .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
+                }
+                .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
                 
             }
         }
