@@ -31,7 +31,15 @@ struct ListTypeActeView: View {
             
             Section {
                 ForEach(typeActes, id:\.self) { type in
-                    Text(type.name ?? "Inconnu")
+                    VStack(alignment: .leading) {
+                        Text(type.name ?? "Inconnu")
+                            .font(.body)
+                        
+                        Text(String(format: "Prix : %.2f €", type.price))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    
                 }
                 .onDelete(perform: delete)
             } header: {
