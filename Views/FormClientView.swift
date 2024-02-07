@@ -6,80 +6,174 @@
 //
 
 import SwiftUI
+import Contacts
+
+struct Adresse : Identifiable {
+    var id : UUID = UUID()
+    var rue: String = ""
+    var ville: String = ""
+    var codePostal: String = ""
+}
 
 struct FormClientView: View {
+    enum FocusedField : Hashable {
+        case firstName, lastName, phone
+    }
+    
+    @Environment(\.managedObjectContext) var moc
     
     @Binding var activeSheet: ActiveSheet?
     
+    // MARK: - Input pour l'utilisateur
     @State var nom : String = ""
     @State var prenom : String = ""
-    
     @State var adresse : String = ""
     @State var codePostal : String = ""
     @State var ville : String = ""
-    
     @State var numero : String = ""
     @State var email : String = ""
     
+    // MARK: - Contact et adresse gestion
+    @State private var selectedContact: CNContact?
+    @State private var adresses: [Adresse] = []
+    
+    // MARK: - Focus gestion
+    @FocusState private var focusedField : FocusedField?
+    
     var body: some View {
-        
-        NavigationStack {
-            
-            ZStack {
-                
-                Color
-                    .white
-                    .ignoresSafeArea()
-                    .overlay(.ultraThinMaterial)
-                
-                Form {
+        NavigationView {
+            Form {
+                Section {
+                    TextField("Prénom", text: $prenom)
+                        .keyboardType(.namePhonePad)
+                        .focused($focusedField, equals: .firstName)
                     
-                    Section {
-                        
-                        TextField("* Entrer un nom", text: $nom)
-                            
-                        TextField("* Entrer un prénom", text: $prenom)
-                    } footer: {
-                        Text("* Ces champs sont obligatoires.")
-                    }
-                    
-                    Section {
-                        
-                        TextField("Entrer une adresse", text: $adresse)
-                            
-                        TextField("Entrer un code postal", text: $codePostal)
-                        
-                        TextField("Entrer une ville", text: $ville)
-                    }
-                    
-                    Section {
-                        TextField("Entrer un numero", text: $numero)
-                            
-                        TextField("Entrer un email", text: $email)
-                    } footer: {
-                        Text("Saisir l'un ou l'autre. Idéalement les deux.")
-                    }
-                    
-                }
-                .navigationTitle(Text("Nouveau client"))
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Annuler", role: .destructive) {
-                            activeSheet = nil
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("OK") {
-                           
-                        }
-                    }
+                    TextField("Nom", text: $nom)
+                        .keyboardType(.namePhonePad)
+                        .focused($focusedField, equals: .lastName)
                 }
                 
+                Section {
+                    TextField("Ajouter un numero", text: $numero)
+                        .textContentType(.telephoneNumber)
+                        .keyboardType(.phonePad)
+                        .focused($focusedField, equals: .phone)
+                }
+                
+                Section {
+                    TextField("Ajouter un email", text: $email)
+                        .textContentType(.emailAddress)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                }
+                
+                Section {
+                    List {
+                        ForEach(adresses.indices, id : \.self) { index in
+                            HStack {
+                                
+                                Text("Adresse \(index + 1)")
+                                
+                                VStack {
+                                    TextField("Rue", text: $adresses[index].rue)
+                                    TextField("Ville", text: $adresses[index].ville)
+                                    TextField("Code Postal", text: $adresses[index].codePostal)
+                                }
+                            }
+                            
+                        }
+                        .onDelete(perform: { indexSet in
+                            adresses.remove(atOffsets: indexSet)
+                        })
+                        
+                        Button {
+                            withAnimation {
+                                let nouvelleAdresse = Adresse()
+                                adresses.append(nouvelleAdresse)
+                            }
+                        } label: {
+                            Label("Ajouter une addresse", systemImage: "plus")
+                        }
+                    }
+                } footer: {
+                    Text("Pour supprimer une addresse, il vous suffit de la faire glisser sur la gauche et de clicquer sur supprimer.")
+                }
+                
+                // MARK: - Partie pour importer les contacts depuis l'iphone de l'utilisateur. Incompatible avec AppleWatch.
+                ImportContactView(selectedContact: $selectedContact)
+                    .onChange(of: selectedContact) {
+                        guard let contact = selectedContact else {
+                            return
+                        }
+                        
+                        prenom = contact.givenName
+                        nom = contact.familyName
+                        numero = contact.phoneNumbers.first?.value.stringValue ?? ""
+                        email = String(contact.emailAddresses.first?.value ?? "")
+                        
+                        for address in contact.postalAddresses {
+                            let infoAdress = address.value
+                            
+                            let rue = infoAdress.street
+                            let ville = infoAdress.city
+                            let codepostal = infoAdress.postalCode
+                            
+                            let nouvelleAdresse = Adresse(rue: rue, ville : ville, codePostal: codepostal)
+                            adresses.append(nouvelleAdresse)
+                        }
+                        
+                        
+                    }
             }
+            .onSubmit {
+                switch focusedField {
+                case .firstName:
+                    focusedField = .lastName
+                case .lastName:
+                    focusedField = .phone
+                default:
+                    break
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Annuler", role: .destructive) {
+                        activeSheet = nil
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("OK") {
+                        
+                    }
+                }
+            }
+            .navigationTitle("Nouveau client")
         }
         
     }
+    
+    private func saveClient() {
+        
+        let client = Client(context: moc)
+        client.id = UUID()
+        client.name = nom
+        client.firstname = prenom
+        client.address = adresse
+        client.codepostal = codePostal
+        client.city = ville
+        client.email = email
+        client.phone = numero
+        
+        do {
+            try moc.save()
+            print("Success")
+        } catch let err {
+            print(err.localizedDescription)
+        }
+        
+    }
+
 }
 
 #Preview {

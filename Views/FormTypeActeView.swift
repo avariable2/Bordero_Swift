@@ -30,56 +30,50 @@ struct FormTypeActeView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
+        NavigationView {
                 
-                Color
-                    .white
-                    .ignoresSafeArea()
-                    .overlay(.ultraThinMaterial)
-                
-                Form {
-                    Section {
-                        TextField("* Entrer un nom", text: $nom)
-                            
-                        TextField("* Entrer un prix", text: $numberString)
-                            .keyboardType(.decimalPad)
-                            .onChange(of: numberString) {
-                                validateNumberString()
-                            }
-                    } header: {
-                        Text("Champs à saisir")
-                    } footer: {
-                        Text("* Tous les champs sont obligatoires.")
-                    }
-                    
-                }
-                .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Annuler", role: .destructive) {
-                            numberString = ""
-                            floatValue = nil
-                            nom = ""
-                            
-                            activeSheet = nil
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .navigationBarTrailing) {
+            Form {
+                Section {
+                    TextField("* Entrer un nom", text: $nom)
                         
-                        Button("OK") {
-                            saveTypeActe()
-                            
-                            activeSheet = nil
+                    TextField("* Entrer un prix", text: $numberString)
+                        .keyboardType(.decimalPad)
+                        .onChange(of: numberString) {
+                            validateNumberString()
                         }
-                        .disabled(disableForm)
-                    }
-                    
+                } header: {
+                    Text("Champs à saisir")
+                } footer: {
+                    Text("* Tous les champs sont obligatoires.")
                 }
                 
             }
+            .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Annuler", role: .destructive) {
+                        numberString = ""
+                        floatValue = nil
+                        nom = ""
+                        
+                        activeSheet = nil
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    
+                    Button("OK") {
+                        saveTypeActe()
+                        
+                        activeSheet = nil
+                    }
+                    .disabled(disableForm)
+                }
+                
+            }
+            
         }
+    
         .onAppear {
             if let typeActe = typeActe {
                 nom = typeActe.name!
@@ -90,13 +84,7 @@ struct FormTypeActeView: View {
     }
     
     private func validateNumberString() {
-        if let value = Float(numberString) {
-           // Si la conversion réussit, mettre à jour le state Float
-           floatValue = value
-       } else {
-           // Réinitialiser le state Float si la chaîne n'est pas un nombre valide
-           floatValue = nil
-       }
+        floatValue = Float(numberString.replacingOccurrences(of: ",", with: ".")) ?? nil
     }
     
     private func saveTypeActe() {

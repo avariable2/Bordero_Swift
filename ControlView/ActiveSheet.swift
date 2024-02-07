@@ -18,10 +18,10 @@ enum ActiveSheet : Identifiable {
             return 0
             
         case .editTypeActe(type: let type):
-            return type.hash
+            return type.hashValue
             
         case .createClient :
-            return Int.random(in: 1...1000000)
+            return 1
         }
     }
 }

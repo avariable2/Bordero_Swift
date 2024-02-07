@@ -15,7 +15,7 @@ struct ContentView: View {
             HomeView()
                 .tabItem {
                     Image(systemName: "bolt")
-                    Text("Actions rapide")
+                    Text("Actions rapides")
                 }
             
             HomeView()

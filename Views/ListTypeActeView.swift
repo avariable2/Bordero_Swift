@@ -17,20 +17,17 @@ struct ListTypeActeView: View {
     
     var body: some View {
         List {
-            Section {
+            Section("Actions") {
                 Button {
                     activeSheet = .createTypeActe
                 } label: {
                     Label("Ajouter un type d'acte", systemImage: "plus")
                 }
                 
-            } header: {
-                Text("Actions")
             }
             
-            
             Section {
-                ForEach(typeActes, id:\.self) { type in
+                ForEach(typeActes, id:\.id) { type in
                     
                     Button {
                         activeSheet = .editTypeActe(type: type)

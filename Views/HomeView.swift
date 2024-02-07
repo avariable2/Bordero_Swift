@@ -26,7 +26,7 @@ struct HomeView: View {
                     NavigationLink {
                         ListTypeActeView()
                     } label: {
-                        Label("Consulter tous les type d'acte", systemImage: "list.bullet.clipboard")
+                        Label("Consulter tous les types d'acte", systemImage: "list.bullet.clipboard")
                     }
                    
                 }
@@ -67,6 +67,7 @@ struct HomeView: View {
             .sheet(item: $activeSheet) { item in
                 
                 switch item {
+                    
                 case .createTypeActe:
                     FormTypeActeView(activeSheet: $activeSheet)
                         .presentationDetents([.medium])
@@ -77,8 +78,8 @@ struct HomeView: View {
                     EmptyView() // IMPOSSIBLE
                 }
             }
-            .navigationTitle("Actions rapide")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle("Actions rapides")
+            .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
