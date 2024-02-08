@@ -8,7 +8,7 @@
 import SwiftUI
 import Contacts
 
-struct Adresse : Identifiable {
+struct TTLAdresse : Identifiable {
     var id : UUID = UUID()
     var rue: String = ""
     var ville: String = ""
@@ -35,7 +35,7 @@ struct FormClientView: View {
     
     // MARK: - Contact et adresse gestion
     @State private var selectedContact: CNContact?
-    @State private var adresses: [Adresse] = []
+    @State private var adresses: [TTLAdresse] = []
     
     // MARK: - Focus gestion
     @FocusState private var focusedField : FocusedField?
@@ -88,7 +88,7 @@ struct FormClientView: View {
                         
                         Button {
                             withAnimation {
-                                let nouvelleAdresse = Adresse()
+                                let nouvelleAdresse = TTLAdresse()
                                 adresses.append(nouvelleAdresse)
                             }
                         } label: {
@@ -118,7 +118,7 @@ struct FormClientView: View {
                             let ville = infoAdress.city
                             let codepostal = infoAdress.postalCode
                             
-                            let nouvelleAdresse = Adresse(rue: rue, ville : ville, codePostal: codepostal)
+                            let nouvelleAdresse = TTLAdresse(rue: rue, ville : ville, codePostal: codepostal)
                             adresses.append(nouvelleAdresse)
                         }
                         
@@ -144,7 +144,7 @@ struct FormClientView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("OK") {
-                        
+                        saveClient()
                     }
                 }
             }
@@ -153,17 +153,20 @@ struct FormClientView: View {
         
     }
     
+    
+    
     private func saveClient() {
         
         let client = Client(context: moc)
         client.id = UUID()
         client.name = nom
         client.firstname = prenom
-        client.address = adresse
-        client.codepostal = codePostal
-        client.city = ville
         client.email = email
         client.phone = numero
+        
+        for ttl in adresses {
+            client.adresses?.adding(createAdresse(ttl, client: client))
+        }
         
         do {
             try moc.save()
@@ -174,6 +177,14 @@ struct FormClientView: View {
         
     }
 
+    private func createAdresse(_ ttl : TTLAdresse, client : Client) {
+        let userAdresse = Adresse(context: moc)
+        userAdresse.id = UUID()
+        userAdresse.rue = ttl.rue
+        userAdresse.codepostal = ttl.codePostal
+        userAdresse.ville = ttl.ville
+        userAdresse.occupant = client
+    }
 }
 
 #Preview {

@@ -31,7 +31,6 @@ struct FormTypeActeView: View {
     
     var body: some View {
         NavigationView {
-                
             Form {
                 Section {
                     TextField("* Entrer un nom", text: $nom)
@@ -46,7 +45,6 @@ struct FormTypeActeView: View {
                 } footer: {
                     Text("* Tous les champs sont obligatoires.")
                 }
-                
             }
             .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
             .toolbar {
@@ -59,9 +57,7 @@ struct FormTypeActeView: View {
                         activeSheet = nil
                     }
                 }
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    
                     Button("OK") {
                         saveTypeActe()
                         
@@ -69,11 +65,8 @@ struct FormTypeActeView: View {
                     }
                     .disabled(disableForm)
                 }
-                
             }
-            
         }
-    
         .onAppear {
             if let typeActe = typeActe {
                 nom = typeActe.name!

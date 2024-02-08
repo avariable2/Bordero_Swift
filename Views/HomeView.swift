@@ -28,7 +28,6 @@ struct HomeView: View {
                     } label: {
                         Label("Consulter tous les types d'acte", systemImage: "list.bullet.clipboard")
                     }
-                   
                 }
                 
                 Section {
@@ -40,7 +39,7 @@ struct HomeView: View {
                     }
                     
                     NavigationLink {
-                        EmptyView()
+                        ListClients()
                     } label: {
                         Label("Consulter la liste des clients", systemImage: "person.2")
                     }
