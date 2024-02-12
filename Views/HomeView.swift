@@ -20,7 +20,7 @@ struct HomeView: View {
                         activeSheet = .createTypeActe
                     } label: {
                         Label("Ajouter un type d'acte", systemImage: "pencil.and.list.clipboard")
-                            .tint(.black)
+                            .tint(.primary)
                     }
                     
                     NavigationLink {
@@ -35,7 +35,7 @@ struct HomeView: View {
                         activeSheet = .createClient
                     } label: {
                         Label("Ajouter un client", systemImage: "person")
-                            .tint(.black)
+                            .tint(.primary)
                     }
                     
                     NavigationLink {
@@ -59,9 +59,7 @@ struct HomeView: View {
                     } label: {
                         Label("Consulter les documents", systemImage: "list.bullet")
                     }
-                   
                 }
-                
             }
             .sheet(item: $activeSheet) { item in
                 

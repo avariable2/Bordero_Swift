@@ -35,7 +35,7 @@ struct ListTypeActeView: View {
                         VStack(alignment: .leading) {
                             Text(type.name ?? "Inconnu")
                                 .font(.body)
-                                .tint(.black)
+                                .tint(.primary)
                             
                             Text(String(format: "Prix : %.2f €", type.price))
                                 .font(.caption)
