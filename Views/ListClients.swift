@@ -29,7 +29,11 @@ struct ListClients: View {
                 } else {
                     List {
                         ForEach(filteredClients) { client in
-                            ClientRowView(client: client, onDelete: deleteClient)
+                            ClientRowView(
+                                activeSheet: $activeSheet, 
+                                client: client,
+                                onDelete: deleteClient
+                            )
                         }
                         .onDelete(perform: delete)
                     }
@@ -49,6 +53,9 @@ struct ListClients: View {
                         switch item {
                         case .createClient:
                             FormClientView(activeSheet: $activeSheet)
+                                .presentationDetents([.large])
+                        case .editClient(let client):
+                            FormClientView(activeSheet: $activeSheet, clientToModify: client)
                                 .presentationDetents([.large])
                         default:
                             EmptyView() // IMPOSSIBLE
@@ -93,6 +100,7 @@ struct ListClients: View {
 
 struct ClientRowView : View {
     
+    @Binding var activeSheet : ActiveSheet?
     var client : Client
     var onDelete: (Client) -> Void
     
@@ -102,6 +110,9 @@ struct ClientRowView : View {
             + Text(" ")
             + Text(client.name ?? "")
                 .bold()
+        }
+        .onTapGesture {
+            activeSheet = .editClient(client: client)
         }
         .contextMenu {
             Section {

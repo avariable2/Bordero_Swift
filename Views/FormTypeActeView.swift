@@ -46,7 +46,7 @@ struct FormTypeActeView: View {
                     Text("* Tous les champs sont obligatoires.")
                 }
             }
-            .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Modifier le type d'acte")
+            .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Type d'acte")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Annuler", role: .destructive) {

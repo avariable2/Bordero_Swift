@@ -22,7 +22,11 @@ struct FormClientView: View {
     
     @Environment(\.managedObjectContext) var moc
     
+    // MARK: - Binding pour afficher la création ou modification d'un client
     @Binding var activeSheet: ActiveSheet?
+    var clientToModify : Client?
+    
+    // MARK: - State uniquement pour l'affichage d'une erreur
     @State private var showingAlert: Bool = false
     
     // MARK: - Input pour l'utilisateur
@@ -122,8 +126,6 @@ struct FormClientView: View {
                             let nouvelleAdresse = TTLAdresse(rue: rue, ville : ville, codePostal: codepostal)
                             adresses.append(nouvelleAdresse)
                         }
-                        
-                        
                     }
             }
             .onSubmit {
@@ -142,15 +144,14 @@ struct FormClientView: View {
                         activeSheet = nil
                     }
                 }
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("OK") {
                         saveClient()
                     }
                 }
             }
-            .navigationTitle("Nouveau client")
-            .alert(Text("Une erreur sait produite"),
+            .navigationTitle(clientToModify == nil ? "Nouveau client" : "Client")
+            .alert(Text("Une erreur s'est produite"),
                     isPresented: $showingAlert,
                     actions: {
                         Button("OK", role: .cancel) { 
@@ -160,6 +161,27 @@ struct FormClientView: View {
                         Text("Réessayer. Si cette erreur persiste, veuillez contacter le support.")
                     }
                 )
+            .onAppear {
+                guard let client = clientToModify else { return }
+                prenom = client.firstname ?? ""
+                nom = client.name ?? ""
+                numero = client.phone ?? ""
+                email = client.email ?? ""
+                
+                if client.adresses != nil {
+                    for address in client.adresses! {
+                        let infoAdress = address as! Adresse
+                        
+                        let rue = infoAdress.rue
+                        let ville = infoAdress.ville
+                        let codepostal = infoAdress.codepostal
+                        
+                        let nouvelleAdresse = TTLAdresse(rue: rue!, ville : ville!, codePostal: codepostal!)
+                        adresses.append(nouvelleAdresse)
+                    }
+                }
+                
+            }
         }
         
     }
@@ -167,7 +189,6 @@ struct FormClientView: View {
     
     
     private func saveClient() {
-        
         let client = Client(context: moc)
         client.id = UUID()
         client.name = nom
@@ -181,13 +202,14 @@ struct FormClientView: View {
         
         do {
             try moc.save()
+            
             print("Success")
             activeSheet = nil
+            
         } catch let err {
             showingAlert = true
             print(err.localizedDescription)
         }
-        
     }
 
     private func createAdresse(_ ttl : TTLAdresse, client : Client) {
