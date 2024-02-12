@@ -44,7 +44,7 @@ struct ListTypeActeView: View {
                     }
                 
                 }
-                .onDelete(perform: delete)
+                
                 
             } header: {
                 Text("Votre liste")

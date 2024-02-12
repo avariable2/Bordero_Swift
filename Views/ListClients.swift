@@ -11,23 +11,76 @@ struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
     
     @FetchRequest(sortDescriptors: []) var clients: FetchedResults<Client>
+    
+    @State private var activeSheet: ActiveSheet?
     @State private var searchText = ""
     
+    var filteredClients: [Client] {
+        filteredClients(clients: Array(clients), searchText: searchText)
+    }
+    
     var body: some View {
-        List {
-            if filteredClients(clients: Array(clients), searchText: searchText).isEmpty {
-                Text("Aucun résultat")
-            } else {
-                ForEach(filteredClients(clients: Array(clients), searchText: searchText)) { client in
-                    Text(client.firstname ?? "Inconnu")
-                    + Text(" ")
-                    + Text(client.name ?? "").bold()
+        if filteredClients.isEmpty && searchText.isEmpty {
+            EmptyListClientView()
+        } else {
+            VStack {
+                if filteredClients.isEmpty {
+                    EmptySearchListClientView(searchText: $searchText)
+                } else {
+                    List {
+                        ForEach(filteredClients) { client in
+                            ClientRowView(client: client, onDelete: deleteClient)
+                        }
+                        .onDelete(perform: delete)
+                    }
+                    .listStyle(.plain)
+                }
+            }
+            .navigationTitle("Clients")
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Button {
+                        activeSheet = .createClient
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .sheet(item: $activeSheet) { item in
+                        switch item {
+                        case .createClient:
+                            FormClientView(activeSheet: $activeSheet)
+                                .presentationDetents([.large])
+                        default:
+                            EmptyView() // IMPOSSIBLE
+                        }
+                    }
                 }
             }
         }
-        .listStyle(.plain)
-        .navigationTitle("Clients")
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
+    }
+    
+    private func deleteClient(client: Client) {
+        // Trouver l'indice du client dans le tableau
+        if let indexToDelete = clients.firstIndex(of: client) {
+            // Créer un IndexSet avec cet indice
+            let indexSet = IndexSet(integer: indexToDelete)
+            // Appeler la fonction de suppression existante
+            delete(at: indexSet)
+        }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let clientToDelete = clients[index]
+            moc.delete(clientToDelete)
+        }
+        
+        do {
+            try moc.save()
+            print("Success")
+        } catch let err {
+            print(err.localizedDescription)
+        }
     }
     
     func filteredClients(clients: [Client], searchText: String) -> [Client] {
@@ -35,6 +88,95 @@ struct ListClients: View {
         return clients.filter { client in
             client.firstname?.lowercased().contains(searchText.lowercased()) == true || client.name?.lowercased().contains(searchText.lowercased()) == true
         }
+    }
+}
+
+struct ClientRowView : View {
+    
+    var client : Client
+    var onDelete: (Client) -> Void
+    
+    var body : some View {
+        VStack {
+            Text(client.firstname ?? "Inconnu")
+            + Text(" ")
+            + Text(client.name ?? "")
+                .bold()
+        }
+        .contextMenu {
+            Section {
+                Button {
+                    
+                } label: {
+                    Label("Nouveau document", systemImage: "square.and.pencil.circle")
+                }
+            }
+            
+            Section {
+                Button {
+                    
+                } label: {
+                    Label("Modifier", systemImage: "pencil")
+                }
+                
+                Button(role: .destructive) {
+                    onDelete(client)
+                } label: {
+                    Label("Supprimer le client", systemImage: "trash")
+                }
+            }
+        }
+    }
+}
+
+struct EmptyListClientView : View {
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            Text("Aucun client")
+                .font(.title)
+            
+            Text("Les clients ajoutés apparaîtront ici.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            
+            Button {
+                
+            } label: {
+                Text("Ajouter un client")
+            }
+            .padding(.top)
+            
+            Spacer()
+        }
+    }
+}
+
+struct EmptySearchListClientView : View {
+    
+    @Binding var searchText : String
+    
+    var body: some View {
+        VStack(alignment: .center) {
+            Spacer()
+            
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+                .font(.largeTitle)
+            
+            Text("Aucun résultat pour \"\(searchText)\"")
+                .font(.title2)
+            
+            Text("Vérifiez l'orthographe ou lancez \nune nouvelle recherche.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .multilineTextAlignment(.center)
     }
 }
 

@@ -23,6 +23,7 @@ struct FormClientView: View {
     @Environment(\.managedObjectContext) var moc
     
     @Binding var activeSheet: ActiveSheet?
+    @State private var showingAlert: Bool = false
     
     // MARK: - Input pour l'utilisateur
     @State var nom : String = ""
@@ -149,6 +150,16 @@ struct FormClientView: View {
                 }
             }
             .navigationTitle("Nouveau client")
+            .alert(Text("Une erreur sait produite"),
+                    isPresented: $showingAlert,
+                    actions: {
+                        Button("OK", role: .cancel) { 
+                            showingAlert = false
+                        }
+                    }, message: {
+                        Text("Réessayer. Si cette erreur persiste, veuillez contacter le support.")
+                    }
+                )
         }
         
     }
@@ -171,7 +182,9 @@ struct FormClientView: View {
         do {
             try moc.save()
             print("Success")
+            activeSheet = nil
         } catch let err {
+            showingAlert = true
             print(err.localizedDescription)
         }
         
