@@ -195,6 +195,11 @@ struct FormClientView: View {
         client.email = email
         client.phone = numero
         
+        let tab = client.adresses?.mutableCopy() as! NSMutableSet
+        tab.removeAllObjects()
+        
+        client.adresses = tab
+        
         for ttl in adresses {
             client.adresses?.adding(createAdresse(ttl, client: client))
         }
