@@ -30,9 +30,11 @@ struct ListClients: View {
                     List {
                         ForEach(filteredClients) { client in
                             ClientRowView(
-                                activeSheet: $activeSheet, 
                                 client: client,
-                                onDelete: deleteClient
+                                onDelete: deleteClient, 
+                                onClick: { 
+                                    activeSheet = .editClient(client: client)
+                                }
                             )
                         }
                         .onDelete(perform: delete)
@@ -100,9 +102,9 @@ struct ListClients: View {
 
 struct ClientRowView : View {
     
-    @Binding var activeSheet : ActiveSheet?
     var client : Client
     var onDelete: (Client) -> Void
+    var onClick : () -> Void
     
     var body : some View {
         VStack {
@@ -112,7 +114,7 @@ struct ClientRowView : View {
                 .bold()
         }
         .onTapGesture {
-            activeSheet = .editClient(client: client)
+            onClick()
         }
         .contextMenu {
             Section {

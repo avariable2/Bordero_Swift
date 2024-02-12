@@ -15,7 +15,7 @@ struct FormDocumentView: View {
 
 struct ModifierDocumentView: View {
     
-    @State private var client = [Client]()
+    @State private var clients = [Client]()
     
     @State private var payWithStripe: Bool = false
     @State private var payWithPaypal: Bool = false
@@ -33,18 +33,27 @@ struct ModifierDocumentView: View {
                     }
                 }
                 
-                Section("Client(s) séléctionné(s)") {
+                Section {
                     NavigationLink {
-                        EmptyView()
+                        ListClients()
                     } label: {
-                        VStack(alignment: .leading) {
-                            Text("Grande Variable")
-                                .font(.title3)
-                            
-                            Text("email")
-                                .font(.caption)
+                        Label("Ajouter un client", systemImage: "plus.circle")
+                    }
+                    
+                    List {
+                        ForEach(clients) { client in
+                            VStack {
+                                Text(client.firstname ?? "Inconnu")
+                                + Text(" ")
+                                + Text(client.name ?? "")
+                                    .bold()
+                            }
                         }
                     }
+                } header: {
+                    Text("Client(s) séléctionné(s)")
+                } footer: {
+                    Text("Vous pouvez ajouter autant de clients que nécessaires.")
                 }
                 
                 NavigationLink {
