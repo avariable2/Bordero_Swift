@@ -44,7 +44,7 @@ struct ListTypeActeView: View {
                     }
                 
                 }
-                
+                .onDelete(perform: delete)
                 
             } header: {
                 Text("Votre liste")
@@ -64,7 +64,7 @@ struct ListTypeActeView: View {
                 FormTypeActeView(activeSheet: $activeSheet)
                     .presentationDetents([.medium])
             case .editTypeActe(let type):
-                FormTypeActeView(typeActe: type, activeSheet: $activeSheet)
+                FormTypeActeView(typeActeToModify: type, activeSheet: $activeSheet)
                     .presentationDetents([.medium])
             default :
                 EmptyView() // IMPOSSIBLE

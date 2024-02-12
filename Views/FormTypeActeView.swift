@@ -17,7 +17,7 @@ struct FormTypeActeView: View {
         return formatter
     }()
     
-    @State var typeActe : TypeActe?
+    @State var typeActeToModify : TypeActe?
     
     @Binding var activeSheet: ActiveSheet?
     
@@ -46,7 +46,7 @@ struct FormTypeActeView: View {
                     Text("* Tous les champs sont obligatoires.")
                 }
             }
-            .navigationTitle(typeActe == nil ? "Créer un type d'acte" : "Type d'acte")
+            .navigationTitle(typeActeToModify == nil ? "Créer un type d'acte" : "Type d'acte")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Annuler", role: .destructive) {
@@ -68,8 +68,8 @@ struct FormTypeActeView: View {
             }
         }
         .onAppear {
-            if let typeActe = typeActe {
-                nom = typeActe.name!
+            if let typeActe = typeActeToModify {
+                nom = typeActe.name ?? ""
                 numberString = String(format: "%.2f", typeActe.price)
                 floatValue = typeActe.price
             }
@@ -86,8 +86,7 @@ struct FormTypeActeView: View {
             return
         }
         
-        let typeActe = TypeActe(context: moc)
-        typeActe.id = UUID()
+        let typeActe = typeActeToModify ?? TypeActe(context: moc)
         typeActe.name = nom
         typeActe.price = prix
         

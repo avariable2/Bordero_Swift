@@ -24,7 +24,7 @@ struct FormClientView: View {
     
     // MARK: - Binding pour afficher la création ou modification d'un client
     @Binding var activeSheet: ActiveSheet?
-    var clientToModify : Client?
+    @State var clientToModify : Client?
     
     // MARK: - State uniquement pour l'affichage d'une erreur
     @State private var showingAlert: Bool = false
@@ -189,8 +189,7 @@ struct FormClientView: View {
     
     
     private func saveClient() {
-        let client = Client(context: moc)
-        client.id = UUID()
+        let client = clientToModify ?? Client(context: moc)
         client.name = nom
         client.firstname = prenom
         client.email = email
