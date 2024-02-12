@@ -49,7 +49,7 @@ struct HomeView: View {
                 
                 Section("Documents") {
                     NavigationLink {
-                        EmptyView()
+                        FormDocumentView()
                     } label: {
                         Label("Créer un document", systemImage: "doc")
                     }

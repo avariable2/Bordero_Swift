@@ -34,6 +34,7 @@ struct FormTypeActeView: View {
             Form {
                 Section {
                     TextField("* Entrer un nom", text: $nom)
+                        .keyboardType(.default)
                         
                     TextField("* Entrer un prix", text: $numberString)
                         .keyboardType(.decimalPad)
