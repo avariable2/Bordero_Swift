@@ -51,7 +51,7 @@ struct FormPraticienView: View {
             }
             
             NavigationLink {
-                
+                SignatureFormView()
             } label: {
                 Label("Signature", systemImage: "signature")
             }

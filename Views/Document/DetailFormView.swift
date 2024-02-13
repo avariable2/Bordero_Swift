@@ -82,6 +82,7 @@ struct DetailFormView: View {
                 
             }
         }
+        .navigationTitle("Détails de la facture")
     }
 }
 
