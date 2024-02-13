@@ -35,7 +35,9 @@ struct ModifierDocumentView: View {
                 
                 Section {
                     NavigationLink {
-                        ListClients()
+                        ListClients(callbackClientClick: { client in
+                            clients.append(client)
+                        })
                     } label: {
                         Label("Ajouter un client", systemImage: "plus.circle")
                     }

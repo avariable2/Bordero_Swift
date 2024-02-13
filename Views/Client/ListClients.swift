@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) private var dismiss
     
     @FetchRequest(sortDescriptors: []) var clients: FetchedResults<Client>
     
+    var callbackClientClick : ((Client) -> Void)?
     @State private var activeSheet: ActiveSheet?
     @State private var searchText = ""
     
@@ -32,17 +34,18 @@ struct ListClients: View {
                             ClientRowView(
                                 client: client,
                                 onDelete: deleteClient, 
-                                onClick: { 
-                                    activeSheet = .editClient(client: client)
+                                onClick: { client in
+                                    applyOnClick(client)
                                 }
                             )
                         }
                         .onDelete(perform: delete)
                     }
-                    .listStyle(.plain)
+//                    .listStyle(.plain)
                 }
             }
             .navigationTitle("Clients")
+            .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
             .toolbar {
                 ToolbarItem(placement: .automatic) {
@@ -65,6 +68,15 @@ struct ListClients: View {
                     }
                 }
             }
+        }
+    }
+    
+    private func applyOnClick(_ client: Client) {
+        if callbackClientClick != nil {
+            callbackClientClick!(client)
+            dismiss()
+        } else {
+            activeSheet = .editClient(client: client)
         }
     }
     
@@ -104,22 +116,27 @@ struct ClientRowView : View {
     
     var client : Client
     var onDelete: (Client) -> Void
-    var onClick : () -> Void
+    var onClick : (Client) -> Void
     
     var body : some View {
-        VStack {
-            Text(client.firstname ?? "Inconnu")
-            + Text(" ")
-            + Text(client.name ?? "")
-                .bold()
+        Button {
+            onClick(client)
+        } label: {
+            HStack {
+                Text(client.firstname ?? "Inconnu")
+                + Text(" ")
+                + Text(client.name ?? "")
+                    .bold()
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .frame( maxWidth: .infinity, alignment: .leading)
         }
-        .onTapGesture {
-            onClick()
-        }
+        .buttonStyle(.plain)
         .contextMenu {
             Section {
                 Button {
-                    
+                    // TODO
                 } label: {
                     Label("Nouveau document", systemImage: "square.and.pencil.circle")
                 }
@@ -127,7 +144,7 @@ struct ClientRowView : View {
             
             Section {
                 Button {
-                    
+                    // TODO
                 } label: {
                     Label("Modifier", systemImage: "pencil")
                 }
