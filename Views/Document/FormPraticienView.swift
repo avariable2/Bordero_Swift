@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FormPraticienView: View {
     
-    @State private var nomProfession = "Dieu"
+    @State private var nomProfession = "Coordonnées"
     @State private var nom = ""
     @State private var prenom = ""
     @State private var pays = ""
@@ -23,11 +23,11 @@ struct FormPraticienView: View {
     
     var body: some View {
         Form {
-            TextField("", text: $nomProfession)
+//            Section("N") {
+//                TextField("", text: $nomProfession)
+//            }
             
             Section("Adresse de facturation") {
-                TextField("Prénom", text: $nom)
-                TextField("Nom", text: $prenom)
                 TextField("Pays", text: $pays)
                 TextField("Rue", text: $rue)
                 TextField("Code postal", text: $codePostal)
@@ -43,6 +43,8 @@ struct FormPraticienView: View {
             }
             
             Section("Contact") {
+                TextField("Prénom", text: $nom)
+                TextField("Nom", text: $prenom)
                 TextField("Téléphone", text: $siret)
                 TextField("E-mail", text: $adeli)
                 TextField("Site web", text: $adeli)

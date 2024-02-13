@@ -59,7 +59,7 @@ struct ModifierDocumentView: View {
                 }
                 
                 NavigationLink {
-                    EmptyView()
+                    DetailFormView()
                 } label: {
                     Text("Détails")
                 }
