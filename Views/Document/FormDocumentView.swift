@@ -16,6 +16,7 @@ struct FormDocumentView: View {
 struct ModifierDocumentView: View {
     
     @State private var clients = [Client]()
+    @State private var listTypeActes = [TypeActe]()
     
     @State private var payWithStripe: Bool = false
     @State private var payWithPaypal: Bool = false
@@ -51,11 +52,12 @@ struct ModifierDocumentView: View {
                                     .bold()
                             }
                         }
+                        .onDelete(perform: delete)
                     }
                 } header: {
                     Text("Client(s) séléctionné(s)")
                 } footer: {
-                    Text("Vous pouvez ajouter autant de clients que nécessaires.")
+                    Text("Swipe sur la gauche pour supprimer un client de la liste.")
                 }
                 
                 NavigationLink {
@@ -66,7 +68,7 @@ struct ModifierDocumentView: View {
                 
                 Section {
                     NavigationLink {
-                        EmptyView()
+                        ListTypeActeToAddView()
                     } label: {
                         Label("Ajouter un type d'acte", systemImage: "plus.circle")
                     }
@@ -119,6 +121,10 @@ struct ModifierDocumentView: View {
             }
             .navigationTitle("Facture 001")
         }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        clients.remove(atOffsets: offsets)
     }
 }
 

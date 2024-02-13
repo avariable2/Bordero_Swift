@@ -28,21 +28,7 @@ struct ListTypeActeView: View {
             
             Section {
                 ForEach(typeActes, id:\.id) { type in
-                    
-                    Button {
-                        activeSheet = .editTypeActe(type: type)
-                    } label: {
-                        VStack(alignment: .leading) {
-                            Text(type.name ?? "Inconnu")
-                                .font(.body)
-                                .tint(.primary)
-                            
-                            Text(String(format: "Prix : %.2f €", type.price))
-                                .font(.caption)
-                                .tint(.secondary)
-                        }
-                    }
-                
+                    RowTypeActeView(activeSheet: $activeSheet, type: type)
                 }
                 .onDelete(perform: delete)
                 
@@ -85,6 +71,29 @@ struct ListTypeActeView: View {
             print("Success")
         } catch let err {
             print(err.localizedDescription)
+        }
+    }
+}
+
+struct RowTypeActeView : View {
+    
+    @Binding var activeSheet : ActiveSheet?
+    @State var type : TypeActe
+    
+    var body: some View {
+        
+        Button {
+            activeSheet = .editTypeActe(type: type)
+        } label: {
+            VStack(alignment: .leading) {
+                Text(type.name ?? "Inconnu")
+                    .font(.body)
+                    .tint(.primary)
+                
+                Text(String(format: "Prix : %.2f €", type.price))
+                    .font(.caption)
+                    .tint(.secondary)
+            }
         }
     }
 }

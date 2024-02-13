@@ -23,31 +23,48 @@ struct FormPraticienView: View {
     
     var body: some View {
         Form {
-//            Section("N") {
-//                TextField("", text: $nomProfession)
-//            }
-            
             Section("Adresse de facturation") {
-                TextField("Pays", text: $pays)
-                TextField("Rue", text: $rue)
-                TextField("Code postal", text: $codePostal)
-                TextField("Ville", text: $ville)
-                
+                LabeledContent("Pays") {
+                    TextField("Pays", text: $pays)
+                }
+                LabeledContent("Rue") {
+                    TextField("Rue", text: $rue)
+                }
+                LabeledContent("Code postal") {
+                    TextField("Code postal", text: $codePostal)
+                }
+                LabeledContent("Ville") {
+                    TextField("Ville", text: $ville)
+                }
             }
             
             Section("Identification") {
                 Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
                     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                TextField("Numéro de SIRET", text: $siret)
-                TextField("Numéro ADELI", text: $adeli)
+                LabeledContent("Numéro de SIRET") {
+                    TextField("Numéro de SIRET", text: $siret)
+                }
+                LabeledContent("Numéro ADELI") {
+                    TextField("Numéro ADELI", text: $adeli)
+                }
             }
             
             Section("Contact") {
-                TextField("Prénom", text: $nom)
-                TextField("Nom", text: $prenom)
-                TextField("Téléphone", text: $siret)
-                TextField("E-mail", text: $adeli)
-                TextField("Site web", text: $adeli)
+                LabeledContent("Prénom") {
+                    TextField("Prénom", text: $nom)
+                }
+                LabeledContent("Nom") {
+                    TextField("Nom", text: $prenom)
+                }
+                LabeledContent("Téléphone") {
+                    TextField("Téléphone", text: $siret)
+                }
+                LabeledContent("E-mail") {
+                    TextField("E-mail", text: $adeli)
+                }
+                LabeledContent("Site web") {
+                    TextField("Site web", text: $adeli)
+                }
             }
             
             NavigationLink {
@@ -56,6 +73,7 @@ struct FormPraticienView: View {
                 Label("Signature", systemImage: "signature")
             }
         }
+        .multilineTextAlignment(.trailing)
         .navigationTitle(nomProfession)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

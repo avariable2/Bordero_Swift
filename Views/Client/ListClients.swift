@@ -33,7 +33,7 @@ struct ListClients: View {
                         ForEach(filteredClients) { client in
                             ClientRowView(
                                 client: client,
-                                onDelete: deleteClient, 
+                                onDelete: deleteClient,
                                 onClick: { client in
                                     applyOnClick(client)
                                 }

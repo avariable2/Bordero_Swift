@@ -20,6 +20,20 @@ struct ContentView: View {
             
             HomeView()
                 .tabItem {
+                    Image(systemName: "doc.plaintext")
+                    Text("Documents")
+                }
+            
+            NavigationStack {
+                ListClients()
+            }
+            .tabItem {
+                Image(systemName: "person.2")
+                Text("Clients")
+            }
+            
+            HomeView()
+                .tabItem {
                     Image(systemName: "gear")
                     Text("Paramètres")
                 }

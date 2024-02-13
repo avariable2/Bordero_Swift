@@ -41,6 +41,7 @@ struct DetailFormView: View {
             Section {
                 LabeledContent("N° facture") {
                     TextField("001", text: $numeroFacture)
+                        .multilineTextAlignment(.trailing)
                 }
                 LabeledContent("Date d'émission") {
                     DatePicker("",
@@ -64,6 +65,7 @@ struct DetailFormView: View {
                 }
                 LabeledContent("Montant de remise") {
                     TextField("0,00%", text: $remise)
+                        .multilineTextAlignment(.trailing)
                 }
             }
             
