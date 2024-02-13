@@ -23,7 +23,7 @@ struct ListClients: View {
     
     var body: some View {
         if filteredClients.isEmpty && searchText.isEmpty {
-            EmptyListClientView()
+            EmptyListClientView(activeSheet: $activeSheet)
         } else {
             VStack {
                 if filteredClients.isEmpty {
@@ -54,18 +54,18 @@ struct ListClients: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-                    .sheet(item: $activeSheet) { item in
-                        switch item {
-                        case .createClient:
-                            FormClientView(activeSheet: $activeSheet)
-                                .presentationDetents([.large])
-                        case .editClient(let client):
-                            FormClientView(activeSheet: $activeSheet, clientToModify: client)
-                                .presentationDetents([.large])
-                        default:
-                            EmptyView() // IMPOSSIBLE
-                        }
-                    }
+                }
+            }
+            .sheet(item: $activeSheet) { item in
+                switch item {
+                case .createClient:
+                    FormClientView(activeSheet: $activeSheet)
+                        .presentationDetents([.large])
+                case .editClient(let client):
+                    FormClientView(activeSheet: $activeSheet, clientToModify: client)
+                        .presentationDetents([.large])
+                default:
+                    EmptyView() // IMPOSSIBLE
                 }
             }
         }
@@ -161,6 +161,8 @@ struct ClientRowView : View {
 
 struct EmptyListClientView : View {
     
+    @Binding var activeSheet : ActiveSheet?
+    
     var body: some View {
         VStack {
             Spacer()
@@ -173,11 +175,20 @@ struct EmptyListClientView : View {
                 .foregroundStyle(.secondary)
             
             Button {
-                
+                activeSheet = .createClient
             } label: {
                 Text("Ajouter un client")
             }
             .padding(.top)
+            .sheet(item: $activeSheet) { item in
+                switch item {
+                case .createClient:
+                    FormClientView(activeSheet: $activeSheet)
+                        .presentationDetents([.large])
+                default:
+                    EmptyView() // IMPOSSIBLE
+                }
+            }
             
             Spacer()
         }
