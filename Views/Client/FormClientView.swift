@@ -190,6 +190,9 @@ struct FormClientView: View {
     
     private func saveClient() {
         let client = clientToModify ?? Client(context: moc)
+        if clientToModify == nil {
+            client.id = UUID()
+        }
         client.name = nom
         client.firstname = prenom
         client.email = email
