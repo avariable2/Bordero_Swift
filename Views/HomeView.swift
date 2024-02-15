@@ -41,7 +41,7 @@ struct HomeView: View {
                     NavigationLink {
                         ListClients()
                     } label: {
-                        Label("Consulter la liste des clients", systemImage: "person.3")
+                        Label("Consulter la liste des clients", systemImage: "person.2")
                     }
                 } header: {
                     Text("Clients")
