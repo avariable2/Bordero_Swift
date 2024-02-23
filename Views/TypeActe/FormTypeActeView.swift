@@ -30,7 +30,7 @@ struct FormTypeActeView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section {
                     TextField("* Entrer un nom", text: $nom)

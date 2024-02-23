@@ -46,7 +46,7 @@ struct FormClientView: View {
     @FocusState private var focusedField : FocusedField?
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section {
                     TextField("Prénom", text: $prenom)

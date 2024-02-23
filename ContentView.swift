@@ -12,14 +12,8 @@ struct ContentView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Image(systemName: "bolt")
-                    Text("Actions rapides")
-                }
-            
-            HomeView()
-                .tabItem {
-                    Image(systemName: "doc.plaintext")
-                    Text("Documents")
+                    Image(systemName: "house")
+                    Text("Résumé")
                 }
             
             NavigationStack {
@@ -30,10 +24,10 @@ struct ContentView: View {
                 Text("Clients")
             }
             
-            HomeView()
+            NavigationView()
                 .tabItem {
-                    Image(systemName: "gear")
-                    Text("Paramètres")
+                    Image(systemName: "rectangle.split.2x2.fill")
+                    Text("Parcourir")
                 }
         }
     }

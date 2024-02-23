@@ -6,78 +6,29 @@
 //
 
 import SwiftUI
+import ScrollableGradientBackground
 
 struct HomeView: View {
-    @Environment(\.managedObjectContext) var moc
-    
-    @State private var activeSheet: ActiveSheet?
     
     var body: some View {
-        NavigationView {
-            List {
-                Section("Type de séance") {
-                    Button {
-                        activeSheet = .createTypeActe
-                    } label: {
-                        Label("Ajouter un type d'acte", systemImage: "pencil.and.list.clipboard")
-                            .tint(.primary)
-                    }
+        ScrollableGradientNavigationStack(
+            heightPercentage: 0.4,
+            maxHeight: 200,
+            minHeight: 0,
+            startColor: Color.green,
+            endColor: Color.clear,
+            navigationTitle: "Résumé",
+            content: {
+                BandeauCreateDocument()
+                VStack(alignment: .leading) {
+                    Text("Statistiques")
+                        .font(.title2)
+                        .bold()
                     
-                    NavigationLink {
-                        ListTypeActeView()
-                    } label: {
-                        Label("Consulter tous les types d'acte", systemImage: "list.bullet.clipboard")
-                    }
-                }
-                
-                Section {
-                    Button {
-                        activeSheet = .createClient
-                    } label: {
-                        Label("Ajouter un client", systemImage: "person")
-                            .tint(.primary)
-                    }
-                    
-                    NavigationLink {
-                        ListClients()
-                    } label: {
-                        Label("Consulter la liste des clients", systemImage: "person.2")
-                    }
-                } header: {
-                    Text("Clients")
-                }
-                
-                Section("Documents") {
-                    NavigationLink {
-                        FormDocumentView()
-                    } label: {
-                        Label("Créer un document", systemImage: "doc")
-                    }
-                    
-                    NavigationLink {
-                        EmptyView()
-                    } label: {
-                        Label("Consulter les documents", systemImage: "list.bullet")
-                    }
+                    StatistiquePaticientView()
                 }
             }
-            .sheet(item: $activeSheet) { item in
-                
-                switch item {
-                    
-                case .createTypeActe:
-                    FormTypeActeView(activeSheet: $activeSheet)
-                        .presentationDetents([.medium])
-                case .createClient:
-                    FormClientView(activeSheet: $activeSheet)
-                        .presentationDetents([.large])
-                default:
-                    EmptyView() // IMPOSSIBLE
-                }
-            }
-            .navigationTitle("Actions rapides")
-            .navigationBarTitleDisplayMode(.automatic)
-        }
+        )
     }
 }
 
