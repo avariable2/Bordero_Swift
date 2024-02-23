@@ -15,9 +15,10 @@ struct BandeauCreateDocument: View {
             HStack {
                 Image(systemName: "stethoscope")
                     .foregroundStyle(.blue, .primary)
+                    .font(.title2)
                 Text("Créer mon premier document")
             }
-            .font(.title3)
+            .font(.body)
             .tint(.primary)
         }
         .padding()
