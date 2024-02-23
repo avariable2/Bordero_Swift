@@ -9,11 +9,48 @@ import SwiftUI
 
 @main
 struct BorderoApp: App {
-    @StateObject private var dataController = DataController()
+    
+    private var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, dataController.container.viewContext)
+            switch dataController.accountAvailable {
+            case .isLoading:
+                ProgressView()
+            case .notConnected:
+                ErrorDisplayWithiCloudView()
+            case .connected:
+                ContentView()
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
+            }
         }
     }
+}
+
+struct ErrorDisplayWithiCloudView :View {
+    var body: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            Image(systemName: "cloud.fill")
+                .foregroundColor(.accentColor)
+            Text("Vous n'êtes pas connecté à iCloud")
+            
+            VStack(spacing: 30) {
+                Text("L'application en à besoin pour fonctionner et synchroniser vos données sur vos différents appareils.")
+                Text("Redémarré l'application une fois connecté.")
+            }
+                .font(.body)
+                .foregroundColor(.secondary)
+            
+            Spacer()
+        }
+        .padding()
+        .font(.largeTitle)
+        .multilineTextAlignment(.center)
+    }
+}
+
+#Preview {
+    ErrorDisplayWithiCloudView()
 }

@@ -8,8 +8,18 @@
 import CoreData
 import Foundation
 import CloudKit
+import Observation
 
-class DataController: ObservableObject {
+enum StateCheckiCloud {
+    case isLoading
+    case notConnected
+    case connected
+}
+
+@Observable class DataController {
+    var accountAvailable : StateCheckiCloud = .isLoading
+    var error : String = ""
+    
     let container = NSPersistentCloudKitContainer(name: "Model")
     
     init() {
@@ -18,6 +28,25 @@ class DataController: ObservableObject {
                 print("Core Data failed to load : \(error.localizedDescription)")
             }
         }
+        
+        checkAccountStatus()
     }
+    
+    func checkAccountStatus() {
+       CKContainer.default().accountStatus { status, error in
+         DispatchQueue.main.async {
+           switch status {
+           case .available:
+               self.accountAvailable = .connected
+           default:
+               self.accountAvailable = .notConnected
+           }
+           if let error = error {
+               print(error)
+           }
+         }
+       }
+   }
+    
     
 }
