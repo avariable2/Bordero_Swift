@@ -10,16 +10,8 @@ import Foundation
 import CloudKit
 import Observation
 
-enum StateCheckiCloud {
-    case isLoading
-    case notConnected
-    case connected
-}
-
 @Observable class DataController {
-    var accountAvailable : StateCheckiCloud = .isLoading
-    var error : String = ""
-    
+   
     let container = NSPersistentCloudKitContainer(name: "Model")
     
     init() {
@@ -40,25 +32,5 @@ enum StateCheckiCloud {
         } catch {
              fatalError("Failed to pin viewContext to the current generation:\(error)")
         }
-        
-        checkAccountStatus()
     }
-    
-    func checkAccountStatus() {
-       CKContainer.default().accountStatus { status, error in
-         DispatchQueue.main.async {
-           switch status {
-           case .available:
-               self.accountAvailable = .connected
-           default:
-               self.accountAvailable = .notConnected
-           }
-           if let error = error {
-               print(error)
-           }
-         }
-       }
-   }
-    
-    
 }

@@ -11,10 +11,11 @@ import SwiftUI
 struct BorderoApp: App {
     
     private var dataController = DataController()
+    private var userController = UseriCloudController()
     
     var body: some Scene {
         WindowGroup {
-            switch dataController.accountAvailable {
+            switch userController.accountAvailable {
             case .isLoading:
                 ProgressView()
             case .notConnected:
