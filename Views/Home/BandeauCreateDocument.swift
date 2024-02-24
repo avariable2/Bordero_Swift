@@ -8,28 +8,44 @@
 import SwiftUI
 
 struct BandeauCreateDocument: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
-        Button {
-            
+        NavigationLink {
+            FormDocumentView()
         } label: {
             HStack {
-                Image(systemName: "stethoscope")
+                Image(systemName: "doc.badge.plus")
                     .foregroundStyle(.blue, .primary)
-                    .font(.title2)
+                    .imageScale(.large)
+                
                 Text("Créer mon premier document")
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.secondary) // Couleur de la flèche
+                    .imageScale(.small)
             }
+            .padding()
             .font(.body)
-            .tint(.primary)
+            .foregroundColor(.primary)
+            .background(backgroundColor)
+            .cornerRadius(8)
         }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundStyle(.primary)
-        .background(.regularMaterial)
-        .cornerRadius(10)
+        .buttonStyle(.plain)
         
+//        .cornerRadius(10)
+    }
+    
+    var backgroundColor : Color {
+        colorScheme == .dark ? .black : .white
     }
 }
 
 #Preview {
-    BandeauCreateDocument()
+    VStack {
+        BandeauCreateDocument()
+    }
+    
 }

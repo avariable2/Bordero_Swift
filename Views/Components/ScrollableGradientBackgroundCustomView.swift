@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct ScrollableGradientBackgroundCustomView<Content: View>: View {
+public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
     @State private var gradientEndPoint: Double = 0
     var content: () -> Content
     var heightPercentage: Double
@@ -68,9 +68,16 @@ public struct ScrollableGradientBackgroundCustomView<Content: View>: View {
                     NavigationLink {
                         Text("Person View")
                     } label: {
-                        Image(systemName: "person.crop.circle")
+                        ZStack {
+                            Circle()
+                                .fill(.gray.opacity(0.80))
+                                .frame(width: 35)
                             
-                            .foregroundColor(.blue)
+                            Image(systemName: "person.fill")
+                                .foregroundStyle(.white)
+                                .clipShape(Circle())
+                        }
+                        
                     }
 
                 }
@@ -159,5 +166,5 @@ extension Comparable {
 }
 
 #Preview {
-    ScrollableGradientBackgroundCustomView(heightPercentage: 0.4, maxHeight: 200, minHeight: 0, startColor: Color.red, endColor: Color.clear, navigationTitle: "Test", content: { ForEach(0 ..< 120) { value in Text("Test \(value)") } })
+    HomeScrollableGradientBackgroundCustomView(heightPercentage: 0.4, maxHeight: 200, minHeight: 0, startColor: Color.red, endColor: Color.clear, navigationTitle: "Test", content: { ForEach(0 ..< 120) { value in Text("Test \(value)") } })
 }

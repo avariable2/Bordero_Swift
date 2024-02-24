@@ -6,26 +6,37 @@
 //
 
 import SwiftUI
-import ScrollableGradientBackground
 
 struct HomeView: View {
     
     var body: some View {
-        ScrollableGradientBackgroundCustomView(
+        HomeScrollableGradientBackgroundCustomView(
             heightPercentage: 0.4,
             maxHeight: 200,
             minHeight: 0,
-            startColor: Color.green,
-            endColor: Color.clear,
+            startColor: Color.green.opacity(0.85),
+            endColor: Color(uiColor: .secondarySystemBackground),
             navigationTitle: "Résumé",
             content: {
+                
                 BandeauCreateDocument()
-                VStack(alignment: .leading) {
-                    Text("Statistiques")
-                        .font(.title2)
-                        .bold()
-                    
+                
+                SectionHomeComponentView(title: "Statistiques") {
                     StatistiquePaticientView()
+                }
+                
+                SectionHomeComponentView(title: "Articles") {
+                    Grid() {
+                        GridRow {
+                            ArticleComponentView(
+                                titre: "Les bonnes pratiques pour les factures de psychologie",
+                                sousTitre: "Cette article couvre l'ensemble des bases et répond aux question de l'importance des factures.",
+                                image: "ArticleImageFacture"
+                            )
+                            
+                        }
+                    }
+                    
                 }
             }
         )

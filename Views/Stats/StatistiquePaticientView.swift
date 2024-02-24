@@ -15,21 +15,25 @@ struct BarData: Identifiable {
 }
 
 struct StatistiquePaticientView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     private var data: [BarData] = [
         BarData(payer: true, facture: true),
         BarData(payer: false, facture: true),
         BarData(payer: false, facture: true),
     ]
+    
     var body: some View {
-        GroupBox(
-            label: Label("Factures impayées", systemImage: "bag.badge.minus")
-                .foregroundColor(.red)
-        ) {
+        VStack {
             HStack(alignment: .bottom) {
                 Text("Montant perdu : ") + Text("0,00 $")
             }
-            .frame(alignment: .leading)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    var backgroundColor : Color {
+        colorScheme == .dark ? .black : .white
     }
 }
 
