@@ -34,7 +34,7 @@ struct ArticleComponentView: View {
             .padding()
             
         }
-        .frame(width: .infinity)
+        .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(backgroundColor)

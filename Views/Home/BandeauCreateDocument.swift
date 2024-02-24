@@ -14,24 +14,12 @@ struct BandeauCreateDocument: View {
         NavigationLink {
             FormDocumentView()
         } label: {
-            HStack {
+            TitleWithIconColorComponentView(titre : "Créer un document") {
                 Image(systemName: "doc.badge.plus")
                     .foregroundStyle(.blue, .primary)
-                    .imageScale(.large)
-                
-                Text("Créer mon premier document")
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.secondary) // Couleur de la flèche
-                    .imageScale(.small)
             }
-            .padding()
-            .font(.body)
-            .foregroundColor(.primary)
-            .background(backgroundColor)
-            .cornerRadius(8)
+                .background(backgroundColor)
+                .cornerRadius(8)
         }
         .buttonStyle(.plain)
         

@@ -19,14 +19,21 @@ struct NavigationView: View {
                     Button {
                         activeSheet = .createTypeActe
                     } label: {
-                        Label("Ajouter un type d'acte", systemImage: "pencil.and.list.clipboard")
+                        Label("Ajouter un type d'acte", systemImage: "square.and.pencil")
                             .tint(.primary)
+                            .foregroundStyle(.primary, .purple)
                     }
                     
                     NavigationLink {
                         ListTypeActeView()
                     } label: {
-                        Label("Consulter tous les types d'acte", systemImage: "list.bullet.clipboard")
+                        Label {
+                            Text("Consulter tous les types d'acte")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "eyeglasses")
+                                .foregroundStyle( .purple, .orange)
+                        }
                     }
                 }
                 
@@ -34,14 +41,25 @@ struct NavigationView: View {
                     Button {
                         activeSheet = .createClient
                     } label: {
-                        Label("Ajouter un client", systemImage: "person")
-                            .tint(.primary)
+                        Label {
+                            Text("Ajouter un client")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "person.crop.rectangle.badge.plus")
+                                .foregroundStyle( .green, .orange)
+                        }
                     }
                     
                     NavigationLink {
                         ListClients()
                     } label: {
-                        Label("Consulter la liste des clients", systemImage: "person.2")
+                        Label {
+                            Text("Consulter la liste des clients")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "person.crop.rectangle.stack")
+                                .foregroundStyle(.orange)
+                        }
                     }
                 } header: {
                     Text("Clients")
@@ -51,13 +69,25 @@ struct NavigationView: View {
                     NavigationLink {
                         FormDocumentView()
                     } label: {
-                        Label("Créer un document", systemImage: "doc")
+                        Label {
+                            Text("Créer un document")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "doc.badge.plus")
+                                .foregroundStyle(.green, .blue)
+                        }
                     }
                     
                     NavigationLink {
                         EmptyView()
                     } label: {
-                        Label("Consulter les documents", systemImage: "list.bullet")
+                        Label {
+                            Text("Consulter les documents")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "doc.text.magnifyingglass")
+                                .foregroundStyle(.gray, .primary)
+                        }
                     }
                 }
             }

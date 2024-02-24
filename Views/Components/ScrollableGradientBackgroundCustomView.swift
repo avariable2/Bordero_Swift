@@ -68,16 +68,9 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
                     NavigationLink {
                         Text("Person View")
                     } label: {
-                        ZStack {
-                            Circle()
-                                .fill(.gray.opacity(0.80))
-                                .frame(width: 35)
-                            
-                            Image(systemName: "person.fill")
-                                .foregroundStyle(.white)
-                                .clipShape(Circle())
-                        }
-                        
+                        Image(systemName: "person.crop.circle.fill")
+                            .foregroundStyle(.white, .gray)
+                            .imageScale(.large)
                     }
 
                 }
