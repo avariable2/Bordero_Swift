@@ -11,7 +11,7 @@ import ScrollableGradientBackground
 struct HomeView: View {
     
     var body: some View {
-        ScrollableGradientNavigationStack(
+        ScrollableGradientBackgroundCustomView(
             heightPercentage: 0.4,
             maxHeight: 200,
             minHeight: 0,
