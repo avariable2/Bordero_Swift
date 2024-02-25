@@ -13,7 +13,7 @@ struct BorderoApp: App {
     private var dataController = DataController()
     private var userController = UseriCloudController()
     
-    @State private var firstTimeUser = false
+    @State private var firstTimeUser = true
     
     var body: some Scene {
         WindowGroup {

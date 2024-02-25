@@ -23,6 +23,36 @@ struct FormPraticienView: View {
     
     var body: some View {
         Form {
+            
+            Circle()
+                .frame(height: 80)
+                .background(Color.clear)
+                .padding()
+            
+            Button {
+                
+            } label: {
+                Label("Importer vos informations depuis votre fiche contact", systemImage: "person.circle")
+            }
+            
+            Section("Contact") {
+                LabeledContent("Prénom") {
+                    TextField("Prénom", text: $nom)
+                }
+                LabeledContent("Nom") {
+                    TextField("Nom", text: $prenom)
+                }
+                LabeledContent("Téléphone") {
+                    TextField("Téléphone", text: $siret)
+                }
+                LabeledContent("E-mail") {
+                    TextField("E-mail", text: $adeli)
+                }
+                LabeledContent("Site web") {
+                    TextField("Site web", text: $adeli)
+                }
+            }
+            
             Section("Adresse de facturation") {
                 LabeledContent("Pays") {
                     TextField("Pays", text: $pays)
@@ -46,24 +76,6 @@ struct FormPraticienView: View {
                 }
                 LabeledContent("Numéro ADELI") {
                     TextField("Numéro ADELI", text: $adeli)
-                }
-            }
-            
-            Section("Contact") {
-                LabeledContent("Prénom") {
-                    TextField("Prénom", text: $nom)
-                }
-                LabeledContent("Nom") {
-                    TextField("Nom", text: $prenom)
-                }
-                LabeledContent("Téléphone") {
-                    TextField("Téléphone", text: $siret)
-                }
-                LabeledContent("E-mail") {
-                    TextField("E-mail", text: $adeli)
-                }
-                LabeledContent("Site web") {
-                    TextField("Site web", text: $adeli)
                 }
             }
             
