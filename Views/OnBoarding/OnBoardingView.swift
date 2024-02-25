@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct OnBoardingView : View {
+    @Environment(\.dismiss) var dismiss
+    @State private var userHasSeenAllOnBoarding = false
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 10) {
+                
+                Spacer()
                 
                 HStack {
                     
@@ -43,8 +48,14 @@ struct OnBoardingView : View {
                         .foregroundStyle(.red, .primary)
                 }
 
+                Spacer()
+                
+            }
+            .padding()
+            .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+            .safeAreaInset(edge: .bottom) {
                 NavigationLink {
-                    CoordooneesPraticienView()
+                    ConfidentialiteOnBoardingView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
                 } label: {
                     Text("Continuer")
                         .font(.headline)
@@ -53,9 +64,9 @@ struct OnBoardingView : View {
                 }
                 .buttonStyle(.borderedProminent)
                 .padding()
-                
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemGray6))
             }
-            .padding()
         }
         
     }
@@ -86,18 +97,66 @@ struct RowOnBoarding<Content : View> : View {
     }
 }
 
-struct CoordooneesPraticienView : View {
+struct ConfidentialiteOnBoardingView : View {
+    @Binding var userHasSeenAllOnBoarding : Bool
+    
     var body: some View {
         NavigationStack {
-            
-            FormPraticienView()
+            ScrollView {
+                VStack(spacing: 30) {
+                    VStack(alignment: .center) {
+                        Image(systemName: "lock.rectangle.stack.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 140)
+                            .foregroundStyle(.white, .green)
+                            .padding()
+                        
+                        Text("Sécurité de vos données")
+                            .font(.largeTitle)
+                            .bold()
+                            
+                    }
+                    
+                    Text("Vos données Bordero sont stockées sur iCloud et ne peuvent être lues par personne sans votre permission, pas même Bordero, et ne seront jamais revendues à une tierce partie.")
+                    
+                    Text("Vos données renseignées sont uniquement utilisés pour l'usage de cette application et ne sorte pas de celle ci. Vous pouvez les modifier à tous moment.")
+                }
+                .padding()
+                .multilineTextAlignment(.center)
+            }
+            .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+            .safeAreaInset(edge: .bottom) {
+                NavigationLink {
+                    CoordooneesPraticienView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
+                } label: {
+                    Text("Continuer")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemGray6))
+            }
         }
-        
+    }
+}
+
+struct CoordooneesPraticienView : View {
+    @Binding var userHasSeenAllOnBoarding : Bool
+    
+    var body: some View {
+        NavigationStack {
+            FormPraticienView()
+                .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+        }
         .navigationTitle("Vos coordonnées")
     }
 }
 
 #Preview {
 //    OnBoardingView()
-    CoordooneesPraticienView()
+    ConfidentialiteOnBoardingView(userHasSeenAllOnBoarding: .constant(false))
 }
