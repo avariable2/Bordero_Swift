@@ -13,7 +13,8 @@ struct BorderoApp: App {
     private var dataController = DataController()
     private var userController = UseriCloudController()
     
-    @State private var firstTimeUser = true
+    @Environment(\.dismiss) var dismiss
+    @State private var userHasSeenAllOnBoarding = true
     
     var body: some Scene {
         WindowGroup {
@@ -24,8 +25,8 @@ struct BorderoApp: App {
                 ErrorDisplayWithiCloudView()
             case .connected:
                 ContentView()
-                    .sheet(isPresented: $firstTimeUser) {
-                        OnBoardingView()
+                    .sheet(isPresented: $userHasSeenAllOnBoarding) {
+                        OnBoardingView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
                     }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
             }
@@ -58,5 +59,5 @@ struct ErrorDisplayWithiCloudView :View {
 }
 
 #Preview {
-    OnBoardingView()
+    OnBoardingView(userHasSeenAllOnBoarding: .constant(true))
 }

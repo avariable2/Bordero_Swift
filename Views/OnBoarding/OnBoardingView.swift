@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+// TODO: Lorsque tu implémentes les push notif oublies pas de creer un ecran pour demander l'autorisation à l'utilisateur et de creer un ecran qui explique pourquoi tu en as besoin
+
 struct OnBoardingView : View {
     @Environment(\.dismiss) var dismiss
-    @State private var userHasSeenAllOnBoarding = false
+    @Binding var userHasSeenAllOnBoarding : Bool
     
     var body: some View {
         NavigationStack {
@@ -68,7 +70,6 @@ struct OnBoardingView : View {
                 .background(Color(.systemGray6))
             }
         }
-        
     }
 }
 
@@ -145,22 +146,30 @@ struct ConfidentialiteOnBoardingView : View {
 }
 
 struct CoordooneesPraticienView : View {
+    @Environment(\.dismiss) var dismiss
     @Binding var userHasSeenAllOnBoarding : Bool
     
     var body: some View {
         NavigationStack {
             VStack {
-                Circle()
-                    .frame(height: 80)
-                    .padding()
-                
-                FormPraticienView()
+                FormPraticienView(isOnBoarding: true)
             }
-            .background(Color(.systemGray6))
             .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+            .safeAreaInset(edge: .bottom) {
+                NavigationLink {
+                    CoordooneesPraticienView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
+                } label: {
+                    Text("Continuer")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemGray6))
+            }
         }
-        .navigationTitle("Vos coordonnées")
-        
     }
 }
 

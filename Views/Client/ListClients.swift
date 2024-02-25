@@ -22,51 +22,72 @@ struct ListClients: View {
     }
     
     var body: some View {
-        if filteredClients.isEmpty && searchText.isEmpty {
-            EmptyListClientView(activeSheet: $activeSheet)
-        } else {
-            VStack {
-                if filteredClients.isEmpty {
-                    EmptySearchListClientView(searchText: $searchText)
-                } else {
-                    List {
-                        ForEach(filteredClients) { client in
-                            ClientRowView(
-                                client: client,
-                                onDelete: deleteClient,
-                                onClick: { client in
-                                    applyOnClick(client)
-                                }
-                            )
-                        }
-                        .onDelete(perform: delete)
-                    }
-//                    .listStyle(.plain)
-                }
-            }
-            .navigationTitle("Clients")
-            .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
-            .toolbar {
-                ToolbarItem(placement: .automatic) {
+        VStack {
+            if clients.isEmpty {
+                
+                ContentUnavailableView(label: {
+                    Label("Aucun client", systemImage: "person.slash")
+                }, description: {
+                    Text("Les clients ajoutés apparaîtront ici.")
+                }, actions: {
                     Button {
                         activeSheet = .createClient
                     } label: {
-                        Image(systemName: "plus")
+                        Text("Ajouter un client")
                     }
+                    .sheet(item: $activeSheet) { item in
+                        switch item {
+                        case .createClient:
+                            FormClientView(activeSheet: $activeSheet)
+                                .presentationDetents([.large])
+                        default:
+                            EmptyView() // IMPOSSIBLE
+                        }
+                    }
+                })
+                
+            } else {
+                List {
+                    ForEach(filteredClients) { client in
+                        ClientRowView(
+                            client: client,
+                            onDelete: deleteClient,
+                            onClick: { client in
+                                applyOnClick(client)
+                            }
+                        )
+                    }
+                    .onDelete(perform: delete)
+                }
+                .overlay(content:  {
+                    if filteredClients.isEmpty {
+                        ContentUnavailableView.search(text: searchText)
+                    }
+                })
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
+            }
+        }
+        .navigationTitle("Clients")
+        .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    activeSheet = .createClient
+                } label: {
+                    Image(systemName: "plus")
                 }
             }
-            .sheet(item: $activeSheet) { item in
-                switch item {
-                case .createClient:
-                    FormClientView(activeSheet: $activeSheet)
-                        .presentationDetents([.large])
-                case .editClient(let client):
-                    FormClientView(activeSheet: $activeSheet, clientToModify: client)
-                        .presentationDetents([.large])
-                default:
-                    EmptyView() // IMPOSSIBLE
-                }
+        }
+        .sheet(item: $activeSheet) { item in
+            switch item {
+            case .createClient:
+                FormClientView(activeSheet: $activeSheet)
+                    .presentationDetents([.large])
+            case .editClient(let client):
+                FormClientView(activeSheet: $activeSheet, clientToModify: client)
+                    .presentationDetents([.large])
+            default:
+                EmptyView() // IMPOSSIBLE
             }
         }
     }
