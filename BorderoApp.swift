@@ -13,6 +13,8 @@ struct BorderoApp: App {
     private var dataController = DataController()
     private var userController = UseriCloudController()
     
+    @State private var firstTimeUser = false
+    
     var body: some Scene {
         WindowGroup {
             switch userController.accountAvailable {
@@ -22,6 +24,9 @@ struct BorderoApp: App {
                 ErrorDisplayWithiCloudView()
             case .connected:
                 ContentView()
+                    .sheet(isPresented: $firstTimeUser) {
+                        OnBoardingView()
+                    }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
             }
         }
@@ -53,5 +58,5 @@ struct ErrorDisplayWithiCloudView :View {
 }
 
 #Preview {
-    ErrorDisplayWithiCloudView()
+    OnBoardingView()
 }

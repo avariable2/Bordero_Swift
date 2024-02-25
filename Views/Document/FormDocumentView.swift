@@ -23,16 +23,11 @@ struct ModifierDocumentView: View {
     @State private var notes: String = ""
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            TitleDocumentComponentView()
+                .background(Color(uiColor: .secondarySystemBackground))
             
             Form {
-                Section {
-                    NavigationLink {
-                        FormPraticienView()
-                    } label: {
-                        Label("Vos coordonnées", systemImage: "stethoscope")
-                    }
-                }
                 
                 Section {
                     NavigationLink {
@@ -58,12 +53,6 @@ struct ModifierDocumentView: View {
                     Text("Client(s) séléctionné(s)")
                 } footer: {
                     Text("Swipe sur la gauche pour supprimer un client de la liste.")
-                }
-                
-                NavigationLink {
-                    DetailFormView()
-                } label: {
-                    Text("Détails")
                 }
                 
                 Section {
@@ -111,15 +100,8 @@ struct ModifierDocumentView: View {
                 Section("Note - Optionnel") {
                     TextEditor(text: $notes)
                 }
-                
-                NavigationLink {
-                    
-                } label: {
-                    Label("Joindre des photos", systemImage: "paperclip")
-                }
-                
             }
-            .navigationTitle("Facture 001")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
