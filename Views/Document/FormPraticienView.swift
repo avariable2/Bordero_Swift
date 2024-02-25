@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import Contacts
 
 struct FormPraticienView: View {
     
     private var titre = "Renseignements professionnel"
     private var textFacultatif = "Facultatif"
+    
+    @State private var image : UIImage? = nil
     
     @State private var nom = ""
     @State private var prenom = ""
@@ -22,6 +25,12 @@ struct FormPraticienView: View {
     @State private var applyTVA : Bool = true
     @State private var siret = ""
     @State private var adeli = ""
+    
+    @State private var email = ""
+    @State private var numero = ""
+    @State private var website = ""
+    
+    @State private var selectedContact: CNContact?
     
     private var isOnBoarding : Bool
     
@@ -36,19 +45,28 @@ struct FormPraticienView: View {
                 
                 VStack(alignment: .center, spacing: 20) {
                     
-//                    Image(systemName: "person.crop.circle.fill")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .foregroundStyle(.gray, .blue)
-//                        .frame(height: 60)
-                    
-                    ZStack {
-                        Circle()
-                            .fill(Color.pink)
-                            .frame(height: 80)
+                    if image != nil {
                         
-                        Text("😃")
+                        Image(uiImage: image!)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 80)
+                            .clipShape(Circle())
+                        
+                    } else {
+                        Image(systemName: "person.crop.circle.fill")
                             .font(.system(size: 60))
+                            .foregroundStyle(.white, .gray)
+                            .imageScale(.large)
+                        
+//                        ZStack {
+//                            Circle()
+//                                .fill(Color.pink)
+//                                .frame(height: 80)
+//                            
+//                            Text("😃")
+//                                .font(.system(size: 60))
+//                        }
                     }
                     
                     if isOnBoarding {
@@ -67,20 +85,37 @@ struct FormPraticienView: View {
                 .listRowBackground(Color.clear)
                 
                 Section {
-                    Button {
-                        
-                    } label: {
-                        Label(
-                            title: {
-                                Text("Importer vos informations depuis votre fiche Contacts")
-                                    .multilineTextAlignment(.center)
-                            },
-                            icon: {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .foregroundStyle(.white, .primary)
-                            }
-                        )
+                    ImportContactView(
+                        selectedContact: $selectedContact
+                    ) {
+                        HStack(spacing: 10) {
+                            Image(systemName: "person.crop.circle.fill")
+                                .imageScale(.large)
+                            
+                            Text("Importer vos informations depuis votre fiche Contacts")
+                        }
                     }
+                    .onChange(of: selectedContact) {
+                        guard let contact = selectedContact else {
+                            return
+                        }
+                        
+                        if contact.imageDataAvailable {
+                            if let imageData = contact.thumbnailImageData, let uiImage = UIImage(data: imageData) {
+                                image = uiImage
+                                image!.jpegData(compressionQuality: 1.0)
+                            }
+                            
+                        }
+                        
+                        prenom = contact.givenName
+                        nom = contact.familyName
+                        numero = contact.phoneNumbers.first?.value.stringValue ?? ""
+                        email = String(contact.emailAddresses.first?.value ?? "")
+                        
+                    }
+                    .multilineTextAlignment(.leading)
+                    
                 } footer: {
                     Text("Pour gagner du temps importer les champs principaux comme votre nom ou prénom depuis votre fiche Contacts.")
                         .multilineTextAlignment(.leading)
@@ -99,7 +134,7 @@ struct FormPraticienView: View {
                 } header: {
                     Text("Identification")
                 } footer: {
-                    Text("Ces champs sont obligatoires pour que votre documents soit valides.")
+                    Text("Ces champs sont important ficalement pour que vos documents soient valides.")
                         .multilineTextAlignment(.leading)
                 }
                 
@@ -111,10 +146,10 @@ struct FormPraticienView: View {
                 
                 Section {
                     LabeledContent("Prénom") {
-                        TextField(textFacultatif, text: $nom)
+                        TextField(textFacultatif, text: $prenom)
                     }
                     LabeledContent("Nom") {
-                        TextField(textFacultatif, text: $prenom)
+                        TextField(textFacultatif, text: $nom)
                     }
                     LabeledContent("Téléphone") {
                         TextField(textFacultatif, text: $siret)

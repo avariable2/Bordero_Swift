@@ -39,15 +39,17 @@ struct ContactPicker: UIViewControllerRepresentable {
     }
 }
 
-struct ImportContactView: View {
+struct ImportContactView<Content : View>: View {
     @State private var showingContactPicker = false
     @Binding var selectedContact: CNContact?
-
+    
+    @ViewBuilder var content : Content
+    
     var body: some View {
         Button {
             showingContactPicker = true
-        }label: {
-            Label("Importer depuis les contacts", systemImage: "person.circle")
+        } label: {
+            content
         }
         .sheet(isPresented: $showingContactPicker, onDismiss: nil) {
             ContactPicker(selectedContact: $selectedContact)

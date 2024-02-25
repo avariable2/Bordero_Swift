@@ -156,8 +156,8 @@ struct CoordooneesPraticienView : View {
             }
             .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
             .safeAreaInset(edge: .bottom) {
-                NavigationLink {
-                    CoordooneesPraticienView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
+                Button {
+                    userHasSeenAllOnBoarding.toggle()
                 } label: {
                     Text("Continuer")
                         .font(.headline)

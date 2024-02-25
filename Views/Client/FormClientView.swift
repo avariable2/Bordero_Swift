@@ -105,7 +105,16 @@ struct FormClientView: View {
                 }
                 
                 // MARK: - Partie pour importer les contacts depuis l'iphone de l'utilisateur. Incompatible avec AppleWatch.
-                ImportContactView(selectedContact: $selectedContact)
+                ImportContactView(
+                    selectedContact: $selectedContact
+                ) {
+                    Label {
+                        Text("Importer depuis vos Contacts")
+                    } icon: {
+                        Image(systemName: "person.crop.circle.fill.badge.plus")
+                            
+                    }
+                }
                     .onChange(of: selectedContact) {
                         guard let contact = selectedContact else {
                             return
