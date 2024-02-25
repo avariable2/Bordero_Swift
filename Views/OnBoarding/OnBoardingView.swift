@@ -149,14 +149,22 @@ struct CoordooneesPraticienView : View {
     
     var body: some View {
         NavigationStack {
-            FormPraticienView()
-                .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+            VStack {
+                Circle()
+                    .frame(height: 80)
+                    .padding()
+                
+                FormPraticienView()
+            }
+            .background(Color(.systemGray6))
+            .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
         }
         .navigationTitle("Vos coordonnées")
+        
     }
 }
 
 #Preview {
 //    OnBoardingView()
-    ConfidentialiteOnBoardingView(userHasSeenAllOnBoarding: .constant(false))
+    CoordooneesPraticienView(userHasSeenAllOnBoarding: .constant(false))
 }

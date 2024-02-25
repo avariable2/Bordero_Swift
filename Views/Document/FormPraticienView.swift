@@ -23,16 +23,14 @@ struct FormPraticienView: View {
     
     var body: some View {
         Form {
-            
-            Circle()
-                .frame(height: 80)
-                .background(Color.clear)
-                .padding()
-            
-            Button {
-                
-            } label: {
-                Label("Importer vos informations depuis votre fiche contact", systemImage: "person.circle")
+            Section {
+                Button {
+                    
+                } label: {
+                    Label("Importer vos informations depuis votre fiche contact", systemImage: "person.circle")
+                }
+            } footer: {
+                Text("Tous les champs sont facultatifs mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document.")
             }
             
             Section("Contact") {
@@ -85,7 +83,7 @@ struct FormPraticienView: View {
                 Label("Signature", systemImage: "signature")
             }
         }
-        .multilineTextAlignment(.trailing)
+        .multilineTextAlignment(.center)
         .navigationTitle(nomProfession)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
