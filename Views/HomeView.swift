@@ -9,6 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    
+    @State private var userHasSeenAllOnBoarding = false
+    
     var body: some View {
         HomeScrollableGradientBackgroundCustomView(
             heightPercentage: 0.4,
@@ -18,6 +22,12 @@ struct HomeView: View {
             endColor: Color(uiColor: .secondarySystemBackground),
             navigationTitle: "Résumé",
             content: {
+                
+                Text("Nbr praticien : \(praticien.count)")
+                
+                ForEach(praticien) { p in
+                    Text(p.firstname ?? " ops ")
+                }
                 
                 BandeauCreateDocument()
                 
@@ -40,6 +50,17 @@ struct HomeView: View {
                 }
             }
         )
+        .onAppear {
+            if praticien.isEmpty { // First time que l'utilisateur arrive sur l'ecran
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    userHasSeenAllOnBoarding = false
+                }
+            }
+        }
+        .sheet(isPresented: $userHasSeenAllOnBoarding) {
+            OnBoardingView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
+        }
+        
     }
 }
 

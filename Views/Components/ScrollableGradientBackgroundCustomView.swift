@@ -8,7 +8,9 @@
 import SwiftUI
 
 public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
+   
     @State private var gradientEndPoint: Double = 0
+    
     var content: () -> Content
     var heightPercentage: Double
     var maxHeight: Double
@@ -65,14 +67,7 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
 
                     Spacer()
 
-                    NavigationLink {
-                        Text("Person View")
-                    } label: {
-                        Image(systemName: "person.crop.circle.fill")
-                            .foregroundStyle(.white, .gray)
-                            .imageScale(.large)
-                    }
-
+                    ProfilView()
                 }
                 .font(.title)
                 .padding()
@@ -141,6 +136,9 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
             exposedAppearance.backgroundEffect = .none
             exposedAppearance.shadowColor = .clear
             UINavigationBar.appearance().scrollEdgeAppearance = exposedAppearance
+            
+            
+            
         }
     }
 }

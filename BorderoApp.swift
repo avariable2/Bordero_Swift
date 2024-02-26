@@ -13,9 +13,6 @@ struct BorderoApp: App {
     private var dataController = DataController()
     private var userController = UseriCloudController()
     
-    @Environment(\.dismiss) var dismiss
-    @State private var userHasSeenAllOnBoarding = true
-    
     var body: some Scene {
         WindowGroup {
             switch userController.accountAvailable {
@@ -25,9 +22,6 @@ struct BorderoApp: App {
                 ErrorDisplayWithiCloudView()
             case .connected:
                 ContentView()
-                    .sheet(isPresented: $userHasSeenAllOnBoarding) {
-                        OnBoardingView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
-                    }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
             }
         }

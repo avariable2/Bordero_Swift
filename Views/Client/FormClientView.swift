@@ -15,7 +15,7 @@ struct TTLAdresse : Identifiable {
     var codePostal: String = ""
 }
 
-struct FormClientView: View {
+struct FormClientView: View, Saveable, Modifyable {
     enum FocusedField : Hashable {
         case firstName, lastName, phone
     }
@@ -155,7 +155,7 @@ struct FormClientView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("OK") {
-                        saveClient()
+                        modify()
                     }
                 }
             }
@@ -195,9 +195,20 @@ struct FormClientView: View {
         
     }
     
+    func save() {
+        do {
+            try moc.save()
+            
+            print("Success")
+            activeSheet = nil
+            
+        } catch let err {
+            showingAlert = true
+            print(err.localizedDescription)
+        }
+    }
     
-    
-    private func saveClient() {
+    func modify() {
         let client = clientToModify ?? Client(context: moc)
         if clientToModify == nil {
             client.id = UUID()
@@ -216,16 +227,7 @@ struct FormClientView: View {
             client.adresses?.adding(createAdresse(ttl, client: client))
         }
         
-        do {
-            try moc.save()
-            
-            print("Success")
-            activeSheet = nil
-            
-        } catch let err {
-            showingAlert = true
-            print(err.localizedDescription)
-        }
+        save()
     }
 
     private func createAdresse(_ ttl : TTLAdresse, client : Client) {

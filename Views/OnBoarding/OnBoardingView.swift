@@ -148,23 +148,10 @@ struct CoordooneesPraticienView : View {
     @Binding var userHasSeenAllOnBoarding : Bool
     
     var body: some View {
-        FormPraticienView(isOnBoarding: true)
+        FormPraticienView(isOnBoarding: true) {
+            userHasSeenAllOnBoarding.toggle()
+        }
             .interactiveDismissDisabled()
-            .safeAreaInset(edge: .bottom) {
-                Button {
-                    userHasSeenAllOnBoarding.toggle()
-                    dismiss()
-                } label: {
-                    Text("Suivant")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
-            }
     }
 }
 

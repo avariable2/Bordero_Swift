@@ -8,11 +8,13 @@
 import SwiftUI
 import Contacts
 
-struct FormPraticienView: View {
+struct FormPraticienView: View, Saveable, Modifyable {
     
-    private var titre = "Renseignements professionnel"
-    private var textFacultatif = "Facultatif"
+    static let idAdressePraticien = UUID()
     
+    @Environment(\.managedObjectContext) var moc
+    
+    // MARK: Textfield pour les coordoonées du praticien
     @State private var image : UIImage? = nil
     
     @State private var nom = ""
@@ -32,15 +34,17 @@ struct FormPraticienView: View {
     
     @State private var selectedContact: CNContact?
     
-    private var isOnBoarding : Bool
+    // MARK: Option d'affichage du formulaire
+    var isOnBoarding : Bool
+    var titre = "Renseignements professionnel"
+    var textFacultatif = "Facultatif"
     
-    init(isOnBoarding : Bool) {
-        self.isOnBoarding = isOnBoarding
-    }
+    var praticien : Praticien?
+    var callback : (() -> Void)?
+    
     
     var body: some View {
         Form {
-            
             VStack(alignment: .center, spacing: 20) {
                 
                 if image != nil {
@@ -139,13 +143,13 @@ struct FormPraticienView: View {
                     TextField(textFacultatif, text: $nom)
                 }
                 LabeledContent("Téléphone") {
-                    TextField(textFacultatif, text: $siret)
+                    TextField(textFacultatif, text: $numero)
                 }
                 LabeledContent("E-mail") {
-                    TextField(textFacultatif, text: $adeli)
+                    TextField(textFacultatif, text: $email)
                 }
                 LabeledContent("Site web") {
-                    TextField(textFacultatif, text: $adeli)
+                    TextField(textFacultatif, text: $website)
                 }
             } header: {
                 Text("Contact")
@@ -155,9 +159,10 @@ struct FormPraticienView: View {
             }
             
             Section("Adresse de facturation") {
-                LabeledContent("Pays") {
-                    TextField(textFacultatif, text: $pays)
-                }
+//                LabeledContent("Pays") {
+//                    TextField(textFacultatif, text: $pays)
+//                }
+                
                 LabeledContent("Rue") {
                     TextField(textFacultatif, text: $rue)
                 }
@@ -168,14 +173,68 @@ struct FormPraticienView: View {
                     TextField(textFacultatif, text: $ville)
                 }
             }
-            
-            
         }
         .navigationTitle(isOnBoarding ? "" : titre)
-//            .navigationBarHidden(isOnBoarding)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
-//        .scrollContentBackground(isOnBoarding ? .hidden : .visible)
+        .safeAreaInset(edge: .bottom) {
+            if isOnBoarding {
+                Button {
+                    modify()
+                } label: {
+                    Text("Suivant")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemGray6))
+            }
+        }
+    }
+    
+    func save() {
+        do {
+            try moc.save()
+            
+            print("Success")
+            
+            if let action = callback {
+                action()
+            }
+        } catch let err {
+            print("error \(err)")
+        }
+    }
+    
+    func modify() {
+        let praticien = Praticien(context: moc)
+        praticien.profilPicture = image?.jpegData(compressionQuality: 1.0)
+        
+        praticien.adeli = adeli
+        praticien.siret = siret
+        praticien.applyTVA = applyTVA
+        
+        praticien.firstname = prenom
+        praticien.lastname = nom
+        praticien.email = email
+        praticien.phone = numero
+        praticien.website = website
+        
+        modifiyAdresseToPraticien(praticien)
+        
+        save()
+    }
+    
+    func modifiyAdresseToPraticien(_ praticien : Praticien) {
+        let adressePraticien = Adresse(context: moc)
+        adressePraticien.id = FormPraticienView.idAdressePraticien
+        adressePraticien.codepostal = codePostal
+        adressePraticien.appartient = praticien
+        adressePraticien.rue = rue
+        adressePraticien.ville = ville
     }
 }
 
