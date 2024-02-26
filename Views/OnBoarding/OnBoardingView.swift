@@ -54,7 +54,7 @@ struct OnBoardingView : View {
                 
             }
             .padding()
-            .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+            .interactiveDismissDisabled()
             .safeAreaInset(edge: .bottom) {
                 NavigationLink {
                     ConfidentialiteOnBoardingView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
@@ -102,45 +102,43 @@ struct ConfidentialiteOnBoardingView : View {
     @Binding var userHasSeenAllOnBoarding : Bool
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 30) {
-                    VStack(alignment: .center) {
-                        Image(systemName: "lock.rectangle.stack.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .foregroundStyle(.white, .green)
-                            .padding()
-                        
-                        Text("Sécurité de vos données")
-                            .font(.largeTitle)
-                            .bold()
-                            
-                    }
-                    
-                    Text("Vos données Bordero sont stockées sur iCloud et ne peuvent être lues par personne sans votre permission, pas même Bordero, et ne seront jamais revendues à une tierce partie.")
-                    
-                    Text("Vos données renseignées sont uniquement utilisés pour l'usage de cette application et ne sorte pas de celle ci. Vous pouvez les modifier à tous moment.")
-                }
-                .padding()
-                .multilineTextAlignment(.center)
-            }
-            .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
-            .safeAreaInset(edge: .bottom) {
-                NavigationLink {
-                    CoordooneesPraticienView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
-                } label: {
-                    Text("Continuer")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
+        ScrollView {
+            VStack(spacing: 30) {
+                VStack(alignment: .center) {
+                    Image(systemName: "lock.rectangle.stack.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 140)
+                        .foregroundStyle(.white, .green)
                         .padding()
+                    
+                    Text("Sécurité de vos données")
+                        .font(.largeTitle)
+                        .bold()
+                        
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
+                
+                Text("Vos données Bordero sont stockées sur iCloud et ne peuvent être lues par personne sans votre permission, pas même Bordero, et ne seront jamais revendues à une tierce partie.")
+                
+                Text("Vos données renseignées sont uniquement utilisés pour l'usage de cette application et ne sorte pas de celle ci. Vous pouvez les modifier à tous moment.")
             }
+            .padding()
+            .multilineTextAlignment(.center)
+        }
+        .interactiveDismissDisabled()
+        .safeAreaInset(edge: .bottom) {
+            NavigationLink {
+                CoordooneesPraticienView(userHasSeenAllOnBoarding: $userHasSeenAllOnBoarding)
+            } label: {
+                Text("Continuer")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .buttonStyle(.borderedProminent)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color(.systemGray6))
         }
     }
 }
@@ -150,16 +148,14 @@ struct CoordooneesPraticienView : View {
     @Binding var userHasSeenAllOnBoarding : Bool
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                FormPraticienView(isOnBoarding: true)
-            }
-            .interactiveDismissDisabled(!userHasSeenAllOnBoarding)
+        FormPraticienView(isOnBoarding: true)
+            .interactiveDismissDisabled()
             .safeAreaInset(edge: .bottom) {
                 Button {
                     userHasSeenAllOnBoarding.toggle()
+                    dismiss()
                 } label: {
-                    Text("Continuer")
+                    Text("Suivant")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -169,11 +165,10 @@ struct CoordooneesPraticienView : View {
                 .frame(maxWidth: .infinity)
                 .background(Color(.systemGray6))
             }
-        }
     }
 }
 
 #Preview {
-//    OnBoardingView()
-    CoordooneesPraticienView(userHasSeenAllOnBoarding: .constant(false))
+    OnBoardingView(userHasSeenAllOnBoarding: .constant(false))
+//    CoordooneesPraticienView(userHasSeenAllOnBoarding: .constant(false))
 }
