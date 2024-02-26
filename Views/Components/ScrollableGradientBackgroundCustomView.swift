@@ -69,7 +69,7 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
 
                     ProfilView()
                 }
-                .font(.title)
+                .font(.largeTitle)
                 .padding()
                 
                 LazyVStack {

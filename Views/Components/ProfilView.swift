@@ -12,23 +12,31 @@ struct ProfilView: View {
     @Environment(\.managedObjectContext) var moc
     
     @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
+    var text : String?
     
     var body: some View {
         NavigationLink {
-            FormPraticienView(isOnBoarding: false)
+            FormPraticienView(isOnBoarding: false, praticien: praticien.first)
         } label: {
-            if let data = praticien.first?.profilPicture, let uiImage = UIImage(data: data)  {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 40)
-                    .clipShape(Circle())
+            HStack {
+                if let data = praticien.first?.profilPicture, let uiImage = UIImage(data: data)  {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 36)
+                        .clipShape(Circle())
+                    
+                } else {
+                    Image(systemName: "person.crop.circle.fill")
+                        .foregroundStyle(.white, .gray)
+                        .imageScale(.large)
+                }
                 
-            } else {
-                Image(systemName: "person.crop.circle.fill")
-                    .foregroundStyle(.white, .gray)
-                    .imageScale(.large)
+                if let text = text {
+                    Text(text)
+                }
             }
+            
         }
     }
 }

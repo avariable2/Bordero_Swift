@@ -90,6 +90,10 @@ struct NavigationView: View {
                         }
                     }
                 }
+                
+                Section() {
+                    ProfilView(text: "Vos coordonnées")
+                }
             }
             .sheet(item: $activeSheet) { item in
                 
@@ -106,13 +110,25 @@ struct NavigationView: View {
                 }
             }
             .navigationTitle("Parcourir")
-            .navigationBarTitleDisplayMode(.automatic)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                 }
             }
             
         }
+    }
+}
+
+struct CustomProfilView : View {
+    var body: some View {
+        Button {
+            
+        } label: {
+            ProfilView()
+                .padding(.top, 5)
+                .padding(.trailing, 20)
+        }
+        
     }
 }
 

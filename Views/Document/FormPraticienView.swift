@@ -174,7 +174,13 @@ struct FormPraticienView: View, Saveable, Modifyable {
                 }
             }
         }
+        .onAppear {
+            if let user = praticien {
+                retrieveInfoFormCoreData(user)
+            }
+        }
         .navigationTitle(isOnBoarding ? "" : titre)
+        .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
         .safeAreaInset(edge: .bottom) {
@@ -235,6 +241,32 @@ struct FormPraticienView: View, Saveable, Modifyable {
         adressePraticien.appartient = praticien
         adressePraticien.rue = rue
         adressePraticien.ville = ville
+    }
+    
+    func retrieveInfoFormCoreData(_ user : Praticien) {
+        if let data = user.profilPicture {
+            image = UIImage(data: data) ?? nil
+        }
+        
+        adeli = user.adeli ?? ""
+        siret = user.siret ?? ""
+        applyTVA = user.applyTVA
+        
+        prenom = user.firstname ?? ""
+        nom = user.lastname ?? ""
+        email = user.email ?? ""
+        numero = user.phone ?? ""
+        website = user.website ?? ""
+        
+        if let adresses = user.adresses {
+            for adresse in adresses {
+                let lieu = adresse as! Adresse
+                
+                codePostal = lieu.codepostal ?? ""
+                rue = lieu.rue ?? ""
+                ville = lieu.ville ?? ""
+            }
+        }
     }
 }
 
