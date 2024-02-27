@@ -9,8 +9,9 @@ import Foundation
 
 enum ActiveSheet : Identifiable {
     case createTypeActe, editTypeActe(type : TypeActe)
-    
     case createClient, editClient(client: Client)
+    case profil(user : Praticien)
+    case parameters
     
     var id : Int {
         switch self {
@@ -25,6 +26,12 @@ enum ActiveSheet : Identifiable {
             
         case .editClient(client: let client):
             return client.hashValue
+            
+        case .profil(user: let user):
+            return 2
+            
+        case .parameters:
+            return 3
         }
     }
 }

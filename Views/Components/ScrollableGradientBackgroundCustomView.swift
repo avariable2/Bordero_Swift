@@ -21,6 +21,10 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
     
     // MARK: Custom
     @State private var shouldShowTitle = false
+    @State private var activeSheet: ActiveSheet?
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    
 
     private func calculateEndPointForScrollPosition(scrollPosition: Double) -> Double {
         let absoluteScrollPosition = abs(scrollPosition)
@@ -67,8 +71,9 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
 
                     Spacer()
 
-                    ProfilView()
+                    ProfilButton(activeSheet: $activeSheet, userImage: praticien.first?.profilPicture)
                 }
+                
                 .font(.largeTitle)
                 .padding()
                 
@@ -110,6 +115,14 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
                 }
                 
             }
+            .sheet(item: $activeSheet) { type in
+                switch(type) {
+                case .parameters:
+                    ParametersView(activeSheet: $activeSheet, praticien : praticien.first)
+                default:
+                    EmptyView()
+                }
+            }
             .toolbarBackground(Color.clear, for: .navigationBar)
             .toolbarBackground(shouldShowTitle ? .visible : .hidden, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
@@ -136,9 +149,6 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
             exposedAppearance.backgroundEffect = .none
             exposedAppearance.shadowColor = .clear
             UINavigationBar.appearance().scrollEdgeAppearance = exposedAppearance
-            
-            
-            
         }
     }
 }
@@ -147,6 +157,21 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
     static var defaultValue: CGPoint = .zero
 
     static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {}
+}
+
+struct ProfilButton : View {
+    
+    @Binding var activeSheet: ActiveSheet?
+    var userImage : Data?
+    
+    var body: some View {
+        Button {
+            activeSheet = .parameters
+        } label: {
+            ProfilView()
+                .frame(height: 36)
+        }
+    }
 }
 
 extension Comparable {

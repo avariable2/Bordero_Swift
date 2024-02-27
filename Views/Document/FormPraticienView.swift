@@ -11,6 +11,7 @@ import Contacts
 struct FormPraticienView: View, Saveable, Modifyable {
     
     static let idAdressePraticien = UUID()
+    static let uuidPraticien = UUID()
     
     @Environment(\.managedObjectContext) var moc
     
@@ -47,20 +48,9 @@ struct FormPraticienView: View, Saveable, Modifyable {
         Form {
             VStack(alignment: .center, spacing: 20) {
                 
-                if image != nil {
-                    
-                    Image(uiImage: image!)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 80)
-                        .clipShape(Circle())
-                    
-                } else {
-                    Image(systemName: "person.crop.circle.fill")
-                        .font(.system(size: 60))
-                        .foregroundStyle(.white, .gray)
-                        .imageScale(.large)
-                }
+                ProfilImageView(imageData: image?.jpegData(compressionQuality: 1.0))
+                    .frame(height: 80)
+                    .font(.system(size: 60))
                 
                 if isOnBoarding {
                     Text("Configurer les renseignements \n professionnels")
@@ -176,7 +166,7 @@ struct FormPraticienView: View, Saveable, Modifyable {
         }
         .onAppear {
             if let user = praticien {
-                retrieveInfoFormCoreData(user)
+                retrieveInfoFormPraticienNotNull(user)
             }
         }
         .navigationTitle(isOnBoarding ? "" : titre)
@@ -199,6 +189,17 @@ struct FormPraticienView: View, Saveable, Modifyable {
                 .background(Color(.systemGray6))
             }
         }
+        .toolbar {
+            if !isOnBoarding {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        modify()
+                    } label: {
+                        Text("OK")
+                    }
+                }
+            }
+        }
     }
     
     func save() {
@@ -217,6 +218,7 @@ struct FormPraticienView: View, Saveable, Modifyable {
     
     func modify() {
         let praticien = Praticien(context: moc)
+        praticien.id = FormPraticienView.uuidPraticien
         praticien.profilPicture = image?.jpegData(compressionQuality: 1.0)
         
         praticien.adeli = adeli
@@ -243,7 +245,7 @@ struct FormPraticienView: View, Saveable, Modifyable {
         adressePraticien.ville = ville
     }
     
-    func retrieveInfoFormCoreData(_ user : Praticien) {
+    func retrieveInfoFormPraticienNotNull(_ user : Praticien) {
         if let data = user.profilPicture {
             image = UIImage(data: data) ?? nil
         }

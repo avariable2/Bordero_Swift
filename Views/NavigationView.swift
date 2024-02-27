@@ -90,11 +90,8 @@ struct NavigationView: View {
                         }
                     }
                 }
-                
-                Section() {
-                    ProfilView(text: "Vos coordonnées")
-                }
             }
+            .headerProminence(.increased)
             .sheet(item: $activeSheet) { item in
                 
                 switch item {
@@ -119,18 +116,18 @@ struct NavigationView: View {
     }
 }
 
-struct CustomProfilView : View {
-    var body: some View {
-        Button {
-            
-        } label: {
-            ProfilView()
-                .padding(.top, 5)
-                .padding(.trailing, 20)
-        }
-        
-    }
-}
+//struct CustomProfilView : View {
+//    var body: some View {
+//        Button {
+//            
+//        } label: {
+//            ProfilView()
+//                .padding(.top, 5)
+//                .padding(.trailing, 20)
+//        }
+//        
+//    }
+//}
 
 #Preview {
     NavigationView()
