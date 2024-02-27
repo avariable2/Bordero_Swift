@@ -15,9 +15,14 @@ struct TTLAdresse : Identifiable {
     var codePostal: String = ""
 }
 
-struct FormClientView: View, Saveable, Modifyable {
+struct FormClientView: View, Saveable, Modifyable, Versionnable {
     enum FocusedField : Hashable {
         case firstName, lastName, phone
+    }
+    
+    // MARK: - Versionning des possibles mise a jour de l'entity
+    func getVersion() -> Int32 {
+        return 1
     }
     
     @Environment(\.managedObjectContext) var moc
@@ -210,9 +215,11 @@ struct FormClientView: View, Saveable, Modifyable {
     
     func modify() {
         let client = clientToModify ?? Client(context: moc)
+        client.version = getVersion()
         if clientToModify == nil {
             client.id = UUID()
         }
+        
         client.name = nom
         client.firstname = prenom
         client.email = email

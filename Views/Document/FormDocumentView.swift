@@ -13,7 +13,11 @@ struct FormDocumentView: View {
     }
 }
 
-struct ModifierDocumentView: View {
+struct ModifierDocumentView: View, Saveable, Versionnable {
+    func getVersion() -> Int32 {
+        return 1
+    }
+    
     
     @State private var clients = [Client]()
     @State private var listTypeActes = [TypeActe]()
@@ -107,6 +111,10 @@ struct ModifierDocumentView: View {
     
     func delete(at offsets: IndexSet) {
         clients.remove(atOffsets: offsets)
+    }
+    
+    func save() {
+        
     }
 }
 

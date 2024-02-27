@@ -8,7 +8,10 @@
 import SwiftUI
 import Contacts
 
-struct FormPraticienView: View, Saveable, Modifyable {
+struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
+    func getVersion() -> Int32 {
+        return 1
+    }
     
     static let idAdressePraticien = UUID()
     static let uuidPraticien = UUID()
@@ -219,6 +222,8 @@ struct FormPraticienView: View, Saveable, Modifyable {
     func modify() {
         let praticien = Praticien(context: moc)
         praticien.id = FormPraticienView.uuidPraticien
+        praticien.version = getVersion()
+        
         praticien.profilPicture = image?.jpegData(compressionQuality: 1.0)
         
         praticien.adeli = adeli

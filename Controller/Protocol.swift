@@ -15,3 +15,9 @@ protocol Saveable {
 protocol Modifyable {
     func modify()
 }
+
+// Protocol utile pour permettre de modifier les entités dans CloudKit sans que cela affecte les anciennes version de l'application qui récupéreront
+// leur version actuel et permettre de recuperer les anciennes.
+protocol Versionnable {
+    func getVersion() -> Int32
+}

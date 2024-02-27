@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct FormTypeActeView: View {
+struct FormTypeActeView: View, Saveable, Modifyable, Versionnable {
+    func getVersion() -> Int32 {
+        return 1
+    }
     
     @Environment(\.managedObjectContext) var moc
     
@@ -60,7 +63,7 @@ struct FormTypeActeView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("OK") {
-                        saveTypeActe()
+                        modify()
                         
                         activeSheet = nil
                     }
@@ -81,23 +84,28 @@ struct FormTypeActeView: View {
         floatValue = Float(numberString.replacingOccurrences(of: ",", with: ".")) ?? nil
     }
     
-    private func saveTypeActe() {
+    func modify() {
         guard let prix = floatValue else {
             print("Il y'a une erreur avec la valeur set dans la modal")
             return
         }
         
         let typeActe = typeActeToModify ?? TypeActe(context: moc)
+        typeActe.version = getVersion()
+        
         typeActe.name = nom
         typeActe.price = prix
         
+        save()
+    }
+    
+    func save() {
         do {
             try moc.save()
             print("Success")
         } catch let err {
-            print(err.localizedDescription)
+            print("error \(err)")
         }
-        
     }
 }
 
