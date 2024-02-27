@@ -10,7 +10,7 @@ import Foundation
 enum ActiveSheet : Identifiable {
     case createTypeActe, editTypeActe(type : TypeActe)
     case createClient, editClient(client: Client)
-    case profil(user : Praticien)
+    case profil(user : Praticien?)
     case parameters
     
     var id : Int {

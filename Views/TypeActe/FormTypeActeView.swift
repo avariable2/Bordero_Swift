@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FormTypeActeView: View, Saveable, Modifyable, Versionnable {
-    func getVersion() -> Int32 {
+    static func getVersion() -> Int32 {
         return 1
     }
     
@@ -91,7 +91,7 @@ struct FormTypeActeView: View, Saveable, Modifyable, Versionnable {
         }
         
         let typeActe = typeActeToModify ?? TypeActe(context: moc)
-        typeActe.version = getVersion()
+        typeActe.version = FormTypeActeView.getVersion()
         
         typeActe.name = nom
         typeActe.price = prix

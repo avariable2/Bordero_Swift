@@ -14,10 +14,9 @@ struct FormDocumentView: View {
 }
 
 struct ModifierDocumentView: View, Saveable, Versionnable {
-    func getVersion() -> Int32 {
+    static func getVersion() -> Int32 {
         return 1
     }
-    
     
     @State private var clients = [Client]()
     @State private var listTypeActes = [TypeActe]()

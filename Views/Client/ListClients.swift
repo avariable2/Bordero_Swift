@@ -11,7 +11,10 @@ struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
     
-    @FetchRequest(sortDescriptors: []) var clients: FetchedResults<Client>
+    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
+        format: "version <= %d",
+        argumentArray: [FormClientView.getVersion()]
+    ))  var clients: FetchedResults<Client>
     
     var callbackClientClick : ((Client) -> Void)?
     @State private var activeSheet: ActiveSheet?

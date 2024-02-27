@@ -10,7 +10,11 @@ import SwiftUI
 struct ListTypeActeView: View {
     @Environment(\.managedObjectContext) var moc
     
-    @FetchRequest(sortDescriptors: []) var typeActes: FetchedResults<TypeActe>
+    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
+        format: "version <= %d",
+        argumentArray: [FormTypeActeView.getVersion()]
+    )) 
+    var typeActes: FetchedResults<TypeActe>
     
     @State private var showingAlert: Bool = false
     @State private var activeSheet : ActiveSheet?

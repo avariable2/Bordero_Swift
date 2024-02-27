@@ -21,7 +21,7 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
     }
     
     // MARK: - Versionning des possibles mise a jour de l'entity
-    func getVersion() -> Int32 {
+    static func getVersion() -> Int32 {
         return 1
     }
     
@@ -215,7 +215,7 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
     
     func modify() {
         let client = clientToModify ?? Client(context: moc)
-        client.version = getVersion()
+        client.version = FormClientView.getVersion()
         if clientToModify == nil {
             client.id = UUID()
         }
