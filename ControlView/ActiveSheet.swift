@@ -27,7 +27,7 @@ enum ActiveSheet : Identifiable {
         case .editClient(client: let client):
             return client.hashValue
             
-        case .profil(user: let user):
+        case .profil(user: _):
             return 2
             
         case .parameters:

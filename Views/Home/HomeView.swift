@@ -23,12 +23,6 @@ struct HomeView: View {
             navigationTitle: "Résumé",
             content: {
                 
-                Text("Nbr praticien : \(praticien.count)")
-                
-                ForEach(praticien) { p in
-                    Text(p.firstname ?? " ops ")
-                }
-                
                 BandeauCreateDocument()
                 
                 SectionHomeComponentView(title: "Statistiques") {

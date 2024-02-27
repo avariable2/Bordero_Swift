@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ParametersView: View {
     @Binding var activeSheet : ActiveSheet?
-    var praticien : Praticien?
+    @State var praticien : Praticien?
     
     var body: some View {
         NavigationStack {
@@ -60,8 +60,6 @@ struct ParametersView: View {
                     }
                 } header: {
                     Text("Paramètres de facturation")
-    //                    .textCase(nil)
-    //                    .font(.title3)
                 }
                 
                 
@@ -87,6 +85,9 @@ struct ParametersView: View {
                     }
                 }
             }
+//            .onAppear {
+//                self.praticien = PraticienUtils.shared.praticien
+//            }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {

@@ -15,8 +15,8 @@ struct BandeauCreateDocument: View {
             FormDocumentView()
         } label: {
             TitleWithIconColorComponentView(titre : "Créer un document") {
-                Image(systemName: "doc.badge.plus")
-                    .foregroundStyle(.blue, .primary)
+                Image(systemName: "doc.fill.badge.plus")
+                    .foregroundStyle(.green, .gray)
             }
                 .background(backgroundColor)
                 .cornerRadius(8)

@@ -27,16 +27,6 @@ struct ProfilImageView: View {
     }
 }
 
-struct ProfilView: View {
-    @Environment(\.managedObjectContext) var moc
-    
-    @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
-    
-    var body: some View {
-        ProfilImageView(imageData: praticien.first?.profilPicture)
-    }
-}
-
 struct ProfilNavigationLink: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
@@ -60,5 +50,5 @@ struct ProfilNavigationLink: View {
 }
 
 #Preview {
-    ProfilView()
+    ProfilImageView()
 }

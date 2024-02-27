@@ -11,10 +11,11 @@ import CloudKit
 import Observation
 
 @Observable class DataController {
-   
+    static let shared = DataController()
+    
     let container = NSPersistentCloudKitContainer(name: "Model")
     
-    init() {
+    private init() {
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Core Data failed to load : \(error.localizedDescription)")
@@ -33,4 +34,14 @@ import Observation
              fatalError("Failed to pin viewContext to the current generation:\(error)")
         }
     }
+    
+    // MARK: - Preview helpers
+    
+//    static var preview : DataController = {
+//        let controller = DataController()
+//        let context = controller.container.viewContext
+//        
+//        let praticien = Praticien(context: context)
+//        praticien.profilPicture =
+//    }()
 }

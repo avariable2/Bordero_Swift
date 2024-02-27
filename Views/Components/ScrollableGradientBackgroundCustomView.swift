@@ -23,8 +23,7 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
     @State private var shouldShowTitle = false
     @State private var activeSheet: ActiveSheet?
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
-    
+    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
 
     private func calculateEndPointForScrollPosition(scrollPosition: Double) -> Double {
         let absoluteScrollPosition = abs(scrollPosition)
@@ -72,6 +71,7 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
                     Spacer()
 
                     ProfilButton(activeSheet: $activeSheet, userImage: praticien.first?.profilPicture)
+                        .frame(height: 40)
                 }
                 
                 .font(.largeTitle)
@@ -118,7 +118,7 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
             .sheet(item: $activeSheet) { type in
                 switch(type) {
                 case .parameters:
-                    ParametersView(activeSheet: $activeSheet, praticien : praticien.first)
+                    ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
                 default:
                     EmptyView()
                 }
@@ -168,8 +168,7 @@ struct ProfilButton : View {
         Button {
             activeSheet = .parameters
         } label: {
-            ProfilView()
-                .frame(height: 36)
+            ProfilImageView(imageData: userImage)
         }
     }
 }

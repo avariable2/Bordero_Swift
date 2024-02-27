@@ -13,10 +13,11 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         return 1
     }
     
-    static let idAdressePraticien = UUID()
-    static let uuidPraticien = UUID()
+    // Create a unique and specif uuid for be sure all user has the same and can get her data from home
+    static let uuidPraticien = UUID(uuidString: "62094590-C187-4F68-BE0D-D8E348299900")
     
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
     
     // MARK: Textfield pour les coordoonées du praticien
     @State private var image : UIImage? = nil
@@ -37,13 +38,16 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var website = ""
     
     @State private var selectedContact: CNContact?
+    @State private var copyPraticien : Praticien?
+    
+    @State private var showAlert = false
     
     // MARK: Option d'affichage du formulaire
     var isOnBoarding : Bool
     var titre = "Renseignements professionnel"
     var textFacultatif = "Facultatif"
     
-    var praticien : Praticien?
+    @State var praticien : Praticien?
     var callback : (() -> Void)?
     
     
@@ -170,12 +174,49 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         .onAppear {
             if let user = praticien {
                 retrieveInfoFormPraticienNotNull(user)
+                copyPraticien = user
             }
         }
         .navigationTitle(isOnBoarding ? "" : titre)
         .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
+        .navigationBarBackButtonHidden(isOnBoarding ? false : true)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
+        .toolbar {
+            if !isOnBoarding {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        modify()
+                    } label: {
+                        Text("OK")
+                    }
+                }
+                
+                // TODO: Ajoute une verification que l'utilisateur veux enregistrer ces modifications.
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Button {
+//                        if copyPraticien != createPraticienObject() {
+//                            showAlert = true
+//                        } else {
+//                            dismiss()
+//                        }
+//                    } label: {
+//                        Image(systemName: "chevron.backward")
+//                    }
+//                }
+            }
+        }
+        .alert("Les données ne seront pas sauvegarder", isPresented: $showAlert, actions: {
+            Button("Quitter", role: .destructive) {
+                dismiss()
+            }
+            
+            Button {
+                modify()
+            } label :{
+                Text("Sauvegarder")
+            }
+        })
         .safeAreaInset(edge: .bottom) {
             if isOnBoarding {
                 Button {
@@ -190,17 +231,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Color(.systemGray6))
-            }
-        }
-        .toolbar {
-            if !isOnBoarding {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        modify()
-                    } label: {
-                        Text("OK")
-                    }
-                }
             }
         }
     }
@@ -220,8 +250,15 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     }
     
     func modify() {
-        let praticien = Praticien(context: moc)
-        praticien.id = FormPraticienView.uuidPraticien
+        let _ = createPraticienObject()
+        
+        save()
+    }
+    
+    func createPraticienObject() -> Praticien {
+        let praticien = praticien ?? Praticien(context: moc)
+        
+        praticien.id = FormPraticienView.uuidPraticien!
         praticien.version = FormPraticienView.getVersion()
         
         praticien.profilPicture = image?.jpegData(compressionQuality: 1.0)
@@ -238,16 +275,24 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         
         modifiyAdresseToPraticien(praticien)
         
-        save()
+        return praticien
     }
     
     func modifiyAdresseToPraticien(_ praticien : Praticien) {
+        
+        let tab = praticien.adresses?.mutableCopy() as! NSMutableSet
+        tab.removeAllObjects()
+        
         let adressePraticien = Adresse(context: moc)
-        adressePraticien.id = FormPraticienView.idAdressePraticien
+        adressePraticien.id = UUID()
         adressePraticien.codepostal = codePostal
         adressePraticien.appartient = praticien
         adressePraticien.rue = rue
         adressePraticien.ville = ville
+        
+        tab.add(adressePraticien)
+        
+        praticien.adresses = tab
     }
     
     func retrieveInfoFormPraticienNotNull(_ user : Praticien) {
@@ -255,15 +300,15 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             image = UIImage(data: data) ?? nil
         }
         
-        adeli = user.adeli ?? ""
-        siret = user.siret ?? ""
+        adeli = user.adeli 
+        siret = user.siret 
         applyTVA = user.applyTVA
         
-        prenom = user.firstname ?? ""
-        nom = user.lastname ?? ""
-        email = user.email ?? ""
-        numero = user.phone ?? ""
-        website = user.website ?? ""
+        prenom = user.firstname 
+        nom = user.lastname 
+        email = user.email 
+        numero = user.phone 
+        website = user.website 
         
         if let adresses = user.adresses {
             for adresse in adresses {

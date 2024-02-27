@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct BorderoApp: App {
     
-    private var dataController = DataController()
+    private var dataController = DataController.shared
     private var userController = UseriCloudController()
     
     var body: some Scene {

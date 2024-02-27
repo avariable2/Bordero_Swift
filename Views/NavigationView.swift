@@ -74,7 +74,7 @@ struct NavigationView: View {
                                 .tint(.primary)
                         } icon: {
                             Image(systemName: "doc.badge.plus")
-                                .foregroundStyle(.green, .blue)
+                                .foregroundStyle(.green, .gray)
                         }
                     }
                     
@@ -86,7 +86,7 @@ struct NavigationView: View {
                                 .tint(.primary)
                         } icon: {
                             Image(systemName: "doc.text.magnifyingglass")
-                                .foregroundStyle(.gray, .primary)
+                                .foregroundStyle(.primary, .gray, .primary)
                         }
                     }
                 }

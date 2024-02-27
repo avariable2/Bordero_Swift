@@ -19,18 +19,18 @@
         <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="occupant" inverseEntity="Adresse"/>
     </entity>
     <entity name="Praticien" representedClassName="Praticien" syncable="YES" codeGenerationType="class">
-        <attribute name="adeli" optional="YES" attributeType="String"/>
+        <attribute name="adeli_" optional="YES" attributeType="String"/>
         <attribute name="applyTVA" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="email" optional="YES" attributeType="String"/>
-        <attribute name="firstname" optional="YES" attributeType="String"/>
+        <attribute name="email_" optional="YES" attributeType="String"/>
+        <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="lastname" optional="YES" attributeType="String"/>
-        <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="lastname_" optional="YES" attributeType="String"/>
+        <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="profilPicture" optional="YES" attributeType="Binary"/>
         <attribute name="signature" optional="YES" attributeType="Binary"/>
-        <attribute name="siret" optional="YES" attributeType="String"/>
+        <attribute name="siret_" optional="YES" attributeType="String"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="website" optional="YES" attributeType="String"/>
+        <attribute name="website_" optional="YES" attributeType="String"/>
         <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="appartient" inverseEntity="Adresse"/>
     </entity>
     <entity name="TypeActe" representedClassName="TypeActe" syncable="YES" codeGenerationType="class">

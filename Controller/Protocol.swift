@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import SwiftUI
+import Observation
 
 protocol Saveable {
     func save()
@@ -24,43 +25,12 @@ protocol Versionnable {
 }
 
 @Observable
-class UserUtils {
+class PraticienUtils {
     
-    var user : Praticien? = nil
-    private var fetchRequest: NSFetchRequest<Praticien>
-    private var context: NSManagedObjectContext
+    static let shared = PraticienUtils()
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
-        self.fetchRequest = Praticien.fetchRequest()
-        self.fetchRequest.predicate = NSPredicate(
-            format: "version <= %d",
-            argumentArray: [FormPraticienView.getVersion()]
-        )
-        
-        // Initialiser avec les données existantes
-        fetchUser()
-        
-        // Observer les changements dans CoreData pour cet utilisateur
-        NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: .NSManagedObjectContextObjectsDidChange, object: context)
-    }
-    
-    @objc private func contextObjectsDidChange(_ notification: Notification) {
-        fetchUser()
-    }
-        
-    private func fetchUser() {
-        do {
-            let results = try context.fetch(fetchRequest)
-            DispatchQueue.main.async {
-                self.user = results.first
-            }
-        } catch {
-            print("Erreur lors de la récupération de l'utilisateur: \(error)")
-        }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+    static let predicate = NSPredicate(
+        format: "version <= %d && id == %@",
+        argumentArray: [FormPraticienView.getVersion(), FormPraticienView.uuidPraticien! as CVarArg]
+    )
 }
