@@ -8,26 +8,35 @@
 import SwiftUI
 
 struct TitleDocumentComponentView : View {
-    enum TypeDoc {
-        case facture
-        case devis
+    enum TypeDoc : String, CaseIterable, Identifiable {
+        case facture, devis
+        
+        var id: Self { self }
     }
     
     @State var numero : String = "001"
-    @State var type : TypeDoc = .facture
+    @State var typeSelected : TypeDoc = .facture
     @FocusState private var numberFactureIsFocused: Bool
     @State private var isOn : Bool = true
     @State private var showSheet = false
     
     var body: some View {
         HStack {
-            Toggle(isOn: $isOn){
-                Text(isOn == true ? "Facture" : "Devis")
+//            Toggle(isOn: $isOn){
+//                Text(isOn == true ? "Facture" : "Devis")
+//            }
+//            .toggleStyle(.button)
+//            .font(.largeTitle)
+//            .labelsHidden()
+//            .padding(.trailing)
+            
+            Picker("", selection: $typeSelected) {
+                ForEach(TypeDoc.allCases) { type in
+                    Text(type.rawValue.capitalized)
+                        .font(.title)
+                }
             }
-            .toggleStyle(.button)
-            .font(.largeTitle)
-            .labelsHidden()
-            .padding(.trailing)
+            .pickerStyle(.segmented)
             
              
              TextField("A001", text: $numero)

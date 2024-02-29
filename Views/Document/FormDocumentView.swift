@@ -6,14 +6,24 @@
 //
 
 import SwiftUI
+import ScrollableGradientBackground
 
 struct FormDocumentView: View {
     var body: some View {
-        ModifierDocumentView()
+        NavigationStack {
+            ModifierDocumentView()
+        }
+        
     }
 }
 
 struct ModifierDocumentView: View, Saveable, Versionnable {
+    enum TypeDoc : String, CaseIterable, Identifiable {
+        case facture, devis
+        
+        var id: Self { self }
+    }
+    
     static func getVersion() -> Int32 {
         return 1
     }
@@ -21,16 +31,33 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @State private var clients = [Client]()
     @State private var listTypeActes = [TypeActe]()
     
-    @State private var payWithStripe: Bool = false
-    @State private var payWithPaypal: Bool = false
+    @State private var docIsFacture: Bool = true
+    @State private var estPayer: Bool = false
     @State private var notes: String = ""
+    @State private var typeSelected : TypeDoc = .facture
+    
+    @State var numero : String = "001"
     
     var body: some View {
+        
         VStack(spacing: 0) {
-            TitleDocumentComponentView()
-                .background(Color(uiColor: .secondarySystemBackground))
-            
             Form {
+                Section {
+                    
+                    Picker("Type de document", selection: $typeSelected.animation()) {
+                        ForEach(TypeDoc.allCases) { type in
+                            Text(type.rawValue.capitalized)
+                                .font(.title)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    
+                    LabeledContent("Numéro de facture : ") {
+                        TextField("001", text: $numero.animation())
+                            .textFieldStyle(.roundedBorder)
+                        
+                    }
+                }
                 
                 Section {
                     NavigationLink {
@@ -38,7 +65,12 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                             clients.append(client)
                         })
                     } label: {
-                        Label("Ajouter un client", systemImage: "plus.circle")
+                        Label {
+                            Text("Ajouter un client")
+                        } icon: {
+                            Image(systemName: "plus.circle")
+                                .foregroundStyle(.orange)
+                        }
                     }
                     
                     List {
@@ -62,30 +94,47 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     NavigationLink {
                         ListTypeActeToAddView()
                     } label: {
-                        Label("Ajouter un type d'acte", systemImage: "plus.circle")
+                        Label {
+                            Text("Ajouter un type d'acte")
+                        } icon: {
+                            Image(systemName: "plus.circle")
+                                .foregroundStyle(.purple)
+                        }
                     }
                     
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text("Total H.T.")
-                            Spacer()
-                            Text("0,00 €")
+                    if !listTypeActes.isEmpty {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("Total H.T.")
+                                Spacer()
+                                Text("0,00 €")
+                            }
+                            
+                            HStack {
+                                Text("TVA")
+                                Spacer()
+                                Text("0,00 €")
+                            }
+                            
+                            HStack {
+                                Text("Total T.TC")
+                                Spacer()
+                                Text("0,00 €")
+                            }
+                            .bold()
                         }
-                        
-                        HStack {
-                            Text("TVA")
-                            Spacer()
-                            Text("0,00 €")
-                        }
-                        
-                        HStack {
-                            Text("Total T.TC")
-                            Spacer()
-                            Text("0,00 €")
-                        }
-                        .bold()
                     }
+                    
                 }
+                
+                if typeSelected == .facture {
+                    Section {
+                        Toggle("Facture déjà réglée ?", isOn: $estPayer)
+                            .toggleStyle(SwitchToggleStyle(tint: .purple))
+                    }
+                    
+                }
+                
                 
                 Section("Options de paiement") {
                     NavigationLink {
@@ -94,17 +143,28 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         Text("Virement banacaire")
                     }
                     
-                    Toggle("Stripe - paiements par carte", isOn: $payWithStripe)
-                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                    Toggle("Paypal", isOn: $payWithPaypal)
-                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                 }
                 
                 Section("Note - Optionnel") {
                     TextEditor(text: $notes)
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(typeSelected == .facture ? "Facture # \(numero)" : "Devis # \(numero)")
+            .safeAreaInset(edge: .bottom) {
+                Button {
+                    
+                } label: {
+                    Text("Sauvegarder")
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Détail") {
+                        
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
         }
     }
     
