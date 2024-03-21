@@ -10,11 +10,13 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Résumé")
-                }
+            NavigationStack {
+                HomeView()
+            }
+            .tabItem {
+                Image(systemName: "house")
+                Text("Résumé")
+            }
             
             NavigationStack {
                 ListClients()
@@ -24,11 +26,14 @@ struct ContentView: View {
                 Text("Clients")
             }
             
-            NavigationView()
-                .tabItem {
-                    Image(systemName: "rectangle.split.2x2.fill")
-                    Text("Parcourir")
-                }
+            NavigationStack {
+                NavigationView()
+            }
+            .tabItem {
+                Image(systemName: "rectangle.split.2x2.fill")
+                Text("Parcourir")
+            }
+            
         }
     }
 }

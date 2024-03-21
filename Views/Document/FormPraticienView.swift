@@ -38,8 +38,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var website = ""
     
     @State private var selectedContact: CNContact?
-    @State private var copyPraticien : Praticien?
-    
     @State private var showAlert = false
     
     // MARK: Option d'affichage du formulaire
@@ -156,9 +154,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             }
             
             Section("Adresse de facturation") {
-//                LabeledContent("Pays") {
-//                    TextField(textFacultatif, text: $pays)
-//                }
                 
                 LabeledContent("Rue") {
                     TextField(textFacultatif, text: $rue)
@@ -174,12 +169,10 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         .onAppear {
             if let user = praticien {
                 retrieveInfoFormPraticienNotNull(user)
-                copyPraticien = user
             }
         }
         .navigationTitle(isOnBoarding ? "" : titre)
         .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
-        .navigationBarBackButtonHidden(isOnBoarding ? false : true)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
         .toolbar {
@@ -187,23 +180,11 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
                         modify()
+                        dismiss()
                     } label: {
                         Text("OK")
                     }
                 }
-                
-                // TODO: Ajoute une verification que l'utilisateur veux enregistrer ces modifications.
-//                ToolbarItem(placement: .topBarLeading) {
-//                    Button {
-//                        if copyPraticien != createPraticienObject() {
-//                            showAlert = true
-//                        } else {
-//                            dismiss()
-//                        }
-//                    } label: {
-//                        Image(systemName: "chevron.backward")
-//                    }
-//                }
             }
         }
         .alert("Les données ne seront pas sauvegarder", isPresented: $showAlert, actions: {

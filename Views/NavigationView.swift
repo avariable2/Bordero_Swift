@@ -13,97 +13,80 @@ struct NavigationView: View {
     @State private var activeSheet: ActiveSheet?
     
     var body: some View {
-        NavigationStack {
-            List {
-                Section("Type de séance") {
-                    Button {
-                        activeSheet = .createTypeActe
-                    } label: {
-                        Label("Ajouter un type d'acte", systemImage: "square.and.pencil")
+        List {
+            Section("Type de séance") {
+                Button {
+                    activeSheet = .createTypeActe
+                } label: {
+                    Label("Ajouter un type d'acte", systemImage: "square.and.pencil")
+                        .tint(.primary)
+                        .foregroundStyle(.primary, .purple)
+                }
+                
+                NavigationLink {
+                    ListTypeActeView()
+                } label: {
+                    Label {
+                        Text("Consulter tous les types d'acte")
                             .tint(.primary)
-                            .foregroundStyle(.primary, .purple)
-                    }
-                    
-                    NavigationLink {
-                        ListTypeActeView()
-                    } label: {
-                        Label {
-                            Text("Consulter tous les types d'acte")
-                                .tint(.primary)
-                        } icon: {
-                            Image(systemName: "eyeglasses")
-                                .foregroundStyle( .purple, .orange)
-                        }
-                    }
-                }
-                
-                Section {
-                    Button {
-                        activeSheet = .createClient
-                    } label: {
-                        Label {
-                            Text("Ajouter un client")
-                                .tint(.primary)
-                        } icon: {
-                            Image(systemName: "person.crop.rectangle.badge.plus")
-                                .foregroundStyle( .green, .orange)
-                        }
-                    }
-                    
-                    NavigationLink {
-                        ListClients()
-                    } label: {
-                        Label {
-                            Text("Consulter la liste des clients")
-                                .tint(.primary)
-                        } icon: {
-                            Image(systemName: "person.crop.rectangle.stack")
-                                .foregroundStyle(.orange)
-                        }
-                    }
-                } header: {
-                    Text("Clients")
-                }
-                
-                Section("Documents") {
-                    NavigationLink {
-                        FormDocumentView()
-                    } label: {
-                        Label {
-                            Text("Créer un document")
-                                .tint(.primary)
-                        } icon: {
-                            Image(systemName: "doc.badge.plus")
-                                .foregroundStyle(.green, .gray)
-                        }
-                    }
-                    
-                    NavigationLink {
-                        EmptyView()
-                    } label: {
-                        Label {
-                            Text("Consulter les documents")
-                                .tint(.primary)
-                        } icon: {
-                            Image(systemName: "doc.text.magnifyingglass")
-                                .foregroundStyle(.primary, .gray, .primary)
-                        }
+                    } icon: {
+                        Image(systemName: "eyeglasses")
+                            .foregroundStyle( .purple, .orange)
                     }
                 }
             }
-            .headerProminence(.increased)
-            .sheet(item: $activeSheet) { item in
+            
+            Section {
+                Button {
+                    activeSheet = .createClient
+                } label: {
+                    Label {
+                        Text("Ajouter un client")
+                            .tint(.primary)
+                    } icon: {
+                        Image(systemName: "person.crop.rectangle.badge.plus")
+                            .foregroundStyle( .green, .orange)
+                    }
+                }
                 
-                switch item {
-                    
-                case .createTypeActe:
-                    FormTypeActeView(activeSheet: $activeSheet)
-                        .presentationDetents([.medium])
-                case .createClient:
-                    FormClientView(activeSheet: $activeSheet)
-                        .presentationDetents([.large])
-                default:
-                    EmptyView() // IMPOSSIBLE
+                NavigationLink {
+                    ListClients()
+                } label: {
+                    Label {
+                        Text("Consulter la liste des clients")
+                            .tint(.primary)
+                    } icon: {
+                        Image(systemName: "person.crop.rectangle.stack")
+                            .foregroundStyle(.orange)
+                    }
+                }
+            } header: {
+                Text("Clients")
+            }
+            
+            Section("Documents") {
+                NavigationLink {
+                    FormDocumentView()
+                } label: {
+                    Label {
+                        Text("Créer un document")
+                            .tint(.primary)
+                    } icon: {
+                        Image(systemName: "doc.badge.plus")
+                            .foregroundStyle(.green, .gray)
+                    }
+                }
+                
+                NavigationLink {
+                    EmptyView()
+                } label: {
+                    Label {
+                        Text("Consulter les documents")
+                            .tint(.primary)
+                    } icon: {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .foregroundStyle(.primary, .gray, .primary)
+                    }
                 }
             }
             .navigationTitle("Parcourir")
@@ -113,21 +96,23 @@ struct NavigationView: View {
             }
             
         }
+        .headerProminence(.increased)
+        .sheet(item: $activeSheet) { item in
+            
+            switch item {
+                
+            case .createTypeActe:
+                FormTypeActeView(activeSheet: $activeSheet)
+                    .presentationDetents([.medium])
+            case .createClient:
+                FormClientView(activeSheet: $activeSheet)
+                    .presentationDetents([.large])
+            default:
+                EmptyView() // IMPOSSIBLE
+            }
+        }
     }
 }
-
-//struct CustomProfilView : View {
-//    var body: some View {
-//        Button {
-//            
-//        } label: {
-//            ProfilView()
-//                .padding(.top, 5)
-//                .padding(.trailing, 20)
-//        }
-//        
-//    }
-//}
 
 #Preview {
     NavigationView()
