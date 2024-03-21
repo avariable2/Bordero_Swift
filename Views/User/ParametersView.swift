@@ -38,9 +38,9 @@ struct ParametersView: View {
                     NavigationLink {
                         FormPraticienView(isOnBoarding: false, praticien : praticien)
                     } label: {
-                        RowParameter(
+                        RowIconColor(
                             text: "Vos coordoonées",
-                            systemName: "creditcard",
+                            systemName: "person.crop.square.fill",
                             color: .green
                         )
                     }
@@ -50,10 +50,10 @@ struct ParametersView: View {
                     NavigationLink {
                         TVAParametersView()
                     } label: {
-                        RowParameter(
+                        RowIconColor(
                             text: "Paramètres TVA",
-                            systemName: "percent",
-                            color: .red
+                            systemName: "tag.square.fill",
+                            color: .orange
                         )
                     }
                     .disabled(true)
@@ -61,10 +61,10 @@ struct ParametersView: View {
                     NavigationLink {
                         
                     } label: {
-                        RowParameter(
+                        RowIconColor(
                             text: "Options de paiement",
-                            systemName: "creditcard",
-                            color: .green
+                            systemName: "eurosign.square.fill",
+                            color: .black
                         )
                     }
                 } header: {
@@ -76,9 +76,9 @@ struct ParametersView: View {
                     NavigationLink {
                         ModeleDocumentView()
                     } label: {
-                        RowParameter(
+                        RowIconColor(
                             text: "Paramètres du modèle",
-                            systemName: "doc",
+                            systemName: "lightswitch.on.square.fill",
                             color: .blue
                         )
                     }
@@ -86,10 +86,10 @@ struct ParametersView: View {
                     NavigationLink {
                         
                     } label: {
-                        RowParameter(
+                        RowIconColor(
                             text: "Rappel et Email avec le client",
-                            systemName: "creditcard",
-                            color: .green
+                            systemName: "bell.square.fill",
+                            color: .red
                         )
                     }
                     .disabled(true)
@@ -136,15 +136,7 @@ struct ParametersView: View {
     }
 }
 
-struct RowParameter :View {
-    var text : String
-    var systemName : String
-    var color : Color
-    
-    var body: some View {
-        Text(text)
-    }
-}
+
 
 #Preview {
     ParametersView(activeSheet: .constant(nil))

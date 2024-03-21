@@ -6,72 +6,45 @@
 //
 
 import SwiftUI
-import PencilKit
+import _PhotosUI_SwiftUI
 
 struct SignatureFormView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var drawnImage: UIImage?
-    let canvasView = PKCanvasView()
+    
+    @State private var pickerItem: PhotosPickerItem?
+    @State private var selectedImage: Image?
 
     var body: some View {
-        DrawingView(image: $drawnImage, canvasView: canvasView)
-            .navigationTitle("Signature")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        captureImage()
-                        dismiss()
-                    } label: {
-                        Text("Sauvegarder")
+        NavigationStack {
+            Form {
+                Section {
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        Text("Selectionner une image")
                     }
+                    .onChange(of: pickerItem) {
+                        Task {
+                            selectedImage = try await pickerItem?.loadTransferable(type: Image.self)
+                        }
+                    }
+                    
+                    selectedImage?
+                        .resizable()
+                        .scaledToFit()
+                }
+                .listRowSeparator(.hidden)
+                
+                Section {
+                    NavigationLink {
+                        DrawingView(image: $drawnImage)
+                    } label: {
+                        RowIconColor(text: "Dessiner la signature", systemName: "square.and.pencil.circle.fill", color: .green)
+                    }
+
                 }
             }
-      }
-    
-    func captureImage() {
-        UIGraphicsBeginImageContextWithOptions(canvasView.bounds.size, false, UIScreen.main.scale)
-        canvasView.drawHierarchy(in: canvasView.bounds, afterScreenUpdates: true)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        drawnImage = image
-    }
-}
-
-struct DrawingView : UIViewRepresentable {
-    typealias UIViewType = PKCanvasView
-    
-    @Binding var image: UIImage?
-    
-    let canvasView : PKCanvasView
-    let toolPicker = PKToolPicker()
-    
-    func makeUIView(context: Context) -> PKCanvasView {
-        
-        canvasView.drawingPolicy = .anyInput
-        
-        toolPicker.addObserver(canvasView)
-        toolPicker.setVisible(true, forFirstResponder: canvasView)
-        
-        canvasView.becomeFirstResponder()
-        
-        return canvasView
-    }
-    
-    func updateUIView(_ uiView: PKCanvasView, context: Context) { }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator : NSObject {
-        var parent : DrawingView
-        
-        init(_ parent : DrawingView) {
-            self.parent = parent
+            .navigationTitle("Signature")
         }
     }
 }

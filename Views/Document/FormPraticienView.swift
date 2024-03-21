@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Contacts
+import SwiftUIDigitalSignature
 
 struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     static func getVersion() -> Int32 {
@@ -21,6 +22,9 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     // MARK: Textfield pour les coordoonées du praticien
     @State private var image : UIImage? = nil
+    
+    @State private var signature: UIImage? = nil
+    @State private var showSheetForSignature = false
     
     @State private var nom = ""
     @State private var prenom = ""
@@ -125,10 +129,22 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                     .multilineTextAlignment(.leading)
             }
             
-            NavigationLink {
-                SignatureFormView()
+            Button {
+                showSheetForSignature.toggle()
             } label: {
                 Label("Signature", systemImage: "signature")
+            }
+            .sheet(isPresented: $showSheetForSignature) {
+                SignatureViewCustom(availableTabs: [.draw, .image, .type]) { image in
+                    self.signature = image
+                } onCancel: {
+                      
+                }
+                if let sign = signature {
+                    Image(uiImage: sign)
+                        .resizable()
+                        .scaledToFit()
+                }
             }
             
             Section {
