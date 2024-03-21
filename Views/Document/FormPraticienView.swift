@@ -110,6 +110,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             Section {
                 Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
                     .toggleStyle(SwitchToggleStyle(tint: .purple))
+                    .sensoryFeedback(.success, trigger: applyTVA)
                 
                 LabeledContent("Numéro de SIRET") {
                     TextField("Important", text: $siret)

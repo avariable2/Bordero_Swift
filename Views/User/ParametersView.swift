@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import MessageUI
 
 struct ParametersView: View {
     @Binding var activeSheet : ActiveSheet?
     @State var praticien : Praticien?
+    
+    @State var result: Result<MFMailComposeResult, Error>? = nil
+    @State var isShowingMailView = false
     
     var body: some View {
         NavigationStack {
@@ -44,7 +48,7 @@ struct ParametersView: View {
                 
                 Section {
                     NavigationLink {
-                        
+                        TVAParametersView()
                     } label: {
                         RowParameter(
                             text: "Paramètres TVA",
@@ -52,6 +56,7 @@ struct ParametersView: View {
                             color: .red
                         )
                     }
+                    .disabled(true)
                     
                     NavigationLink {
                         
@@ -69,7 +74,7 @@ struct ParametersView: View {
                 
                 Section("Documents") {
                     NavigationLink {
-                        
+                        ModeleDocumentView()
                     } label: {
                         RowParameter(
                             text: "Paramètres du modèle",
@@ -82,12 +87,40 @@ struct ParametersView: View {
                         
                     } label: {
                         RowParameter(
-                            text: "Options de paiement",
+                            text: "Rappel et Email avec le client",
                             systemName: "creditcard",
                             color: .green
                         )
                     }
+                    .disabled(true)
                 }
+                
+                Section {
+                    Button {
+                        isShowingMailView.toggle()
+                    } label: {
+                        Label(
+                            title: {
+                                Text("Contacter le développeur")
+                            },
+                            icon: {
+                                Image(systemName: "person.bubble")
+                                    .foregroundStyle(.blue, .gray)
+                            }
+                        )
+                    }
+                    .disabled(!MFMailComposeViewController.canSendMail())
+                    .sheet(isPresented: $isShowingMailView, onDismiss: nil) {
+                        MailView(isShowing: self.$isShowingMailView, result: self.$result)
+                            .edgesIgnoringSafeArea(.bottom)
+                    }
+                    
+                } footer: {
+                    if !MFMailComposeViewController.canSendMail() {
+                        Text("Vous ne pouvez envoyer de e-mail depuis cette appareil")
+                    }
+                }
+
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -104,24 +137,11 @@ struct ParametersView: View {
 }
 
 struct RowParameter :View {
-    
     var text : String
     var systemName : String
     var color : Color
     
     var body: some View {
-//        Label {
-//            Text(text)
-//        } icon: {
-//            Image(systemName: systemName)
-//                .imageScale(.medium)
-//                .foregroundStyle(.white)
-//                .background(
-//                    RoundedRectangle(cornerRadius: 2)
-//                        .foregroundColor(color)
-//                )
-//                
-//        }
         Text(text)
     }
 }
