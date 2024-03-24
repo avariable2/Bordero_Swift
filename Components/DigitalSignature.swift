@@ -77,10 +77,10 @@ public struct SignatureViewCustom: View {
             
             List {
                 Section {
+                    ColorPickerCompat(selection: $color)
                     if selectedTab == Tab.type {
                         FontFamilyPicker(selection: $fontFamily)
                     }
-                    ColorPickerCompat(selection: $color)
                 }
             }
             .listStyle(.plain)
@@ -184,7 +184,6 @@ struct ColorPickerCompat: View {
     
     var body: some View {
         ColorPicker(selection: $selection) {
-//            Text("Couleur")
             RowIconColor(text: "Couleur", systemName: "circle.square.fill", color: .red)
         }
     }

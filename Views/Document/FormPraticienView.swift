@@ -129,23 +129,28 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                     .multilineTextAlignment(.leading)
             }
             
-            Button {
-                showSheetForSignature.toggle()
-            } label: {
-                Label("Signature", systemImage: "signature")
-            }
-            .sheet(isPresented: $showSheetForSignature) {
-                SignatureViewCustom(availableTabs: [.draw, .image, .type]) { image in
-                    self.signature = image
-                } onCancel: {
-                      
+            Section {
+                Button {
+                    showSheetForSignature.toggle()
+                } label: {
+                    Label("Signature", systemImage: "signature")
                 }
+                .sheet(isPresented: $showSheetForSignature) {
+                    SignatureViewCustom(availableTabs: [.draw, .image, .type]) { signature in
+                        self.signature = signature
+                        showSheetForSignature.toggle()
+                    } onCancel: {
+                        showSheetForSignature.toggle()
+                    }
+                }
+                
                 if let sign = signature {
                     Image(uiImage: sign)
                         .resizable()
                         .scaledToFit()
                 }
             }
+            
             
             Section {
                 LabeledContent("Prénom") {
@@ -291,6 +296,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         tab.add(adressePraticien)
         
         praticien.adresses = tab
+        praticien.signature = signature?.jpegData(compressionQuality: 1)
     }
     
     func retrieveInfoFormPraticienNotNull(_ user : Praticien) {
@@ -307,6 +313,10 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         email = user.email 
         numero = user.phone 
         website = user.website 
+        
+        if let dataSignature = user.signature, let uiImage = UIImage(data: dataSignature) {
+            signature = uiImage
+        }
         
         if let adresses = user.adresses {
             for adresse in adresses {
