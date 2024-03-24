@@ -50,24 +50,30 @@ struct ListClients: View {
                 })
                 
             } else {
-                List {
-                    ForEach(filteredClients) { client in
-                        ClientRowView(
-                            client: client,
-                            onDelete: deleteClient,
-                            onClick: { client in
-                                applyOnClick(client)
-                            }
-                        )
+                NavigationStack {
+                    List {
+                        ForEach(filteredClients) { client in
+                            NavigationLink(client.firstname ?? "Inconnu", value: client)
+//                            ClientRowView(
+//                                client: client,
+//                                onDelete: deleteClient,
+//                                onClick: { client in
+//                                    applyOnClick(client)
+//                                }
+//                            )
+                        }
+                        .onDelete(perform: delete)
+                        .navigationDestination(for: Client.self) { client in
+                            ClientDetailView(client: client)
+                        }
                     }
-                    .onDelete(perform: delete)
+                    .overlay(content:  {
+                        if filteredClients.isEmpty {
+                            ContentUnavailableView.search(text: searchText)
+                        }
+                    })
+                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
                 }
-                .overlay(content:  {
-                    if filteredClients.isEmpty {
-                        ContentUnavailableView.search(text: searchText)
-                    }
-                })
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
             }
         }
         .navigationTitle("Clients")
