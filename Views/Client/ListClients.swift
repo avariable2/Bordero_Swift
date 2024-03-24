@@ -7,20 +7,24 @@
 
 import SwiftUI
 
+
 struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
     
-    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Client.name, ascending: true)], predicate: NSPredicate(
         format: "version <= %d",
         argumentArray: [FormClientView.getVersion()]
     ))  var clients: FetchedResults<Client>
     
-    var callbackClientClick : ((Client) -> Void)?
     @State private var activeSheet: ActiveSheet?
     @State private var searchText = ""
     
-    var filteredClients: [Client] {
+    let alphabet: [String] = { (65...90).map { String(UnicodeScalar($0)!) } }()
+    
+    var callbackClientClick : ((Client) -> Void)?
+    
+    var filteredClients : [Client] {
         filteredClients(clients: Array(clients), searchText: searchText)
     }
     
@@ -51,28 +55,57 @@ struct ListClients: View {
                 
             } else {
                 NavigationStack {
-                    List {
-                        ForEach(filteredClients) { client in
-                            NavigationLink(client.firstname ?? "Inconnu", value: client)
-//                            ClientRowView(
-//                                client: client,
-//                                onDelete: deleteClient,
-//                                onClick: { client in
-//                                    applyOnClick(client)
-//                                }
-//                            )
-                        }
-                        .onDelete(perform: delete)
-                        .navigationDestination(for: Client.self) { client in
-                            ClientDetailView(client: client)
+                    ScrollViewReader { proxy in
+                        ZStack {
+                            List {
+                                ForEach(alphabet, id: \.self) { letter in
+                                    let tabFiltered = filteredClients.filter({ (client) -> Bool in
+                                        client.name?.prefix(1) ?? "0" == letter
+                                    })
+                                    Section {
+                                        ForEach(tabFiltered) { client in
+                                            ClientRow(client: client)
+                                        }
+                                    } header: {
+                                        Text(letter).id(letter)
+                                    }
+                                }
+                            }
+                            .navigationDestination(for: Client.self) { client in
+                                ClientDetailView(client: client)
+                            }
+                            .overlay(content:  {
+                                if filteredClients.isEmpty {
+                                    ContentUnavailableView.search(text: searchText)
+                                }
+                            })
+                            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
+                            .headerProminence(.increased)
+                            
+                            
+                            VStack {
+                                ForEach(alphabet, id: \.self) { letter in
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {
+                                            print("letter = \(letter)")
+                                            //need to figure out if there is a name in this section before I allow scrollto or it will crash
+                                            if filteredClients.first(where: { $0.name?.prefix(1) ?? "0" == letter }) != nil {
+                                                withAnimation {
+                                                    proxy.scrollTo(letter)
+                                                }
+                                            }
+                                        }, label: {
+                                            Text(letter)
+                                                .font(.system(size: 12))
+                                                .padding(.trailing, 7)
+                                        })
+                                    }
+                                }
+                            }
+                            
                         }
                     }
-                    .overlay(content:  {
-                        if filteredClients.isEmpty {
-                            ContentUnavailableView.search(text: searchText)
-                        }
-                    })
-                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
                 }
             }
         }
@@ -142,48 +175,16 @@ struct ListClients: View {
     }
 }
 
-struct ClientRowView : View {
+struct ClientRow: View {
+    let client: Client
     
-    var client : Client
-    var onDelete: (Client) -> Void
-    var onClick : (Client) -> Void
-    
-    var body : some View {
-        Button {
-            onClick(client)
-        } label: {
+    var body: some View {
+        NavigationLink(value: client) {
             HStack {
                 Text(client.firstname ?? "Inconnu")
                 + Text(" ")
-                + Text(client.name ?? "")
-                    .bold()
+                + Text(client.name ?? "").bold()
                 Spacer()
-            }
-            .contentShape(Rectangle())
-            .frame( maxWidth: .infinity, alignment: .leading)
-        }
-        .buttonStyle(.plain)
-        .contextMenu {
-            Section {
-                Button {
-                    // TODO
-                } label: {
-                    Label("Nouveau document", systemImage: "square.and.pencil.circle")
-                }
-            }
-            
-            Section {
-                Button {
-                    // TODO
-                } label: {
-                    Label("Modifier", systemImage: "pencil")
-                }
-                
-                Button(role: .destructive) {
-                    onDelete(client)
-                } label: {
-                    Label("Supprimer le client", systemImage: "trash")
-                }
             }
         }
     }
@@ -191,4 +192,16 @@ struct ClientRowView : View {
 
 #Preview {
     ListClients()
+}
+
+extension Client : Comparable {
+    public static func < (lhs: Client, rhs: Client) -> Bool {
+        // Fournir des valeurs par défaut pour les chaînes optionnelles pour la comparaison
+        let lhsName = lhs.name ?? ""
+        let lhsFirstname = lhs.firstname ?? ""
+        let rhsName = rhs.name ?? ""
+        let rhsFirstname = rhs.firstname ?? ""
+        
+        return (lhsName, lhsFirstname) < (rhsName, rhsFirstname)
+    }
 }
