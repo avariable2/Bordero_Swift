@@ -52,9 +52,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     }
                     .pickerStyle(.segmented)
                     
-                    LabeledContent("Numéro de facture : ") {
+                    LabeledContent("Numéro de \(typeSelected.rawValue.capitalized):") {
                         TextField("001", text: $numero.animation())
                             .textFieldStyle(.roundedBorder)
+                            .frame(width: 100)
                         
                     }
                 }

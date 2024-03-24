@@ -76,7 +76,7 @@ struct ListClients: View {
                                     if !tabFiltered.isEmpty {
                                         Section {
                                             ForEach(tabFiltered) { client in
-                                                ClientRow(client: client)
+                                                ClientRow(client: client, callback : callbackClientClick)
                                             }
                                         } header: {
                                             Text(letter).id(letter)
@@ -88,7 +88,7 @@ struct ListClients: View {
                                 if !noNameClients.isEmpty {
                                     Section {
                                         ForEach(noNameClients) { client in
-                                            ClientRow(client: client)
+                                            ClientRow(client: client, callback: callbackClientClick)
                                         }
                                     } header: {
                                         Text("#").id("#")
@@ -220,17 +220,36 @@ struct SectionIndexButton: View {
 }
 
 struct ClientRow: View {
+    @Environment(\.dismiss) private var dismiss
+    
     let client: Client
+    let callback : ((Client) -> Void)?
     
     var body: some View {
-        NavigationLink(value: client) {
-            HStack {
-                Text(client.firstname ?? "Inconnu")
-                + Text(" ")
-                + Text(client.name ?? "").bold()
-                Spacer()
+        if let call = callback {
+            Button {
+                call(client)
+                dismiss()
+            } label: {
+                HStack {
+                    Text(client.firstname ?? "Inconnu")
+                    + Text(" ")
+                    + Text(client.name ?? "").bold()
+                    Spacer()
+                }
+                .tint(.primary)
+            }
+        } else {
+            NavigationLink(value: client) {
+                HStack {
+                    Text(client.firstname ?? "Inconnu")
+                    + Text(" ")
+                    + Text(client.name ?? "").bold()
+                    Spacer()
+                }
             }
         }
+        
     }
 }
 
