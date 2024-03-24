@@ -47,6 +47,14 @@ struct ClientDetailView: View {
                             color: .brown,
                             accessibility: "Adresse renseigné pour le client"
                         )
+                        .contextMenu {
+                            Button(action: {
+                                UIPasteboard.general.string = "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")"
+                            }) {
+                                Text("Copier")
+                                Image(systemName: "doc.on.doc")
+                            }
+                        }
                         
                     }
                 }
@@ -60,6 +68,14 @@ struct ClientDetailView: View {
                         color: .blue,
                         accessibility: "L'e-mail du client"
                     )
+                    .contextMenu {
+                        Button(action: {
+                            UIPasteboard.general.string = email
+                        }) {
+                            Text("Copier")
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
                 }
                 
                 if let phone = client.phone {
@@ -69,6 +85,14 @@ struct ClientDetailView: View {
                         color: .green,
                         accessibility: "Le numéro de téléphone du client"
                     )
+                    .contextMenu {
+                        Button(action: {
+                            UIPasteboard.general.string = phone
+                        }) {
+                            Text("Copier")
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
                 }
             }
             
