@@ -56,7 +56,6 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         NavigationStack {
             Form {
-                
                 // MARK: - Partie pour importer les contacts depuis l'iphone de l'utilisateur. Incompatible avec AppleWatch.
                 Section {
                     ImportContactView(
@@ -200,6 +199,7 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
                     Button("OK") {
                         modify()
                     }
+                    .disabled(!isAtLeastOneFieldFilled())
                 }
             }
             .navigationTitle(clientToModify == nil ? "Nouveau client" : "\(prenom.capitalized) \(nom.uppercased())")
@@ -236,6 +236,12 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
             }
         }
         
+    }
+    
+    func isAtLeastOneFieldFilled() -> Bool {
+        let fields = [nom, prenom]
+        
+        return fields.contains { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     }
     
     func save() {
