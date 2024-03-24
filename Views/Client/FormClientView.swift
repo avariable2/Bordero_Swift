@@ -53,6 +53,42 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         NavigationStack {
             Form {
+                
+                // MARK: - Partie pour importer les contacts depuis l'iphone de l'utilisateur. Incompatible avec AppleWatch.
+                Section {
+                    ImportContactView(
+                        selectedContact: $selectedContact
+                    ) {
+                        Label {
+                            Text("Importer depuis vos Contacts")
+                        } icon: {
+                            Image(systemName: "person.crop.circle.badge.plus")
+                                .foregroundStyle(.blue, .gray, .white)
+                        }
+                    }
+                    .onChange(of: selectedContact) {
+                        guard let contact = selectedContact else {
+                            return
+                        }
+                        
+                        prenom = contact.givenName
+                        nom = contact.familyName
+                        numero = contact.phoneNumbers.first?.value.stringValue ?? ""
+                        email = String(contact.emailAddresses.first?.value ?? "")
+                        
+                        for address in contact.postalAddresses {
+                            let infoAdress = address.value
+                            
+                            let rue = infoAdress.street
+                            let ville = infoAdress.city
+                            let codepostal = infoAdress.postalCode
+                            
+                            let nouvelleAdresse = TTLAdresse(rue: rue, ville : ville, codePostal: codepostal)
+                            adresses.append(nouvelleAdresse)
+                        }
+                    }
+                }
+                
                 Section {
                     TextField("Prénom", text: $prenom)
                         .keyboardType(.namePhonePad)
@@ -64,18 +100,34 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
                 }
                 
                 Section {
-                    TextField("Ajouter un numero", text: $numero)
-                        .textContentType(.telephoneNumber)
-                        .keyboardType(.phonePad)
-                        .focused($focusedField, equals: .phone)
+                    LabeledContent {
+                        TextField("Facultatif", text: $numero)
+                            .textContentType(.telephoneNumber)
+                            .keyboardType(.phonePad)
+                            .focused($focusedField, equals: .phone)
+                    } label: {
+                        ViewThatFits {
+                            Text("Numero de téléphone")
+                            Text("Téléphone")
+                        }
+                    }
                 }
+                .multilineTextAlignment(.trailing)
                 
                 Section {
-                    TextField("Ajouter un email", text: $email)
-                        .textContentType(.emailAddress)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
+                    LabeledContent {
+                        TextField("Facultatif", text: $email)
+                            .textContentType(.emailAddress)
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+                    } label: {
+                        ViewThatFits {
+                            Text("Adresse e-mail")
+                            Text("E-mail")
+                        }
+                    }
                 }
+                .multilineTextAlignment(.trailing)
                 
                 Section {
                     List {
@@ -102,45 +154,18 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
                                 adresses.append(nouvelleAdresse)
                             }
                         } label: {
-                            Label("Ajouter une addresse", systemImage: "plus")
+                            Label {
+                                Text("ajouter une adresse")
+                                    .tint(.primary)
+                            } icon: {
+                                Image(systemName: "plus.circle.fill")
+                                    .foregroundStyle(.white, .green)
+                            }
                         }
                     }
                 } footer: {
                     Text("Pour supprimer une addresse, il vous suffit de la faire glisser sur la gauche et de clicquer sur supprimer.")
                 }
-                
-                // MARK: - Partie pour importer les contacts depuis l'iphone de l'utilisateur. Incompatible avec AppleWatch.
-                ImportContactView(
-                    selectedContact: $selectedContact
-                ) {
-                    Label {
-                        Text("Importer depuis vos Contacts")
-                    } icon: {
-                        Image(systemName: "person.crop.circle.fill.badge.plus")
-                            
-                    }
-                }
-                    .onChange(of: selectedContact) {
-                        guard let contact = selectedContact else {
-                            return
-                        }
-                        
-                        prenom = contact.givenName
-                        nom = contact.familyName
-                        numero = contact.phoneNumbers.first?.value.stringValue ?? ""
-                        email = String(contact.emailAddresses.first?.value ?? "")
-                        
-                        for address in contact.postalAddresses {
-                            let infoAdress = address.value
-                            
-                            let rue = infoAdress.street
-                            let ville = infoAdress.city
-                            let codepostal = infoAdress.postalCode
-                            
-                            let nouvelleAdresse = TTLAdresse(rue: rue, ville : ville, codePostal: codepostal)
-                            adresses.append(nouvelleAdresse)
-                        }
-                    }
             }
             .onSubmit {
                 switch focusedField {
@@ -164,7 +189,7 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
                     }
                 }
             }
-            .navigationTitle(clientToModify == nil ? "Nouveau client" : "Client")
+            .navigationTitle(clientToModify == nil ? "Nouveau client" : "\(prenom.capitalized) \(nom.uppercased())")
             .alert(Text("Une erreur s'est produite"),
                     isPresented: $showingAlert,
                     actions: {
@@ -172,7 +197,7 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
                             showingAlert = false
                         }
                     }, message: {
-                        Text("Réessayer. Si cette erreur persiste, veuillez contacter le support.")
+                        Text("Réessayer. Si cette erreur persiste, veuillez contacter le développeur depuis les paramètres.")
                     }
                 )
             .onAppear {
