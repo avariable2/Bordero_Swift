@@ -17,7 +17,7 @@ struct RowIconColor :View {
             
             Image(systemName: systemName)
                  .resizable()
-                 .foregroundStyle(color)
+                 .foregroundStyle(.white, color)
                  .frame(width: 25, height: 25)
             
             Text(text)

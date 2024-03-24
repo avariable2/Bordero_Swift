@@ -183,68 +183,6 @@ struct ClientRowView : View {
     }
 }
 
-struct EmptyListClientView : View {
-    
-    @Binding var activeSheet : ActiveSheet?
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            Text("Aucun client")
-                .font(.title)
-            
-            Text("Les clients ajoutés apparaîtront ici.")
-                .font(.callout)
-                .foregroundStyle(.secondary)
-            
-            Button {
-                activeSheet = .createClient
-            } label: {
-                Text("Ajouter un client")
-            }
-            .padding(.top)
-            .sheet(item: $activeSheet) { item in
-                switch item {
-                case .createClient:
-                    FormClientView(activeSheet: $activeSheet)
-                        .presentationDetents([.large])
-                default:
-                    EmptyView() // IMPOSSIBLE
-                }
-            }
-            
-            Spacer()
-        }
-    }
-}
-
-struct EmptySearchListClientView : View {
-    
-    @Binding var searchText : String
-    
-    var body: some View {
-        VStack(alignment: .center) {
-            Spacer()
-            
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(.secondary)
-                .font(.largeTitle)
-            
-            Text("Aucun résultat pour \"\(searchText)\"")
-                .font(.title2)
-            
-            Text("Vérifiez l'orthographe ou lancez \nune nouvelle recherche.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .multilineTextAlignment(.center)
-    }
-}
-
 #Preview {
     ListClients()
 }

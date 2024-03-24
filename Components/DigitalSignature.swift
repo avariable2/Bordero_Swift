@@ -44,32 +44,51 @@ public struct SignatureViewCustom: View {
     
     public var body: some View {
         VStack {
-            Text("Votre signature")
-                .font(.title)
             
-            HStack {
-                Button("Annuler", action: onCancel)
-                Spacer()
-                Button("OK", action: extractImageAndHandle)
-            }
-          if availableTabs.count > 1 {
-            Picker(selection: $selectedTab, label: EmptyView()) {
-                ForEach(availableTabs, id: \.self) { tab in
-                  Text(tab.title)
-                    .tag(tab)
+            VStack {
+                HStack {
+                    Button("Annuler", action: onCancel)
+                    Spacer()
+                    Button("OK", action: extractImageAndHandle)
                 }
-            }.pickerStyle(SegmentedPickerStyle())
-          }
-            signatureContent
-            Button("Effacer signature", action: clear)
-            HStack {
-                if selectedTab == Tab.type {
-                    FontFamilyPicker(selection: $fontFamily)
+                .buttonStyle(.borderless)
+                
+                Text("Choissisez un style")
+                    .font(.headline)
+                
+                if availableTabs.count > 1 {
+                    Picker(selection: $selectedTab, label: EmptyView()) {
+                        ForEach(availableTabs, id: \.self) { tab in
+                            Text(tab.title)
+                                .tag(tab)
+                        }
+                    }.pickerStyle(SegmentedPickerStyle())
                 }
-                ColorPickerCompat(selection: $color)
+                
+                signatureContent
+                
+                Button("Effacer signature", action: clear)
+                    .buttonStyle(.bordered)
+                    
             }
+            .padding()
+            
+            Divider()
+            
+            List {
+                Section {
+                    if selectedTab == Tab.type {
+                        FontFamilyPicker(selection: $fontFamily)
+                    }
+                    ColorPickerCompat(selection: $color)
+                }
+            }
+            .listStyle(.plain)
+            .headerProminence(.increased)
+            
             Spacer()
-        }.padding()
+        }
+        .padding([.top, .bottom])
     }
     
     private var signatureContent: some View {
@@ -164,25 +183,9 @@ struct ColorPickerCompat: View {
     private let availableColors: [Color] = [.blue, .black, .red]
     
     var body: some View {
-        if #available(iOS 14.0, *) {
-            ColorPicker(selection: $selection) {
-                EmptyView()
-            }
-        } else {
-            Button(action: {
-                showPopover.toggle()
-            }, label: {
-                colorCircle(selection)
-            }).popover(isPresented: $showPopover) {
-                ForEach(availableColors, id: \.self) { color in
-                    Button(action: {
-                        selection = color
-                        showPopover.toggle()
-                    }, label: {
-                        colorCircle(color)
-                    })
-                }
-            }
+        ColorPicker(selection: $selection) {
+//            Text("Couleur")
+            RowIconColor(text: "Couleur", systemName: "circle.square.fill", color: .red)
         }
     }
     
@@ -199,28 +202,36 @@ struct FontFamilyPicker: View {
     @State private var showPopover = false
     
     var body: some View {
-        Button(action: {
-            showPopover.toggle()
-        }, label: {
-            buttonLabel(selection, size: 16)
-        }).popover(isPresented: $showPopover) {
-            VStack(spacing: 20) {
-                ForEach(fontFamlies, id: \.self) { fontFamily in
-                    Button(action: {
-                        selection = fontFamily
-                        showPopover.toggle()
-                    }, label: {
-                        buttonLabel(fontFamily, size: 24)
-                    })
+        LabeledContent {
+            Button(action: {
+                showPopover.toggle()
+            }, label: {
+                buttonLabel(selection, size: 16)
+            }).sheet(isPresented: $showPopover) {
+                List {
+                    Section("Selectionner une typographie") {
+                        ForEach(fontFamlies, id: \.self) { fontFamily in
+                            Button(action: {
+                                selection = fontFamily
+                                showPopover.toggle()
+                            }, label: {
+                                buttonLabel(fontFamily, size: 24)
+                            })
+                        }
+                    }
                 }
+                .listStyle(.plain)
+                .presentationDetents([.medium])
             }
+        } label: {
+            RowIconColor(text: "Typographie", systemName: "f.square.fill", color: .green)
         }
     }
     
     private func buttonLabel(_ fontFamily: String, size: CGFloat) -> Text {
         Text(placeholderText)
             .font(.custom(fontFamily, size: size))
-            .foregroundColor(.black)
+            .foregroundColor(.primary)
     }
 }
 
@@ -347,14 +358,14 @@ struct SignatureImageView: View {
             } else {
                 ZStack {
                     Color.white
-                    Text("Choisir une Photo")
+                    Text("Choisir dans Photos")
                         .font(.system(size: 18))
                         .foregroundColor(.gray)
                 }.frame(height: maxHeight)
                 .overlay(RoundedRectangle(cornerRadius: 4)
                             .stroke(Color.gray))
             }
-        }.popover(isPresented: $showPopover) {
+        }.sheet(isPresented: $showPopover) {
             ImagePickerForSignature(selectedImage: $selection, didSet: $isSet)
         }
     }
@@ -417,18 +428,11 @@ struct SignatureViewCustomTest: View {
     @State private var image: UIImage? = nil
     
     var body: some View {
-        NavigationStack {
-            VStack {
-              NavigationLink("GO", destination: SignatureViewCustom(availableTabs: [.draw, .image, .type], onSave: { image in
-                    self.image = image
-                }, onCancel: {
-                    
-                }))
-                if image != nil {
-                    Image(uiImage: image!)
-                }
-            }
-        }
+        SignatureViewCustom(availableTabs: [.draw, .image, .type], onSave: { image in
+              self.image = image
+          }, onCancel: {
+              
+          })
     }
 }
 
