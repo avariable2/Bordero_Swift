@@ -26,6 +26,7 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
     }
     
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) private var dismiss
     
     // MARK: - Binding pour afficher la création ou modification d'un client
     @Binding var activeSheet: ActiveSheet?
@@ -49,6 +50,8 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
     
     // MARK: - Focus gestion
     @FocusState private var focusedField : FocusedField?
+    
+    var callbackOnDelete : (() -> Void)?
     
     var body: some View {
         NavigationStack {
@@ -166,6 +169,16 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
                 } footer: {
                     Text("Pour supprimer une addresse, il vous suffit de la faire glisser sur la gauche et de clicquer sur supprimer.")
                 }
+                
+                if let _ = callbackOnDelete {
+                    Button(role: .destructive) {
+                        delete()
+                    } label: {
+                        Text("Supprimer le client")
+                        
+                    }
+                }
+                
             }
             .onSubmit {
                 switch focusedField {
@@ -269,6 +282,23 @@ struct FormClientView: View, Saveable, Modifyable, Versionnable {
         userAdresse.codepostal = ttl.codePostal
         userAdresse.ville = ttl.ville
         userAdresse.occupant = client
+    }
+    
+    func delete() {
+        guard let client = clientToModify else { return }
+        moc.delete(client)
+        
+        do {
+            try moc.save()
+            activeSheet = nil
+            if let call = callbackOnDelete {
+                call()
+            }
+            dismiss() // Ferme la vue après la suppression
+        } catch {
+            print("Échec de la suppression du client: \(error.localizedDescription)")
+            // Gérer l'erreur de manière appropriée
+        }
     }
 }
 

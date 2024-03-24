@@ -184,7 +184,7 @@ struct ColorPickerCompat: View {
     
     var body: some View {
         ColorPicker(selection: $selection) {
-            RowIconColor(text: "Couleur", systemName: "circle.square.fill", color: .red)
+            RowIconColor(text: "Couleur", systemName: "circle.square.fill", color: .red, accessibility: "Option pour changer la couleur")
         }
     }
     
@@ -223,7 +223,7 @@ struct FontFamilyPicker: View {
                 .presentationDetents([.medium])
             }
         } label: {
-            RowIconColor(text: "Typographie", systemName: "f.square.fill", color: .green)
+            RowIconColor(text: "Typographie", systemName: "f.square.fill", color: .green, accessibility: "Option pour changer la typographie")
         }
     }
     

@@ -41,7 +41,8 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Vos coordoonées",
                             systemName: "person.crop.square.fill",
-                            color: .green
+                            color: .green,
+                            accessibility: "Bouton pour modifier vos informations personnels"
                         )
                     }
                 }
@@ -53,7 +54,8 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Paramètres TVA",
                             systemName: "tag.square.fill",
-                            color: .orange
+                            color: .orange,
+                            accessibility: "Bouton pour changer les paramètres de T.V.A"
                         )
                     }
                     .disabled(true)
@@ -64,7 +66,8 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Options de paiement",
                             systemName: "eurosign.square.fill",
-                            color: .black
+                            color: .black,
+                            accessibility: "Bouton pour definir vos options de paiement"
                         )
                     }
                 } header: {
@@ -79,7 +82,8 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Paramètres du modèle",
                             systemName: "lightswitch.on.square.fill",
-                            color: .blue
+                            color: .blue,
+                            accessibility: "Bouton pour modifier les options de votre facture"
                         )
                     }
                     
@@ -89,7 +93,8 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Rappel et Email avec le client",
                             systemName: "bell.square.fill",
-                            color: .red
+                            color: .red,
+                            accessibility: "Bouton pour automatiser vos envoies et rappels de document"
                         )
                     }
                     .disabled(true)

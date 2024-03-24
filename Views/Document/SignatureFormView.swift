@@ -39,7 +39,9 @@ struct SignatureFormView: View {
                     NavigationLink {
                         DrawingView(image: $drawnImage)
                     } label: {
-                        RowIconColor(text: "Dessiner la signature", systemName: "square.and.pencil.circle.fill", color: .green)
+                        RowIconColor(text: "Dessiner la signature", systemName: "square.and.pencil.circle.fill", color: .green,
+                            accessibility: "Bouton pour modifier les options de votre facture"
+                        )
                     }
 
                 }

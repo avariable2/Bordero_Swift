@@ -12,6 +12,8 @@ struct RowIconColor :View {
     var systemName : String
     var color : Color
     
+    var accessibility : String
+    
     var body: some View {
         HStack {
             
@@ -20,12 +22,16 @@ struct RowIconColor :View {
                  .foregroundStyle(.white, color)
                  .frame(width: 25, height: 25)
             
-            Text(text)
+            // Affiche un label Content pour copier facilement les elements mit dedans
+            LabeledContent(accessibility) {
+                Text(text)
+            }
+            .labelsHidden()
         }
         
     }
 }
 
 #Preview {
-    RowIconColor(text: "Abidgen", systemName: "star.square.fill", color: .red)
+    RowIconColor(text: "Abidgen", systemName: "star.square.fill", color: .red, accessibility: "")
 }
