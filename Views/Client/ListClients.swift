@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
@@ -56,54 +55,67 @@ struct ListClients: View {
             } else {
                 NavigationStack {
                     ScrollViewReader { proxy in
+                        
+                        let noNameClients = filteredClients.filter {
+                            let firstChar = $0.name?.uppercased().prefix(1) ?? "#"
+                            return !alphabet.contains(String(firstChar))
+                        }
+                        
                         ZStack {
                             List {
+                                // Sections pour les contacts avec nom
                                 ForEach(alphabet, id: \.self) { letter in
-                                    let tabFiltered = filteredClients.filter({ (client) -> Bool in
-                                        client.name?.prefix(1) ?? "0" == letter
+                                    
+                                    // Filtre les nom par la lettre
+                                    let tabFiltered = filteredClients.filter({ client -> Bool in
+                                        guard let firstLetter = client.name?.prefix(1).uppercased() else { return false }
+                                        return firstLetter == letter
                                     })
+                                    
+                                    // Affiche uniquement si la liste de nom n'est pas vide
+                                    if !tabFiltered.isEmpty {
+                                        Section {
+                                            ForEach(tabFiltered) { client in
+                                                ClientRow(client: client)
+                                            }
+                                        } header: {
+                                            Text(letter).id(letter)
+                                        }
+                                    }
+                                }
+                                
+                                // Section pour les contacts sans nom
+                                if !noNameClients.isEmpty {
                                     Section {
-                                        ForEach(tabFiltered) { client in
+                                        ForEach(noNameClients) { client in
                                             ClientRow(client: client)
                                         }
                                     } header: {
-                                        Text(letter).id(letter)
+                                        Text("#").id("#")
                                     }
                                 }
                             }
                             .navigationDestination(for: Client.self) { client in
                                 ClientDetailView(client: client)
                             }
-                            .overlay(content:  {
+                            .overlay(content: {
                                 if filteredClients.isEmpty {
                                     ContentUnavailableView.search(text: searchText)
                                 }
                             })
                             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
                             .headerProminence(.increased)
-                            
-                            
+
                             VStack {
                                 ForEach(alphabet, id: \.self) { letter in
-                                    HStack {
-                                        Spacer()
-                                        Button(action: {
-                                            print("letter = \(letter)")
-                                            //need to figure out if there is a name in this section before I allow scrollto or it will crash
-                                            if filteredClients.first(where: { $0.name?.prefix(1) ?? "0" == letter }) != nil {
-                                                withAnimation {
-                                                    proxy.scrollTo(letter)
-                                                }
-                                            }
-                                        }, label: {
-                                            Text(letter)
-                                                .font(.system(size: 12))
-                                                .padding(.trailing, 7)
-                                        })
-                                    }
+                                    SectionIndexButton(letter: letter, proxy: proxy, filteredClients: filteredClients)
+                                }
+                                
+                                // Index de section ajusté pour inclure la section des contacts sans nom
+                                if !noNameClients.isEmpty {
+                                    SectionIndexButton(letter: "#", proxy: proxy)
                                 }
                             }
-                            
                         }
                     }
                 }
@@ -175,6 +187,38 @@ struct ListClients: View {
     }
 }
 
+struct SectionIndexButton: View {
+    let letter: String
+    let proxy: ScrollViewProxy
+    var filteredClients: [Client] = []
+
+    var body: some View {
+        HStack {
+            Spacer()
+            Button(action: {
+                // Logique de défilement ajustée
+                if letter == "#" {
+                    if filteredClients.first(where: { $0.name?.isEmpty ?? true }) != nil {
+                        withAnimation {
+                            proxy.scrollTo("#")
+                        }
+                    }
+                } else {
+                    if filteredClients.first(where: { $0.name?.prefix(1) ?? "0" == letter }) != nil {
+                        withAnimation {
+                            proxy.scrollTo(letter)
+                        }
+                    }
+                }
+            }, label: {
+                Text(letter)
+                    .font(.system(size: 12))
+                    .padding(.trailing, 7)
+            })
+        }
+    }
+}
+
 struct ClientRow: View {
     let client: Client
     
@@ -190,10 +234,6 @@ struct ClientRow: View {
     }
 }
 
-#Preview {
-    ListClients()
-}
-
 extension Client : Comparable {
     public static func < (lhs: Client, rhs: Client) -> Bool {
         // Fournir des valeurs par défaut pour les chaînes optionnelles pour la comparaison
@@ -204,4 +244,8 @@ extension Client : Comparable {
         
         return (lhsName, lhsFirstname) < (rhsName, rhsFirstname)
     }
+}
+
+#Preview {
+    ListClients()
 }
