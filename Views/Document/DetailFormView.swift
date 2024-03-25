@@ -24,6 +24,7 @@ struct DetailFormView: View {
     }
     
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
     
     @State private var numeroFacture = ""
     @State private var emission = Date()
@@ -84,16 +85,23 @@ struct DetailFormView: View {
                 
                 Section("Mode de paiement") {
                     Toggle("Carte", isOn: $carte)
-                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                     Toggle("Espèces", isOn: $especes)
-                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                     Toggle("Virement bancaire", isOn: $virementB)
-                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                     Toggle("Chèque", isOn: $cheque)
-                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                 }
-                .navigationTitle("Options document")
-                .navigationBarTitleDisplayMode(.large)
+                .toggleStyle(SwitchToggleStyle(tint: .green))
+                
+            }
+            .navigationTitle("Options document")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Retour")
+                    }
+                }
             }
         }
     }

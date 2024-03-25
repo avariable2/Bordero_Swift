@@ -149,13 +149,13 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     
                 }
                 
-                Section("Note - Optionnel") {
+                Section("Note") {
                     TextEditor(text: $notes)
                 }
                 
                 
             }
-            .navigationTitle(typeSelected == .facture ? "Facture # \(numero)" : "Devis # \(numero)")
+            .navigationTitle("\(typeSelected.rawValue.capitalized) #\(numero)")
             .safeAreaInset(edge: .bottom) {
                 HStack() {
                     
@@ -169,7 +169,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     Spacer()
                     
                     Button {
-                        
+                        activeSheet = .apercusDocument(facture : exempleFacture)
                     } label: {
                         Label("Aperçus", systemImage: "eyeglasses")
                     }
@@ -195,11 +195,13 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 case .optionsDocument :
                     DetailFormView()
                         .presentationDetents([.large])
+                case .apercusDocument(facture : let facture):
+                    DisplayPDFView(facture: facture)
+                        .presentationDetents([.large])
                 default:
                     EmptyView() // IMPOSSIBLE
                 }
             }
-        
     }
     
     func delete(at offsets: IndexSet) {
