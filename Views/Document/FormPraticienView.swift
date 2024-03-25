@@ -52,7 +52,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State var praticien : Praticien?
     var callback : (() -> Void)?
     
-    
     var body: some View {
         Form {
             VStack(alignment: .center, spacing: 20) {

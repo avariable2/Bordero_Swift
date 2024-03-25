@@ -23,6 +23,8 @@ struct DetailFormView: View {
         }
     }
     
+    @Environment(\.managedObjectContext) var moc
+    
     @State private var numeroFacture = ""
     @State private var emission = Date()
     @State private var echeance = Date()
@@ -35,56 +37,65 @@ struct DetailFormView: View {
     @State private var virementB : Bool = true
     @State private var cheque : Bool = true
     
+    @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
     
     var body: some View {
-        Form {
-            Section {
-                LabeledContent("N° facture") {
-                    TextField("001", text: $numeroFacture)
-                        .multilineTextAlignment(.trailing)
-                }
-                LabeledContent("Date d'émission") {
-                    DatePicker("",
-                        selection: $emission,
-                        displayedComponents: .date
-                    )
-                }
-                LabeledContent("Date d'échéance") {
-                    DatePicker("",
-                        selection: $echeance,
-                        displayedComponents: .date
-                    )
-                }
-            }
-            
-            Section("Remise sur votre facture") {
-                Picker("Type de remise", selection: $selectedTypeRemise) {
-                    ForEach(TypeRemise.allCases) { option in
-                        Text(String(describing: option))
+        NavigationStack {
+            Form {
+                Section {
+                    NavigationLink {
+                        FormPraticienView(isOnBoarding: false, praticien: praticien.first)
+                    } label: {
+                        RowIconColor(
+                            text: "Vos informations",
+                            systemName: "stethoscope.circle.fill",
+                            color: .pink,
+                            accessibility: "Bouton pour modifier vos informations"
+                        )
                     }
                 }
-                LabeledContent("Montant de remise") {
-                    TextField("0,00%", text: $remise)
-                        .multilineTextAlignment(.trailing)
-                }
-            }
-            
-            Section("Mode de paiement") {
-                Toggle("Carte", isOn: $carte)
-                    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                Toggle("Espèces", isOn: $especes)
-                    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                Toggle("Virement bancaire", isOn: $virementB)
-                    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                Toggle("Chèque", isOn: $cheque)
-                    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-            }
-            
-            Section {
                 
+                Section {
+                    LabeledContent("Date d'émission") {
+                        DatePicker("",
+                                   selection: $emission,
+                                   displayedComponents: .date
+                        )
+                    }
+                    LabeledContent("Date d'échéance") {
+                        DatePicker("",
+                                   selection: $echeance,
+                                   displayedComponents: .date
+                        )
+                    }
+                }
+                
+                Section("Remise sur votre facture") {
+                    Picker("Type de remise", selection: $selectedTypeRemise) {
+                        ForEach(TypeRemise.allCases) { option in
+                            Text(String(describing: option))
+                        }
+                    }
+                    LabeledContent("Montant de remise") {
+                        TextField("0,00%", text: $remise)
+                            .multilineTextAlignment(.trailing)
+                    }
+                }
+                
+                Section("Mode de paiement") {
+                    Toggle("Carte", isOn: $carte)
+                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                    Toggle("Espèces", isOn: $especes)
+                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                    Toggle("Virement bancaire", isOn: $virementB)
+                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                    Toggle("Chèque", isOn: $cheque)
+                        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                }
+                .navigationTitle("Options document")
+                .navigationBarTitleDisplayMode(.large)
             }
         }
-        .navigationTitle("Détails de la facture")
     }
 }
 

@@ -28,6 +28,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
         return 1
     }
     
+    @State private var activeSheet: ActiveSheet?
+    
     @State private var clients = [Client]()
     @State private var listTypeActes = [TypeActe]()
     
@@ -39,8 +41,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @State var numero : String = "001"
     
     var body: some View {
-        
-        VStack(spacing: 0) {
             Form {
                 Section {
                     
@@ -55,7 +55,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     LabeledContent("Numéro de \(typeSelected.rawValue.capitalized):") {
                         TextField("001", text: $numero.animation())
                             .textFieldStyle(.roundedBorder)
-                            .frame(width: 100)
+                            .frame(width: 150)
+                            .multilineTextAlignment(.trailing)
                         
                     }
                 }
@@ -67,10 +68,11 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         })
                     } label: {
                         Label {
-                            Text("Ajouter un client")
+                            Text("ajouter un client")
+                                .tint(.primary)
                         } icon: {
-                            Image(systemName: "plus.circle")
-                                .foregroundStyle(.orange)
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundStyle(.white, .green)
                         }
                     }
                     
@@ -96,10 +98,11 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         ListTypeActeToAddView()
                     } label: {
                         Label {
-                            Text("Ajouter un type d'acte")
+                            Text("ajouter un type d'acte")
+                                .tint(.primary)
                         } icon: {
-                            Image(systemName: "plus.circle")
-                                .foregroundStyle(.purple)
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundStyle(.white, .green)
                         }
                     }
                     
@@ -131,7 +134,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 if typeSelected == .facture {
                     Section {
                         Toggle("Facture déjà réglée ?", isOn: $estPayer)
-                            .toggleStyle(SwitchToggleStyle(tint: .purple))
+                            .toggleStyle(SwitchToggleStyle(tint: .blue))
                     }
                     
                 }
@@ -149,24 +152,54 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 Section("Note - Optionnel") {
                     TextEditor(text: $notes)
                 }
+                
+                
             }
             .navigationTitle(typeSelected == .facture ? "Facture # \(numero)" : "Devis # \(numero)")
             .safeAreaInset(edge: .bottom) {
-                Button {
+                HStack() {
                     
-                } label: {
-                    Text("Sauvegarder")
+                    Button {
+                        
+                    } label: {
+                        Label("Sauvegarder", systemImage: "square.and.arrow.down")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Spacer()
+                    
+                    Button {
+                        
+                    } label: {
+                        Label("Aperçus", systemImage: "eyeglasses")
+                    }
+                    .buttonStyle(.bordered)
+                    
                 }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.regularMaterial)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Détail") {
-                        
+                    Button {
+                        activeSheet = .optionsDocument
+                    } label: {
+                        Text("Options")
                     }
-                    .buttonStyle(.bordered)
+                    
                 }
             }
-        }
+            .sheet(item: $activeSheet) { item in
+                switch item {
+                case .optionsDocument :
+                    DetailFormView()
+                        .presentationDetents([.large])
+                default:
+                    EmptyView() // IMPOSSIBLE
+                }
+            }
+        
     }
     
     func delete(at offsets: IndexSet) {

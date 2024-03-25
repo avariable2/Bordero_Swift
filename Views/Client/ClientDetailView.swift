@@ -117,6 +117,7 @@ struct ClientDetailView: View {
                 Button("Modifier") {
                     activeSheet = .editClient(client: client)
                 }
+                .buttonStyle(.bordered)
             }
         }
         .sheet(item: $activeSheet) { item in
