@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigationView: View {
+struct ExploreView: View {
     @Environment(\.managedObjectContext) var moc
     
     @State private var activeSheet: ActiveSheet?
@@ -105,7 +105,11 @@ struct NavigationView: View {
                 FormTypeActeView(activeSheet: $activeSheet)
                     .presentationDetents([.medium])
             case .createClient:
-                FormClientView(activeSheet: $activeSheet)
+                FormClientSheet(onCancel: {
+                    activeSheet = nil
+                }, onSave: {
+                    activeSheet = nil
+                })
                     .presentationDetents([.large])
             default:
                 EmptyView() // IMPOSSIBLE
@@ -115,5 +119,5 @@ struct NavigationView: View {
 }
 
 #Preview {
-    NavigationView()
+    ExploreView()
 }

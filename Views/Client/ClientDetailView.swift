@@ -123,7 +123,11 @@ struct ClientDetailView: View {
         .sheet(item: $activeSheet) { item in
             switch item {
             case .editClient(let client):
-                FormClientView(activeSheet: $activeSheet, clientToModify: client) {
+                FormClientSheet(onCancel: {
+                    activeSheet = nil
+                }, onSave: {
+                    activeSheet = nil
+                }, clientToModify: client) {
                     dismiss()
                 }
                 .presentationDetents([.large])

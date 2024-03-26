@@ -14,22 +14,24 @@ struct DisplayPDFView: View {
     
     var body: some View {
         NavigationStack {
-            // Utiliser la fonction
-            if let pdfData = creerPDF(facture: facture) {
-                // Vous pouvez sauvegarder pdfData dans un fichier, l'afficher dans un PDFView, etc.
-                
-                PDFKitView(pdfData: PDFDocument(data: pdfData)!)
-                    .navigationTitle("Aperçus")
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Fermer") {
-                                dismiss()
+            VStack {
+                // Utiliser la fonction
+                if let pdfData = creerPDF(facture: facture) {
+                    // Vous pouvez sauvegarder pdfData dans un fichier, l'afficher dans un PDFView, etc.
+                    
+                    PDFKitView(pdfData: PDFDocument(data: pdfData)!)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Fermer") {
+                                    dismiss()
+                                }
                             }
                         }
-                    }
-            } else {
-                ContentUnavailableView("Une erreur sait produite pour creer votre aperçus", systemImage: "exclamationmark.warninglight")
+                } else {
+                    ContentUnavailableView("Une erreur sait produite pour creer votre aperçus", systemImage: "exclamationmark.warninglight")
+                }
             }
+            .navigationTitle("Aperçus")
         }
     }
     

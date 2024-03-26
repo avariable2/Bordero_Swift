@@ -83,7 +83,7 @@ struct DetailFormView: View {
                     }
                 }
                 
-                Section("Mode de paiement") {
+                Section("Mode de paiement accepté") {
                     Toggle("Carte", isOn: $carte)
                     Toggle("Espèces", isOn: $especes)
                     Toggle("Virement bancaire", isOn: $virementB)
@@ -94,15 +94,7 @@ struct DetailFormView: View {
             }
             .navigationTitle("Options document")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigation) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Retour")
-                    }
-                }
-            }
+            .headerProminence(.increased)
         }
     }
 }

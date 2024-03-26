@@ -13,7 +13,7 @@ struct ListClients: View {
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Client.name, ascending: true)], predicate: NSPredicate(
         format: "version <= %d",
-        argumentArray: [FormClientView.getVersion()]
+        argumentArray: [FormClientSheet.getVersion()]
     ))  var clients: FetchedResults<Client>
     
     @State private var activeSheet: ActiveSheet?
@@ -44,7 +44,11 @@ struct ListClients: View {
                     .sheet(item: $activeSheet) { item in
                         switch item {
                         case .createClient:
-                            FormClientView(activeSheet: $activeSheet)
+                            FormClientSheet(onCancel: {
+                                activeSheet = nil
+                            }, onSave: {
+                                activeSheet = nil
+                            })
                                 .presentationDetents([.large])
                         default:
                             EmptyView() // IMPOSSIBLE
@@ -135,10 +139,18 @@ struct ListClients: View {
         .sheet(item: $activeSheet) { item in
             switch item {
             case .createClient:
-                FormClientView(activeSheet: $activeSheet)
+                FormClientSheet(onCancel: {
+                    activeSheet = nil
+                }, onSave: {
+                    activeSheet = nil
+                })
                     .presentationDetents([.large])
             case .editClient(let client):
-                FormClientView(activeSheet: $activeSheet, clientToModify: client)
+                FormClientSheet(onCancel: {
+                    activeSheet = nil
+                }, onSave: {
+                    activeSheet = nil
+                }, clientToModify: client)
                     .presentationDetents([.large])
             default:
                 EmptyView() // IMPOSSIBLE
