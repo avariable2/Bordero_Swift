@@ -13,8 +13,8 @@ import Observation
 @Observable class DataController {
     static let shared = DataController()
     
-    var container: NSPersistentCloudKitContainer 
-
+    var container: NSPersistentCloudKitContainer
+    
     private init() {
         self.container = DataController.setupSyncContainer(iCloudIsOn: false) // Charge une premiere fois pour initialiser la description à nul puis le refresh si nécessaire.
         
@@ -22,12 +22,17 @@ import Observation
     }
     
     func updateICloudSettings() {
-            let iCloudToken = FileManager.default.ubiquityIdentityToken
-
-            if iCloudToken != nil {
-                self.container = DataController.setupSyncContainer(iCloudIsOn: true)
-            }
+        let iCloudToken = FileManager.default.ubiquityIdentityToken // check si l'utilisateur à activé icloud ou non
+        
+        if iCloudToken != nil {
+            self.container = DataController.setupSyncContainer(iCloudIsOn: true)
         }
+    }
+    
+    static func getStatusiCloud() -> Bool {
+        let iCloudToken = FileManager.default.ubiquityIdentityToken
+        return iCloudToken != nil
+    }
     
     static func setupSyncContainer(iCloudIsOn : Bool) -> NSPersistentCloudKitContainer {
         let container = NSPersistentCloudKitContainer(name: "Model")
@@ -56,15 +61,15 @@ import Observation
         })
         
         container.viewContext.automaticallyMergesChangesFromParent = true
-    
-    // sets the merge conflict strategy. If this property is not set, Core Data will default to using NSErrorMergePolicy as the conflict resolution strategy (do not handle any conflicts, directly report an error), which will cause iCloud data to not merge correctly into the local database.
+        
+        // sets the merge conflict strategy. If this property is not set, Core Data will default to using NSErrorMergePolicy as the conflict resolution strategy (do not handle any conflicts, directly report an error), which will cause iCloud data to not merge correctly into the local database.
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         do {
-              try container.viewContext.setQueryGenerationFrom(.current)
+            try container.viewContext.setQueryGenerationFrom(.current)
         } catch {
-             fatalError("Failed to pin viewContext to the current generation:\(error)")
+            fatalError("Failed to pin viewContext to the current generation:\(error)")
         }
-    
+        
         return container
     }
 }

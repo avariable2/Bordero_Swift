@@ -125,6 +125,24 @@ struct ParametersView: View {
                         Text("Vous ne pouvez envoyer de e-mail depuis cette appareil")
                     }
                 }
+                
+                if !DataController.getStatusiCloud() {
+                    Section {
+                        Button {
+                            if let url = URL(string: UIApplication.openSettingsURLString),
+                               UIApplication.shared.canOpenURL(url) {
+                                UIApplication.shared.open(url)
+                            }
+                        } label: {
+                            Text("Activé la synchronisation iCloud ")
+                        }
+                    } footer: {
+                        VStack(alignment: .leading) {
+                            Text("Données Bordero non synchronisées \nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud.")
+                        }
+                        
+                    }
+                }
 
             }
             .toolbar {
