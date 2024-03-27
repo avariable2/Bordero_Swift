@@ -41,19 +41,6 @@ struct ListClients: View {
                     } label: {
                         Text("Ajouter un client")
                     }
-                    .sheet(item: $activeSheet) { item in
-                        switch item {
-                        case .createClient:
-                            FormClientSheet(onCancel: {
-                                activeSheet = nil
-                            }, onSave: {
-                                activeSheet = nil
-                            })
-                                .presentationDetents([.large])
-                        default:
-                            EmptyView() // IMPOSSIBLE
-                        }
-                    }
                 })
                 
             } else {

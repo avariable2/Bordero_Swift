@@ -13,6 +13,8 @@ struct HomeView: View {
     
     @State private var userHasSeenAllOnBoarding = false
     
+    var showNeediCloud : Bool
+    
     var body: some View {
         HomeScrollableGradientBackgroundCustomView(
             heightPercentage: 0.4,
@@ -22,6 +24,34 @@ struct HomeView: View {
             endColor: Color(uiColor: .secondarySystemBackground),
             navigationTitle: "Résumé",
             content: {
+                
+                if showNeediCloud {
+                    GroupBox {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Données Bordero non synchronisées")
+                                .bold()
+                            
+                            Text("Vos données et vos documents ne sont pas synchronisées. En tant que praticien, il est important d'avoir un point de sauvegarde de vos données.")
+                                .foregroundStyle(.secondary)
+                            
+                            Button {
+                                if let url = URL(string: UIApplication.openSettingsURLString),
+                                   UIApplication.shared.canOpenURL(url) {
+                                    UIApplication.shared.open(url)
+                                }
+                            } label: {
+                                Text("Ouvrir Réglages")
+                            }
+                        }
+                    } label: {
+                        Text("état de la sauvegarde".uppercased())
+                            .bold()
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .groupBoxStyle(CustomGroupBoxStyle())
+                    .padding(.bottom)
+                }
                 
                 BandeauCreateDocument()
                 
@@ -59,6 +89,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(showNeediCloud: true)
 }
 

@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State var userNeediCloud : UseriCloudController.StateCheckiCloud
     
     var body: some View {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            NavigationIpad()
+            NavigationIpad(userNeediCloud: userNeediCloud)
         } else {
             TabView {
                 NavigationStack {
-                    HomeView()
+                    HomeView(showNeediCloud: userNeediCloud == .notConnected)
                 }
                 .tabItem {
                     Image(systemName: "house")
@@ -54,6 +54,8 @@ struct NavigationIpad : View {
     
     @State private var isExpanded: Bool = true
     
+    var userNeediCloud : UseriCloudController.StateCheckiCloud
+    
     var body: some View {
         NavigationSplitView {
             // Volet de navigation principal
@@ -81,7 +83,7 @@ struct NavigationIpad : View {
             if let navSelected = model.nav(id: selectedNav) {
                 switch navSelected.id {
                 case 1:
-                    HomeView()
+                    HomeView(showNeediCloud: userNeediCloud == .notConnected)
                 case 2:
                     ListClients()
                 case 3:
@@ -100,7 +102,7 @@ struct NavigationIpad : View {
                     EmptyView()
                 }
             } else {
-                HomeView()
+                HomeView(showNeediCloud: userNeediCloud == .notConnected)
             }
         }
     }
@@ -135,5 +137,5 @@ struct NavItem : Identifiable, Hashable {
 
 
 #Preview {
-    ContentView()
+    ContentView(userNeediCloud: UseriCloudController.StateCheckiCloud.connected)
 }
