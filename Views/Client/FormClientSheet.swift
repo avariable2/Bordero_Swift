@@ -202,15 +202,15 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
             }
             .navigationTitle(clientToModify == nil ? "Nouveau client" : "\(prenom.capitalized) \(nom.uppercased())")
             .alert(Text("Une erreur s'est produite"),
-                    isPresented: $showingAlert,
-                    actions: {
-                        Button("OK", role: .cancel) { 
-                            showingAlert = false
-                        }
-                    }, message: {
-                        Text("Réessayer. Si cette erreur persiste, veuillez contacter le développeur depuis les paramètres.")
-                    }
-                )
+                   isPresented: $showingAlert,
+                   actions: {
+                Button("OK", role: .cancel) { 
+                    showingAlert = false
+                }
+            }, message: {
+                Text("Réessayer. Si cette erreur persiste, veuillez contacter le développeur depuis les paramètres.")
+            }
+            )
             .onAppear {
                 guard let client = clientToModify else { return }
                 prenom = client.firstname ?? ""
@@ -274,7 +274,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         
         save()
     }
-
+    
     private func createAdresse(_ ttl : TTLAdresse, client : Client) {
         let userAdresse = Adresse(context: moc)
         userAdresse.id = UUID()
@@ -293,7 +293,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
             if let call = callbackOnDelete {
                 call()
             }
-           onCancel?()
+            onCancel?()
         } catch {
             print("Échec de la suppression du client: \(error.localizedDescription)")
             // Gérer l'erreur de manière appropriée

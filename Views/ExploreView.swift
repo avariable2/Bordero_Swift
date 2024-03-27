@@ -102,15 +102,17 @@ struct ExploreView: View {
             switch item {
                 
             case .createTypeActe:
-                FormTypeActeView(activeSheet: $activeSheet)
-                    .presentationDetents([.medium])
+                FormTypeActeSheet(onCancel: {
+                    activeSheet = nil
+                })
+                .presentationDetents([.medium])
             case .createClient:
                 FormClientSheet(onCancel: {
                     activeSheet = nil
                 }, onSave: {
                     activeSheet = nil
                 })
-                    .presentationDetents([.large])
+                .presentationDetents([.large])
             default:
                 EmptyView() // IMPOSSIBLE
             }

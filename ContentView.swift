@@ -85,7 +85,7 @@ struct NavigationIpad : View {
                 case 2:
                     ListClients()
                 case 3:
-                   EmptyView()
+                    FormTypeActeView()
                 case 4:
                     ListTypeActeView()
                 case 5:

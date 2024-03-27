@@ -12,7 +12,7 @@ struct ListTypeActeToAddView: View {
     
     @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
         format: "version <= %d",
-        argumentArray: [FormTypeActeView.getVersion()]
+        argumentArray: [FormTypeActeSheet.getVersion()]
     )) var typeActes: FetchedResults<TypeActe>
     
     @State private var activeSheet : ActiveSheet?

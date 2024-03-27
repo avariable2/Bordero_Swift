@@ -34,14 +34,4 @@ import Observation
              fatalError("Failed to pin viewContext to the current generation:\(error)")
         }
     }
-    
-    // MARK: - Preview helpers
-    
-//    static var preview : DataController = {
-//        let controller = DataController()
-//        let context = controller.container.viewContext
-//        
-//        let praticien = Praticien(context: context)
-//        praticien.profilPicture =
-//    }()
 }

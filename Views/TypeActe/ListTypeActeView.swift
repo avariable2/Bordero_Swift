@@ -12,7 +12,7 @@ struct ListTypeActeView: View {
     
     @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
         format: "version <= %d",
-        argumentArray: [FormTypeActeView.getVersion()]
+        argumentArray: [FormTypeActeSheet.getVersion()]
     )) 
     var typeActes: FetchedResults<TypeActe>
     
@@ -51,11 +51,15 @@ struct ListTypeActeView: View {
         .sheet(item: $activeSheet) { item in
             switch item {
             case .createTypeActe:
-                FormTypeActeView(activeSheet: $activeSheet)
-                    .presentationDetents([.medium])
+                FormTypeActeSheet(onCancel: {
+                    activeSheet = nil
+                })
+                .presentationDetents([.medium])
             case .editTypeActe(let type):
-                FormTypeActeView(typeActeToModify: type, activeSheet: $activeSheet)
-                    .presentationDetents([.medium])
+                FormTypeActeSheet(typeActeToModify: type, onCancel: {
+                    activeSheet = nil
+                })
+                .presentationDetents([.medium])
             default :
                 EmptyView() // IMPOSSIBLE
             }
