@@ -22,7 +22,11 @@ struct BorderoApp: App {
 //                ErrorDisplayWithiCloudView()
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
+                    .onChange(of: userController.accountAvailable) { oldValue, newValue in
+                        DataController.shared.updateICloudSettings()
+                    }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
+                    
             }
         }
     }

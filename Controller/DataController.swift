@@ -13,25 +13,58 @@ import Observation
 @Observable class DataController {
     static let shared = DataController()
     
-    let container = NSPersistentCloudKitContainer(name: "Model")
-    
+    var container: NSPersistentCloudKitContainer 
+
     private init() {
-        container.loadPersistentStores { description, error in
-            if let error = error {
-                print("Core Data failed to load : \(error.localizedDescription)")
+        self.container = DataController.setupSyncContainer(iCloudIsOn: false) // Charge une premiere fois pour initialiser la description à nul puis le refresh si nécessaire.
+        
+        updateICloudSettings()
+    }
+    
+    func updateICloudSettings() {
+            let iCloudToken = FileManager.default.ubiquityIdentityToken
+
+            if iCloudToken != nil {
+                self.container = DataController.setupSyncContainer(iCloudIsOn: true)
             }
         }
+    
+    static func setupSyncContainer(iCloudIsOn : Bool) -> NSPersistentCloudKitContainer {
+        let container = NSPersistentCloudKitContainer(name: "Model")
         
-        // https://arc.net/l/quote/eqskqvnr
-        // allows the view context to automatically merge data synced (imported) from the server.
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("###\(#function): Failed to retrieve a persistent store description.")
+        }
+        
+        if !iCloudIsOn {
+            description.cloudKitContainerOptions = nil
+        }
+        
+        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        
+        let remoteChangeKey = "NSPersistentStoreRemoteChangeNotificationOptionKey"
+        description.setOption(true as NSNumber,
+                              forKey: remoteChangeKey)
+        
+        // leave the default cloudKitContainerOptions value as it is, then it will sync automatically
+        
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        
         container.viewContext.automaticallyMergesChangesFromParent = true
-        
-        // sets the merge conflict strategy. If this property is not set, Core Data will default to using NSErrorMergePolicy as the conflict resolution strategy (do not handle any conflicts, directly report an error), which will cause iCloud data to not merge correctly into the local database.
+    
+    // sets the merge conflict strategy. If this property is not set, Core Data will default to using NSErrorMergePolicy as the conflict resolution strategy (do not handle any conflicts, directly report an error), which will cause iCloud data to not merge correctly into the local database.
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         do {
               try container.viewContext.setQueryGenerationFrom(.current)
         } catch {
              fatalError("Failed to pin viewContext to the current generation:\(error)")
         }
+    
+        return container
     }
 }
