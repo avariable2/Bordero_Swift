@@ -130,8 +130,8 @@ class NavModel {
         NavItem(id: 4, name: "Consulter tous les types d'acte", icon: "eyeglasses", foregroundColor: [.purple,.purple]),
         NavItem(id: 5, name: "Ajouter un client", icon: "person.crop.rectangle.badge.plus", foregroundColor: [.blue,.orange]),
         NavItem(id: 6, name: "Consulter la liste des clients", icon: "person.crop.rectangle.stack", foregroundColor: [.orange,.orange]),
-        NavItem(id: 7, name: "Créer un document", icon: "doc.badge.plus", foregroundColor: [.green,.blue]),
-        NavItem(id: 8, name: "Consulter les documents", icon: "doc.text.magnifyingglass", foregroundColor: [.gray,.blue]),
+        NavItem(id: 7, name: "Créer un document", icon: "doc.badge.plus", foregroundColor: [.green,.gray]),
+        NavItem(id: 8, name: "Consulter les documents", icon: "doc.text.magnifyingglass", foregroundColor: [.blue,.gray]),
     ]
     
     func nav(id : NavItem.ID?) -> NavItem? {
