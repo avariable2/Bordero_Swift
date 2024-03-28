@@ -105,7 +105,7 @@ struct ExploreView: View {
                 FormTypeActeSheet(onCancel: {
                     activeSheet = nil
                 })
-                .presentationDetents([.medium])
+                .presentationDetents([.large])
             case .createClient:
                 FormClientSheet(onCancel: {
                     activeSheet = nil

@@ -22,12 +22,12 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     @State private var nom : String = ""
     @State private var description : String = ""
     
-    @State private var quantity = 1
-    @State private var prix: Float = 0
+    @State private var prix: Double = 0
+    @State private var quantity: Double = 1
     @State private var unit : String = ""
     
     @State private var applyTVA = false
-    @State private var tva : Int = 20
+    @State private var tauxTVA : Double = 0
     @State private var tot : Decimal = 0
     @State private var isDefault = false
     
@@ -38,28 +38,36 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    TextField("Nom", text: $nom)
-                        .keyboardType(.default)
+                
+                HStack(alignment: .center, spacing: 20) {
                     
-                    TextField("Description", text: $nom)
-                        .keyboardType(.default)
+                    Image(systemName: "pencil.and.list.clipboard")
+                        .foregroundStyle(.primary, .brown)
+                        .frame(height: 80)
+                        .font(.system(size: 60))
+//                        .shadow(radius: 5)
+                    
+                    
+                    VStack {
+                        TextField("Nom", text: $nom)
+                            .keyboardType(.default)
+                        
+                        TextField("Description", text: $description)
+                            .keyboardType(.default)
+                    }
+                    .textFieldStyle(.roundedBorder)
                 }
+                .frame(maxWidth: .infinity)
+//                .listRowBackground(Color.clear)
+                
+                
                 
                 Section {
                     LabeledContent("Quantité") {
                         TextField("1", value: $quantity, format: .number.precision(.fractionLength(0)))
-                        
                     }
-                    
                     LabeledContent("Prix") {
-                        TextField("facultatif", value: $prix, format: .number.precision(.fractionLength(2)))
-                        
-                    }
-                    
-                    LabeledContent("Unité") {
-                        TextField("obligatoire", text: $unit)
-                        
+                        TextField("facultatif", value: $prix, format: .currency(code: "EUR"))
                     }
                 }
                 
@@ -70,20 +78,24 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     
                     if applyTVA {
                         LabeledContent("TVA") {
-                            TextField("20%", value: $tva, format: .percent)
+                            TextField("pourcentage de TVA", value: $tauxTVA, format: .percent)
+                                .tint(.accentColor)
                         }
                         .multilineTextAlignment(.trailing)
                         
                         HStack {
                             Text("Montant TVA")
+                            
                             Spacer()
-                            Text(prix * 0.20, format: .currency(code: "EUR"))
+                            
+                            Text(calculerTVA(), format: .currency(code: "EUR"))
                         }
                     }
                 }
                 
-                LabeledContent("Montant final", value: tot, format: .currency(code: "EUR"))
+                LabeledContent("Montant final", value: applyTVA ? prix * (tauxTVA/100) + prix : prix, format: .currency(code: "EUR"))
                     .multilineTextAlignment(.center)
+                    .bold()
                 
 //                Toggle("Faire de ce type d'acte votre type d'acte par defaut", isOn: $isDefault)
             }
@@ -118,12 +130,24 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         }
     }
     
+    func calculerTVA() -> Double {
+        let montantTVA = prix * (tauxTVA / Double(100))
+        return montantTVA
+    }
+    
     func modify() {
         let typeActe = typeActeToModify ?? TypeActe(context: moc)
         typeActe.version = FormTypeActeSheet.getVersion()
         
         typeActe.name = nom
         typeActe.price = prix
+        
+        typeActe.unit = unit
+//        typeActe.quantity = Int64(quantity)
+        
+        let tva = applyTVA ? tauxTVA : 0
+        typeActe.tva = tva
+        typeActe.total = prix + (prix * tva)
         
         save()
     }

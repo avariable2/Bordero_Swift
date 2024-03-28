@@ -152,7 +152,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
             
             if typeSelected == .facture {
-                Section {
+                Section("Réglement") {
                     Toggle("Facture déjà réglée ?", isOn: $estPayer.animation())
                         .toggleStyle(SwitchToggleStyle(tint: .blue))
                     
@@ -164,7 +164,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         }
                     }
                 }
-                
             }
             
             Section("Note - optionnel") {
