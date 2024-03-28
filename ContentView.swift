@@ -61,13 +61,24 @@ struct NavigationIpad : View {
             // Volet de navigation principal
             List(selection: $selectedNav) {
                 ForEach(model.navigation.prefix(2)) { item in
-                    Label(item.name, systemImage: item.icon)
+                    Label {
+                        Text(item.name)
+                            .tint(.primary)
+                    } icon: {
+                        Image(systemName: item.icon)
+                    }
                 }
 
                 // Utiliser un DisclosureGroup pour les éléments restants
                 DisclosureGroup(isExpanded: $isExpanded) {
                     ForEach(model.navigation.dropFirst(2)) { navItem in
-                        Label(navItem.name, systemImage: navItem.icon)
+                        Label {
+                            Text(navItem.name)
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: navItem.icon)
+                                .foregroundStyle(navItem.foregroundColor![0], navItem.foregroundColor![1])
+                        }
                     }
                 } label: {
                     Text("Parcourir")
@@ -115,12 +126,12 @@ class NavModel {
     var navigation : [NavItem] = [
         NavItem(id: 1, name: "Résumé", icon: "house"),
         NavItem(id: 2, name: "Clients", icon: "person.2"),
-        NavItem(id: 3, name: "Ajouter un type d'acte", icon: "square.and.pencil"),
-        NavItem(id: 4, name: "Consulter tous les types d'acte", icon: "eyeglasses"),
-        NavItem(id: 5, name: "Ajouter un client", icon: "person.crop.rectangle.badge.plus"),
-        NavItem(id: 6, name: "Consulter la liste des clients", icon: "person.crop.rectangle.stack"),
-        NavItem(id: 7, name: "Créer un document", icon: "doc.badge.plus"),
-        NavItem(id: 8, name: "Consulter les documents", icon: "doc.text.magnifyingglass"),
+        NavItem(id: 3, name: "Ajouter un type d'acte", icon: "square.and.pencil", foregroundColor: [.primary,.purple]),
+        NavItem(id: 4, name: "Consulter tous les types d'acte", icon: "eyeglasses", foregroundColor: [.purple,.purple]),
+        NavItem(id: 5, name: "Ajouter un client", icon: "person.crop.rectangle.badge.plus", foregroundColor: [.blue,.orange]),
+        NavItem(id: 6, name: "Consulter la liste des clients", icon: "person.crop.rectangle.stack", foregroundColor: [.orange,.orange]),
+        NavItem(id: 7, name: "Créer un document", icon: "doc.badge.plus", foregroundColor: [.green,.blue]),
+        NavItem(id: 8, name: "Consulter les documents", icon: "doc.text.magnifyingglass", foregroundColor: [.gray,.blue]),
     ]
     
     func nav(id : NavItem.ID?) -> NavItem? {
