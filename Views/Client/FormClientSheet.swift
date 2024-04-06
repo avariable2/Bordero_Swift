@@ -51,6 +51,14 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         NavigationStack {
             Form {
+                VStack(alignment: .center) {
+                    
+                    ProfilImageView(imageData: nil)
+                        .frame(height: 80)
+                        .font(.system(size: 60))
+                }
+                .frame(maxWidth: .infinity)
+                
                 // MARK: - Partie pour importer les contacts depuis l'iphone de l'utilisateur. Incompatible avec AppleWatch.
                 Section {
                     ImportContactView(
@@ -204,13 +212,12 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
             .alert(Text("Une erreur s'est produite"),
                    isPresented: $showingAlert,
                    actions: {
-                Button("OK", role: .cancel) { 
+                Button("OK", role: .cancel) {
                     showingAlert = false
                 }
             }, message: {
                 Text("Réessayer. Si cette erreur persiste, veuillez contacter le développeur depuis les paramètres.")
-            }
-            )
+            })
             .onAppear {
                 guard let client = clientToModify else { return }
                 prenom = client.firstname ?? ""

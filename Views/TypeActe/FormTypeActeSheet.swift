@@ -89,11 +89,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                 LabeledContent("Montant final", value: applyTVA ? montantFinal() : prix, format: .currency(code: "EUR"))
                     .multilineTextAlignment(.center)
                     .bold()
-                
-//                Toggle("Favoris", isOn: $addFavoris)
             }
             .tint(.purple)
-            .listStyle(.grouped)
             .multilineTextAlignment(.trailing)
             .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name ?? "")")
             .toolbar {
