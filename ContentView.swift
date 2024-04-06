@@ -66,6 +66,7 @@ struct NavigationIpad : View {
                             .tint(.primary)
                     } icon: {
                         Image(systemName: item.icon)
+                            .foregroundStyle(.blue)
                     }
                 }
 
@@ -85,11 +86,13 @@ struct NavigationIpad : View {
                         .font(.title2)
                         .bold()
                 }
-                
+                .tint(.blue)
                 
             }
+            .tint(Color.secondary.opacity(0.3))
             .listStyle(.sidebar)
             .navigationTitle("Bordero")
+            
         } detail: {
             if let navSelected = model.nav(id: selectedNav) {
                 switch navSelected.id {

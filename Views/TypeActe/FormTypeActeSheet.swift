@@ -37,37 +37,29 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     
     var body: some View {
         NavigationStack {
-            List {
+            Form {
                 
-                HStack(alignment: .center, spacing: 20) {
+                HStack(alignment: .center) {
                     
-                    Image(systemName: "pencil.and.list.clipboard")
-                        .foregroundStyle(.primary, .brown)
+                    Image(systemName: "cross.case.circle.fill")
+                        .foregroundStyle(.white, .purple)
                         .frame(height: 80)
                         .font(.system(size: 60))
-//                        .shadow(radius: 5)
-                    
-                    
-                    VStack {
-                        TextField("Nom", text: $nom)
-                            .keyboardType(.default)
-                        
-                        TextField("Description", text: $description)
-                            .keyboardType(.default)
-                    }
-                    .textFieldStyle(.roundedBorder)
                 }
                 .frame(maxWidth: .infinity)
-//                .listRowBackground(Color.clear)
-                
-                
                 
                 Section {
-                    LabeledContent("Quantité") {
-                        TextField("1", value: $quantity, format: .number.precision(.fractionLength(0)))
-                    }
+                    TextField("Nom", text: $nom)
+                        .keyboardType(.default)
+                        .multilineTextAlignment(.leading)
+                    
                     LabeledContent("Prix") {
                         TextField("facultatif", value: $prix, format: .currency(code: "EUR"))
+                    }
+                    
+                    LabeledContent("Description") {
+                        TextField("facultatif", text: $description)
+                            .keyboardType(.default)
                     }
                 }
                 
@@ -100,7 +92,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
 //                Toggle("Faire de ce type d'acte votre type d'acte par defaut", isOn: $isDefault)
             }
             .formStyle(.grouped)
-//            .headerProminence(.increased)
+            .multilineTextAlignment(.trailing)
             .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name ?? "")")
             .toolbar {
                 
@@ -147,7 +139,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         
         let tva = applyTVA ? tauxTVA : 0
         typeActe.tva = tva
-        typeActe.total = prix + (prix * tva)
+//        type Acte.total = prix + (prix * tva)
         
         save()
     }
