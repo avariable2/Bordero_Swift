@@ -110,7 +110,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
             
             // MARK: - Partie type Acte
-            Section("Type d'acte séléctionné(s)") {
+            Section {
                 Button {
                     activeSheet = .selectTypeActe
                 } label: {
@@ -137,6 +137,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         })
                     }
                 }
+            } header : {
+                Text("Type d'acte séléctionné(s)")
+            } footer : {
+                Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
             }
             
             if typeSelected == .facture {
@@ -159,7 +163,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     .lineSpacing(2)
             }
         }
-        .listStyle(.plain)
         .navigationTitle("\(typeSelected.rawValue.capitalized) #\(numero)")
         .safeAreaInset(edge: .bottom) {
             HStack {

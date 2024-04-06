@@ -13,8 +13,8 @@ struct ListTypeActe: View {
     @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
         format: "version <= %d",
         argumentArray: [FormTypeActeSheet.getVersion()]
-    )) 
-    var typeActes: FetchedResults<TypeActe>
+    )) var typeActes: FetchedResults<TypeActe>
+    @State private var searchText = ""
     
     @State private var showingAlert: Bool = false
     @State private var activeSheet : ActiveSheet?
@@ -22,21 +22,50 @@ struct ListTypeActe: View {
     // MARK: - Uniquement pour la partie document
     var callbackClick : ((TypeActe) -> Void)?
     
+    var filteredTypeActe : [TypeActe] {
+        filteredTypeActe(typeActes: Array(typeActes), searchText: searchText)
+    }
+    
     var body: some View {
-        List {
-            Section {
-                ForEach(typeActes, id:\.id) { type in
-                    RowTypeActeView(activeSheet: $activeSheet, type: type, callback: callbackClick)
+        VStack {
+            if typeActes.isEmpty {
+                ContentUnavailableView(label: {
+                    Label("Aucun type d'acte", systemImage: "cross.case")
+                }, description: {
+                    Text("Les type d'acte ajoutés apparaîtront ici.")
+                }, actions: {
+                    Button {
+                        activeSheet = .createTypeActe
+                    } label: {
+                        Text("Ajouter un type d'acte")
+                    }
+                })
+            } else {
+                List {
+                    Section {
+                        ForEach(filteredTypeActe, id: \.id) { type in
+                            RowTypeActeView(activeSheet: $activeSheet, type: type, callback: callbackClick)
+                        }
+                        .onDelete(perform: delete)
+                        
+                    } footer: {
+                        if !filteredTypeActe.isEmpty {
+                            Text("Déplacé l'élément à gauche pour le supprimer.")
+                        }
+                    }
                 }
-                .onDelete(perform: delete)
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
+                .overlay(content: {
+                    if filteredTypeActe.isEmpty {
+                        ContentUnavailableView.search(text: searchText)
+                    }
+                })
                 
-            } footer: {
-                Text("Déplacé l'élément à gauche pour le supprimer.")
             }
-            
         }
         .navigationTitle("Type d'actes")
         .tint(.purple)
+
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
@@ -67,6 +96,13 @@ struct ListTypeActe: View {
         
     }
     
+    func filteredTypeActe(typeActes: [TypeActe], searchText: String) -> [TypeActe] {
+        guard !searchText.isEmpty else { return typeActes }
+        return typeActes.filter { type in
+            type.name?.lowercased().contains(searchText.lowercased()) == true
+        }
+    }
+    
     func delete(at offsets: IndexSet) {
         
         for index in offsets {
@@ -83,9 +119,7 @@ struct ListTypeActe: View {
     }
 }
 
-struct RowTypeActeView : View { // , Saveable
-    
-//    @Environment(\.managedObjectContext) var moc
+struct RowTypeActeView : View {
     
     @Environment(\.dismiss) private var dismiss
     @Binding var activeSheet : ActiveSheet?
@@ -104,34 +138,11 @@ struct RowTypeActeView : View { // , Saveable
             Button {
                 activeSheet = .editTypeActe(type: type)
             } label: {
-                
-                    DisplayTypeActeView(text: type.name ?? "Inconnu", price: String(format: "Prix total : %.2f €", type.total))
-                    
-    //                Spacer()
-                    
-    //                Button {
-    //                    type.favoris.toggle()
-    //                    save()
-    //                } label: {
-    //                    Image(systemName: type.favoris ? "heart.fill" : "heart")
-    //                        .tint(.red)
-    //                }
-    //                .contentTransition(.symbolEffect(.replace.upUp.byLayer))
-    //                .symbolEffect(.replace.upUp.byLayer, value: type.favoris)
-
+                DisplayTypeActeView(text: type.name ?? "Inconnu", price: String(format: "Prix total : %.2f €", type.total))
             }
         }
         
     }
-    
-//    func save() {
-//        do {
-//            try moc.save()
-//            print("Success")
-//        } catch let err {
-//            print("error \(err)")
-//        }
-//    }
 }
 
 struct DisplayTypeActeView : View {
