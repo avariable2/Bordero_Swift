@@ -59,7 +59,7 @@ struct NavigationIpad : View {
     var body: some View {
         NavigationSplitView {
             // Volet de navigation principal
-            List(selection: $selectedNav) {
+            List(selection: $selectedNav.animation()) {
                 ForEach(model.navigation.prefix(2)) { item in
                     Label {
                         Text(item.name)
