@@ -49,7 +49,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @State private var activeSheet: ActiveSheet?
     
     @State private var clients = [Client]()
-    @State private var listTypeActes = [TypeActe]()
+    @State private var listTypeActes = [TTLTypeActe]()
     
     @State private var docIsFacture: Bool = true
     @State private var estPayer: Bool = false
@@ -60,7 +60,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @State var numero : String = "001"
     
     var body: some View {
-        List {
+        Form {
             Section {
                 Picker("Type de document", selection: $typeSelected.animation()) {
                     ForEach(TypeDoc.allCases) { type in
@@ -92,11 +92,16 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 }
                 
                 if !clients.isEmpty {
-                    ForEach(clients) { client in
-                        ClientRowView(
-                            firstname: client.firstname ?? "Inconnu",
-                            name: client.name ?? ""
-                        )
+                    List {
+                        ForEach(clients) { client in
+                            ClientRowView(
+                                firstname: client.firstname ?? "Inconnu",
+                                name: client.name ?? ""
+                            )
+                        }
+                        .onDelete(perform: { indexSet in
+                            clients.remove(atOffsets: indexSet)
+                        })
                     }
                 }
                 
@@ -104,7 +109,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 Text("Client(s) séléctionné(s)")
             }
             
-            Section {
+            // MARK: - Partie type Acte
+            Section("Type d'acte séléctionné(s)") {
                 Button {
                     activeSheet = .selectTypeActe
                 } label: {
@@ -118,41 +124,20 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 }
                 
                 if !listTypeActes.isEmpty {
-                    ForEach(listTypeActes) { type in
-                        DisplayTypeActeView(text: type.name ?? "Inconnu", price: String(format: "Prix total : %.2f €", type.total))
+                    List {
+                        ForEach(listTypeActes.indices, id: \.self) { index in
+                            TypeActeRowView(
+                                text: listTypeActes[index].typeActeReal.name ?? "Inconnu",
+                                price: String(format: "Prix total : %.2f €", listTypeActes[index].typeActeReal.total),
+                                ttl: $listTypeActes[index]
+                            )
+                        }
+                        .onDelete(perform: { indexSet in
+                            listTypeActes.remove(atOffsets: indexSet)
+                        })
                     }
-                }
-                
-            } header: {
-                Text("Type d'acte séléctionné(s)")
-            } 
-            
-            if !listTypeActes.isEmpty {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Total H.T.")
-                        Spacer()
-                        Text("0,00 €")
-                    }
-                    
-                    HStack {
-                        Text("TVA")
-                        Spacer()
-                        Text("0,00 €")
-                    }
-                    
-                    HStack {
-                        Text("Total T.TC")
-                        Spacer()
-                        Text("0,00 €")
-                    }
-                    .bold()
                 }
             }
-            
-//        footer: {
-//                Text("Déplace l'élément sur la gauche pour le supprimer d'une liste.")
-//            }
             
             if typeSelected == .facture {
                 Section("Réglement") {
@@ -217,7 +202,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 })
             case .selectTypeActe:
                 ListTypeActe(callbackClick: { type in
-                    listTypeActes.append(type)
+                    listTypeActes.append(TTLTypeActe(typeActeReal: type, quantity: 1))
                 })
             default:
                 EmptyView() // IMPOSSIBLE
@@ -250,6 +235,42 @@ private struct ClientRowView: View {
             }
         }
     }
+}
+
+private struct TypeActeRowView: View {
+    let text : String
+    let price : String
+    @Binding var ttl : TTLTypeActe
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "cross.case.circle.fill")
+                .imageScale(.large)
+                .foregroundStyle(.white, .purple)
+            
+            VStack(alignment: .leading) {
+                Text(text)
+                    .font(.body)
+                    .tint(.primary)
+                
+                Text(price)
+                    .font(.caption)
+                    .tint(.secondary)
+            }
+            
+            Picker("", selection: $ttl.quantity) {
+                ForEach(1...100, id: \.self) { number in
+                    Text("\(number)")
+                }
+            }
+        }
+    }
+}
+
+struct TTLTypeActe : Identifiable {
+    var id : UUID = UUID()
+    var typeActeReal: TypeActe
+    var quantity : Int
 }
 
 #Preview {
