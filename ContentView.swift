@@ -103,7 +103,7 @@ struct NavigationIpad : View {
                 case 3:
                     FormTypeActeView()
                 case 4:
-                    ListTypeActeView()
+                    ListTypeActe()
                 case 5:
                     FormClientView()
                 case 6: 

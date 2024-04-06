@@ -105,8 +105,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
             
             Section {
-                NavigationLink {
-                    ListTypeActeToAddView()
+                Button {
+                    activeSheet = .selectTypeActe
                 } label: {
                     Label {
                         Text("ajouter un type d'acte")
@@ -118,31 +118,38 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 }
                 
                 if !listTypeActes.isEmpty {
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text("Total H.T.")
-                            Spacer()
-                            Text("0,00 €")
-                        }
-                        
-                        HStack {
-                            Text("TVA")
-                            Spacer()
-                            Text("0,00 €")
-                        }
-                        
-                        HStack {
-                            Text("Total T.TC")
-                            Spacer()
-                            Text("0,00 €")
-                        }
-                        .bold()
+                    ForEach(listTypeActes) { type in
+                        DisplayTypeActeView(text: type.name ?? "Inconnu", price: String(format: "Prix total : %.2f €", type.total))
                     }
                 }
                 
             } header: {
                 Text("Type d'acte séléctionné(s)")
             } 
+            
+            if !listTypeActes.isEmpty {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Total H.T.")
+                        Spacer()
+                        Text("0,00 €")
+                    }
+                    
+                    HStack {
+                        Text("TVA")
+                        Spacer()
+                        Text("0,00 €")
+                    }
+                    
+                    HStack {
+                        Text("Total T.TC")
+                        Spacer()
+                        Text("0,00 €")
+                    }
+                    .bold()
+                }
+            }
+            
 //        footer: {
 //                Text("Déplace l'élément sur la gauche pour le supprimer d'une liste.")
 //            }
@@ -207,6 +214,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             case .selectClient:
                 ListClients(callbackClientClick: { client in
                     clients.append(client)
+                })
+            case .selectTypeActe:
+                ListTypeActe(callbackClick: { type in
+                    listTypeActes.append(type)
                 })
             default:
                 EmptyView() // IMPOSSIBLE

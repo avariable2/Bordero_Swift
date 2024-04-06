@@ -12,7 +12,7 @@ enum ActiveSheet : Identifiable {
     case createClient, editClient(client: Client)
     case profil(user : Praticien?)
     case parameters
-    case optionsDocument, apercusDocument(facture: Facture), selectClient
+    case optionsDocument, apercusDocument(facture: Facture), selectClient, selectTypeActe
     
     var id : Int {
         switch self {
@@ -42,6 +42,9 @@ enum ActiveSheet : Identifiable {
             
         case .selectClient:
             return 5
+            
+        case .selectTypeActe:
+            return 6
         }
     }
 }

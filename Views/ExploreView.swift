@@ -24,7 +24,7 @@ struct ExploreView: View {
                 }
                 
                 NavigationLink {
-                    ListTypeActeView()
+                    ListTypeActe()
                 } label: {
                     Label {
                         Text("Consulter tous les types d'acte")
