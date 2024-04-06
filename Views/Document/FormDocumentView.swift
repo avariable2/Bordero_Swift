@@ -92,8 +92,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 }
                 
                 if !clients.isEmpty {
-                    List {
-                        ForEach(clients) { client in
+                    ForEach(clients) { client in
+                        HStack {
+                            ProfilImageView(imageData: nil)
+                            
                             VStack {
                                 Text(client.firstname ?? "Inconnu")
                                 + Text(" ")
@@ -101,7 +103,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                                     .bold()
                             }
                         }
-                        .onDelete(perform: delete)
+                        
                     }
                 }
                 
@@ -147,9 +149,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 
             } header: {
                 Text("Type d'acte séléctionné(s)")
-            } footer: {
-                Text("Déplace l'élément sur la gauche pour le supprimer d'une liste.")
-            }
+            } 
+//        footer: {
+//                Text("Déplace l'élément sur la gauche pour le supprimer d'une liste.")
+//            }
             
             if typeSelected == .facture {
                 Section("Réglement") {
@@ -171,6 +174,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     .lineSpacing(2)
             }
         }
+        .listStyle(.plain)
         .navigationTitle("\(typeSelected.rawValue.capitalized) #\(numero)")
         .safeAreaInset(edge: .bottom) {
             HStack {

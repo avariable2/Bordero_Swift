@@ -15,6 +15,14 @@ struct ParametersView: View {
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
     
+    var isMacOS: Bool {
+        #if os(macOS)
+        return true
+        #else
+        return false
+        #endif
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -100,30 +108,51 @@ struct ParametersView: View {
                     .disabled(true)
                 }
                 
-                Section {
-                    Button {
-                        isShowingMailView.toggle()
-                    } label: {
-                        Label(
-                            title: {
-                                Text("Contacter le développeur")
-                            },
-                            icon: {
-                                Image(systemName: "person.bubble")
-                                    .foregroundStyle(.blue, .gray)
+                
+                if ProcessInfo.processInfo.isiOSAppOnMac {
+                    
+                    Section {
+                        Text("Si un problème survient contacter le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
+                            .contextMenu {
+                                Button(action: {
+                                    UIPasteboard.general.string = "feuilles.neutron_0i@icloud.com"
+                                }) {
+                                    Text("Copier")
+                                    Image(systemName: "doc.on.doc")
+                                }
                             }
-                        )
-                    }
-                    .disabled(!MFMailComposeViewController.canSendMail())
-                    .sheet(isPresented: $isShowingMailView, onDismiss: nil) {
-                        MailView(isShowing: self.$isShowingMailView, result: self.$result)
-                            .edgesIgnoringSafeArea(.bottom)
+                    } footer: {
+                        Text("Maintener le texte pour copier l'email.")
                     }
                     
-                } footer: {
-                    if !MFMailComposeViewController.canSendMail() {
-                        Text("Vous ne pouvez envoyer de e-mail depuis cette appareil")
+                } else {
+                    Section {
+                        Button {
+                            isShowingMailView.toggle()
+                        } label: {
+                            Label(
+                                title: {
+                                    Text("Contacter le développeur")
+                                },
+                                icon: {
+                                    Image(systemName: "person.bubble")
+                                        .foregroundStyle(.blue, .gray)
+                                }
+                            )
+                        }
+                        
+                        .disabled(!MFMailComposeViewController.canSendMail())
+                        .sheet(isPresented: $isShowingMailView) {
+                            MailView(result: self.$result)
+                                .edgesIgnoringSafeArea(.bottom)
+                        }
+                        
+                    } footer: {
+                        if !MFMailComposeViewController.canSendMail() {
+                            Text("Vous ne pouvez envoyer de e-mail depuis cette appareil")
+                        }
                     }
+                   
                 }
                 
                 if !DataController.getStatusiCloud() {
