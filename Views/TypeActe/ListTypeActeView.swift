@@ -21,45 +21,42 @@ struct ListTypeActeView: View {
     
     var body: some View {
         List {
-            Section("Actions") {
-                Button {
-                    activeSheet = .createTypeActe
-                } label: {
-                    Label("Ajouter un type d'acte", systemImage: "plus")
-                }
-                
-            }
-            
             Section {
                 ForEach(typeActes, id:\.id) { type in
                     RowTypeActeView(activeSheet: $activeSheet, type: type)
                 }
                 .onDelete(perform: delete)
                 
-            } header: {
-                Text("Votre liste")
             } footer: {
                 Text("Swipe à droite ou à gauche pour voir les actions disponibles.")
             }
             
-            
         }
         .navigationTitle("Type d'actes")
+        .tint(.purple)
         .toolbar {
-            EditButton()
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    activeSheet = .createTypeActe
+                } label: {
+                    Label("Ajouter un type d'acte", systemImage: "plus")
+                }
+            }
         }
         .sheet(item: $activeSheet) { item in
             switch item {
             case .createTypeActe:
                 FormTypeActeSheet(onCancel: {
                     activeSheet = nil
+                }, onSave: {
+                    activeSheet = nil
                 })
-                .presentationDetents([.medium])
             case .editTypeActe(let type):
                 FormTypeActeSheet(typeActeToModify: type, onCancel: {
                     activeSheet = nil
+                }, onSave: {
+                    activeSheet = nil
                 })
-                .presentationDetents([.medium])
             default :
                 EmptyView() // IMPOSSIBLE
             }
@@ -83,25 +80,53 @@ struct ListTypeActeView: View {
     }
 }
 
-struct RowTypeActeView : View {
+struct RowTypeActeView : View, Saveable {
     
+    @Environment(\.managedObjectContext) var moc
     @Binding var activeSheet : ActiveSheet?
-    @State var type : TypeActe
+    let type : TypeActe
     
     var body: some View {
         
         Button {
             activeSheet = .editTypeActe(type: type)
         } label: {
-            VStack(alignment: .leading) {
-                Text(type.name ?? "Inconnu")
-                    .font(.body)
-                    .tint(.primary)
+            HStack {
+                Image(systemName: "cross.case.circle.fill")
+                    .imageScale(.large)
+                    .foregroundStyle(.white, .purple)
                 
-                Text(String(format: "Prix : %.2f €", type.price))
-                    .font(.caption)
-                    .tint(.secondary)
+                VStack(alignment: .leading) {
+                    Text(type.name ?? "Inconnu")
+                        .font(.body)
+                        .tint(.primary)
+                    
+                    Text(String(format: "Prix total : %.2f €", type.total))
+                        .font(.caption)
+                        .tint(.secondary)
+                }
+                
+                Spacer()
+                
+//                Button {
+//                    type.favoris.toggle()
+//                    save()
+//                } label: {
+//                    Image(systemName: type.favoris ? "heart.fill" : "heart")
+//                        .tint(.red)
+//                }
+//                .contentTransition(.symbolEffect(.replace.upUp.byLayer))
+//                .symbolEffect(.replace.upUp.byLayer, value: type.favoris)
             }
+        }
+    }
+    
+    func save() {
+        do {
+            try moc.save()
+            print("Success")
+        } catch let err {
+            print("error \(err)")
         }
     }
 }

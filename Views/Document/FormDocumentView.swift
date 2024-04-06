@@ -93,17 +93,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 
                 if !clients.isEmpty {
                     ForEach(clients) { client in
-                        HStack {
-                            ProfilImageView(imageData: nil)
-                            
-                            VStack {
-                                Text(client.firstname ?? "Inconnu")
-                                + Text(" ")
-                                + Text(client.name ?? "")
-                                    .bold()
-                            }
-                        }
-                        
+                        ClientRowView(
+                            firstname: client.firstname ?? "Inconnu",
+                            name: client.name ?? ""
+                        )
                     }
                 }
                 
@@ -227,6 +220,24 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     
     func save() {
         
+    }
+}
+
+private struct ClientRowView: View {
+    let firstname : String
+    let name : String
+    
+    var body: some View {
+        HStack {
+            ProfilImageView(imageData: nil)
+            
+            VStack {
+                Text(firstname)
+                + Text(" ")
+                + Text(name)
+                    .bold()
+            }
+        }
     }
 }
 

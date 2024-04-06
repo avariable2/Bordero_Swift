@@ -27,9 +27,9 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     @State private var unit : String = ""
     
     @State private var applyTVA = false
-    @State private var tauxTVA : Double = 0
+    @State private var tauxTVA : Double = 0.20
     @State private var tot : Decimal = 0
-    @State private var isDefault = false
+    @State private var addFavoris = false
     
     private var disableForm: Bool {
         nom.isEmpty
@@ -37,9 +37,9 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     
     var body: some View {
         NavigationStack {
-            Form {
+            List {
                 
-                HStack(alignment: .center) {
+                VStack(alignment: .center) {
                     
                     Image(systemName: "cross.case.circle.fill")
                         .foregroundStyle(.white, .purple)
@@ -51,7 +51,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                 Section {
                     TextField("Nom", text: $nom)
                         .keyboardType(.default)
-                        .multilineTextAlignment(.leading)
+                       .multilineTextAlignment(.leading)
                     
                     LabeledContent("Prix") {
                         TextField("facultatif", value: $prix, format: .currency(code: "EUR"))
@@ -71,7 +71,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     if applyTVA {
                         LabeledContent("TVA") {
                             TextField("pourcentage de TVA", value: $tauxTVA, format: .percent)
-                                .tint(.accentColor)
+                                .foregroundStyle(.purple)
                         }
                         .multilineTextAlignment(.trailing)
                         
@@ -81,17 +81,19 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                             Spacer()
                             
                             Text(calculerTVA(), format: .currency(code: "EUR"))
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }
                 
-                LabeledContent("Montant final", value: applyTVA ? prix * (tauxTVA/100) + prix : prix, format: .currency(code: "EUR"))
+                LabeledContent("Montant final", value: applyTVA ? montantFinal() : prix, format: .currency(code: "EUR"))
                     .multilineTextAlignment(.center)
                     .bold()
                 
-//                Toggle("Faire de ce type d'acte votre type d'acte par defaut", isOn: $isDefault)
+//                Toggle("Favoris", isOn: $addFavoris)
             }
-            .formStyle(.grouped)
+            .tint(.purple)
+            .listStyle(.grouped)
             .multilineTextAlignment(.trailing)
             .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name ?? "")")
             .toolbar {
@@ -105,7 +107,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(onCancel != nil ? "OK" : "Termniné") {
+                    Button("OK") {
                         modify()
                         
                         onSave?()
@@ -117,29 +119,43 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         .onAppear {
             if let typeActe = typeActeToModify {
                 nom = typeActe.name ?? ""
+                description = typeActe.info ?? ""
                 prix = typeActe.price
+                
+                applyTVA = typeActe.tva != 0
+                tauxTVA = typeActe.tva
+                tot = Decimal(typeActe.total)
+                
+//                addFavoris = typeActe.favoris
             }
         }
     }
     
     func calculerTVA() -> Double {
-        let montantTVA = prix * (tauxTVA / Double(100))
+        let montantTVA = prix * tauxTVA
         return montantTVA
+    }
+    
+    func montantFinal() -> Double {
+        return applyTVA ? prix * tauxTVA + prix : prix
     }
     
     func modify() {
         let typeActe = typeActeToModify ?? TypeActe(context: moc)
         typeActe.version = FormTypeActeSheet.getVersion()
+        if typeActeToModify == nil {
+            typeActe.id = UUID()
+        }
         
         typeActe.name = nom
+        typeActe.info = description
         typeActe.price = prix
         
-        typeActe.unit = unit
-//        typeActe.quantity = Int64(quantity)
+        typeActe.tva = applyTVA ? tauxTVA : 0
         
-        let tva = applyTVA ? tauxTVA : 0
-        typeActe.tva = tva
-//        type Acte.total = prix + (prix * tva)
+        typeActe.total = montantFinal()
+        
+//        typeActe.favoris = addFavoris
         
         save()
     }
@@ -151,6 +167,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         } catch let err {
             print("error \(err)")
         }
+        
+        onSave?()
     }
 }
 
