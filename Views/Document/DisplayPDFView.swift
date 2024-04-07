@@ -101,6 +101,165 @@ struct DisplayPDFView: View {
         }
 }
 
+struct PDFBodyView : View {
+    
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 40) {
+            HStack {
+                Image(systemName: "apple.logo")
+                    .font(.largeTitle)
+                
+                Spacer()
+                
+                Text("Facture")
+                    .font(.largeTitle)
+                    .bold()
+            }
+            .padding([.bottom, .top])
+            
+            Grid(alignment: .topLeading, horizontalSpacing: 2, verticalSpacing: 2) {
+                GridRow {
+                    Grid(alignment: .topLeading, horizontalSpacing: 2, verticalSpacing: 2) {
+                        GridRow {
+                            CellInGridView(titre: "Nom de société", information: "Cabinet d'ostéopathie")
+                                .gridCellColumns(6)
+                        }
+                        
+                        GridRow {
+                            CellInGridView(titre: "N° SIRET", information: "80378752200025")
+                                .gridCellColumns(3)
+                            CellInGridView(titre: "N° ADELI", information: "220001481")
+                                .gridCellColumns(3)
+                        }
+                        
+                        GridRow {
+                            CellInGridView(titre: "Date de facture", information: "31 aout 2024")
+                                .gridCellColumns(3)
+                            CellInGridView(titre: "N° de document", information: "20240318004")
+                                .gridCellColumns(3)
+                        }
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Facturé à".uppercased())
+                            .foregroundStyle(.secondary)
+                            .bold()
+                        
+                        Text("Apple S.")
+                        Text("San Franscisco")
+                        Text("Le bourg")
+                        Text("19200 Saint parfois le neuf")
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .topLeading)
+                    .background(.green.opacity(0.13))
+                    
+                }
+                .frame(height: 163)
+            }
+            
+            VStack {
+                TableView()
+                
+                HStack {
+                    Spacer()
+                    
+                    VStack(alignment: .trailing) {
+                        VStack {
+                            HStack {
+                                Text("Montant total HT")
+                                
+                                Text("AAA")
+                            }
+                        }
+                        
+                        VStack {
+                            HStack {
+                                Text("TVA")
+                                
+                                Text("AAA")
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            .frame(alignment: .topLeading)
+            
+            
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .padding()
+        .background(
+            .windowBackground
+        )
+    }
+}
+
 #Preview {
-    DisplayPDFView(facture: exempleFacture)
+//    DisplayPDFView(facture: exempleFacture)
+    PDFBodyView()
+}
+
+struct CellInGridView: View {
+    let color : Color = .green.opacity(0.13)
+    
+    let titre : String
+    let information : String
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(titre.uppercased())
+                .foregroundStyle(.secondary)
+                .bold()
+            
+            Text(information)
+        }
+        .padding(5)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(color)
+    }
+}
+
+private struct TableView : View {
+    @State private var data = [
+        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
+        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
+        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
+    ]
+    
+    let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
+    
+    var body: some View {
+        Table(data) {
+            TableColumn("Libellé", value: \.libelle)
+            
+            TableColumn("Quantité") { purchase in
+                Text(purchase.quantity, format: .number)
+            }
+            
+            TableColumn("Montant HT") { purchase in
+                Text(purchase.priceHT, format: currencyStyle)
+            }
+            TableColumn("TVA") { purchase in
+                Text(purchase.tva, format: .percent)
+            }
+            
+            TableColumn("Montant TTC") { purchase in
+                Text(purchase.priceTTC, format: currencyStyle)
+            }
+        }
+        .scrollDisabled(true)
+    }
+}
+
+private struct TableData: Identifiable {
+    let libelle: String
+    let quantity: Decimal
+    let priceHT: Decimal
+    let tva: Decimal
+    let priceTTC: Decimal
+    
+    let id = UUID()
 }
