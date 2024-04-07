@@ -102,7 +102,7 @@ struct DisplayPDFView: View {
 }
 
 struct PDFBodyView : View {
-    
+    static let color : Color = .accentColor.opacity(0.13)
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -166,7 +166,7 @@ struct PDFBodyView : View {
                     }
                     .padding()
                     .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .topLeading)
-                    .background(.green.opacity(0.13))
+                    .background(PDFBodyView.color)
                     
                 }
             }
@@ -216,8 +216,6 @@ struct PDFBodyView : View {
 }
 
 struct CellInGridView: View {
-    let color : Color = .green.opacity(0.13)
-    
     let titre : String
     let information : String
     
@@ -232,12 +230,14 @@ struct CellInGridView: View {
         }
         .padding(5)
         .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(color)
+        .background(PDFBodyView.color)
     }
 }
 
 private struct TableView : View {
     @State private var data = [
+        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
+        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
         TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
         TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
         TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
@@ -259,7 +259,6 @@ private struct TableView : View {
             
             TableColumn("Qté") { purchase in
                 Text(purchase.quantity, format: .number)
-                    .multilineTextAlignment(.center)
             }
             .width(60)
             
@@ -280,6 +279,7 @@ private struct TableView : View {
             }
             .width(100)
         }
+        .frame(height: CGFloat(data.count * 60 + 30)) // Dynamic height
         .scrollDisabled(true)
     }
 }
