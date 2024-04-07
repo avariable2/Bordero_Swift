@@ -105,10 +105,21 @@ struct PDFBodyView : View {
     
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 40) {
-            HStack {
-                Image(systemName: "apple.logo")
-                    .font(.largeTitle)
+        VStack(alignment: .leading, spacing: 20) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading) {
+                    Image(systemName: "apple.logo")
+                        .font(.largeTitle)
+                    
+                    VStack(alignment: .leading) {
+                        Text("VVVV VVV")
+                        Text("6 rue du Pasteur")
+                        Text("5600 BANNES")
+                        Text("06 65 45 56 56")
+                        Text("lele.gmail@gmail.com")
+                        Text("www.oestopatebretagne.com")
+                    }
+                }
                 
                 Spacer()
                 
@@ -140,10 +151,12 @@ struct PDFBodyView : View {
                                 .gridCellColumns(3)
                         }
                     }
+                    .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .topLeading)
                     
                     VStack(alignment: .leading) {
                         Text("Facturé à".uppercased())
                             .foregroundStyle(.secondary)
+                            .font(.subheadline)
                             .bold()
                         
                         Text("Apple S.")
@@ -156,8 +169,8 @@ struct PDFBodyView : View {
                     .background(.green.opacity(0.13))
                     
                 }
-                .frame(height: 163)
             }
+            .frame(height: 155)
             
             VStack {
                 TableView()
@@ -212,6 +225,7 @@ struct CellInGridView: View {
         VStack(alignment: .leading) {
             Text(titre.uppercased())
                 .foregroundStyle(.secondary)
+                .font(.subheadline)
                 .bold()
             
             Text(information)
@@ -233,22 +247,38 @@ private struct TableView : View {
     
     var body: some View {
         Table(data) {
-            TableColumn("Libellé", value: \.libelle)
-            
-            TableColumn("Quantité") { purchase in
-                Text(purchase.quantity, format: .number)
+            TableColumn("Libellé") { purchase in
+                HStack {
+                    Image(systemName: "cross.case.circle.fill")
+                        .imageScale(.large)
+                        .foregroundStyle(.white, .purple)
+                    
+                    Text(purchase.libelle)
+                }
             }
+            
+            TableColumn("Qté") { purchase in
+                Text(purchase.quantity, format: .number)
+                    .multilineTextAlignment(.center)
+            }
+            .width(60)
             
             TableColumn("Montant HT") { purchase in
                 Text(purchase.priceHT, format: currencyStyle)
             }
+            .width(100)
+            
             TableColumn("TVA") { purchase in
                 Text(purchase.tva, format: .percent)
             }
+            .width(60)
             
             TableColumn("Montant TTC") { purchase in
                 Text(purchase.priceTTC, format: currencyStyle)
+                    .foregroundStyle(.primary)
+                    .fontWeight(.semibold)
             }
+            .width(100)
         }
         .scrollDisabled(true)
     }
