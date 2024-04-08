@@ -8,23 +8,20 @@
 import PDFKit
 import SwiftUI
 
-// PDF Viewer
 struct PDFKitView: UIViewRepresentable {
-    
-    let pdfDocument: PDFDocument
-    
-    init(pdfData pdfDoc: PDFDocument) {
-        self.pdfDocument = pdfDoc
-    }
+    var url: URL
     
     func makeUIView(context: Context) -> PDFView {
+        // Créer et configurer PDFView ici
         let pdfView = PDFView()
-        pdfView.document = pdfDocument
-        pdfView.autoScales = true
+        pdfView.autoScales = true // Ajuste automatiquement le PDF à la taille de la vue
         return pdfView
     }
     
     func updateUIView(_ pdfView: PDFView, context: Context) {
-        pdfView.document = pdfDocument
+        // Charger le document PDF
+        if let document = PDFDocument(url: url) {
+            pdfView.document = document
+        }
     }
 }

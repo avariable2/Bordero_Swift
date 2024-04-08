@@ -8,101 +8,127 @@
 import SwiftUI
 import PDFKit
 
+class PDFViewModel: ObservableObject {
+    @Published var generatedPDFURL: URL?
+    
+    @MainActor
+    func renderView(viewSize: CGSize) {
+        let renderer = ImageRenderer(content: PDFBodyView().frame(width: viewSize.width, height: viewSize.height, alignment: .center))
+        
+        let tempURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let renderURL = tempURL.appending(path: "\(UUID().uuidString).pdf")
+        
+        if let consumer = CGDataConsumer(url: renderURL as CFURL), let context = CGContext(consumer: consumer, mediaBox: nil, nil) {
+            renderer.render { size, renderer in
+                var mediaBox = CGRect(origin: .zero, size: size)
+                context.beginPage(mediaBox: &mediaBox)
+                renderer(context)
+                context.endPDFPage()
+                context.closePDF()
+                DispatchQueue.main.async {
+                    self.generatedPDFURL = renderURL
+                }
+            }
+        }
+    }
+}
+
+
 struct DisplayPDFView: View {
     @Environment(\.dismiss) var dismiss
     let facture : Facture
+    @ObservedObject var viewModel : PDFViewModel
     
     var body: some View {
         NavigationStack {
             VStack {
-                // Utiliser la fonction
-                if let pdfData = creerPDF(facture: facture) {
-                    // Vous pouvez sauvegarder pdfData dans un fichier, l'afficher dans un PDFView, etc.
-                    
-                    PDFKitView(pdfData: PDFDocument(data: pdfData)!)
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Fermer") {
-                                    dismiss()
-                                }
-                            }
-                        }
+                if let url = viewModel.generatedPDFURL {
+                    PDFKitView(url: url)
+                        .edgesIgnoringSafeArea(.all)
                 } else {
-                    ContentUnavailableView("Une erreur sait produite pour creer votre aperçus", systemImage: "exclamationmark.warninglight")
+                    VStack {
+                        ProgressView()
+                        Text("Génération du PDF en cours...")
+                    }
+                    
                 }
+            }
+            .onAppear {
+                viewModel.renderView(viewSize: CGSize(width: 612, height: 792))
             }
             .navigationTitle("Aperçus")
         }
     }
     
-    func creerPDF(facture: Facture) -> Data? {
-            let pdfMetaData = [
-                kCGPDFContextCreator: "Mon App",
-                kCGPDFContextAuthor: "votre_nom"
-            ]
-            let format = UIGraphicsPDFRendererFormat()
-            format.documentInfo = pdfMetaData as [String: Any]
-            
-            let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792) // Taille standard d'une page A4 en points à 72 DPI
-            let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
-            let data = renderer.pdfData { context in
-                context.beginPage()
-                
-                let attributes = [
-                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)
-                ]
-                let titleAttributes = [
-                    NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)
-                ]
-                
-                // Titre
-                let title = "\(facture.typeDocument == .facture ? "Facture" : "Devis")"
-                title.draw(at: CGPoint(x: 20, y: 20), withAttributes: titleAttributes)
-                
-                // Informations du praticien
-                let praticienInfo = """
-            Numéro Delit: \(facture.praticien.numeroDelit ?? "N/A")
-            Numéro SIREP: \(facture.praticien.numeroSIREP ?? "N/A")
-            Nom: \(facture.praticien.nom ?? "N/A")
-            Adresse: \(facture.praticien.adresse ?? "N/A")
-            Téléphone: \(facture.praticien.telephone ?? "N/A")
-            Email: \(facture.praticien.email ?? "N/A")
-            """
-                praticienInfo.draw(at: CGPoint(x: 20, y: 50), withAttributes: attributes)
-                
-                // Démarrez le rendu des éléments de la facture plus bas
-                var yOffset = 200
-                for utilisateur in facture.utilisateurs {
-                    let userInfo = "Utilisateur: \(utilisateur.nom), Adresse: \(utilisateur.adresse)"
-                    userInfo.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: attributes)
-                    yOffset += 20
-                }
-                
-                // Éléments de la facture
-                let itemsTitle = "Articles:"
-                itemsTitle.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: titleAttributes)
-                yOffset += 30
-                
-                for item in facture.elements {
-                    let itemInfo = "\(item.description) - Quantité: \(item.quantite) - Prix Unitaire: \(item.prixUnitaire)€ - Total: \(item.prixTotal)€"
-                    itemInfo.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: attributes)
-                    yOffset += 20
-                }
-                
-                // Si c'est un devis, ajouter un espace pour la signature
-                if !facture.signature {
-                    let signatureInfo = "Signature:"
-                    signatureInfo.draw(at: CGPoint(x: 20, y: yOffset + 20), withAttributes: titleAttributes)
-                    // Vous pourriez ajouter ici un espace pour une image de signature ou laisser de la place pour une signature manuscrite
-                }
-            }
-            
-            return data
-        }
+//    func creerPDF(facture: Facture) -> Data? {
+//        let pdfMetaData = [
+//            kCGPDFContextCreator: "Mon App",
+//            kCGPDFContextAuthor: "votre_nom"
+//        ]
+//        let format = UIGraphicsPDFRendererFormat()
+//        format.documentInfo = pdfMetaData as [String: Any]
+//        
+//        let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792) // Taille standard d'une page A4 en points à 72 DPI
+//        let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
+//        let data = renderer.pdfData { context in
+//            context.beginPage()
+//            
+//            let attributes = [
+//                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)
+//            ]
+//            let titleAttributes = [
+//                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)
+//            ]
+//            
+//            // Titre
+//            let title = "\(facture.typeDocument == .facture ? "Facture" : "Devis")"
+//            title.draw(at: CGPoint(x: 20, y: 20), withAttributes: titleAttributes)
+//            
+//            // Informations du praticien
+//            let praticienInfo = """
+//            Numéro Delit: \(facture.praticien.numeroDelit ?? "N/A")
+//            Numéro SIREP: \(facture.praticien.numeroSIREP ?? "N/A")
+//            Nom: \(facture.praticien.nom ?? "N/A")
+//            Adresse: \(facture.praticien.adresse ?? "N/A")
+//            Téléphone: \(facture.praticien.telephone ?? "N/A")
+//            Email: \(facture.praticien.email ?? "N/A")
+//            """
+//            praticienInfo.draw(at: CGPoint(x: 20, y: 50), withAttributes: attributes)
+//            
+//            // Démarrez le rendu des éléments de la facture plus bas
+//            var yOffset = 200
+//            for utilisateur in facture.utilisateurs {
+//                let userInfo = "Utilisateur: \(utilisateur.nom), Adresse: \(utilisateur.adresse)"
+//                userInfo.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: attributes)
+//                yOffset += 20
+//            }
+//            
+//            // Éléments de la facture
+//            let itemsTitle = "Articles:"
+//            itemsTitle.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: titleAttributes)
+//            yOffset += 30
+//            
+//            for item in facture.elements {
+//                let itemInfo = "\(item.description) - Quantité: \(item.quantite) - Prix Unitaire: \(item.prixUnitaire)€ - Total: \(item.prixTotal)€"
+//                itemInfo.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: attributes)
+//                yOffset += 20
+//            }
+//            
+//            // Si c'est un devis, ajouter un espace pour la signature
+//            if !facture.signature {
+//                let signatureInfo = "Signature:"
+//                signatureInfo.draw(at: CGPoint(x: 20, y: yOffset + 20), withAttributes: titleAttributes)
+//                // Vous pourriez ajouter ici un espace pour une image de signature ou laisser de la place pour une signature manuscrite
+//            }
+//        }
+//        
+//        return data
+//    }
 }
 
 struct PDFBodyView : View {
     static let color : Color = .accentColor.opacity(0.13)
+    static let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -178,25 +204,48 @@ struct PDFBodyView : View {
                 HStack {
                     Spacer()
                     
-                    VStack(alignment: .trailing) {
-                        VStack {
-                            HStack {
-                                Text("Montant total HT")
-                                
-                                Text("AAA")
-                            }
-                        }
+                    VStack(alignment: .trailing, spacing: 20) {
+                        RowSousTableView(text: "Sous total", value: "AAA")
+                        RowSousTableView(text: "Montant TVA total", value: "20 %")
                         
-                        VStack {
-                            HStack {
-                                Text("TVA")
-                                
-                                Text("AAA")
-                            }
+                        Divider()
+                        
+                        HStack {
+                            Text("Total".uppercased())
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .fontWeight(.semibold)
+                                .padding()
+                            
+                            Divider()
+                            
+                            Text("AAA")
+                                .padding(.leading, 50)
                         }
+                        .font(.title3)
+                        .frame(height:40)
+                        
+                        Divider()
+                    }
+                }
+                
+                HStack {
+                    Spacer()
+                    
+                    VStack {
+                        Text("A Vann, le 18/04/2020,")
+                            .font(.caption)
+                            .padding()
+                        
+                        Image(systemName: "signature")
+                            .font(.title)
                     }
                     
+                    
                 }
+                .padding()
+                
+                
             }
             .frame(alignment: .topLeading)
             
@@ -211,7 +260,7 @@ struct PDFBodyView : View {
 }
 
 #Preview {
-//    DisplayPDFView(facture: exempleFacture)
+    //    DisplayPDFView(facture: exempleFacture)
     PDFBodyView()
 }
 
@@ -238,12 +287,7 @@ private struct TableView : View {
     @State private var data = [
         TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
         TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
-        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
-        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
-        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
     ]
-    
-    let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
     
     var body: some View {
         Table(data) {
@@ -263,7 +307,7 @@ private struct TableView : View {
             .width(60)
             
             TableColumn("Montant HT") { purchase in
-                Text(purchase.priceHT, format: currencyStyle)
+                Text(purchase.priceHT, format: PDFBodyView.currencyStyle)
             }
             .width(100)
             
@@ -273,7 +317,7 @@ private struct TableView : View {
             .width(60)
             
             TableColumn("Montant TTC") { purchase in
-                Text(purchase.priceTTC, format: currencyStyle)
+                Text(purchase.priceTTC, format: PDFBodyView.currencyStyle)
                     .foregroundStyle(.primary)
                     .fontWeight(.semibold)
             }
@@ -292,4 +336,21 @@ private struct TableData: Identifiable {
     let priceTTC: Decimal
     
     let id = UUID()
+}
+
+struct RowSousTableView: View {
+    let text : String
+    let value : String
+    let isPourcent : Bool = false
+    
+    var body: some View {
+        HStack {
+            Text(text)
+                .foregroundStyle(.secondary)
+            
+            Text(value)
+                .bold()
+            
+        }
+    }
 }

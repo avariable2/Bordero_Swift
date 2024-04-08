@@ -106,7 +106,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                 
                 Section {
                     LabeledContent {
-                        TextField("Facultatif", text: $numero)
+                        TextField("facultatif", text: $numero)
                             .textContentType(.telephoneNumber)
                             .keyboardType(.phonePad)
                             .focused($focusedField, equals: .phone)
@@ -121,7 +121,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                 
                 Section {
                     LabeledContent {
-                        TextField("Facultatif", text: $email)
+                        TextField("facultatif", text: $email)
                             .textContentType(.emailAddress)
                             .keyboardType(.emailAddress)
                             .textInputAutocapitalization(.never)

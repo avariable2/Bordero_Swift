@@ -197,7 +197,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
         .sheet(item: $activeSheet) { item in
             switch item {
             case .apercusDocument(facture : let facture):
-                DisplayPDFView(facture: facture)
+                DisplayPDFView(facture: facture, viewModel: PDFViewModel())
                     .presentationDetents([.large])
             case .selectClient:
                 ListClients(callbackClientClick: { client in
