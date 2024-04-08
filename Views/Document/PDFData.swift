@@ -15,6 +15,7 @@ struct Facture {
         var adresse: String?
         var telephone: String?
         var email: String?
+        var website : String?
     }
     
     struct Utilisateur {
@@ -52,7 +53,8 @@ let exempleFacture = Facture(
         nom: "Dr. Exemple",
         adresse: "123 Rue Exemple, Exempleville",
         telephone: "0102030405",
-        email: "dr.exemple@example.com"
+        email: "dr.exemple@example.com",
+        website: "dr.example.com"
     ),
     utilisateurs: [
         Facture.Utilisateur(nom: "Jean Dupont", adresse: "456 Rue Autre, Autreville")

@@ -25,3 +25,32 @@ struct PDFKitView: UIViewRepresentable {
         }
     }
 }
+
+struct PDFKitView2: UIViewRepresentable {
+    
+    
+    typealias UIViewType = PDFView
+    
+    let pdfDocument : PDFDocument
+    
+    init(showing pdfDoc: PDFDocument){
+        self.pdfDocument = pdfDoc
+    }
+    
+    func makeUIView(context: UIViewRepresentableContext<PDFKitView>) -> UIViewType {
+        let pdfView =  PDFView()
+        pdfView.document = pdfDocument
+        pdfView.autoScales = true
+        return pdfView
+    }
+    func makeUIView(context: Context) -> PDFView {
+        let pdfView =  PDFView()
+        pdfView.document = pdfDocument
+        pdfView.autoScales = true
+        return pdfView
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        
+    }
+}
