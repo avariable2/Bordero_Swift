@@ -115,8 +115,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         }
         .onAppear {
             if let typeActe = typeActeToModify {
-                nom = typeActe.name ?? ""
-                description = typeActe.info ?? ""
+                nom = typeActe.name
+                description = typeActe.info
                 prix = typeActe.price
                 
                 applyTVA = typeActe.tva != 0

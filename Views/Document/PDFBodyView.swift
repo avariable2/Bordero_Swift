@@ -12,6 +12,8 @@ struct PDFBodyView : View {
     static let color : Color = .gray.opacity(0.05)
     static let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
     
+    let data : DocumentData
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .top) {
@@ -21,7 +23,7 @@ struct PDFBodyView : View {
                         .padding(.bottom)
                     
                     VStack(alignment: .leading) {
-                        Text("VVVV VVV")
+                        Text("\(data.praticien.firstname)")
                         Text("6 rue du Pasteur")
                         Text("5600 BANNES")
                         Text("06 65 45 56 56")
@@ -45,7 +47,7 @@ struct PDFBodyView : View {
                 
                 CoutPartView()
                 
-                HStack {
+                HStack(alignment: .top) {
                     
                     VStack(alignment: .leading) {
                         Text("Commentaires : ")
@@ -58,13 +60,13 @@ struct PDFBodyView : View {
                     
                     VStack {
                         Text("A Vann, le 18/04/2020,")
-                            .font(.caption)
                             .padding()
                         
                         Image(systemName: "signature")
                             .font(.title)
                     }
                 }
+                .font(.caption)
                 .padding()
             }
             .frame(alignment: .topLeading)
@@ -127,7 +129,7 @@ private struct TableView : View {
                     .gridCellColumns(1)
             }
             .frame(maxWidth: .infinity)
-            .font(.body)
+            .font(.caption)
             .padding(3)
             .foregroundStyle(.primary.opacity(0.65))
             .background(PDFBodyView.color)
@@ -165,6 +167,7 @@ private struct TableView : View {
             }
         }
         .frame(maxWidth: .infinity)
+        .font(.callout)
         
     }
 }
@@ -177,30 +180,6 @@ private struct TableData: Identifiable {
     let priceTTC: Decimal
     
     let id = UUID()
-}
-
-struct RowSousTableView: View {
-    let text : String
-    let value : String
-    let isPourcent : Bool = false
-    
-    var body: some View {
-        HStack {
-            Text(text)
-                .font(.body)
-                .foregroundStyle(.primary.opacity(0.65))
-            
-            Text(value)
-                .font(.body)
-                .bold()
-            
-        }
-    }
-}
-
-#Preview {
-    //    DisplayPDFView(facture: exempleFacture, viewModel: PDFViewModel())
-    PDFBodyView()
 }
 
 struct GridPdfInfoView: View {
@@ -291,7 +270,7 @@ struct CoutPartView: View {
                     Text("Total".uppercased())
                         .foregroundStyle(.secondary)
                         .fontWeight(.semibold)
-                        .padding()
+                        .padding(.trailing)
                     
                     Divider()
                     
@@ -300,7 +279,7 @@ struct CoutPartView: View {
                         .bold()
                         .padding(.leading, 50)
                 }
-                .frame(height:40)
+                .frame(height: 20)
                 
                 Divider()
             }
@@ -308,4 +287,26 @@ struct CoutPartView: View {
             
         }
     }
+}
+
+struct RowSousTableView: View {
+    let text : String
+    let value : String
+    let isPourcent : Bool = false
+    
+    var body: some View {
+        HStack {
+            Text(text)
+                .foregroundStyle(.primary.opacity(0.65))
+            
+            Text(value)
+                .bold()
+        }
+        .font(.callout)
+    }
+}
+
+#Preview {
+    //    DisplayPDFView(facture: exempleFacture, viewModel: PDFViewModel())
+    PDFBodyView(data: exempleFacture)
 }

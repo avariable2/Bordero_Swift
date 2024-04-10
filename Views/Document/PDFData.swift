@@ -7,63 +7,63 @@
 
 import Foundation
 
-struct Facture {
-    struct Praticien {
-        var numeroDelit: String?
-        var numeroSIREP: String?
-        var nom: String?
-        var adresse: String?
-        var telephone: String?
-        var email: String?
-        var website : String?
-    }
+struct DocumentData {
+    typealias TableElement = (Int, TypeActe)
     
-    struct Utilisateur {
-        var nom: String
-        var adresse: String
-        // Ajoutez d'autres champs nécessaires
-    }
-    
-    struct ElementFacture {
-        var description: String
-        var quantite: Int
-        var prixUnitaire: Double
-        var prixTotal: Double {
-            Double(quantite) * prixUnitaire
-        }
-    }
-    
-    enum TypeDocument {
-        case facture, devis
+    struct OptionsLegalDocument {
+        var typeDocument : TypeDoc
+        var payementAllow : [Payement]
+        var payementFinish : Bool
+        var payementUse : Payement?
+        var dateCreated : Date
+        var dateEcheance : Date
+        var remise : Int?
     }
     
     var praticien: Praticien
-    var utilisateurs: [Utilisateur]
-    var typeDocument: TypeDocument
-    var numeroDocument: String
-    var elements: [ElementFacture]
-    var signature: Bool // true pour facture, false pour devis
+    var clients: [Client]
+    var elements: [TableElement]
+    var optionsDocument : OptionsLegalDocument
 }
 
 // Exemple de données
-let exempleFacture = Facture(
-    praticien: Facture.Praticien(
-        numeroDelit: "12345",
-        numeroSIREP: "67890",
-        nom: "Dr. Exemple",
-        adresse: "123 Rue Exemple, Exempleville",
-        telephone: "0102030405",
-        email: "dr.exemple@example.com",
-        website: "dr.example.com"
-    ),
-    utilisateurs: [
-        Facture.Utilisateur(nom: "Jean Dupont", adresse: "456 Rue Autre, Autreville")
-    ],
-    typeDocument: .facture,
-    numeroDocument: "FAC-001",
-    elements: [
-        Facture.ElementFacture(description: "Consultation", quantite: 1, prixUnitaire: 50.0),
-        Facture.ElementFacture(description: "Radiographie", quantite: 2, prixUnitaire: 30.0)
-    ],
-    signature: true
+//let exempleFacture = DocumentData(
+//    praticien: DocumentData.Praticien(
+//        numeroDelit: "12345",
+//        numeroSIREP: "67890",
+//        nom: "Dr. Exemple",
+//        adresse: "123 Rue Exemple, Exempleville",
+//        telephone: "0102030405",
+//        email: "dr.exemple@example.com",
+//        website: "dr.example.com"
+//    ),
+//    utilisateurs: [
+//        DocumentData.Utilisateur(nom: "Jean Dupont", adresse: "456 Rue Autre, Autreville")
+//    ],
+//    typeDocument: .facture,
+//    numeroDocument: "FAC-001",
+//    elements: [
+//        DocumentData.ElementFacture(description: "Consultation", quantite: 1, prixUnitaire: 50.0),
+//        DocumentData.ElementFacture(description: "Radiographie", quantite: 2, prixUnitaire: 30.0)
+//    ],
+//    signature: true
+//)
+
+let fakePraticien = Praticien(firstname: "Adrien", lastname: "VARY", phone: "07 67 91 90 44", email: "email.vary@gmail.com", website: "", siret: "0245654", adeli: "021547896321", context: DataController.shared.container.viewContext)
+
+let client = Client(firstname: "Pierre", lastname: "Je commence", phone: "", email: "", context: DataController.shared.container.viewContext)
+
+let typeActe = TypeActe(name: "Séance bi", price: 50, tva: 0, context: DataController.shared.container.viewContext)
+
+let exempleFacture = DocumentData(
+    praticien: fakePraticien,
+    clients: [client],
+    elements: [DocumentData.TableElement(1, typeActe), DocumentData.TableElement(1, typeActe)],
+    optionsDocument: DocumentData.OptionsLegalDocument(
+        typeDocument: .facture,
+        payementAllow: [Payement.carte,Payement.cheque,],
+        payementFinish: false,
+        dateCreated: Date(),
+        dateEcheance: Date()
+    )
 )

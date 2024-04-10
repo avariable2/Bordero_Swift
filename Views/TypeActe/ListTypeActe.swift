@@ -13,7 +13,7 @@ struct ListTypeActe: View {
     @FetchRequest(sortDescriptors: [], predicate: NSPredicate(
         format: "version <= %d",
         argumentArray: [FormTypeActeSheet.getVersion()]
-    )) var typeActes: FetchedResults<TypeActe>
+    ), animation: .bouncy) var typeActes: FetchedResults<TypeActe>
     @State private var searchText = ""
     
     @State private var showingAlert: Bool = false
@@ -99,7 +99,7 @@ struct ListTypeActe: View {
     func filteredTypeActe(typeActes: [TypeActe], searchText: String) -> [TypeActe] {
         guard !searchText.isEmpty else { return typeActes }
         return typeActes.filter { type in
-            type.name?.lowercased().contains(searchText.lowercased()) == true
+            type.name.lowercased().contains(searchText.lowercased()) == true
         }
     }
     

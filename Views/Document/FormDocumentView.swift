@@ -8,6 +8,30 @@
 import SwiftUI
 import ScrollableGradientBackground
 
+enum TypeDoc : String, CaseIterable, Identifiable {
+    case facture, devis
+    
+    var id: Self { self }
+}
+
+enum Payement : String, CaseIterable, Identifiable {
+    case carte, especes, virement, cheque
+    
+    var id : Self { self }
+    var rawValue: String {
+        switch self {
+        case .carte:
+            "Carte"
+        case .especes:
+            "Espèces"
+        case .virement:
+            "Virement bancaire"
+        case .cheque:
+            "Chèque"
+        }
+    }
+}
+
 struct FormDocumentView: View {
     var body: some View {
         NavigationStack {
@@ -18,30 +42,6 @@ struct FormDocumentView: View {
 }
 
 struct ModifierDocumentView: View, Saveable, Versionnable {
-    enum TypeDoc : String, CaseIterable, Identifiable {
-        case facture, devis
-        
-        var id: Self { self }
-    }
-    
-    enum Payement : String, CaseIterable, Identifiable {
-        case carte, especes, virement, cheque
-        
-        var id : Self { self }
-        var rawValue: String {
-            switch self {
-            case .carte:
-                "Carte"
-            case .especes:
-                "Espèces"
-            case .virement:
-                "Virement bancaire"
-            case .cheque:
-                "Chèque"
-            }
-        }
-    }
-    
     static func getVersion() -> Int32 {
         return 1
     }
@@ -79,6 +79,20 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
             
             Section {
+                if !clients.isEmpty {
+                    List {
+                        ForEach(clients) { client in
+                            ClientRowView(
+                                firstname: client.firstname,
+                                name: client.lastname
+                            )
+                        }
+                        .onDelete(perform: { indexSet in
+                            clients.remove(atOffsets: indexSet)
+                        })
+                    }
+                }
+                
                 Button {
                     activeSheet = .selectClient
                 } label: {
@@ -91,38 +105,12 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     }
                 }
                 
-                if !clients.isEmpty {
-                    List {
-                        ForEach(clients) { client in
-                            ClientRowView(
-                                firstname: client.firstname ?? "Inconnu",
-                                name: client.name ?? ""
-                            )
-                        }
-                        .onDelete(perform: { indexSet in
-                            clients.remove(atOffsets: indexSet)
-                        })
-                    }
-                }
-                
             } header: {
                 Text("Client(s) séléctionné(s)")
             }
             
             // MARK: - Partie type Acte
             Section {
-                Button {
-                    activeSheet = .selectTypeActe
-                } label: {
-                    Label {
-                        Text("ajouter un type d'acte")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(.white, .green)
-                    }
-                }
-                
                 if !listTypeActes.isEmpty {
                     List {
                         ForEach(listTypeActes.indices, id: \.self) { index in
@@ -135,6 +123,18 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         .onDelete(perform: { indexSet in
                             listTypeActes.remove(atOffsets: indexSet)
                         })
+                    }
+                }
+                
+                Button {
+                    activeSheet = .selectTypeActe
+                } label: {
+                    Label {
+                        Text("ajouter un type d'acte")
+                            .tint(.primary)
+                    } icon: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(.white, .green)
                     }
                 }
             } header : {
@@ -227,15 +227,15 @@ private struct ClientRowView: View {
     let name : String
     
     var body: some View {
-        HStack {
-            ProfilImageView(imageData: nil)
-            
+        Label {
             VStack {
                 Text(firstname)
                 + Text(" ")
                 + Text(name)
                     .bold()
             }
+        } icon: {
+            ProfilImageView(imageData: nil)
         }
     }
 }

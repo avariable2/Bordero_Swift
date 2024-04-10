@@ -11,7 +11,7 @@ struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Client.name, ascending: true)], predicate: NSPredicate(
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Client.name_, ascending: true)], predicate: NSPredicate(
         format: "version <= %d",
         argumentArray: [FormClientSheet.getVersion()]
     ))  var clients: FetchedResults<Client>
@@ -48,7 +48,7 @@ struct ListClients: View {
                     ScrollViewReader { proxy in
                         
                         let noNameClients = filteredClients.filter {
-                            let firstChar = $0.name?.uppercased().prefix(1) ?? "#"
+                            let firstChar = $0.name_?.uppercased().prefix(1) ?? "#"
                             return !alphabet.contains(String(firstChar))
                         }
                         
@@ -59,7 +59,7 @@ struct ListClients: View {
                                     
                                     // Filtre les nom par la lettre
                                     let tabFiltered = filteredClients.filter({ client -> Bool in
-                                        guard let firstLetter = client.name?.prefix(1).uppercased() else { return false }
+                                        guard let firstLetter = client.name_?.prefix(1).uppercased() else { return false }
                                         return firstLetter == letter
                                     })
                                     
@@ -181,7 +181,7 @@ struct ListClients: View {
     func filteredClients(clients: [Client], searchText: String) -> [Client] {
         guard !searchText.isEmpty else { return clients }
         return clients.filter { client in
-            client.firstname?.lowercased().contains(searchText.lowercased()) == true || client.name?.lowercased().contains(searchText.lowercased()) == true
+            client.firstname.lowercased().contains(searchText.lowercased()) == true || client.lastname.lowercased().contains(searchText.lowercased()) == true
         }
     }
 }
@@ -197,13 +197,13 @@ struct SectionIndexButton: View {
             Button(action: {
                 // Logique de défilement ajustée
                 if letter == "#" {
-                    if filteredClients.first(where: { $0.name?.isEmpty ?? true }) != nil {
+                    if filteredClients.first(where: { $0.name_?.isEmpty ?? true }) != nil {
                         withAnimation {
                             proxy.scrollTo("#")
                         }
                     }
                 } else {
-                    if filteredClients.first(where: { $0.name?.prefix(1) ?? "0" == letter }) != nil {
+                    if filteredClients.first(where: { $0.name_?.prefix(1) ?? "0" == letter }) != nil {
                         withAnimation {
                             proxy.scrollTo(letter)
                         }
@@ -231,9 +231,9 @@ struct ClientRow: View {
                 dismiss()
             } label: {
                 HStack {
-                    Text(client.firstname ?? "Inconnu")
+                    Text(client.firstname)
                     + Text(" ")
-                    + Text(client.name ?? "").bold()
+                    + Text(client.lastname).bold()
                     Spacer()
                 }
                 .tint(.primary)
@@ -241,9 +241,9 @@ struct ClientRow: View {
         } else {
             NavigationLink(value: client) {
                 HStack {
-                    Text(client.firstname ?? "Inconnu")
+                    Text(client.firstname)
                     + Text(" ")
-                    + Text(client.name ?? "").bold()
+                    + Text(client.lastname).bold()
                     Spacer()
                 }
             }
@@ -255,10 +255,10 @@ struct ClientRow: View {
 extension Client : Comparable {
     public static func < (lhs: Client, rhs: Client) -> Bool {
         // Fournir des valeurs par défaut pour les chaînes optionnelles pour la comparaison
-        let lhsName = lhs.name ?? ""
-        let lhsFirstname = lhs.firstname ?? ""
-        let rhsName = rhs.name ?? ""
-        let rhsFirstname = rhs.firstname ?? ""
+        let lhsName = lhs.lastname
+        let lhsFirstname = lhs.firstname
+        let rhsName = rhs.lastname
+        let rhsFirstname = rhs.firstname
         
         return (lhsName, lhsFirstname) < (rhsName, rhsFirstname)
     }

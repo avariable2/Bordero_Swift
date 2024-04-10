@@ -24,7 +24,7 @@ struct ClientDetailView: View {
                         .font(.system(size: 30))
                     
                     
-                    Text("\(client.firstname ?? "Inconnu") \(client.name ?? "Inc")")
+                    Text("\(client.firstname) \(client.lastname)")
                         .font(.title2)
                         .bold()
                     
@@ -61,37 +61,33 @@ struct ClientDetailView: View {
             }
             
             Section {
-                if let email = client.email {
-                    RowIconColor(
-                        text: email.isEmpty ? "Aucun e-mail renseigné" : email,
-                        systemName: "envelope.circle.fill",
-                        color: .blue,
-                        accessibility: "L'e-mail du client"
-                    )
-                    .contextMenu {
-                        Button(action: {
-                            UIPasteboard.general.string = email
-                        }) {
-                            Text("Copier")
-                            Image(systemName: "doc.on.doc")
-                        }
+                RowIconColor(
+                    text: client.email.isEmpty ? "Aucun e-mail renseigné" : client.email,
+                    systemName: "envelope.circle.fill",
+                    color: .blue,
+                    accessibility: "L'e-mail du client"
+                )
+                .contextMenu {
+                    Button(action: {
+                        UIPasteboard.general.string = client.email
+                    }) {
+                        Text("Copier")
+                        Image(systemName: "doc.on.doc")
                     }
                 }
                 
-                if let phone = client.phone {
-                    RowIconColor(
-                        text: phone.isEmpty ? "Aucun téléphone renseigné" : phone,
-                        systemName: "phone.circle.fill",
-                        color: .green,
-                        accessibility: "Le numéro de téléphone du client"
-                    )
-                    .contextMenu {
-                        Button(action: {
-                            UIPasteboard.general.string = phone
-                        }) {
-                            Text("Copier")
-                            Image(systemName: "doc.on.doc")
-                        }
+                RowIconColor(
+                    text: client.phone.isEmpty ? "Aucun téléphone renseigné" : client.phone,
+                    systemName: "phone.circle.fill",
+                    color: .green,
+                    accessibility: "Le numéro de téléphone du client"
+                )
+                .contextMenu {
+                    Button(action: {
+                        UIPasteboard.general.string = client.phone
+                    }) {
+                        Text("Copier")
+                        Image(systemName: "doc.on.doc")
                     }
                 }
             }

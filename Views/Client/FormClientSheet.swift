@@ -220,10 +220,10 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
             })
             .onAppear {
                 guard let client = clientToModify else { return }
-                prenom = client.firstname ?? ""
-                nom = client.name ?? ""
-                numero = client.phone ?? ""
-                email = client.email ?? ""
+                prenom = client.firstname
+                nom = client.lastname
+                numero = client.phone
+                email = client.email
                 
                 if client.adresses != nil {
                     for address in client.adresses! {
@@ -265,7 +265,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
             client.id = UUID()
         }
         
-        client.name = nom
+        client.lastname = nom
         client.firstname = prenom
         client.email = email
         client.phone = numero
