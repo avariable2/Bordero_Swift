@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct PDFBodyView : View {
-    static let color : Color = .accentColor.opacity(0.13)
+    static let color : Color = .gray.opacity(0.05)
     static let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
     
     var body: some View {
@@ -35,7 +35,7 @@ struct PDFBodyView : View {
                 
                 Text("Facture")
                     .font(.largeTitle)
-                    .bold()
+                    .foregroundStyle(.secondary)
             }
             
             GridPdfInfoView()
@@ -43,33 +43,17 @@ struct PDFBodyView : View {
             VStack {
                 TableView()
                 
-                HStack {
-                    Spacer()
-                    
-                    VStack(alignment: .trailing, spacing: 20) {
-                        RowSousTableView(text: "Sous total", value: "AAA")
-                        RowSousTableView(text: "Montant TVA total", value: "20 %")
-                        
-                        Divider()
-                        
-                        HStack {
-                            Text("Total".uppercased())
-                                .foregroundStyle(.secondary)
-                                .fontWeight(.semibold)
-                                .padding()
-                            
-                            Divider()
-                            
-                            Text("AAA")
-                                .padding(.leading, 50)
-                        }
-                        .frame(height:40)
-                        
-                        Divider()
-                    }
-                }
+                CoutPartView()
                 
                 HStack {
+                    
+                    VStack(alignment: .leading) {
+                        Text("Commentaires : ")
+                            .fontWeight(.semibold)
+                        
+                        Text("Mode de règlement : Chèques")
+                    }
+                    
                     Spacer()
                     
                     VStack {
@@ -101,14 +85,15 @@ struct CellInGridView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(titre.uppercased())
-                .foregroundStyle(.secondary)
-                .bold()
+                .font(.caption2)
+                .foregroundStyle(.primary.opacity(0.65))
             
             Text(information)
+                .font(.caption)
         }
         .padding(5)
         .frame(maxWidth: .infinity, alignment: .topLeading)
-//        .background(PDFBodyView.color)
+        //        .background(PDFBodyView.color)
     }
 }
 
@@ -116,8 +101,9 @@ private struct TableView : View {
     @State private var data = [
         TableData(libelle: "Consultation en oestéopathie/Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
         TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
+        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
     ]
-
+    
     var body: some View {
         Grid(
             alignment: .topLeading, horizontalSpacing: 2,
@@ -126,7 +112,6 @@ private struct TableView : View {
             // En-tête
             GridRow {
                 Text("Libellé")
-                    .border(.brown)
                     .gridCellColumns(4)
                 
                 Text("Qté")
@@ -142,11 +127,11 @@ private struct TableView : View {
                     .gridCellColumns(1)
             }
             .frame(maxWidth: .infinity)
-            .font(.callout)
-            .padding(5)
-            .fontWeight(.semibold)
-            .background(Color.gray.opacity(0.2))
-
+            .font(.body)
+            .padding(3)
+            .foregroundStyle(.primary.opacity(0.65))
+            .background(PDFBodyView.color)
+            
             // Données
             ForEach(data) { purchase in
                 GridRow {
@@ -157,7 +142,7 @@ private struct TableView : View {
                         
                         Text(purchase.libelle)
                             .lineLimit(purchase.libelle.count > 50 ? 2 : 1, reservesSpace: true)
-                            
+                        
                     }
                     .gridCellColumns(4)
                     
@@ -202,9 +187,11 @@ struct RowSousTableView: View {
     var body: some View {
         HStack {
             Text(text)
-                .foregroundStyle(.secondary)
+                .font(.body)
+                .foregroundStyle(.primary.opacity(0.65))
             
             Text(value)
+                .font(.body)
                 .bold()
             
         }
@@ -212,62 +199,62 @@ struct RowSousTableView: View {
 }
 
 #Preview {
-//    DisplayPDFView(facture: exempleFacture, viewModel: PDFViewModel())
-        PDFBodyView()
+    //    DisplayPDFView(facture: exempleFacture, viewModel: PDFViewModel())
+    PDFBodyView()
 }
 
 struct GridPdfInfoView: View {
     var body: some View {
         Grid(alignment: .top, horizontalSpacing: 2, verticalSpacing: 2) {
             GridRow {
-                    Grid(alignment: .topLeading, horizontalSpacing: 1, verticalSpacing: 1) {
-                        GridRow {
-                            CellInGridView(titre: "Nom de société", information: "Cabinet d'ostéopathie")
-                                .gridCellColumns(6)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 0)
-                                        .stroke(Color.white, lineWidth: 1)
-                                )
-                        }
+                Grid(alignment: .topLeading, horizontalSpacing: 1, verticalSpacing: 1) {
+                    GridRow {
+                        CellInGridView(titre: "Nom de société", information: "Cabinet d'ostéopathie")
+                            .gridCellColumns(6)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.white, lineWidth: 1)
+                            )
+                    }
+                    
+                    GridRow {
+                        CellInGridView(titre: "N° SIRET", information: "80378752200025")
+                            .gridCellColumns(3)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.white, lineWidth: 1)
+                            )
                         
-                        GridRow {
-                            CellInGridView(titre: "N° SIRET", information: "80378752200025")
-                                .gridCellColumns(3)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 0)
-                                        .stroke(Color.white, lineWidth: 1)
-                                )
-                            
-                            CellInGridView(titre: "N° ADELI", information: "220001481")
-                                .gridCellColumns(3)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 0)
-                                        .stroke(Color.white, lineWidth: 1)
-                                )
-                        }
-                        
-                        GridRow {
-                            CellInGridView(titre: "Date de facture", information: "31 aout 2024")
-                                .gridCellColumns(3)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 0)
-                                        .stroke(Color.white, lineWidth: 1)
-                                )
-                            CellInGridView(titre: "N° de document", information: "20240318004")
-                                .gridCellColumns(3)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 0)
-                                        .stroke(Color.white, lineWidth: 1)
-                                )
-                        }
+                        CellInGridView(titre: "N° ADELI", information: "220001481")
+                            .gridCellColumns(3)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.white, lineWidth: 1)
+                            )
+                    }
+                    
+                    GridRow {
+                        CellInGridView(titre: "Date de facture", information: "31 aout 2024")
+                            .gridCellColumns(3)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.white, lineWidth: 1)
+                            )
+                        CellInGridView(titre: "N° de document", information: "20240318004")
+                            .gridCellColumns(3)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .stroke(Color.white, lineWidth: 1)
+                            )
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-//                .border(.pink)
+                //                .border(.pink)
                 
                 VStack(alignment: .leading) {
                     Text("Facturé à".uppercased())
-                        .foregroundStyle(.secondary)
-                        .bold()
+                        .font(.caption2)
+                        .foregroundStyle(.primary.opacity(0.65))
                     
                     Text("Apple S.")
                     Text("San Franscisco")
@@ -276,12 +263,49 @@ struct GridPdfInfoView: View {
                 }
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-//                .background(PDFBodyView.color)
-//                .border(.pink)
+                //                .background(PDFBodyView.color)
+                //                .border(.pink)
             }
             .background(PDFBodyView.color)
             .font(.caption)
             .frame(height: 127)
+        }
+    }
+}
+
+struct CoutPartView: View {
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            
+            VStack(alignment: .trailing, spacing: 15) {
+                
+                RowSousTableView(text: "Sous total", value: "55 €")
+                
+                RowSousTableView(text: "Montant TVA total", value: "20 %")
+                
+                Divider()
+                
+                HStack {
+                    Text("Total".uppercased())
+                        .foregroundStyle(.secondary)
+                        .fontWeight(.semibold)
+                        .padding()
+                    
+                    Divider()
+                    
+                    Text("50 €")
+                        .font(.title3)
+                        .bold()
+                        .padding(.leading, 50)
+                }
+                .frame(height:40)
+                
+                Divider()
+            }
+            .padding()
+            
         }
     }
 }
