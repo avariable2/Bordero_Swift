@@ -17,6 +17,7 @@ struct DocumentData {
         var payementFinish : Bool
         var payementUse : Payement?
         var dateCreated : Date
+        var afficherDateEcheance : Bool = true
         var dateEcheance : Date
         var remise : Int?
     }
@@ -32,7 +33,7 @@ let fakePraticien = Praticien(firstname: "Adrien", lastname: "VARY", phone: "07 
 
 let client = Client(firstname: "Pierre-Louis-Adrien", lastname: "Je commence", phone: "000000", email: "email.vary@gmail.comemail.vary@gmail.comemail.vary@gmail.comemail.vary@gmail.comemail.vary@gmail.com", context: DataController.shared.container.viewContext)
 
-let typeActe = TypeActe(name: "Séance bi", price: 50, tva: 0, context: DataController.shared.container.viewContext)
+let typeActe = TypeActe(name: "Séance bi", price: 50, tva: 0.20, context: DataController.shared.container.viewContext)
 
 let exempleFacture = DocumentData(
     praticien: fakePraticien,

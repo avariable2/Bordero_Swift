@@ -47,14 +47,9 @@ struct PDFBodyView : View {
             
             GridPdfInfoView(data: data)
             
-            VStack {
-                TableView(data: data.elements)
-                
-                CoutPartView()
-                
-                ExtractedView()
-            }
-            .frame(alignment: .topLeading)
+            TableView(data: data.elements)
+            
+            PayementEtSignature(data: data)
         }
         .font(.callout)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -87,6 +82,11 @@ struct CellInGridView: View {
 private struct TableView : View {
     private var dataTab : [TableData]  = []
     
+    private var sousTot : Decimal = 0
+    private var montantTva : Decimal = 0
+    private var total : Decimal = 0
+    
+    // Memo : TABLE ELEMENT => (quantité, TypeActe object)
     init(data: [DocumentData.TableElement]) {
         for tableElement in data {
             self.dataTab.append(
@@ -98,71 +98,80 @@ private struct TableView : View {
                     priceTTC: Decimal(tableElement.1.total)
                 )
             )
+            
+            sousTot = sousTot + Decimal(tableElement.1.price)
+            montantTva = montantTva + (Decimal(tableElement.1.tva) * Decimal(tableElement.1.price))
+            total = total + Decimal(tableElement.1.total)
         }
     }
     var body: some View {
-        Grid(
-            alignment: .topLeading, horizontalSpacing: 2,
-            verticalSpacing: 2
-        ) {
-            // En-tête
-            GridRow {
-                Text("Libellé")
-                    .gridCellColumns(4)
-                
-                Text("Qté")
-                    .gridCellColumns(1)
-                
-                Text("HT")
-                    .gridCellColumns(1)
-                
-                Text("TVA")
-                    .gridCellColumns(1)
-                
-                Text("TTC")
-                    .gridCellColumns(1)
-            }
-            .frame(maxWidth: .infinity)
-            .font(.caption)
-            .padding(3)
-            .foregroundStyle(.primary.opacity(0.65))
-            .background(PDFBodyView.color)
-            
-            // Données
-            ForEach(dataTab) { purchase in
+        VStack {
+            Grid(
+                alignment: .topLeading, horizontalSpacing: 2,
+                verticalSpacing: 2
+            ) {
+                // En-tête
                 GridRow {
-                    HStack(alignment: .center) {
-                        Image(systemName: "cross.case.circle.fill")
-                            .imageScale(.large)
-                            .foregroundStyle(.white, .purple)
-                        
-                        Text(purchase.libelle)
-                            .lineLimit(purchase.libelle.count > 50 ? 2 : 1, reservesSpace: true)
-                        
-                    }
-                    .gridCellColumns(4)
+                    Text("Libellé")
+                        .gridCellColumns(4)
                     
-                    Text("\(purchase.quantity)")
+                    Text("Qté")
                         .gridCellColumns(1)
                     
-                    Text(purchase.priceHT, format: PDFBodyView.currencyStyle)
+                    Text("HT")
                         .gridCellColumns(1)
                     
-                    Text(purchase.tva, format: .percent)
+                    Text("TVA")
                         .gridCellColumns(1)
                     
-                    Text(purchase.priceTTC, format: PDFBodyView.currencyStyle)
-                        .fontWeight(.semibold)
+                    Text("TTC")
                         .gridCellColumns(1)
-                    
                 }
                 .frame(maxWidth: .infinity)
-                .padding([.top, .bottom], 5)
+                .font(.caption)
+                .padding(3)
+                .foregroundStyle(.primary.opacity(0.65))
+                .background(PDFBodyView.color)
+                
+                // Données
+                ForEach(dataTab) { purchase in
+                    GridRow {
+                        HStack(alignment: .center) {
+                            Image(systemName: "cross.case.circle.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.white, .purple)
+                            
+                            Text(purchase.libelle)
+                                .lineLimit(purchase.libelle.count > 50 ? 2 : 1, reservesSpace: true)
+                            
+                        }
+                        .gridCellColumns(4)
+                        
+                        Text("\(purchase.quantity)")
+                            .gridCellColumns(1)
+                        
+                        Text(purchase.priceHT, format: PDFBodyView.currencyStyle)
+                            .gridCellColumns(1)
+                        
+                        Text(purchase.tva, format: .percent)
+                            .gridCellColumns(1)
+                        
+                        Text(purchase.priceTTC, format: PDFBodyView.currencyStyle)
+                            .fontWeight(.semibold)
+                            .gridCellColumns(1)
+                        
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding([.top, .bottom], 5)
+                }
             }
+            .frame(maxWidth: .infinity)
+            .font(.callout)
+            
+            CoutPartView(sousTot: sousTot, montantTva: montantTva, total: total)
+            
         }
-        .frame(maxWidth: .infinity)
-        .font(.callout)
-        
+        .frame(alignment: .topLeading)
     }
 }
 
@@ -263,15 +272,19 @@ struct GridPdfInfoView: View {
 
 struct CoutPartView: View {
     
+    let sousTot : Decimal
+    let montantTva : Decimal
+    let total : Decimal
+    
     var body: some View {
         HStack {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 15) {
                 
-                RowSousTableView(text: "Sous total", value: "55 €")
+                RowSousTableView(text: "Sous total", value: sousTot)
                 
-                RowSousTableView(text: "Montant TVA total", value: "20 %")
+                RowSousTableView(text: "Montant TVA", value: montantTva)
                 
                 Divider()
                 
@@ -283,7 +296,7 @@ struct CoutPartView: View {
                     
                     Divider()
                     
-                    Text("50 €")
+                    Text(total, format: .currency(code: "EUR"))
                         .font(.title3)
                         .bold()
                         .padding(.leading, 50)
@@ -300,7 +313,7 @@ struct CoutPartView: View {
 
 struct RowSousTableView: View {
     let text : String
-    let value : String
+    let value : Decimal
     let isPourcent : Bool = false
     
     var body: some View {
@@ -308,7 +321,7 @@ struct RowSousTableView: View {
             Text(text)
                 .foregroundStyle(.primary.opacity(0.65))
             
-            Text(value)
+            Text(value, format: .currency(code: "EUR"))
                 .bold()
         }
         .font(.callout)
@@ -320,25 +333,46 @@ struct RowSousTableView: View {
     PDFBodyView(data: exempleFacture)
 }
 
-struct ExtractedView: View {
+struct PayementEtSignature: View {
+    let data : DocumentData
+    
     var body: some View {
+        let praticien = data.praticien
         HStack(alignment: .top) {
             
             VStack(alignment: .leading) {
                 Text("Commentaires : ")
                     .fontWeight(.semibold)
                 
-                Text("Mode de règlement : Chèques")
+                Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue.capitalized }.joined(separator: ", "))")
+                
+                if data.optionsDocument.payementFinish {
+                    
+                }
+                
+                if data.optionsDocument.afficherDateEcheance {
+                    Text("Date d'échéance : \(data.optionsDocument.dateEcheance.formatted(date: .numeric, time: .omitted))")
+                }
+                
             }
             
             Spacer()
             
             VStack {
-                Text("A Vann, le 18/04/2020,")
-                    .padding()
+                if let tabAddr = praticien.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville {
+                    Text("A \(ville), le \(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted)),")
+                        .padding()
+                }
+                else {
+                   Text("Le \(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted)),")
+                       .padding()
+               }
                 
-                Image(systemName: "signature")
-                    .font(.title)
+                if let sign = praticien.signature, let uiImage = UIImage(data: sign) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                }
             }
         }
         .font(.caption)
