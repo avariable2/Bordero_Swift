@@ -23,51 +23,36 @@ struct PDFBodyView : View {
                         .padding(.bottom)
                     
                     VStack(alignment: .leading) {
-                        Text("\(data.praticien.firstname)")
-                        Text("6 rue du Pasteur")
-                        Text("5600 BANNES")
-                        Text("06 65 45 56 56")
-                        Text("lele.gmail@gmail.com")
-                        Text("www.oestopatebretagne.com")
+                        Text("\(data.praticien.lastname.uppercased()) \(data.praticien.firstname)")
+                        if let tabAddr = data.praticien.adresses as? Set<Adresse> {
+                            ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
+                                Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
+                            }
+                        }
+                        Text("\(data.praticien.phone)")
+                        Text(verbatim: data.praticien.email)
+                            .foregroundStyle(.blue)
+                        Text(verbatim: data.praticien.website)
+                            .foregroundStyle(.blue)
                     }
                     .font(.caption)
                 }
                 
                 Spacer()
                 
-                Text("Facture")
+                Text(data.optionsDocument.typeDocument.rawValue.capitalized)
                     .font(.largeTitle)
                     .foregroundStyle(.secondary)
             }
             
-            GridPdfInfoView()
+            GridPdfInfoView(data: data)
             
             VStack {
-                TableView()
+                TableView(data: data.elements)
                 
                 CoutPartView()
                 
-                HStack(alignment: .top) {
-                    
-                    VStack(alignment: .leading) {
-                        Text("Commentaires : ")
-                            .fontWeight(.semibold)
-                        
-                        Text("Mode de règlement : Chèques")
-                    }
-                    
-                    Spacer()
-                    
-                    VStack {
-                        Text("A Vann, le 18/04/2020,")
-                            .padding()
-                        
-                        Image(systemName: "signature")
-                            .font(.title)
-                    }
-                }
-                .font(.caption)
-                .padding()
+                ExtractedView()
             }
             .frame(alignment: .topLeading)
         }
@@ -100,12 +85,21 @@ struct CellInGridView: View {
 }
 
 private struct TableView : View {
-    @State private var data = [
-        TableData(libelle: "Consultation en oestéopathie/Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
-        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
-        TableData(libelle: "Consultation en oestéopathie", quantity: 1, priceHT: 55, tva: 0, priceTTC: 55),
-    ]
+    private var dataTab : [TableData]  = []
     
+    init(data: [DocumentData.TableElement]) {
+        for tableElement in data {
+            self.dataTab.append(
+                TableData(
+                    libelle: tableElement.1.name,
+                    quantity: Decimal(tableElement.0),
+                    priceHT: Decimal(tableElement.1.price),
+                    tva: Decimal(tableElement.1.tva),
+                    priceTTC: Decimal(tableElement.1.total)
+                )
+            )
+        }
+    }
     var body: some View {
         Grid(
             alignment: .topLeading, horizontalSpacing: 2,
@@ -135,7 +129,7 @@ private struct TableView : View {
             .background(PDFBodyView.color)
             
             // Données
-            ForEach(data) { purchase in
+            ForEach(dataTab) { purchase in
                 GridRow {
                     HStack(alignment: .center) {
                         Image(systemName: "cross.case.circle.fill")
@@ -183,6 +177,9 @@ private struct TableData: Identifiable {
 }
 
 struct GridPdfInfoView: View {
+    
+    let data : DocumentData
+    
     var body: some View {
         Grid(alignment: .top, horizontalSpacing: 2, verticalSpacing: 2) {
             GridRow {
@@ -197,14 +194,14 @@ struct GridPdfInfoView: View {
                     }
                     
                     GridRow {
-                        CellInGridView(titre: "N° SIRET", information: "80378752200025")
+                        CellInGridView(titre: "N° SIRET", information: data.praticien.siret)
                             .gridCellColumns(3)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
                                     .stroke(Color.white, lineWidth: 1)
                             )
                         
-                        CellInGridView(titre: "N° ADELI", information: "220001481")
+                        CellInGridView(titre: "N° ADELI", information: data.praticien.adeli)
                             .gridCellColumns(3)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
@@ -213,13 +210,14 @@ struct GridPdfInfoView: View {
                     }
                     
                     GridRow {
-                        CellInGridView(titre: "Date de facture", information: "31 aout 2024")
+                        CellInGridView(titre: "Date de facture", information: data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted))
                             .gridCellColumns(3)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
                                     .stroke(Color.white, lineWidth: 1)
                             )
-                        CellInGridView(titre: "N° de document", information: "20240318004")
+                        
+                        CellInGridView(titre: "N° de document", information: data.optionsDocument.numeroDocument)
                             .gridCellColumns(3)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
@@ -228,22 +226,33 @@ struct GridPdfInfoView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                //                .border(.pink)
                 
                 VStack(alignment: .leading) {
-                    Text("Facturé à".uppercased())
+                    Text("Adressé à".uppercased())
                         .font(.caption2)
                         .foregroundStyle(.primary.opacity(0.65))
                     
-                    Text("Apple S.")
-                    Text("San Franscisco")
-                    Text("Le bourg")
-                    Text("19200 Saint parfois le neuf")
+                    HStack {
+                        ForEach(data.clients) { client in
+                            VStack(alignment: .leading) {
+                                Text("\(client.lastname.uppercased())")
+                                Text("\(client.firstname)")
+                                if let tabAddr = client.adresses as? Set<Adresse> {
+                                    ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
+                                        Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
+                                    }
+                                }
+                                Text(client.phone)
+                                Text(client.email)
+                                    .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)
+                            }
+                            Spacer()
+                        }
+                    }
+                    
                 }
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                //                .background(PDFBodyView.color)
-                //                .border(.pink)
             }
             .background(PDFBodyView.color)
             .font(.caption)
@@ -309,4 +318,30 @@ struct RowSousTableView: View {
 #Preview {
     //    DisplayPDFView(facture: exempleFacture, viewModel: PDFViewModel())
     PDFBodyView(data: exempleFacture)
+}
+
+struct ExtractedView: View {
+    var body: some View {
+        HStack(alignment: .top) {
+            
+            VStack(alignment: .leading) {
+                Text("Commentaires : ")
+                    .fontWeight(.semibold)
+                
+                Text("Mode de règlement : Chèques")
+            }
+            
+            Spacer()
+            
+            VStack {
+                Text("A Vann, le 18/04/2020,")
+                    .padding()
+                
+                Image(systemName: "signature")
+                    .font(.title)
+            }
+        }
+        .font(.caption)
+        .padding()
+    }
 }

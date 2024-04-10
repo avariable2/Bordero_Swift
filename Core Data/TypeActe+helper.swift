@@ -42,6 +42,7 @@ extension TypeActe {
         tva : Double,
         context : NSManagedObjectContext) {
             self.init(context: context)
+            self.id = UUID()
             self.name = name
             self.info = info
             self.price = price

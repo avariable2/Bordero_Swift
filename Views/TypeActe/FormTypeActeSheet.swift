@@ -92,7 +92,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
             }
             .tint(.purple)
             .multilineTextAlignment(.trailing)
-            .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name ?? "")")
+            .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name)")
             .toolbar {
                 
                 if onCancel != nil {

@@ -32,12 +32,17 @@ enum Payement : String, CaseIterable, Identifiable {
     }
 }
 
+struct TTLTypeActe : Identifiable {
+    var id : UUID = UUID()
+    var typeActeReal: TypeActe
+    var quantity : Int
+}
+
 struct FormDocumentView: View {
     var body: some View {
         NavigationStack {
             ModifierDocumentView()
         }
-        
     }
 }
 
@@ -273,13 +278,18 @@ private struct TypeActeRowView: View {
                 .imageScale(.large)
                 .foregroundStyle(.white, .purple)
         }
+        .labelStyle(TypeActeRowStyle())
     }
 }
 
-struct TTLTypeActe : Identifiable {
-    var id : UUID = UUID()
-    var typeActeReal: TypeActe
-    var quantity : Int
+// Uniquement pour faire en sorte que l'icon soit aligner avec le contenu verticalement
+struct TypeActeRowStyle : LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.icon
+            configuration.title
+        }
+    }
 }
 
 #Preview {

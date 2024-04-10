@@ -36,8 +36,9 @@ struct ParametersView: View {
                     
                     Text("\(praticien?.firstname ?? "")")
                         + Text(" \(praticien?.lastname ?? "")")
-                            .bold()
                 }
+                .font(.title)
+                .bold()
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color.clear)

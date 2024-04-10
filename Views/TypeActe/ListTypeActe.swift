@@ -132,13 +132,13 @@ struct RowTypeActeView : View {
                 call(type)
                 dismiss()
             } label: {
-                DisplayTypeActeView(text: type.name ?? "Inconnu", price: String(format: "Prix total : %.2f €", type.total))
+                DisplayTypeActeView(text: type.name, price: String(format: "Prix total : %.2f €", type.total))
             }
         } else {
             Button {
                 activeSheet = .editTypeActe(type: type)
             } label: {
-                DisplayTypeActeView(text: type.name ?? "Inconnu", price: String(format: "Prix total : %.2f €", type.total))
+                DisplayTypeActeView(text: type.name, price: String(format: "Prix total : %.2f €", type.total))
             }
         }
         
