@@ -72,7 +72,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 
                 LabeledContent("Numéro de \(typeSelected.rawValue.capitalized):") {
                     TextField("001", text: $numero.animation())
-                        .textFieldStyle(.roundedBorder)
+//                        .textFieldStyle(.roundedBorder)
                         .frame(width: 150)
                         .multilineTextAlignment(.trailing)
                 }
@@ -115,8 +115,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     List {
                         ForEach(listTypeActes.indices, id: \.self) { index in
                             TypeActeRowView(
-                                text: listTypeActes[index].typeActeReal.name ?? "Inconnu",
-                                price: String(format: "Prix total : %.2f €", listTypeActes[index].typeActeReal.total),
+                                text: listTypeActes[index].typeActeReal.name,
+                                price: String(format: "%.2f €", listTypeActes[index].typeActeReal.total),
                                 ttl: $listTypeActes[index]
                             )
                         }
@@ -246,26 +246,32 @@ private struct TypeActeRowView: View {
     @Binding var ttl : TTLTypeActe
     
     var body: some View {
-        HStack {
+        Label {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading) {
+                    Text(text)
+                        .font(.body)
+                        .tint(.primary)
+                    
+                    Text(price)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Picker("", selection: $ttl.quantity) {
+                    ForEach(1...100, id: \.self) { number in
+                        Text("\(number)")
+                    }
+                }
+                .frame(width: 100)
+            }
+            
+        } icon : {
             Image(systemName: "cross.case.circle.fill")
                 .imageScale(.large)
                 .foregroundStyle(.white, .purple)
-            
-            VStack(alignment: .leading) {
-                Text(text)
-                    .font(.body)
-                    .tint(.primary)
-                
-                Text(price)
-                    .font(.caption)
-                    .tint(.secondary)
-            }
-            
-            Picker("", selection: $ttl.quantity) {
-                ForEach(1...100, id: \.self) { number in
-                    Text("\(number)")
-                }
-            }
         }
     }
 }
