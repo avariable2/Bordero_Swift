@@ -46,6 +46,7 @@ struct PDFBodyView : View {
             }
             
             PDFGridInfoInvoiceView(data: data)
+                .frame(height: 140)
             
             TableView(data: data.elements)
             
@@ -269,11 +270,15 @@ struct PayementEtSignature: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 150)
+                        .frame(width: 200)
                 }
             }
         }
         .font(.caption)
         .padding()
     }
+}
+
+#Preview() {
+    PDFBodyView(data: PDFModel())
 }

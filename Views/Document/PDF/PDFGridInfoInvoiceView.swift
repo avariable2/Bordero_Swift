@@ -15,33 +15,40 @@ struct PDFGridInfoInvoiceView : View {
             GridRow {
                 Grid(alignment: .topLeading, horizontalSpacing: 1, verticalSpacing: 1) {
                     GridRow {
-                        CellInGridView(titre: "Nom de société", information: "Cabinet d'ostéopathie")
-                            .gridCellColumns(6)
+                        CellInGridView(titre: "Nom de société") {
+                            Text("Cabinet d'ostéopathie")
+                        }
+                            .gridCellColumns(5)
                     }
                     
                     GridRow {
-                        CellInGridView(titre: "N° SIRET", information: data.praticien?.siret ?? "")
+                        CellInGridView(titre: "N° SIRET")
+                        {
+                            Text(data.praticien?.siret ?? "")
+                        }
                             .gridCellColumns(3)
                         
-                        CellInGridView(titre: "N° ADELI", information: data.praticien?.adeli ?? "")
+                        CellInGridView(titre: "N° ADELI") {
+                            Text( data.praticien?.adeli ?? "")
+                        }
                             .gridCellColumns(3)
                     }
                     
                     GridRow {
-                        CellInGridView(titre: "Date de facture", information: data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted))
+                        CellInGridView(titre: "Date de facture") {
+                            Text(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted))
+                        }
                             .gridCellColumns(3)
                         
-                        CellInGridView(titre: "N° de document", information: data.optionsDocument.numeroDocument)
+                        CellInGridView(titre: "N° de document") {
+                            Text(data.optionsDocument.numeroDocument)
+                        }
                             .gridCellColumns(3)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 
-                VStack(alignment: .leading) {
-                    Text("Adressé à".uppercased())
-                        .font(.caption2)
-                        .foregroundStyle(.primary.opacity(0.65))
-                    
+                CellInGridView(titre: "Adressé à") {
                     HStack {
                         ForEach(data.clients) { client in
                             VStack(alignment: .leading) {
@@ -59,21 +66,19 @@ struct PDFGridInfoInvoiceView : View {
                             Spacer()
                         }
                     }
-                    
                 }
-                .padding()
+                
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
             .background(PDFBodyView.color)
             .font(.caption)
-            .frame(height: 127)
         }
     }
 }
 
-struct CellInGridView: View {
+struct CellInGridView<Content : View>: View {
     let titre : String
-    let information : String
+    @ViewBuilder let content: Content
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -81,7 +86,7 @@ struct CellInGridView: View {
                 .font(.caption2)
                 .foregroundStyle(.primary.opacity(0.65))
             
-            Text(information)
+            content
                 .font(.caption)
         }
         .padding(5)
@@ -93,5 +98,4 @@ struct CellInGridView: View {
     List {
         PDFGridInfoInvoiceView(data: PDFModel())
     }
-    
 }
