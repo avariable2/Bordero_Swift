@@ -32,17 +32,23 @@ enum Payement : String, CaseIterable, Identifiable {
     }
 }
 
-struct TTLTypeActe : Identifiable {
+struct TTLTypeActe : Identifiable, Equatable {
     var id : UUID = UUID()
     var typeActeReal: TypeActe
     var quantity : Int
 }
 
 struct FormDocumentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    
+    private var viewModel = PDFViewModel()
+    
     var body: some View {
-        NavigationStack {
-            ModifierDocumentView()
-        }
+        ModifierDocumentView(viewModel: viewModel)
+            .onAppear {
+                viewModel.documentData.praticien = praticien.first
+            }
     }
 }
 
@@ -50,6 +56,13 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     static func getVersion() -> Int32 {
         return 1
     }
+    
+    enum FocusedField {
+        case numero
+    }
+    
+    
+    @ObservedObject var viewModel : PDFViewModel
     
     @State private var activeSheet: ActiveSheet?
     
@@ -62,7 +75,9 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @State private var notes: String = ""
     @State private var typeSelected : TypeDoc = .facture
     
-    @State var numero : String = "001"
+    @State var numero : String = ""
+    
+    @FocusState private var focusedField: FocusedField?
     
     var body: some View {
         Form {
@@ -74,12 +89,18 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     }
                 }
                 .pickerStyle(.segmented)
+                .onChange(of: typeSelected) { oldValue, newValue in
+                    viewModel.documentData.optionsDocument.typeDocument = newValue
+                }
                 
                 LabeledContent("Numéro de \(typeSelected.rawValue.capitalized):") {
-                    TextField("001", text: $numero.animation())
-//                        .textFieldStyle(.roundedBorder)
+                    TextField("obligatoire", text: $numero.animation())
                         .frame(width: 150)
                         .multilineTextAlignment(.trailing)
+                        .focused($focusedField, equals: .numero)
+                        .onChange(of: numero) { oldValue, newValue in
+                            viewModel.documentData.optionsDocument.numeroDocument = newValue
+                        }
                 }
             }
             
@@ -112,6 +133,9 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 
             } header: {
                 Text("Client(s) séléctionné(s)")
+            }
+            .onChange(of: clients) { oldValue, newValue in
+                viewModel.documentData.clients = newValue
             }
             
             // MARK: - Partie type Acte
@@ -147,6 +171,9 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             } footer : {
                 Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
             }
+            .onChange(of: listTypeActes) { oldValue, newValue in
+                viewModel.documentData.elements = newValue
+            }
             
             if typeSelected == .facture {
                 Section("Réglement") {
@@ -161,6 +188,12 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         }
                     }
                 }
+                .onChange(of: estPayer) { oldValue, newValue in
+                    viewModel.documentData.optionsDocument.payementFinish = newValue
+                }
+                .onChange(of: selectedPayement) { oldValue, newValue in
+                    viewModel.documentData.optionsDocument.payementUse = newValue
+                }
             }
             
             Section("Note - optionnel") {
@@ -168,7 +201,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     .lineSpacing(2)
             }
         }
-        .navigationTitle("\(typeSelected.rawValue.capitalized) #\(numero)")
+//        .navigationTitle("\(typeSelected.rawValue.capitalized) #\(numero)")
+        .navigationTitle("Document")
         .safeAreaInset(edge: .bottom) {
             HStack {
                 Button {
@@ -181,7 +215,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 Spacer()
                 
                 Button {
-                    activeSheet = .apercusDocument(facture : exempleFacture)
+                    activeSheet = .apercusDocument(viewModel: viewModel)
                 } label: {
                     Label("Aperçus", systemImage: "eyeglasses")
                 }
@@ -201,8 +235,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
         }
         .sheet(item: $activeSheet) { item in
             switch item {
-            case .apercusDocument(facture : let facture):
-                DisplayPDFView(facture: facture, viewModel: PDFViewModel())
+            case .apercusDocument(viewModel : let viewModel):
+                PDFDisplayView(viewModel: viewModel)
                     .presentationDetents([.large])
             case .selectClient:
                 ListClients(callbackClientClick: { client in

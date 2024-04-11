@@ -12,7 +12,7 @@ struct PDFBodyView : View {
     static let color : Color = .gray.opacity(0.05)
     static let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
     
-    let data : DocumentData
+    let data : PDFModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -22,20 +22,23 @@ struct PDFBodyView : View {
                         .font(.largeTitle)
                         .padding(.bottom)
                     
-                    VStack(alignment: .leading) {
-                        Text("\(data.praticien.lastname.uppercased()) \(data.praticien.firstname)")
-                        if let tabAddr = data.praticien.adresses as? Set<Adresse> {
-                            ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
-                                Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
+                    if let praticien = data.praticien {
+                        VStack(alignment: .leading) {
+                            Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
+                            if let tabAddr = praticien.adresses as? Set<Adresse> {
+                                ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
+                                    Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
+                                }
                             }
+                            Text("\(praticien.phone)")
+                            Text(verbatim: praticien.email)
+                                .foregroundStyle(.blue)
+                            Text(verbatim: praticien.website)
+                                .foregroundStyle(.blue)
                         }
-                        Text("\(data.praticien.phone)")
-                        Text(verbatim: data.praticien.email)
-                            .foregroundStyle(.blue)
-                        Text(verbatim: data.praticien.website)
-                            .foregroundStyle(.blue)
+                        .font(.caption)
                     }
-                    .font(.caption)
+                    
                 }
                 
                 Spacer()
@@ -52,7 +55,7 @@ struct PDFBodyView : View {
             PayementEtSignature(data: data)
         }
         .font(.callout)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .frame(width: 592.2, height: 841.8, alignment: .topLeading)
         .padding()
         .background(
             .windowBackground
@@ -75,7 +78,6 @@ struct CellInGridView: View {
         }
         .padding(5)
         .frame(maxWidth: .infinity, alignment: .topLeading)
-        //        .background(PDFBodyView.color)
     }
 }
 
@@ -87,21 +89,21 @@ private struct TableView : View {
     private var total : Decimal = 0
     
     // Memo : TABLE ELEMENT => (quantité, TypeActe object)
-    init(data: [DocumentData.TableElement]) {
+    init(data: [TTLTypeActe]) {
         for tableElement in data {
             self.dataTab.append(
                 TableData(
-                    libelle: tableElement.1.name,
-                    quantity: Decimal(tableElement.0),
-                    priceHT: Decimal(tableElement.1.price),
-                    tva: Decimal(tableElement.1.tva),
-                    priceTTC: Decimal(tableElement.1.total)
+                    libelle: tableElement.typeActeReal.name,
+                    quantity: Decimal(tableElement.quantity),
+                    priceHT: Decimal(tableElement.typeActeReal.price),
+                    tva: Decimal(tableElement.typeActeReal.tva),
+                    priceTTC: Decimal(tableElement.typeActeReal.total)
                 )
             )
             
-            sousTot = sousTot + Decimal(tableElement.1.price)
-            montantTva = montantTva + (Decimal(tableElement.1.tva) * Decimal(tableElement.1.price))
-            total = total + Decimal(tableElement.1.total)
+            sousTot = sousTot + Decimal(tableElement.typeActeReal.price)
+            montantTva = montantTva + (Decimal(tableElement.typeActeReal.tva) * Decimal(tableElement.typeActeReal.price))
+            total = total + Decimal(tableElement.typeActeReal.total)
         }
     }
     var body: some View {
@@ -187,7 +189,7 @@ private struct TableData: Identifiable {
 
 struct GridPdfInfoView: View {
     
-    let data : DocumentData
+    let data : PDFModel
     
     var body: some View {
         Grid(alignment: .top, horizontalSpacing: 2, verticalSpacing: 2) {
@@ -203,14 +205,14 @@ struct GridPdfInfoView: View {
                     }
                     
                     GridRow {
-                        CellInGridView(titre: "N° SIRET", information: data.praticien.siret)
+                        CellInGridView(titre: "N° SIRET", information: data.praticien?.siret ?? "")
                             .gridCellColumns(3)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
                                     .stroke(Color.white, lineWidth: 1)
                             )
                         
-                        CellInGridView(titre: "N° ADELI", information: data.praticien.adeli)
+                        CellInGridView(titre: "N° ADELI", information: data.praticien?.adeli ?? "")
                             .gridCellColumns(3)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 0)
@@ -328,13 +330,8 @@ struct RowSousTableView: View {
     }
 }
 
-#Preview {
-    //    DisplayPDFView(facture: exempleFacture, viewModel: PDFViewModel())
-    PDFBodyView(data: exempleFacture)
-}
-
 struct PayementEtSignature: View {
-    let data : DocumentData
+    let data : PDFModel
     
     var body: some View {
         let praticien = data.praticien
@@ -347,7 +344,7 @@ struct PayementEtSignature: View {
                 Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue.capitalized }.joined(separator: ", "))")
                 
                 if data.optionsDocument.payementFinish {
-                    
+                    Text("\(data.optionsDocument.typeDocument.rawValue.capitalized) réglée avec : \(data.optionsDocument.payementUse)")
                 }
                 
                 if data.optionsDocument.afficherDateEcheance {
@@ -359,7 +356,7 @@ struct PayementEtSignature: View {
             Spacer()
             
             VStack {
-                if let tabAddr = praticien.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville {
+                if let tabAddr = praticien?.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville {
                     Text("A \(ville), le \(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted)),")
                         .padding()
                 }
@@ -368,7 +365,7 @@ struct PayementEtSignature: View {
                        .padding()
                }
                 
-                if let sign = praticien.signature, let uiImage = UIImage(data: sign) {
+                if let sign = praticien?.signature, let uiImage = UIImage(data: sign) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()

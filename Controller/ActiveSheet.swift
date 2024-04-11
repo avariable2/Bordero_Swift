@@ -12,7 +12,7 @@ enum ActiveSheet : Identifiable {
     case createClient, editClient(client: Client)
     case profil(user : Praticien?)
     case parameters
-    case optionsDocument, apercusDocument(facture: DocumentData), selectClient, selectTypeActe
+    case optionsDocument, apercusDocument(viewModel: PDFViewModel), selectClient, selectTypeActe
     
     var id : Int {
         switch self {
@@ -37,7 +37,7 @@ enum ActiveSheet : Identifiable {
         case .optionsDocument:
             return 4
             
-        case .apercusDocument(facture: let facture):
+        case .apercusDocument(viewModel: let viewModel):
             return 10000
             
         case .selectClient:

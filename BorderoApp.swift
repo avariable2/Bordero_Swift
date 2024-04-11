@@ -18,8 +18,6 @@ struct BorderoApp: App {
             switch userController.accountAvailable {
             case .isLoading:
                 ProgressView()
-//            case .notConnected:
-//                ErrorDisplayWithiCloudView()
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
                     .onChange(of: userController.accountAvailable) { oldValue, newValue in
