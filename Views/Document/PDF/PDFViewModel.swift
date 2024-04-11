@@ -9,31 +9,37 @@ import SwiftUI
 
 class PDFViewModel: ObservableObject {
     @Published var documentData = PDFModel()
-    @Published var generatedPDFURL: URL?
     
-    @MainActor func renderView() {
-        let renderer = ImageRenderer(content: PDFBodyView(
-            data: documentData
-        ))
-        
-        let tempURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        let renderURL = tempURL.appending(path: "\(UUID().uuidString).pdf")
-        
-        if let consumer = CGDataConsumer(url: renderURL as CFURL), let context = CGContext(consumer: consumer, mediaBox: nil, nil) {
-            renderer.render { size, renderer in
-                var mediaBox = CGRect(origin: .zero, size: size)
-                context.beginPage(mediaBox: &mediaBox)
-                renderer(context)
-                context.endPDFPage()
-                context.closePDF()
-                DispatchQueue.main.async {
-                    self.generatedPDFURL = renderURL
-                }
-            }
+    // Directement depuis l'exemple de Apple
+    @MainActor
+    func renderView() -> URL? {
+        guard let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return nil
         }
-    }
-    
-    func updateDataAndGenereatedPreview() {
+        let url = directory
+            .appendingPathComponent("MyPDF")
+            .appendingPathExtension(for: .pdf)
         
+        let view = PDFBodyView(data: documentData).frame(width: 600, height: 800)
+        let renderer = ImageRenderer(content: view)
+        
+        renderer.render { size, renderer in
+            var mediaBox = CGRect(origin: .zero,
+                                  size: CGSize(width: 600, height: 800))
+            guard let consumer = CGDataConsumer(url: url as CFURL),
+                  let pdfContext =  CGContext(consumer: consumer,
+                                              mediaBox: &mediaBox, nil)
+            else {
+                return
+            }
+            pdfContext.beginPDFPage(nil)
+            pdfContext.translateBy(x: mediaBox.size.width / 2 - size.width / 2,
+                                   y: mediaBox.size.height / 2 - size.height / 2)
+            renderer(pdfContext)
+            pdfContext.endPDFPage()
+            pdfContext.closePDF()
+        }
+        
+        return url
     }
 }

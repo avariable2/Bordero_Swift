@@ -46,7 +46,7 @@ struct FormDocumentView: View {
     
     var body: some View {
         ModifierDocumentView(viewModel: viewModel)
-            .onAppear {
+            .task {
                 viewModel.documentData.praticien = praticien.first
             }
     }
@@ -60,7 +60,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     enum FocusedField {
         case numero
     }
-    
     
     @ObservedObject var viewModel : PDFViewModel
     

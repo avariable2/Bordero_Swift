@@ -16,7 +16,7 @@ struct PDFDisplayView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let url = viewModel.generatedPDFURL {
+                if let url = viewModel.renderView() {
                     PDFKitView(url: url)
                 } else {
                     VStack {
@@ -24,9 +24,6 @@ struct PDFDisplayView: View {
                         Text("Génération du PDF en cours...")
                     }
                 }
-            }
-            .onAppear {
-                viewModel.renderView()
             }
             .navigationTitle("Aperçus")
             .toolbar {

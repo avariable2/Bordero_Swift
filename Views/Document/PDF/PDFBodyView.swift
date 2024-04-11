@@ -53,7 +53,7 @@ struct PDFBodyView : View {
             PayementEtSignature(data: data)
         }
         .font(.callout)
-        .frame(width: 592.2, height: 841.8, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding()
         .background(
             .windowBackground
@@ -271,6 +271,7 @@ struct PayementEtSignature: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 200)
+                        .frame(maxHeight: 100)
                 }
             }
         }
