@@ -25,10 +25,8 @@ struct PDFBodyView : View {
                     if let praticien = data.praticien {
                         VStack(alignment: .leading) {
                             Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
-                            if let tabAddr = praticien.adresses as? Set<Adresse> {
-                                ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
-                                    Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
-                                }
+                            if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first, ((coordonne.rue?.isEmpty) == nil) || ((coordonne.ville?.isEmpty) == nil) {
+                                Text("\(coordonne.rue ?? ""), \(coordonne.codepostal ?? "") \(coordonne.ville ?? "")")
                             }
                             Text("\(praticien.phone)")
                             Text(verbatim: praticien.email)
@@ -38,7 +36,6 @@ struct PDFBodyView : View {
                         }
                         .font(.caption)
                     }
-                    
                 }
                 
                 Spacer()
@@ -48,7 +45,7 @@ struct PDFBodyView : View {
                     .foregroundStyle(.secondary)
             }
             
-            GridPdfInfoView(data: data)
+            PDFGridInfoInvoiceView(data: data)
             
             TableView(data: data.elements)
             
@@ -60,24 +57,6 @@ struct PDFBodyView : View {
         .background(
             .windowBackground
         )
-    }
-}
-
-struct CellInGridView: View {
-    let titre : String
-    let information : String
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(titre.uppercased())
-                .font(.caption2)
-                .foregroundStyle(.primary.opacity(0.65))
-            
-            Text(information)
-                .font(.caption)
-        }
-        .padding(5)
-        .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 }
 
@@ -187,90 +166,6 @@ private struct TableData: Identifiable {
     let id = UUID()
 }
 
-struct GridPdfInfoView: View {
-    
-    let data : PDFModel
-    
-    var body: some View {
-        Grid(alignment: .top, horizontalSpacing: 2, verticalSpacing: 2) {
-            GridRow {
-                Grid(alignment: .topLeading, horizontalSpacing: 1, verticalSpacing: 1) {
-                    GridRow {
-                        CellInGridView(titre: "Nom de société", information: "Cabinet d'ostéopathie")
-                            .gridCellColumns(6)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .stroke(Color.white, lineWidth: 1)
-                            )
-                    }
-                    
-                    GridRow {
-                        CellInGridView(titre: "N° SIRET", information: data.praticien?.siret ?? "")
-                            .gridCellColumns(3)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .stroke(Color.white, lineWidth: 1)
-                            )
-                        
-                        CellInGridView(titre: "N° ADELI", information: data.praticien?.adeli ?? "")
-                            .gridCellColumns(3)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .stroke(Color.white, lineWidth: 1)
-                            )
-                    }
-                    
-                    GridRow {
-                        CellInGridView(titre: "Date de facture", information: data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted))
-                            .gridCellColumns(3)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .stroke(Color.white, lineWidth: 1)
-                            )
-                        
-                        CellInGridView(titre: "N° de document", information: data.optionsDocument.numeroDocument)
-                            .gridCellColumns(3)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .stroke(Color.white, lineWidth: 1)
-                            )
-                    }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                
-                VStack(alignment: .leading) {
-                    Text("Adressé à".uppercased())
-                        .font(.caption2)
-                        .foregroundStyle(.primary.opacity(0.65))
-                    
-                    HStack {
-                        ForEach(data.clients) { client in
-                            VStack(alignment: .leading) {
-                                Text("\(client.lastname.uppercased())")
-                                Text("\(client.firstname)")
-                                if let tabAddr = client.adresses as? Set<Adresse> {
-                                    ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
-                                        Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
-                                    }
-                                }
-                                Text(client.phone)
-                                Text(client.email)
-                                    .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)
-                            }
-                            Spacer()
-                        }
-                    }
-                    
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            }
-            .background(PDFBodyView.color)
-            .font(.caption)
-            .frame(height: 127)
-        }
-    }
-}
 
 struct CoutPartView: View {
     
@@ -341,7 +236,12 @@ struct PayementEtSignature: View {
                 Text("Commentaires : ")
                     .fontWeight(.semibold)
                 
-                Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue.capitalized }.joined(separator: ", "))")
+                if data.optionsDocument.payementAllow.isEmpty {
+                    Text("Mode de règlement acceptées : Aucun")
+                } else {
+                    Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue.capitalized }.joined(separator: ", "))")
+                }
+                
                 
                 if data.optionsDocument.payementFinish {
                     Text("\(data.optionsDocument.typeDocument.rawValue.capitalized) réglée avec : \(data.optionsDocument.payementUse)")
@@ -356,7 +256,7 @@ struct PayementEtSignature: View {
             Spacer()
             
             VStack {
-                if let tabAddr = praticien?.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville {
+                if let tabAddr = praticien?.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville, !ville.isEmpty {
                     Text("A \(ville), le \(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted)),")
                         .padding()
                 }
@@ -369,6 +269,7 @@ struct PayementEtSignature: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
+                        .frame(width: 150)
                 }
             }
         }
