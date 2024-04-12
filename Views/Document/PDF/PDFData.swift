@@ -19,7 +19,8 @@ struct PDFModel {
         var dateCreated : Date
         var afficherDateEcheance : Bool = true
         var dateEcheance : Date
-        var remise : Int?
+        var remise : Remise
+        var note : String
     }
     
     var praticien: Praticien?
@@ -35,12 +36,58 @@ struct PDFModel {
             payementFinish: false,
             payementUse: .carte,
             dateCreated: Date(),
-            dateEcheance: Date()
+            dateEcheance: Date(),
+            remise: Remise(type: .pourcentage, montant: 0),
+            note: ""
         )
         self.praticien = nil
         self.elements = []
         self.client = nil
     }
     
+}
+
+enum TypeDoc : String, CaseIterable, Identifiable {
+    case facture, devis
+    
+    var id: Self { self }
+}
+
+enum Payement : String, CaseIterable, Identifiable {
+    case carte, especes, virement, cheque
+    
+    var id : Self { self }
+    var rawValue: String {
+        switch self {
+        case .carte:
+            "Carte"
+        case .especes:
+            "Espèces"
+        case .virement:
+            "Virement bancaire"
+        case .cheque:
+            "Chèque"
+        }
+    }
+}
+
+struct Remise {
+    enum TypeRemise: CaseIterable, Identifiable, CustomStringConvertible {
+        case pourcentage
+        case montantFixe
+        
+        var id: Self { self }
+        var description: String {
+            switch self {
+            case .pourcentage:
+                return "Pourcentage"
+            case .montantFixe:
+                return "Montant Fixe"
+            }
+        }
+    }
+    
+    var type : TypeRemise
+    var montant : Decimal
 }
 

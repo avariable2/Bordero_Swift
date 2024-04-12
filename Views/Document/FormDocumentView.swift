@@ -8,30 +8,6 @@
 import SwiftUI
 import ScrollableGradientBackground
 
-enum TypeDoc : String, CaseIterable, Identifiable {
-    case facture, devis
-    
-    var id: Self { self }
-}
-
-enum Payement : String, CaseIterable, Identifiable {
-    case carte, especes, virement, cheque
-    
-    var id : Self { self }
-    var rawValue: String {
-        switch self {
-        case .carte:
-            "Carte"
-        case .especes:
-            "Espèces"
-        case .virement:
-            "Virement bancaire"
-        case .cheque:
-            "Chèque"
-        }
-    }
-}
-
 struct TTLTypeActe : Identifiable, Equatable {
     var id : UUID = UUID()
     var typeActeReal: TypeActe
@@ -133,7 +109,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         activeSheet = .selectClient
                     } label: {
                         Label {
-                            Text("séléctioner un client")
+                            Text("séléctioner un(e) client(e)")
                                 .tint(.primary)
                         } icon: {
                             Image(systemName: "plus.circle")
@@ -141,9 +117,9 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         }
                     }
                 }
-                
-            } header: {
-                Text("Client(e)")
+//                
+//            } header: {
+//                Text("Client(e)")
             }
             .onChange(of: client) { oldValue, newValue in
                 viewModel.documentData.client = newValue
@@ -178,7 +154,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     }
                 }
             } header : {
-                Text("Type d'acte séléctionné(s)")
+                Text("Préstation(s)")
             } footer : {
                 Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
             }
@@ -192,9 +168,21 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         .toggleStyle(SwitchToggleStyle(tint: .green))
                     
                     if estPayer {
-                        Picker("Mode de paiement", selection: $selectedPayement){
-                            ForEach(Payement.allCases) {
-                                Text($0.rawValue).tag($0)
+                        ViewThatFits {
+                            Picker("Mode de paiement", selection: $selectedPayement){
+                                ForEach(Payement.allCases) {
+                                    Text($0.rawValue).tag($0)
+                                }
+                            }
+                            
+                            VStack(alignment: .leading) {
+                                Text("Mode de paiement")
+                                Picker("", selection: $selectedPayement){
+                                    ForEach(Payement.allCases) {
+                                        Text($0.rawValue).tag($0)
+                                    }
+                                }
+                                .padding(.bottom)
                             }
                         }
                     }
@@ -211,66 +199,27 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 TextEditor(text: $notes)
                     .lineSpacing(3)
             }
+            .onChange(of: notes) { oldValue, newValue in
+                viewModel.documentData.optionsDocument.note = newValue
+            }
         }
         .navigationTitle("Document")
+        .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Options") {
-                    DetailFormView()
+                    FormOptionsView(viewModel: viewModel)
                 }
             }
         }
         .safeAreaInset(edge: .bottom) {
-            ViewThatFits {
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Label("Sauvegarder", systemImage: "square.and.arrow.down")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    
-                    Spacer()
-                    
-                    Button {
-                        focusedField = nil
-                        activeSheet = .apercusDocument(viewModel: viewModel)
-                    } label: {
-                        Label("Aperçus", systemImage: "eyeglasses")
-                    }
-                    .buttonStyle(.bordered)
-                    
-                }
-                
-                VStack {
-                    Button {
-                        
-                    } label: {
-                        Label("Sauvegarder", systemImage: "square.and.arrow.down")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .padding()
-                    
-                    Button {
-                        focusedField = nil
-                        activeSheet = .apercusDocument(viewModel: viewModel)
-                    } label: {
-                        Label("Aperçus", systemImage: "eyeglasses")
-                    }
-                    .buttonStyle(.bordered)
-                    
-                }
-            }
-            
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(.regularMaterial)
+            FormButtonsPrimaryActionView(activeSheet: $activeSheet)
         }
         .sheet(item: $activeSheet) { item in
             NavigationStack {
                 switch item {
-                case .apercusDocument(viewModel : let viewModel):
-                    PDFDisplayView(viewModel: viewModel)
+                case .apercusDocument:
+                    PDFDisplayView(viewModel: self.viewModel)
                         .presentationDetents([.large])
                 case .selectClient:
                     ListClients(callbackClientClick: { client in
@@ -380,6 +329,68 @@ struct TypeActeRowStyle : LabelStyle {
     }
 }
 
+struct FormButtonsPrimaryActionView: View {
+    @Binding var activeSheet : ActiveSheet?
+    
+    var body: some View {
+        ViewThatFits {
+            HStack {
+                Button {
+                    
+                } label: {
+                    Label {
+                        Text("Sauvegarder")
+                            .fixedSize()
+                    } icon: {
+                        Image(systemName: "square.and.arrow.down")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Spacer()
+                
+                Button {
+                    activeSheet = .apercusDocument
+                } label: {
+                    Label("Aperçus", systemImage: "eyeglasses")
+                }
+                .buttonStyle(.bordered)
+                
+            }
+            
+            VStack {
+                Button {
+                    
+                } label: {
+                    Label {
+                        Text("Sauvegarder")
+                            .fixedSize()
+                    } icon: {
+                        Image(systemName: "square.and.arrow.down")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .padding(.bottom)
+                
+                Button {
+                    activeSheet = .apercusDocument
+                } label: {
+                    Label("Aperçus", systemImage: "eyeglasses")
+                }
+                .buttonStyle(.bordered)
+                
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(.regularMaterial)
+    }
+}
+
 #Preview {
+//    TypeActeRowView(text: "AAA", price: "50", ttl: .constant(TTLTypeActe(typeActeReal: TypeActe(name: "aa", price: 50, tva: 0.2, context: DataController.shared.container.viewContext), quantity: 1)))
+    
     FormDocumentView()
+    
+//    ClientRowView(firstname: "AAA", name: "AAA")
 }

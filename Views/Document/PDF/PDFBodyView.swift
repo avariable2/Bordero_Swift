@@ -243,9 +243,12 @@ struct PayementEtSignature: View {
                     Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue.capitalized }.joined(separator: ", "))")
                 }
                 
-                
-                if data.optionsDocument.payementFinish {
+                if data.optionsDocument.payementFinish && data.optionsDocument.typeDocument == .facture {
                     Text("\(data.optionsDocument.typeDocument.rawValue.capitalized) réglée avec : \(data.optionsDocument.payementUse)")
+                }
+                
+                if !data.optionsDocument.note.isEmpty {
+                    Text("Note: \(data.optionsDocument.note)")
                 }
                 
                 if data.optionsDocument.afficherDateEcheance {

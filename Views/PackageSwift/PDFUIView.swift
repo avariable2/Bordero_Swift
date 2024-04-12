@@ -13,7 +13,8 @@ struct PDFKitView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> PDFView {
         // Créer et configurer PDFView ici
-        let pdfView = PDFView()
+        let pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: 600, height: 800))
+        pdfView.translatesAutoresizingMaskIntoConstraints = false
         pdfView.autoScales = true // Ajuste automatiquement le PDF à la taille de la vue
         return pdfView
     }
@@ -23,34 +24,5 @@ struct PDFKitView: UIViewRepresentable {
         if let document = PDFDocument(url: url) {
             pdfView.document = document
         }
-    }
-}
-
-struct PDFKitView2: UIViewRepresentable {
-    
-    
-    typealias UIViewType = PDFView
-    
-    let pdfDocument : PDFDocument
-    
-    init(showing pdfDoc: PDFDocument){
-        self.pdfDocument = pdfDoc
-    }
-    
-    func makeUIView(context: UIViewRepresentableContext<PDFKitView>) -> UIViewType {
-        let pdfView =  PDFView()
-        pdfView.document = pdfDocument
-        pdfView.autoScales = true
-        return pdfView
-    }
-    func makeUIView(context: Context) -> PDFView {
-        let pdfView =  PDFView()
-        pdfView.document = pdfDocument
-        pdfView.autoScales = true
-        return pdfView
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
     }
 }

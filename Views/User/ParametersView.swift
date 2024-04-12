@@ -15,14 +15,6 @@ struct ParametersView: View {
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
     
-    var isMacOS: Bool {
-        #if os(macOS)
-        return true
-        #else
-        return false
-        #endif
-    }
-    
     var body: some View {
         NavigationStack {
             Form {

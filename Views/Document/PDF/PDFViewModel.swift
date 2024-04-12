@@ -24,8 +24,7 @@ class PDFViewModel: ObservableObject {
         let renderer = ImageRenderer(content: view)
         
         renderer.render { size, renderer in
-            var mediaBox = CGRect(origin: .zero,
-                                  size: CGSize(width: 600, height: 800))
+            var mediaBox = CGRect(x: 0, y: 0, width: 600, height: 800)
             guard let consumer = CGDataConsumer(url: url as CFURL),
                   let pdfContext =  CGContext(consumer: consumer,
                                               mediaBox: &mediaBox, nil)
