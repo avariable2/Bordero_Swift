@@ -18,26 +18,7 @@ struct ClientDetailView: View {
     var body: some View {
         List {
             Section {
-                HStack {
-                    ProfilImageView(imageData: nil)
-                        .frame(height: 40)
-                        .font(.system(size: 30))
-                    
-                    
-                    Text("\(client.firstname) \(client.lastname)")
-                        .font(.title2)
-                        .bold()
-                    
-                    Spacer()
-                    
-                    Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
-                        .foregroundStyle(.secondary)
-                }
-                .onTapGesture {
-                    withAnimation {
-                        showAdresses.toggle()
-                    }
-                }
+                ClientDetailHeaderView(client: client, showAdresses: $showAdresses)
                 
                 if showAdresses, let adresses = client.adresses as? Set<Adresse> {
                     ForEach(adresses.sorted { $0.id < $1.id }, id : \.self) { adresse in
@@ -134,6 +115,78 @@ struct ClientDetailView: View {
     }
 }
 
-//#Preview {
-//    ClientDetailView(client: )
-//}
+#Preview {
+    ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
+}
+
+private struct ClientDetailHeaderView: View {
+    
+    let client : Client
+    @Binding var showAdresses : Bool
+    
+    var body: some View {
+        ViewThatFits {
+            HStack {
+                ProfilImageView(imageData: nil)
+                    .font(.title)
+                
+                Text("\(client.firstname) \(client.lastname)")
+                    .font(.title2)
+                    .bold()
+                
+                Spacer()
+                
+                Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
+                    .foregroundStyle(.secondary)
+            }
+            
+            VStack {
+                HStack {
+                    ProfilImageView(imageData: nil)
+                        .font(.title)
+                    
+                    Text(client.firstname)
+                        .font(.title3)
+                        .bold()
+                    
+                    Text(client.lastname)
+                        .font(.title3)
+                        .bold()
+                    
+                }
+                Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
+                    .foregroundStyle(.secondary)
+            }
+            
+            VStack {
+                HStack {
+                    ProfilImageView(imageData: nil)
+                        .font(.title)
+                    Spacer()
+                    VStack {
+                        Text(client.firstname)
+                            .fixedSize()
+                            .font(.title3)
+                            .bold()
+                        
+                        Text(client.lastname)
+                            .font(.title3)
+                            .bold()
+                    }
+                    .multilineTextAlignment(.center)
+                    
+                    
+                }
+                
+                Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
+                    .foregroundStyle(.secondary)
+                    .padding(.top)
+            }
+        }
+        .onTapGesture {
+            withAnimation {
+                showAdresses.toggle()
+            }
+        }
+    }
+}

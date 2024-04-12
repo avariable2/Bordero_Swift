@@ -50,7 +50,7 @@ struct PDFGridInfoInvoiceView : View {
                 
                 CellInGridView(titre: "Adressé à") {
                     HStack {
-                        ForEach(data.clients) { client in
+                        if let client = data.client {
                             VStack(alignment: .leading) {
                                 Text("\(client.lastname.uppercased())")
                                 Text("\(client.firstname)")

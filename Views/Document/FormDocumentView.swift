@@ -65,7 +65,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     
     @State private var activeSheet: ActiveSheet?
     
-    @State private var clients = [Client]()
+    @State private var client : Client? = nil
     @State private var listTypeActes = [TTLTypeActe]()
     
     @State private var docIsFacture: Bool = true
@@ -92,49 +92,61 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     viewModel.documentData.optionsDocument.typeDocument = newValue
                 }
                 
-                LabeledContent("Numéro de \(typeSelected.rawValue.capitalized):") {
+                LabeledContent {
                     TextField("obligatoire", text: $numero.animation())
-                        .frame(width: 150)
                         .multilineTextAlignment(.trailing)
                         .focused($focusedField, equals: .numero)
                         .onChange(of: numero) { oldValue, newValue in
                             viewModel.documentData.optionsDocument.numeroDocument = newValue
                         }
+                } label : {
+                    ViewThatFits {
+                        Text("Numéro de \(typeSelected.rawValue.capitalized):")
+                        Text("Numéro")
+                        Text("N°")
+                    }
                 }
             }
             
             Section {
-                if !clients.isEmpty {
-                    List {
-                        ForEach(clients) { client in
-                            ClientRowView(
-                                firstname: client.firstname,
-                                name: client.lastname
-                            )
+                if let client = client {
+                    HStack {
+                        ClientRowView(
+                            firstname: client.firstname,
+                            name: client.lastname
+                        )
+                        
+                        Spacer()
+                        
+                        Button {
+                            withAnimation {
+                                self.client = nil
+                            }
+                        } label: {
+                            Image(systemName: "minus.circle")
+                                .symbolRenderingMode(.monochrome)
+                                .foregroundStyle(.red)
                         }
-                        .onDelete(perform: { indexSet in
-                            clients.remove(atOffsets: indexSet)
-                        })
                     }
-                }
-                
-                Button {
-                    activeSheet = .selectClient
-                } label: {
-                    Label {
-                        Text("ajouter un client")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(.white, .green)
+                } else {
+                    Button {
+                        activeSheet = .selectClient
+                    } label: {
+                        Label {
+                            Text("séléctioner un client")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "plus.circle")
+                                .foregroundStyle(.green)
+                        }
                     }
                 }
                 
             } header: {
-                Text("Client(s) séléctionné(s)")
+                Text("Client(e)")
             }
-            .onChange(of: clients) { oldValue, newValue in
-                viewModel.documentData.clients = newValue
+            .onChange(of: client) { oldValue, newValue in
+                viewModel.documentData.client = newValue
             }
             
             // MARK: - Partie type Acte
@@ -161,8 +173,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         Text("ajouter un type d'acte")
                             .tint(.primary)
                     } icon: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(.white, .green)
+                        Image(systemName: "plus.circle")
+                            .foregroundStyle(.green)
                     }
                 }
             } header : {
@@ -177,7 +189,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             if typeSelected == .facture {
                 Section("Réglement") {
                     Toggle("Facture déjà réglée ?", isOn: $estPayer.animation())
-                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+                        .toggleStyle(SwitchToggleStyle(tint: .green))
                     
                     if estPayer {
                         Picker("Mode de paiement", selection: $selectedPayement){
@@ -197,34 +209,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             
             Section("Note - optionnel") {
                 TextEditor(text: $notes)
-                    .lineSpacing(2)
+                    .lineSpacing(3)
             }
         }
-//        .navigationTitle("\(typeSelected.rawValue.capitalized) #\(numero)")
         .navigationTitle("Document")
-        .safeAreaInset(edge: .bottom) {
-            HStack {
-                Button {
-                    
-                } label: {
-                    Label("Sauvegarder", systemImage: "square.and.arrow.down")
-                }
-                .buttonStyle(.borderedProminent)
-                
-                Spacer()
-                
-                Button {
-                    activeSheet = .apercusDocument(viewModel: viewModel)
-                } label: {
-                    Label("Aperçus", systemImage: "eyeglasses")
-                }
-                .buttonStyle(.bordered)
-                
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(.regularMaterial)
-        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Options") {
@@ -232,27 +220,94 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 }
             }
         }
-        .sheet(item: $activeSheet) { item in
-            switch item {
-            case .apercusDocument(viewModel : let viewModel):
-                PDFDisplayView(viewModel: viewModel)
-                    .presentationDetents([.large])
-            case .selectClient:
-                ListClients(callbackClientClick: { client in
-                    clients.append(client)
-                })
-            case .selectTypeActe:
-                ListTypeActe(callbackClick: { type in
-                    listTypeActes.append(TTLTypeActe(typeActeReal: type, quantity: 1))
-                })
-            default:
-                EmptyView() // IMPOSSIBLE
+        .safeAreaInset(edge: .bottom) {
+            ViewThatFits {
+                HStack {
+                    Button {
+                        
+                    } label: {
+                        Label("Sauvegarder", systemImage: "square.and.arrow.down")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Spacer()
+                    
+                    Button {
+                        focusedField = nil
+                        activeSheet = .apercusDocument(viewModel: viewModel)
+                    } label: {
+                        Label("Aperçus", systemImage: "eyeglasses")
+                    }
+                    .buttonStyle(.bordered)
+                    
+                }
+                
+                VStack {
+                    Button {
+                        
+                    } label: {
+                        Label("Sauvegarder", systemImage: "square.and.arrow.down")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                    
+                    Button {
+                        focusedField = nil
+                        activeSheet = .apercusDocument(viewModel: viewModel)
+                    } label: {
+                        Label("Aperçus", systemImage: "eyeglasses")
+                    }
+                    .buttonStyle(.bordered)
+                    
+                }
             }
+            
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.regularMaterial)
         }
-    }
-    
-    func delete(at offsets: IndexSet) {
-        clients.remove(atOffsets: offsets)
+        .sheet(item: $activeSheet) { item in
+            NavigationStack {
+                switch item {
+                case .apercusDocument(viewModel : let viewModel):
+                    PDFDisplayView(viewModel: viewModel)
+                        .presentationDetents([.large])
+                case .selectClient:
+                    ListClients(callbackClientClick: { client in
+                        self.client = client
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                activeSheet = nil
+                            } label: {
+                                Text("Retour")
+                            }
+
+                        }
+                    }
+                case .selectTypeActe:
+                    ListTypeActe(callbackClick: { type in
+                        listTypeActes.append(TTLTypeActe(typeActeReal: type, quantity: 1))
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                activeSheet = nil
+                            } label: {
+                                Text("Retour")
+                            }
+
+                        }
+                    }
+                default:
+                    EmptyView() // IMPOSSIBLE
+                }
+                    
+            }
+            
+            
+        }
     }
     
     func save() {

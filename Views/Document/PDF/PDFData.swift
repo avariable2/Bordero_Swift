@@ -23,7 +23,7 @@ struct PDFModel {
     }
     
     var praticien: Praticien?
-    var clients: [Client]
+    var client: Client?
     var elements: [TTLTypeActe]
     var optionsDocument : OptionsLegalDocument
     
@@ -39,7 +39,7 @@ struct PDFModel {
         )
         self.praticien = nil
         self.elements = []
-        self.clients = []
+        self.client = nil
     }
     
 }

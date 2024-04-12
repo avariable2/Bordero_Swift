@@ -18,9 +18,8 @@ struct RowIconColor :View {
         HStack {
             
             Image(systemName: systemName)
-                 .resizable()
-                 .foregroundStyle(.white, color)
-                 .frame(width: 25, height: 25)
+                .font(.title)
+                .foregroundStyle(.white, color)
             
             // Affiche un label Content pour copier facilement les elements mit dedans
             LabeledContent(accessibility) {
