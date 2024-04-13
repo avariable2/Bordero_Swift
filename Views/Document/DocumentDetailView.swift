@@ -10,9 +10,11 @@ import SwiftUI
 struct DocumentDetailView: View {
     @State private var selectedTab: Tab = .résumé
     
+    let documentData : PDFModel
+    
     var body: some View {
         VStack {
-            Picker("Flavor", selection: $selectedTab.animation()) {
+            Picker("Afficher", selection: $selectedTab.animation()) {
                 ForEach(Tab.allCases) { tab in
                     Text(tab.rawValue.capitalized).tag(tab.rawValue)
                 }
@@ -20,7 +22,10 @@ struct DocumentDetailView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding([.trailing, .leading])
             
-            ChoosenView(selectedElement: selectedTab)
+            ChoosenView(
+                selectedElement: selectedTab,
+                client: documentData.client!
+            )
         }
         .navigationTitle("Facture # 001")
         .toolbar {
@@ -45,10 +50,12 @@ enum Tab : String, CaseIterable, Identifiable {
 struct ChoosenView : View {
     var selectedElement : Tab
     
+    let client : Client
+    
     var body: some View {
         switch selectedElement {
         case .résumé:
-            ResumeTabDetailViewPDF(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
+            ResumeTabDetailViewPDF(client: client)
         case .aperçu:
             EmptyView()
         case .historique:
@@ -59,7 +66,7 @@ struct ChoosenView : View {
 
 #Preview {
     NavigationStack {
-        DocumentDetailView()
+        DocumentDetailView(documentData: PDFModel())
     }
     
 }

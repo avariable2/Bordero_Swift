@@ -12,7 +12,7 @@ struct BandeauCreateDocument: View {
     
     var body: some View {
         NavigationLink {
-            FormDocumentView()
+            DocumentFormView()
         } label: {
             TitleWithIconColorComponentView(titre : "Créer un document") {
                 Image(systemName: "doc.fill.badge.plus")

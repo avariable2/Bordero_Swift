@@ -66,7 +66,7 @@ struct ExploreView: View {
             
             Section("Documents") {
                 NavigationLink {
-                    FormDocumentView()
+                    DocumentFormView()
                 } label: {
                     Label {
                         Text("Créer un document")

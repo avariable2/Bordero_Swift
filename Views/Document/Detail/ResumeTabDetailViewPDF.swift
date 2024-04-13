@@ -12,52 +12,128 @@ struct ResumeTabDetailViewPDF: View {
     var body: some View {
         VStack {
             GroupBox {
-                VStack(alignment: .leading) {
-                    Text("En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
+                ViewThatFits {
+                    ScrollView(.vertical, showsIndicators: true) {
+                        Text("En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
+                    }
+                    .frame(maxHeight: 65)
                     
-                    Text("En savoir plus")
-                        .foregroundStyle(.link)
                 }
+                
+                Text("En savoir plus")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(.link)
+                    .padding([.leading, .trailing], 5)
             }
             .padding([.leading, .trailing])
             
             Form {
                 Section {
-                    HStack {
-                        ProfilImageView(imageData: nil)
-                            .font(.title)
-                        
-                        Text("\(client.firstname) \(client.lastname)")
-                            .font(.title2)
-                            .bold()
+                    NavigationLink {
+                        ClientDetailView(client: client)
+                    } label: {
+                        HStack {
+                            ProfilImageView(imageData: nil)
+                                .font(.title)
+                            
+                            Text("\(client.firstname) \(client.lastname)")
+                                .font(.title2)
+                                .bold()
+                        }
                     }
+                    
                 } header: {
                     Text("Client")
                 }
                 
                 Section {
+                    
+                    HStack {
+                        Image(systemName: "waveform.path.ecg")
+                            .imageScale(.large)
+                            .foregroundStyle(.pink)
+                            
+                        
+                        HStack {
+                            Text("Status")
+                                .font(.title3)
+                            
+                            Spacer()
+                            
+                            Text("Envoyée")
+                                .padding(5)
+                                .background(RoundedRectangle(cornerRadius: 25).foregroundStyle(.green))
+                                .foregroundStyle(.white)
+                        }
+                    }
+                    
+                    HStack {
+                        Image(systemName: "eurosign.circle")
+                            .imageScale(.large)
+                            .foregroundStyle(.blue)
+                            
+                        
+                        HStack {
+                            Text("Reste à payé")
+                                .font(.title3)
+                            
+                            Spacer()
+                            
+                            Text(30, format: .currency(code: "EUR"))
+                        }
+                    }
+                    
                     RowInformationDate(
-                        logo: "doc.badge.clock.fill",
+                        logo: "doc.badge.clock",
                         titre: "Date de création",
                         color: .yellow
                     )
                     
                     RowInformationDate(
-                        logo: "clock.badge.exclamationmark.fill",
+                        logo: "clock.badge.exclamationmark",
                         titre: "Date d'échéance",
                         color: .red.opacity(0.9)
                     )
                 } header: {
-                    Text("Informations")
+                    Text("Détail")
                 }
                 
                 Section {
                     RowMontantDetail(text: "Total H.T.", price: 30)
                     RowMontantDetail(text: "T.V.A", price: 0)
                     RowMontantDetail(text: "Total T.T.C", price: 30)
+                        .bold()
                 }
             }
             .headerProminence(.increased)
+            .safeAreaInset(edge: .bottom) {
+                VStack {
+                    
+                    HStack {
+                        
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Label("Envoyer", systemImage: "paperplane.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Ajouter un paiement")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.regularMaterial)
+            }
         }
     }
 }
@@ -92,7 +168,7 @@ struct RowInformationDate: View {
                 .foregroundStyle(color, .gray.opacity(0.7))
                 .imageScale(.large)
             
-            VStack {
+            VStack(alignment: .leading) {
                 Text(titre)
                     .font(.title3)
                 

@@ -109,7 +109,7 @@ struct NavigationIpad : View {
                 case 6: 
                     ListClients()
                 case 7: 
-                    FormDocumentView()
+                    DocumentFormView()
                 case 8:
                     EmptyView()
                 default:
