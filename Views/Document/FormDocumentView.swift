@@ -117,9 +117,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         }
                     }
                 }
-//                
-//            } header: {
-//                Text("Client(e)")
             }
             .onChange(of: client) { oldValue, newValue in
                 viewModel.documentData.client = newValue
@@ -153,6 +150,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                             .foregroundStyle(.green)
                     }
                 }
+                .disabled(listTypeActes.count >= 4)
             } header : {
                 Text("Préstation(s)")
             } footer : {

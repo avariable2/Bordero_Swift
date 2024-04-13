@@ -15,7 +15,7 @@ struct PDFBodyView : View {
     let data : PDFModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack() {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
                     Image(systemName: "apple.logo")
@@ -48,7 +48,7 @@ struct PDFBodyView : View {
             PDFGridInfoInvoiceView(data: data)
                 .frame(height: 140)
             
-            TableView(data: data.elements)
+            PDFTableView(data: data.elements, remise: data.optionsDocument.remise)
             
             PayementEtSignature(data: data)
         }
@@ -61,115 +61,9 @@ struct PDFBodyView : View {
     }
 }
 
-private struct TableView : View {
-    private var dataTab : [TableData]  = []
-    
-    private var sousTot : Decimal = 0
-    private var montantTva : Decimal = 0
-    private var total : Decimal = 0
-    
-    // Memo : TABLE ELEMENT => (quantité, TypeActe object)
-    init(data: [TTLTypeActe]) {
-        for tableElement in data {
-            self.dataTab.append(
-                TableData(
-                    libelle: tableElement.typeActeReal.name,
-                    quantity: Decimal(tableElement.quantity),
-                    priceHT: Decimal(tableElement.typeActeReal.price),
-                    tva: Decimal(tableElement.typeActeReal.tva),
-                    priceTTC: Decimal(tableElement.typeActeReal.total)
-                )
-            )
-            
-            sousTot = sousTot + Decimal(tableElement.typeActeReal.price)
-            montantTva = montantTva + (Decimal(tableElement.typeActeReal.tva) * Decimal(tableElement.typeActeReal.price))
-            total = total + Decimal(tableElement.typeActeReal.total)
-        }
-    }
-    var body: some View {
-        VStack {
-            Grid(
-                alignment: .topLeading, horizontalSpacing: 2,
-                verticalSpacing: 2
-            ) {
-                // En-tête
-                GridRow {
-                    Text("Libellé")
-                        .gridCellColumns(4)
-                    
-                    Text("Qté")
-                        .gridCellColumns(1)
-                    
-                    Text("HT")
-                        .gridCellColumns(1)
-                    
-                    Text("TVA")
-                        .gridCellColumns(1)
-                    
-                    Text("TTC")
-                        .gridCellColumns(1)
-                }
-                .frame(maxWidth: .infinity)
-                .font(.caption)
-                .padding(3)
-                .foregroundStyle(.primary.opacity(0.65))
-                .background(PDFBodyView.color)
-                
-                // Données
-                ForEach(dataTab) { purchase in
-                    GridRow {
-                        HStack(alignment: .center) {
-                            Image(systemName: "cross.case.circle.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.white, .purple)
-                            
-                            Text(purchase.libelle)
-                                .lineLimit(purchase.libelle.count > 50 ? 2 : 1, reservesSpace: true)
-                            
-                        }
-                        .gridCellColumns(4)
-                        
-                        Text("\(purchase.quantity)")
-                            .gridCellColumns(1)
-                        
-                        Text(purchase.priceHT, format: PDFBodyView.currencyStyle)
-                            .gridCellColumns(1)
-                        
-                        Text(purchase.tva, format: .percent)
-                            .gridCellColumns(1)
-                        
-                        Text(purchase.priceTTC, format: PDFBodyView.currencyStyle)
-                            .fontWeight(.semibold)
-                            .gridCellColumns(1)
-                        
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding([.top, .bottom], 5)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .font(.callout)
-            
-            CoutPartView(sousTot: sousTot, montantTva: montantTva, total: total)
-            
-        }
-        .frame(alignment: .topLeading)
-    }
-}
-
-private struct TableData: Identifiable {
-    let libelle: String
-    let quantity: Decimal
-    let priceHT: Decimal
-    let tva: Decimal
-    let priceTTC: Decimal
-    
-    let id = UUID()
-}
-
-
 struct CoutPartView: View {
     
+    let remise : Remise
     let sousTot : Decimal
     let montantTva : Decimal
     let total : Decimal
@@ -178,11 +72,24 @@ struct CoutPartView: View {
         HStack {
             Spacer()
             
-            VStack(alignment: .trailing, spacing: 15) {
+            VStack(alignment: .trailing) {
                 
                 RowSousTableView(text: "Sous total", value: sousTot)
                 
                 RowSousTableView(text: "Montant TVA", value: montantTva)
+                
+                if remise.montant != 0 {
+                    switch remise.type {
+                    case .pourcentage:
+                        
+                            RowSousTableView(text: "Taux de remise", value: remise.montant, isPourcent: true)
+                            
+                            RowSousTableView(text: "Montant de remise", value: remise.montant)
+                        
+                    case .montantFixe:
+                        RowSousTableView(text: "Remise", value: remise.montant)
+                    }
+                }
                 
                 Divider()
                 
@@ -195,7 +102,7 @@ struct CoutPartView: View {
                     Divider()
                     
                     Text(total, format: .currency(code: "EUR"))
-                        .font(.title3)
+                        .font(.body)
                         .bold()
                         .padding(.leading, 50)
                 }
@@ -212,17 +119,29 @@ struct CoutPartView: View {
 struct RowSousTableView: View {
     let text : String
     let value : Decimal
-    let isPourcent : Bool = false
+    var isPourcent : Bool
+    
+    init(text: String, value: Decimal, isPourcent : Bool = false) {
+        self.text = text
+        self.value = value
+        self.isPourcent = isPourcent
+    }
     
     var body: some View {
         HStack {
             Text(text)
                 .foregroundStyle(.primary.opacity(0.65))
             
-            Text(value, format: .currency(code: "EUR"))
-                .bold()
+            if isPourcent {
+                Text(value, format: .percent)
+                    .bold()
+            } else {
+                Text(value, format: .currency(code: "EUR"))
+                    .bold()
+            }
+            
         }
-        .font(.callout)
+        .font(.caption)
     }
 }
 
@@ -247,12 +166,12 @@ struct PayementEtSignature: View {
                     Text("\(data.optionsDocument.typeDocument.rawValue.capitalized) réglée avec : \(data.optionsDocument.payementUse)")
                 }
                 
-                if !data.optionsDocument.note.isEmpty {
-                    Text("Note: \(data.optionsDocument.note)")
-                }
-                
                 if data.optionsDocument.afficherDateEcheance {
                     Text("Date d'échéance : \(data.optionsDocument.dateEcheance.formatted(date: .numeric, time: .omitted))")
+                }
+                
+                if !data.optionsDocument.note.isEmpty {
+                    Text("Note: \(data.optionsDocument.note)")
                 }
                 
             }
@@ -274,8 +193,10 @@ struct PayementEtSignature: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 200)
-                        .frame(maxHeight: 100)
+                        .frame(maxHeight: 50)
+                        .border(Color.black)
                 }
+                    
             }
         }
         .font(.caption)

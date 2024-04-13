@@ -27,15 +27,6 @@ struct FormOptionsView: View {
     
     var viewModel : PDFViewModel
     
-//    private lazy var format: FormatStyle.Type = {
-//        switch selectedTypeRemise {
-//        case .pourcentage:
-//            return Decimal.FormatStyle.Percent // Exemple avec aucune décimale
-//        case .montantFixe:
-//            return Decimal.FormatStyle.Currency(code: "EUR")// Exemple avec deux décimales
-//        }
-//    }()
-    
     var body: some View {
         NavigationStack {
             Form {
