@@ -13,33 +13,9 @@ struct ClientDetailView: View {
     @State private var activeSheet: ActiveSheet?
     @ObservedObject var client : Client
     
-    @State private var showAdresses = false
-    
     var body: some View {
         List {
-            Section {
-                ClientDetailHeaderView(client: client, showAdresses: $showAdresses)
-                
-                if showAdresses, let adresses = client.adresses as? Set<Adresse> {
-                    ForEach(adresses.sorted { $0.id < $1.id }, id : \.self) { adresse in
-                        RowIconColor(
-                            text: "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")",
-                            systemName: "house.circle.fill",
-                            color: .brown,
-                            accessibility: "Adresse renseigné pour le client"
-                        )
-                        .contextMenu {
-                            Button(action: {
-                                UIPasteboard.general.string = "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")"
-                            }) {
-                                Text("Copier")
-                                Image(systemName: "doc.on.doc")
-                            }
-                        }
-                        
-                    }
-                }
-            }
+            ClientDetailHeaderView(client: client)
             
             Section {
                 RowIconColor(
@@ -119,68 +95,90 @@ struct ClientDetailView: View {
     ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
 }
 
-private struct ClientDetailHeaderView: View {
+struct ClientDetailHeaderView: View {
     
     let client : Client
-    @Binding var showAdresses : Bool
+    @State private var showAdresses = false
     
     var body: some View {
-        ViewThatFits {
-            HStack {
-                ProfilImageView(imageData: nil)
-                    .font(.title)
-                
-                Text("\(client.firstname) \(client.lastname)")
-                    .font(.title2)
-                    .bold()
-                
-                Spacer()
-                
-                Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
-                    .foregroundStyle(.secondary)
-            }
-            
-            VStack {
+        Section {
+            ViewThatFits {
                 HStack {
                     ProfilImageView(imageData: nil)
                         .font(.title)
                     
-                    Text(client.firstname)
-                        .font(.title3)
+                    Text("\(client.firstname) \(client.lastname)")
+                        .font(.title2)
                         .bold()
                     
-                    Text(client.lastname)
-                        .font(.title3)
-                        .bold()
-                    
-                }
-                Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
-                    .foregroundStyle(.secondary)
-            }
-            
-            VStack {
-                HStack {
-                    ProfilImageView(imageData: nil)
-                        .font(.title)
                     Spacer()
-                    VStack {
+                    
+                    Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
+                        .foregroundStyle(.secondary)
+                }
+                
+                VStack {
+                    HStack {
+                        ProfilImageView(imageData: nil)
+                            .font(.title)
+                        
                         Text(client.firstname)
-                            .fixedSize()
                             .font(.title3)
                             .bold()
                         
                         Text(client.lastname)
                             .font(.title3)
                             .bold()
+                        
                     }
-                    .multilineTextAlignment(.center)
-                    
-                    
+                    Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
+                        .foregroundStyle(.secondary)
                 }
                 
-                Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
-                    .foregroundStyle(.secondary)
-                    .padding(.top)
+                VStack {
+                    HStack {
+                        ProfilImageView(imageData: nil)
+                            .font(.title)
+                        Spacer()
+                        VStack {
+                            Text(client.firstname)
+                                .fixedSize()
+                                .font(.title3)
+                                .bold()
+                            
+                            Text(client.lastname)
+                                .font(.title3)
+                                .bold()
+                        }
+                        .multilineTextAlignment(.center)
+                        
+                        
+                    }
+                    
+                    Image(systemName: showAdresses ? "chevron.up" : "chevron.down")
+                        .foregroundStyle(.secondary)
+                        .padding(.top)
+                }
+            }
+            
+            if showAdresses, let adresses = client.adresses as? Set<Adresse> {
+                ForEach(adresses.sorted { $0.id < $1.id }, id : \.self) { adresse in
+                    RowIconColor(
+                        text: "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")",
+                        systemName: "house.circle.fill",
+                        color: .brown,
+                        accessibility: "Adresse renseigné pour le client"
+                    )
+                    .contextMenu {
+                        Button(action: {
+                            UIPasteboard.general.string = "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")"
+                        }) {
+                            Text("Copier")
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
+                    
+                }
             }
         }
         .onTapGesture {
