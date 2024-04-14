@@ -13,12 +13,12 @@ struct PDFDisplayView: View {
     @Environment(\.dismiss) var dismiss
     
     let viewModel : PDFViewModel
-//    let showToolbar : Bool
+    let showToolbar : Bool
     
-//    init(viewModel: PDFViewModel, showToolbar : Bool = true) {
-//        self.viewModel = viewModel
-////        self.showToolbar = showToolbar
-//    }
+    init(viewModel: PDFViewModel, showToolbar : Bool = true) {
+        self.viewModel = viewModel
+        self.showToolbar = showToolbar
+    }
     
     var body: some View {
         NavigationStack {
@@ -34,11 +34,13 @@ struct PDFDisplayView: View {
             }
             .navigationTitle("Aperçu")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Retour")
+                if showToolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Text("Retour")
+                        }
                     }
                 }
             }

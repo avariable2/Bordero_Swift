@@ -95,7 +95,7 @@ struct ResumeTabDetailViewPDF: View {
                         color: .red.opacity(0.9)
                     )
                 } header: {
-                    Text("Détail")
+                    Text("Informations")
                 }
                 
                 Section {
@@ -103,6 +103,8 @@ struct ResumeTabDetailViewPDF: View {
                     RowMontantDetail(text: "T.V.A", price: 0)
                     RowMontantDetail(text: "Total T.T.C", price: 30)
                         .bold()
+                } header: {
+                    Text("Détail")
                 }
             }
             .headerProminence(.increased)

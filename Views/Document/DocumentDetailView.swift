@@ -63,7 +63,7 @@ struct ChoosenView : View {
         case .résumé:
             ResumeTabDetailViewPDF(client: documentData.client!)
         case .aperçu:
-            PDFDisplayView(viewModel: viewModel)
+            PDFDisplayView(viewModel: viewModel, showToolbar: false)
         case .historique:
             HistoriqueTabDetailView()
         }
