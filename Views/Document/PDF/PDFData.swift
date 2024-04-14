@@ -82,7 +82,7 @@ enum Payement : String, CaseIterable, Identifiable {
     var rawValue: String {
         switch self {
         case .carte:
-            "Carte"
+            "Carte bancaire"
         case .especes:
             "Espèces"
         case .virement:

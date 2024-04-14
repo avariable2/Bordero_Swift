@@ -24,6 +24,23 @@ struct DocumentFormView: View {
         ModifierDocumentView(viewModel: viewModel)
             .task {
                 viewModel.documentData.praticien = praticien.first
+                
+                if let cheque = praticien.first?.cheque, cheque == true {
+                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.cheque)
+                }
+                
+                if let carte = praticien.first?.carte, carte == true {
+                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.carte)
+                }
+                
+                if let virement = praticien.first?.virement_bancaire, virement == true {
+                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.virement)
+                }
+                
+                if let espece = praticien.first?.espece, espece == true {
+                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.especes)
+                }
+                
             }
     }
 }

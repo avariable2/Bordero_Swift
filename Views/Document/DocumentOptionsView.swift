@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DocumentOptionsView: View {
+struct DocumentOptionsView: View, Saveable {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
@@ -18,14 +18,25 @@ struct DocumentOptionsView: View {
     @State private var selectedTypeRemise : Remise.TypeRemise = .pourcentage
     @State private var remise : Decimal = 0
     
-    @State private var carte : Bool = true
-    @State private var especes : Bool = true
-    @State private var virementB : Bool = true
-    @State private var cheque : Bool = true
+    @State private var carte : Bool
+    @State private var especes : Bool
+    @State private var virementB : Bool
+    @State private var cheque : Bool
+    
+    @State private var unChangementCoreDataAEuLieu = false
     
     @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
     
     var viewModel : PDFViewModel
+    
+    init(viewModel : PDFViewModel) {
+        self.viewModel = viewModel
+        
+        carte = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.carte)
+        especes = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.especes)
+        virementB = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.virement)
+        cheque = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.cheque)
+    }
     
     var body: some View {
         NavigationStack {
@@ -50,6 +61,9 @@ struct DocumentOptionsView: View {
                         }
                     
                     DatePickerViewCustom(text: "Date d'échéance", selection: $echeance)
+                        .onAppear {
+                            echeance = viewModel.documentData.optionsDocument.dateEcheance
+                        }
                         .onChange(of: echeance) { oldValue, newValue in
                             viewModel.documentData.optionsDocument.dateEcheance = newValue
                         }
@@ -83,9 +97,65 @@ struct DocumentOptionsView: View {
                 
                 Section("Mode de paiement accepté") {
                     Toggle("Carte", isOn: $carte)
+                        .onChange(of: carte) { oldValue, newValue in
+                            praticien.first?.carte = newValue
+                            
+                            unChangementCoreDataAEuLieu = true
+                            
+                            if newValue == true {
+                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.carte)
+                            } else {
+                                var tab = viewModel.documentData.optionsDocument.payementAllow
+                                 tab = tab.filter { $0 != .carte }
+                                viewModel.documentData.optionsDocument.payementAllow = tab
+                            }
+                        }
+                    
                     Toggle("Espèces", isOn: $especes)
+                        .onChange(of: especes) { oldValue, newValue in
+                            praticien.first?.espece = newValue
+                            
+                            unChangementCoreDataAEuLieu = true
+                            
+                            if newValue == true {
+                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.especes)
+                            } else {
+                                var tab = viewModel.documentData.optionsDocument.payementAllow
+                                 tab = tab.filter { $0 != .especes }
+                                viewModel.documentData.optionsDocument.payementAllow = tab
+                            }
+                        }
+                    
                     Toggle("Virement bancaire", isOn: $virementB)
+                        .onChange(of: virementB) { oldValue, newValue in
+                            praticien.first?.virement_bancaire = newValue
+                            
+                            unChangementCoreDataAEuLieu = true
+                            
+                            if newValue == true {
+                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.virement)
+                            } else {
+                                var tab = viewModel.documentData.optionsDocument.payementAllow
+                                 tab = tab.filter { $0 != .virement }
+                                viewModel.documentData.optionsDocument.payementAllow = tab
+                            }
+                        }
+                    
                     Toggle("Chèque", isOn: $cheque)
+                        .onChange(of: cheque) { oldValue, newValue in
+                            praticien.first?.cheque = newValue
+                            
+                            unChangementCoreDataAEuLieu = true
+                            
+                            if newValue == true {
+                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.cheque)
+                            } else {
+                                var tab = viewModel.documentData.optionsDocument.payementAllow
+                                 tab = tab.filter { $0 != .cheque }
+                                viewModel.documentData.optionsDocument.payementAllow = tab
+                            }
+                        }
+                    
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .green))
                 
@@ -93,6 +163,32 @@ struct DocumentOptionsView: View {
             .navigationTitle("Options document")
             .navigationBarTitleDisplayMode(.large)
             .headerProminence(.increased)
+            .navigationBarBackButtonHidden()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        save()
+                        
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Image(systemName: "chevron.backward")
+                            Text("Document")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func save() {
+        if unChangementCoreDataAEuLieu {
+            do {
+                try moc.save()
+                print("Success")
+            } catch let err {
+                print("error \(err)")
+            }
         }
     }
     

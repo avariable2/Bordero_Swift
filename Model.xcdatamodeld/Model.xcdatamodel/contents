@@ -21,7 +21,10 @@
     <entity name="Praticien" representedClassName="Praticien" syncable="YES" codeGenerationType="class">
         <attribute name="adeli_" optional="YES" attributeType="String"/>
         <attribute name="applyTVA" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="carte" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="cheque" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="email_" optional="YES" attributeType="String"/>
+        <attribute name="espece" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastname_" optional="YES" attributeType="String"/>
@@ -30,6 +33,7 @@
         <attribute name="signature" optional="YES" attributeType="Binary"/>
         <attribute name="siret_" optional="YES" attributeType="String"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="virement_bancaire" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="website_" optional="YES" attributeType="String"/>
         <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="appartient" inverseEntity="Adresse"/>
     </entity>

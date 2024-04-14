@@ -159,7 +159,7 @@ struct PayementEtSignature: View {
                 if data.optionsDocument.payementAllow.isEmpty {
                     Text("Mode de règlement acceptées : Aucun")
                 } else {
-                    Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue.capitalized }.joined(separator: ", "))")
+                    Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue }.joined(separator: ", "))")
                 }
                 
                 if data.optionsDocument.payementFinish && data.optionsDocument.typeDocument == .facture {
