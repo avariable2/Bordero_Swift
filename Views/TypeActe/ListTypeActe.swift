@@ -51,6 +51,7 @@ struct ListTypeActe: View {
                     } footer: {
                         if !filteredTypeActe.isEmpty {
                             Text("Déplacé l'élément à gauche pour le supprimer.")
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }
@@ -65,7 +66,7 @@ struct ListTypeActe: View {
         }
         .navigationTitle("Type d'actes")
         .tint(.purple)
-
+        .listStyle(.plain)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {

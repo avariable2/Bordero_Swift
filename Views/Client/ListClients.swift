@@ -86,6 +86,7 @@ struct ListClients: View {
                                     }
                                 }
                             }
+                            .listStyle(.plain)
                             .navigationDestination(for: Client.self) { client in
                                 ClientDetailView(client: client)
                             }

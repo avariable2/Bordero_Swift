@@ -66,9 +66,9 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity)
-                    .padding([.leading, .trailing], -6)
+//                    .padding([.leading, .trailing], -6)
                 } header: {
-                    Text("Rappel")
+                    Text("Attention")
                 }
                 .sheet(item: $presentURL) { url in
                     SafariView(url: url)

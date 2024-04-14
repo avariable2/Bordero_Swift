@@ -29,7 +29,7 @@ struct DocumentFormView: View {
             .task {
                 viewModel.documentData.praticien = praticien.first
                 
-                // MARK: Reinitialise le tableau
+                // MARK: Reinitialise le tableau pour s'adapter au changement de l'utilisateur
                 viewModel.documentData.optionsDocument.payementAllow.removeAll()
                 if let cheque = praticien.first?.cheque, cheque == true {
                     viewModel.documentData.optionsDocument.payementAllow.append(Payement.cheque)
@@ -79,7 +79,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     
     var body: some View {
         NavigationStack {
-            Form {
+            List {
                 Section {
                     Picker("Type de document", selection: $typeSelected.animation()) {
                         ForEach(TypeDoc.allCases) { type in
@@ -141,6 +141,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                             }
                         }
                     }
+                } header: {
+                    Text("Client")
                 }
                 .onChange(of: client) { oldValue, newValue in
                     viewModel.documentData.client = newValue
@@ -149,7 +151,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 // MARK: - Partie type Acte
                 Section {
                     if !listTypeActes.isEmpty {
-                        List {
+                        
                             ForEach(listTypeActes.indices, id: \.self) { index in
                                 TypeActeRowView(
                                     text: listTypeActes[index].typeActeReal.name,
@@ -160,7 +162,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                             .onDelete(perform: { indexSet in
                                 listTypeActes.remove(atOffsets: indexSet)
                             })
-                        }
+                        
                     }
                     
                     Button {
@@ -179,6 +181,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     Text("Préstation(s)")
                 } footer : {
                     Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
+                        .foregroundStyle(.secondary)
                 }
                 .onChange(of: listTypeActes) { oldValue, newValue in
                     viewModel.documentData.elements = newValue
@@ -217,9 +220,11 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     }
                 }
                 
-                Section("Note - optionnel") {
+                Section {
                     TextEditor(text: $notes)
                         .lineSpacing(3)
+                } header: {
+                    Text("Note")
                 }
                 .onChange(of: notes) { oldValue, newValue in
                     viewModel.documentData.optionsDocument.note = newValue
@@ -233,6 +238,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
         }
         .navigationTitle("Document")
+        .listStyle(.plain)
         .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
