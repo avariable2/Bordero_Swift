@@ -28,6 +28,7 @@
         <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastname_" optional="YES" attributeType="String"/>
+        <attribute name="nom_proffession" optional="YES" attributeType="String"/>
         <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="profilPicture" optional="YES" attributeType="Binary"/>
         <attribute name="signature" optional="YES" attributeType="Binary"/>

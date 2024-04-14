@@ -354,6 +354,10 @@ struct FormButtonsPrimaryActionView: View {
     @Binding var activeSheet : ActiveSheet?
     var model : PDFModel
     
+    private var userDontAddClient : Bool {
+        model.client == nil
+    }
+    
     var body: some View {
         ViewThatFits {
             HStack {
@@ -372,6 +376,7 @@ struct FormButtonsPrimaryActionView: View {
                         RoundedRectangle(cornerRadius: 5)
                     )
                 }
+                .disabled(userDontAddClient)
                 
                 Spacer()
                 
@@ -400,6 +405,7 @@ struct FormButtonsPrimaryActionView: View {
                         RoundedRectangle(cornerRadius: 5)
                     )
                 }
+                .disabled(userDontAddClient)
                 .padding(.bottom)
                 
                 Button {
