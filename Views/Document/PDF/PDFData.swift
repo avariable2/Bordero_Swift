@@ -41,7 +41,7 @@ struct PDFModel /*: Identifiable, Equatable*/ {
             payementFinish: false,
             payementUse: .carte,
             dateCreated: Date(),
-            dateEcheance: Date(),
+            dateEcheance: Calendar.current.date(byAdding: .day, value: 30, to: Date())!, // Ajoute par defaut 30 jours
             remise: Remise(type: .pourcentage, montant: 0),
             note: ""
         )
@@ -49,7 +49,6 @@ struct PDFModel /*: Identifiable, Equatable*/ {
         self.elements = []
         self.client = nil
     }
-    
 }
 
 enum TypeDoc : String, CaseIterable, Identifiable {

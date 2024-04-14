@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FormOptionsView: View {
+struct DocumentOptionsView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
@@ -50,9 +50,6 @@ struct FormOptionsView: View {
                         }
                     
                     DatePickerViewCustom(text: "Date d'échéance", selection: $echeance)
-                        .onAppear {
-                            echeance = addOrSubtractMonth(day: 30)
-                        }
                         .onChange(of: echeance) { oldValue, newValue in
                             viewModel.documentData.optionsDocument.dateEcheance = newValue
                         }
@@ -99,12 +96,8 @@ struct FormOptionsView: View {
         }
     }
     
-    func addOrSubtractMonth(day: Int) -> Date {
-        Calendar.current.date(byAdding: .day, value: day, to: Date())!
-    }
-    
 }
 
 #Preview {
-    FormOptionsView(viewModel: PDFViewModel())
+    DocumentOptionsView(viewModel: PDFViewModel())
 }

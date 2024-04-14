@@ -214,7 +214,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Options") {
-                    FormOptionsView(viewModel: viewModel)
+                    DocumentOptionsView(viewModel: viewModel)
                 }
             }
         }

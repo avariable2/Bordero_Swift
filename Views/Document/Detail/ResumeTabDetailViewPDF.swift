@@ -6,28 +6,52 @@
 //
 
 import SwiftUI
+import SafariServices
 
 struct ResumeTabDetailViewPDF: View {
     let client : Client
+    
+    @State var presentURL: URL?
+    
     var body: some View {
         VStack {
-            GroupBox {
-                ViewThatFits {
-                    ScrollView(.vertical, showsIndicators: true) {
-                        Text("En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
+            Form {
+                
+                Section {
+                    VStack(alignment: .center, spacing: 20) {
+                        
+                        GroupBox {
+                            ScrollView(.vertical, showsIndicators: true) {
+                                Text("En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
+                                    .font(.footnote)
+                            }
+                            .frame(maxHeight: 65)
+                            
+                            
+                            Text("En savoir plus")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .foregroundStyle(.link)
+                            
+                        } label: {
+                            Button {
+                                presentURL = URL(string: "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191855")!
+                            } label: {
+                                Label("Rappel à la loi", systemImage: "building.columns")
+                                    .foregroundStyle(.primary)
+                            }
+                        }
                     }
-                    .frame(maxHeight: 65)
-                    
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity)
+                    .padding([.leading, .trailing], -6)
+                } header: {
+                    Text("Rappel")
+                }
+                .sheet(item: $presentURL) { url in
+                    SafariView(url: url)
                 }
                 
-                Text("En savoir plus")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundStyle(.link)
-                    .padding([.leading, .trailing], 5)
-            }
-            .padding([.leading, .trailing])
-            
-            Form {
+                
                 Section {
                     NavigationLink {
                         ClientDetailView(client: client)
@@ -183,4 +207,10 @@ struct RowInformationDate: View {
 
 #Preview {
     ResumeTabDetailViewPDF(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
+}
+
+extension URL: Identifiable {
+    public var id: String {
+        self.absoluteString
+    }
 }
