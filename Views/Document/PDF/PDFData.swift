@@ -8,7 +8,12 @@
 import Foundation
 import CoreData
 
-struct PDFModel {
+struct PDFModel /*: Identifiable, Equatable*/ {
+//    var id: UUID = UUID()
+//    
+//    static func == (lhs: PDFModel, rhs: PDFModel) -> Bool {
+//        lhs.id == rhs.id
+//    }
     
     struct OptionsLegalDocument {
         var typeDocument : TypeDoc

@@ -7,9 +7,15 @@
 
 import SwiftUI
 import CoreText
+import PDFKit
 
-class PDFViewModel: ObservableObject {
-    @Published var documentData = PDFModel()
+@Observable
+class PDFViewModel {
+    var documentData : PDFModel
+    
+    init(documentData : PDFModel = PDFModel()) {
+        self.documentData = documentData
+    }
     
     // Directement depuis l'exemple de Apple
     @MainActor

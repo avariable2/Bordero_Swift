@@ -24,10 +24,10 @@ struct DocumentDetailView: View {
             
             ChoosenView(
                 selectedElement: selectedTab,
-                client: documentData.client!
+                documentData: documentData
             )
         }
-        .navigationTitle("Facture # 001")
+        .navigationTitle("\(documentData.optionsDocument.typeDocument.rawValue.capitalized) # \(documentData.optionsDocument.numeroDocument)")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -49,17 +49,23 @@ enum Tab : String, CaseIterable, Identifiable {
 
 struct ChoosenView : View {
     var selectedElement : Tab
+    let documentData : PDFModel
+    let viewModel : PDFViewModel
     
-    let client : Client
+    init(selectedElement: Tab, documentData: PDFModel) {
+        self.selectedElement = selectedElement
+        self.documentData = documentData
+        self.viewModel = PDFViewModel(documentData: documentData)
+    }
     
     var body: some View {
         switch selectedElement {
         case .résumé:
-            ResumeTabDetailViewPDF(client: client)
+            ResumeTabDetailViewPDF(client: documentData.client!)
         case .aperçu:
-            EmptyView()
+            PDFDisplayView(viewModel: viewModel)
         case .historique:
-            EmptyView()
+            HistoriqueTabDetailView()
         }
     }
 }
@@ -67,44 +73,6 @@ struct ChoosenView : View {
 #Preview {
     NavigationStack {
         DocumentDetailView(documentData: PDFModel())
-    }
-    
-}
-
-struct GroupBoxBorderoStyle<V: View>: GroupBoxStyle {
-    var color: Color
-    var destination : V
-    var date: Date?
-    
-    @ScaledMetric var size : CGFloat = 1
-    
-    func makeBody(configuration: Configuration) -> some View {
-        NavigationLink(destination: destination) {
-            GroupBox(label: HStack {
-                configuration.label.foregroundColor(color)
-                Spacer()
-                if date != nil {
-                    Text("\(date!)").font(.footnote).foregroundColor(.secondary).padding(.trailing, 4)
-                }
-                Image(systemName: "chevron.right").foregroundColor(Color(.systemGray4)).imageScale(.small)
-            }) {
-                configuration.content.padding(.top)
-            }
-        }.buttonStyle(PlainButtonStyle())
-    }
-}
-
-struct HealthValueView: View {
-    var value: String
-    var unit: String
-    
-    @ScaledMetric var size: CGFloat = 1
-    
-    @ViewBuilder var body: some View {
-        HStack {
-            Text(value).font(.system(size: 24 * size, weight: .bold, design: .rounded)) + Text(" \(unit)").font(.system(size: 14 * size, weight: .semibold, design: .rounded)).foregroundColor(.secondary)
-            Spacer()
-        }
     }
 }
 

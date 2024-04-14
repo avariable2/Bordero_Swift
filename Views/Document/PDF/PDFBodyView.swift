@@ -204,6 +204,6 @@ struct PayementEtSignature: View {
     }
 }
 
-#Preview() {
-    PDFBodyView(data: PDFModel())
-}
+//#Preview() {
+//    PDFBodyView(data: PDFModel())
+//}

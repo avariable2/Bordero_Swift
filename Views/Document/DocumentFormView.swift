@@ -37,7 +37,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
         case numero
     }
     
-    @ObservedObject var viewModel : PDFViewModel
+    var viewModel : PDFViewModel
     
     @State private var activeSheet: ActiveSheet?
     
@@ -203,7 +203,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                FormButtonsPrimaryActionView(activeSheet: $activeSheet, model: $viewModel.documentData)
+                NavigationStack {
+                    FormButtonsPrimaryActionView(activeSheet: $activeSheet, model: viewModel.documentData)
+                }
+                
             }
         }
         .navigationTitle("Document")
@@ -326,7 +329,7 @@ struct TypeActeRowStyle : LabelStyle {
 
 struct FormButtonsPrimaryActionView: View {
     @Binding var activeSheet : ActiveSheet?
-    @Binding var model : PDFModel
+    var model : PDFModel
     
     var body: some View {
         ViewThatFits {
@@ -346,7 +349,6 @@ struct FormButtonsPrimaryActionView: View {
                         RoundedRectangle(cornerRadius: 5)
                     )
                 }
-                .disabled(model.client == nil)
                 
                 Spacer()
                 
@@ -360,8 +362,8 @@ struct FormButtonsPrimaryActionView: View {
             }
             
             VStack {
-                Button {
-                    
+                NavigationLink {
+                    DocumentDetailView(documentData: model)
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -369,8 +371,12 @@ struct FormButtonsPrimaryActionView: View {
                     } icon: {
                         Image(systemName: "square.and.arrow.down")
                     }
+                    .foregroundStyle(.white)
+                    .padding(6)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                    )
                 }
-                .buttonStyle(.borderedProminent)
                 .padding(.bottom)
                 
                 Button {
