@@ -248,41 +248,44 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
         }
         .sheet(item: $activeSheet) { item in
-            switch item {
-            case .apercusDocument:
-                PDFDisplayView(viewModel: self.viewModel)
-                    .presentationDetents([.large])
-            case .selectClient:
-                ListClients(callbackClientClick: { client in
-                    self.client = client
-                })
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button {
-                            activeSheet = nil
-                        } label: {
-                            Text("Retour")
-                        }
+            NavigationStack {
+                switch item {
+                case .apercusDocument:
+                    PDFDisplayView(viewModel: self.viewModel)
+                        .presentationDetents([.large])
+                case .selectClient:
+                    ListClients(callbackClientClick: { client in
+                        self.client = client
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                activeSheet = nil
+                            } label: {
+                                Text("Retour")
+                            }
 
-                    }
-                }
-            case .selectTypeActe:
-                ListTypeActe(callbackClick: { type in
-                    listTypeActes.append(TTLTypeActe(typeActeReal: type, quantity: 1))
-                })
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button {
-                            activeSheet = nil
-                        } label: {
-                            Text("Retour")
                         }
-
                     }
+                case .selectTypeActe:
+                    ListTypeActe(callbackClick: { type in
+                        listTypeActes.append(TTLTypeActe(typeActeReal: type, quantity: 1))
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                activeSheet = nil
+                            } label: {
+                                Text("Retour")
+                            }
+
+                        }
+                    }
+                default:
+                    EmptyView() // IMPOSSIBLE
                 }
-            default:
-                EmptyView() // IMPOSSIBLE
             }
+            
         }
     }
     
