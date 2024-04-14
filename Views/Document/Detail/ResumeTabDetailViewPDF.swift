@@ -37,7 +37,7 @@ struct ResumeTabDetailViewPDF: View {
                                 presentURL = URL(string: "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191855")!
                             } label: {
                                 Label("Rappel à la loi", systemImage: "building.columns")
-                                    .foregroundStyle(.primary)
+                                    .tint(.primary)
                             }
                         }
                     }
