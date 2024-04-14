@@ -25,15 +25,15 @@ struct RowHistorique : View {
     private var color : Color {
         switch evenement.nom {
         case .création:
-            .blue
+            .green
         case .modification:
             .red
         case .envoie:
-            .green
+            .blue
         case .renvoie:
             .indigo
         case .payer:
-            .yellow
+            .purple
         }
     }
     

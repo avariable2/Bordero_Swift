@@ -57,7 +57,11 @@ struct Evenement : Identifiable {
     enum TypeEvenement : String, CaseIterable, Identifiable {
         var id : Self { self }
         
-        case création, modification, envoie, renvoie, payer
+        case création = "Création"
+        case modification = "Modification"
+        case envoie = "Envoie"
+        case renvoie = "Renvoie"
+        case payer = "Payer"
     }
     var id: UUID = UUID()
     

@@ -9,14 +9,37 @@ import SwiftUI
 import SafariServices
 
 struct ResumeTabDetailViewPDF: View {
-    let client : Client
-    
     @State var presentURL: URL?
+    let documentData : PDFModel
+    
+    func determineStatut() -> String {
+        let typesPresent = Set(documentData.historique.map { $0.nom })
+        
+        // Vérifier si l'événement 'payer' est présent
+        if typesPresent.contains(.payer) {
+            return "Payer"
+        }
+        
+        // Vérifier si l'événement 'envoie' est présent
+        if typesPresent.contains(.envoie) {
+            return "Envoyée"
+        }
+        
+        // Si ni 'envoie' ni 'payer' ne sont présents
+        return "Créer"
+    }
+    
+    func determineColor(_ text : String) -> Color {
+        return switch text {
+        case "Payer": .purple
+        case "Envoyée": .blue
+        default : .green
+        }
+    }
     
     var body: some View {
         VStack {
             Form {
-                
                 Section {
                     VStack(alignment: .center, spacing: 20) {
                         
@@ -24,9 +47,9 @@ struct ResumeTabDetailViewPDF: View {
                             ScrollView(.vertical, showsIndicators: true) {
                                 Text("En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
                                     .font(.footnote)
+                                    .fontWeight(.semibold)
                             }
                             .frame(maxHeight: 65)
-                            
                             
                             Text("En savoir plus")
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -51,18 +74,19 @@ struct ResumeTabDetailViewPDF: View {
                     SafariView(url: url)
                 }
                 
-                
                 Section {
                     NavigationLink {
-                        ClientDetailView(client: client)
+                        ClientDetailView(client: documentData.client!)
                     } label: {
                         HStack {
                             ProfilImageView(imageData: nil)
                                 .font(.title)
                             
-                            Text("\(client.firstname) \(client.lastname)")
-                                .font(.title2)
-                                .bold()
+                            if let client = documentData.client {
+                                Text("\(client.firstname) \(client.lastname)")
+                                    .font(.title2)
+                                    .bold()
+                            }
                         }
                     }
                 } header: {
@@ -71,6 +95,7 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
+                        let status = determineStatut()
                         Image(systemName: "waveform.path.ecg")
                             .imageScale(.large)
                             .foregroundStyle(.pink)
@@ -81,9 +106,11 @@ struct ResumeTabDetailViewPDF: View {
                             
                             Spacer()
                             
-                            Text("Envoyée")
+                            Text(status)
                                 .padding(5)
-                                .background(RoundedRectangle(cornerRadius: 25).foregroundStyle(.green))
+                                .background(RoundedRectangle(cornerRadius: 25)
+                                    .foregroundStyle(determineColor(status))
+                                )
                                 .foregroundStyle(.white)
                         }
                     }
@@ -130,11 +157,6 @@ struct ResumeTabDetailViewPDF: View {
             .headerProminence(.increased)
             .safeAreaInset(edge: .bottom) {
                 VStack {
-                    
-                    HStack {
-                        
-                    }
-                    
                     Button {
                         
                     } label: {
@@ -201,9 +223,9 @@ struct RowInformationDate: View {
     }
 }
 
-#Preview {
-    ResumeTabDetailViewPDF(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
-}
+//#Preview {
+//    ResumeTabDetailViewPDF(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
+//}
 
 extension URL: Identifiable {
     public var id: String {

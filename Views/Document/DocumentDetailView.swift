@@ -61,7 +61,7 @@ struct ChoosenView : View {
     var body: some View {
         switch selectedElement {
         case .résumé:
-            ResumeTabDetailViewPDF(client: documentData.client!)
+            ResumeTabDetailViewPDF(documentData: documentData)
         case .aperçu:
             PDFDisplayView(viewModel: viewModel, showToolbar: false)
         case .historique:
