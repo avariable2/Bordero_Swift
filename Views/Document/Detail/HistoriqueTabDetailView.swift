@@ -28,7 +28,7 @@ struct RowHistorique : View {
             .green
         case .modification:
             .red
-        case .envoie:
+        case .envoie, .exporté:
             .blue
         case .renvoie:
             .indigo
@@ -49,6 +49,8 @@ struct RowHistorique : View {
             "arrowshape.turn.up.right"
         case .payer:
             "bag.badge.plus"
+        case .exporté:
+            "square.and.arrow.up"
         }
     }
     

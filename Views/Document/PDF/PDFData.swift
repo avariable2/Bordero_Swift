@@ -62,6 +62,7 @@ struct Evenement : Identifiable {
         case envoie = "Envoie"
         case renvoie = "Renvoie"
         case payer = "Payer"
+        case exporté = "Exporté"
     }
     var id: UUID = UUID()
     
