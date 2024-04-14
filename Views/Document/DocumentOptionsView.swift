@@ -101,14 +101,6 @@ struct DocumentOptionsView: View, Saveable {
                             praticien.first?.carte = newValue
                             
                             unChangementCoreDataAEuLieu = true
-                            
-                            if newValue == true {
-                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.carte)
-                            } else {
-                                var tab = viewModel.documentData.optionsDocument.payementAllow
-                                 tab = tab.filter { $0 != .carte }
-                                viewModel.documentData.optionsDocument.payementAllow = tab
-                            }
                         }
                     
                     Toggle("Espèces", isOn: $especes)
@@ -117,13 +109,6 @@ struct DocumentOptionsView: View, Saveable {
                             
                             unChangementCoreDataAEuLieu = true
                             
-                            if newValue == true {
-                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.especes)
-                            } else {
-                                var tab = viewModel.documentData.optionsDocument.payementAllow
-                                 tab = tab.filter { $0 != .especes }
-                                viewModel.documentData.optionsDocument.payementAllow = tab
-                            }
                         }
                     
                     Toggle("Virement bancaire", isOn: $virementB)
@@ -132,13 +117,6 @@ struct DocumentOptionsView: View, Saveable {
                             
                             unChangementCoreDataAEuLieu = true
                             
-                            if newValue == true {
-                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.virement)
-                            } else {
-                                var tab = viewModel.documentData.optionsDocument.payementAllow
-                                 tab = tab.filter { $0 != .virement }
-                                viewModel.documentData.optionsDocument.payementAllow = tab
-                            }
                         }
                     
                     Toggle("Chèque", isOn: $cheque)
@@ -147,13 +125,6 @@ struct DocumentOptionsView: View, Saveable {
                             
                             unChangementCoreDataAEuLieu = true
                             
-                            if newValue == true {
-                                viewModel.documentData.optionsDocument.payementAllow.append(Payement.cheque)
-                            } else {
-                                var tab = viewModel.documentData.optionsDocument.payementAllow
-                                 tab = tab.filter { $0 != .cheque }
-                                viewModel.documentData.optionsDocument.payementAllow = tab
-                            }
                         }
                     
                 }

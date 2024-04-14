@@ -18,13 +18,19 @@ struct DocumentFormView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
-    private var viewModel = PDFViewModel()
+    private var viewModel : PDFViewModel
+    
+    init() {
+        self.viewModel = PDFViewModel()
+    }
     
     var body: some View {
         ModifierDocumentView(viewModel: viewModel)
             .task {
                 viewModel.documentData.praticien = praticien.first
                 
+                // MARK: Reinitialise le tableau
+                viewModel.documentData.optionsDocument.payementAllow.removeAll()
                 if let cheque = praticien.first?.cheque, cheque == true {
                     viewModel.documentData.optionsDocument.payementAllow.append(Payement.cheque)
                 }
