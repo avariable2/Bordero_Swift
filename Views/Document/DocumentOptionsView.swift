@@ -46,7 +46,7 @@ struct DocumentOptionsView: View {
                 Section {
                     DatePickerViewCustom(text: "Date d'émission", selection: $emission)
                         .onChange(of: emission) { oldValue, newValue in
-                            viewModel.documentData.optionsDocument.dateCreated = newValue
+                            viewModel.documentData.optionsDocument.dateEmission = newValue
                         }
                     
                     DatePickerViewCustom(text: "Date d'échéance", selection: $echeance)

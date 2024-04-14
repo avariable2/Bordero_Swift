@@ -21,13 +21,14 @@ struct PDFModel /*: Identifiable, Equatable*/ {
         var payementAllow : [Payement]
         var payementFinish : Bool
         var payementUse : Payement
-        var dateCreated : Date
+        var dateEmission : Date
         var afficherDateEcheance : Bool = true
         var dateEcheance : Date
         var remise : Remise
         var note : String
     }
     
+    var historique : [Evenement]
     var praticien: Praticien?
     var client: Client?
     var elements: [TTLTypeActe]
@@ -40,15 +41,28 @@ struct PDFModel /*: Identifiable, Equatable*/ {
             payementAllow: [],
             payementFinish: false,
             payementUse: .carte,
-            dateCreated: Date(),
+            dateEmission: Date(),
             dateEcheance: Calendar.current.date(byAdding: .day, value: 30, to: Date())!, // Ajoute par defaut 30 jours
             remise: Remise(type: .pourcentage, montant: 0),
             note: ""
         )
+        self.historique = [Evenement(nom: .création, date: Date()),]
         self.praticien = nil
         self.elements = []
         self.client = nil
     }
+}
+
+struct Evenement : Identifiable {
+    enum TypeEvenement : String, CaseIterable, Identifiable {
+        var id : Self { self }
+        
+        case création, modification, envoie, renvoie, payer
+    }
+    var id: UUID = UUID()
+    
+    var nom : TypeEvenement
+    var date : Date
 }
 
 enum TypeDoc : String, CaseIterable, Identifiable {

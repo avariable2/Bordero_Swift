@@ -180,11 +180,11 @@ struct PayementEtSignature: View {
             
             VStack {
                 if let tabAddr = praticien?.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville, !ville.isEmpty {
-                    Text("A \(ville), le \(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted)),")
+                    Text("A \(ville), le \(data.optionsDocument.dateEmission.formatted(date: .numeric, time: .omitted)),")
                         .padding()
                 }
                 else {
-                   Text("Le \(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted)),")
+                   Text("Le \(data.optionsDocument.dateEmission.formatted(date: .numeric, time: .omitted)),")
                        .padding()
                }
                 

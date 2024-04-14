@@ -65,7 +65,7 @@ struct ChoosenView : View {
         case .aperçu:
             PDFDisplayView(viewModel: viewModel, showToolbar: false)
         case .historique:
-            HistoriqueTabDetailView()
+            HistoriqueTabDetailView(historique: documentData.historique)
         }
     }
 }

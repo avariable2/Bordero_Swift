@@ -65,18 +65,15 @@ struct ResumeTabDetailViewPDF: View {
                                 .bold()
                         }
                     }
-                    
                 } header: {
                     Text("Client")
                 }
                 
                 Section {
-                    
                     HStack {
                         Image(systemName: "waveform.path.ecg")
                             .imageScale(.large)
                             .foregroundStyle(.pink)
-                            
                         
                         HStack {
                             Text("Status")
@@ -95,7 +92,6 @@ struct ResumeTabDetailViewPDF: View {
                         Image(systemName: "eurosign.circle")
                             .imageScale(.large)
                             .foregroundStyle(.blue)
-                            
                         
                         HStack {
                             Text("Reste à payé")
@@ -108,13 +104,13 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     
                     RowInformationDate(
-                        logo: "doc.badge.clock",
-                        titre: "Date de création",
+                        logo: "calendar.badge.clock",
+                        titre: "Date d'émission",
                         color: .yellow
                     )
                     
                     RowInformationDate(
-                        logo: "clock.badge.exclamationmark",
+                        logo: "calendar.badge.exclamationmark",
                         titre: "Date d'échéance",
                         color: .red.opacity(0.9)
                     )
@@ -154,7 +150,7 @@ struct ResumeTabDetailViewPDF: View {
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
-
+                    
                 }
                 .padding()
                 .frame(maxWidth: .infinity)

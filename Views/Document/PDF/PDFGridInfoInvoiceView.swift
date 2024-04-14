@@ -36,7 +36,7 @@ struct PDFGridInfoInvoiceView : View {
                     
                     GridRow {
                         CellInGridView(titre: "Date de facture") {
-                            Text(data.optionsDocument.dateCreated.formatted(date: .numeric, time: .omitted))
+                            Text(data.optionsDocument.dateEmission.formatted(date: .numeric, time: .omitted))
                         }
                             .gridCellColumns(3)
                         
