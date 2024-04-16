@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="Adresse" representedClassName="Adresse" syncable="YES" codeGenerationType="class">
         <attribute name="codepostal" optional="YES" attributeType="String"/>
+        <attribute name="etageAppt" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="pays" optional="YES" attributeType="String"/>
         <attribute name="rue" optional="YES" attributeType="String"/>
@@ -28,6 +29,7 @@
         <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastname_" optional="YES" attributeType="String"/>
+        <attribute name="logoSociete" optional="YES" attributeType="Binary"/>
         <attribute name="nom_proffession" optional="YES" attributeType="String"/>
         <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="profilPicture" optional="YES" attributeType="Binary"/>

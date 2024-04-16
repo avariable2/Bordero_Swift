@@ -8,6 +8,7 @@
 import SwiftUI
 import Contacts
 import SwiftUIDigitalSignature
+import PhotosUI
 
 struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     static func getVersion() -> Int32 {
@@ -28,11 +29,14 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     @State private var nom = ""
     @State private var prenom = ""
-    @State private var pays = ""
+    @State private var pays = "France"
+    @State private var etageOrAppt = ""
     @State private var rue = ""
     @State private var codePostal = ""
     @State private var ville = ""
     
+    @State private var selectedPhotoSociete: PhotosPickerItem?
+    @State private var selectedImage: UIImage?
     @State private var nomSociete = ""
     @State private var applyTVA : Bool = true
     @State private var siret = ""
@@ -113,25 +117,9 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             }
             
             Section {
+                
                 TextField("Nom de l'entreprise", text: $nomSociete)
                     .multilineTextAlignment(.leading)
-                
-                ViewThatFits {
-                    Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
-                        .toggleStyle(SwitchToggleStyle(tint: .green))
-                        .sensoryFeedback(.success, trigger: applyTVA)
-                    
-                    VStack(alignment: .center) {
-                        Text("Appliquer la TVA sur les factures")
-                            .multilineTextAlignment(.leading)
-                        
-                        Toggle("", isOn: $applyTVA)
-                            .toggleStyle(SwitchToggleStyle(tint: .green))
-                            .sensoryFeedback(.success, trigger: applyTVA)
-                    }
-                    
-                }
-                
                 
                 ViewThatFits {
                     LabeledContent("Numéro de SIRET") {
@@ -152,35 +140,27 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                     }
                 }
                 
+                ViewThatFits {
+                    Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
+                        .toggleStyle(SwitchToggleStyle(tint: .green))
+                        .sensoryFeedback(.success, trigger: applyTVA)
+                    
+                    VStack(alignment: .center) {
+                        Text("Appliquer la TVA sur les factures")
+                            .multilineTextAlignment(.leading)
+                        
+                        Toggle("", isOn: $applyTVA)
+                            .toggleStyle(SwitchToggleStyle(tint: .green))
+                            .sensoryFeedback(.success, trigger: applyTVA)
+                    }
+                }
+                
             } header: {
                 Text("Identification")
             } footer: {
                 Text("Ces champs sont important ficalement pour que vos documents soient valides.")
                     .multilineTextAlignment(.leading)
             }
-            
-            Section {
-                Button {
-                    showSheetForSignature.toggle()
-                } label: {
-                    Label("Signature", systemImage: "signature")
-                }
-                .sheet(isPresented: $showSheetForSignature) {
-                    SignatureViewCustom(availableTabs: [.draw, .image, .type]) { signature in
-                        self.signature = signature
-                        showSheetForSignature.toggle()
-                    } onCancel: {
-                        showSheetForSignature.toggle()
-                    }
-                }
-                
-                if let sign = signature {
-                    Image(uiImage: sign)
-                        .resizable()
-                        .scaledToFit()
-                }
-            }
-            
             
             Section {
                 LabeledContent("Prénom") {
@@ -210,11 +190,60 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 LabeledContent("Rue") {
                     TextField(textFacultatif, text: $rue)
                 }
+                
+                LabeledContent("Étage, appt.") {
+                    TextField(textFacultatif, text: $etageOrAppt)
+                }
+                
                 LabeledContent("Code postal") {
                     TextField(textFacultatif, text: $codePostal)
                 }
+                
                 LabeledContent("Ville") {
                     TextField(textFacultatif, text: $ville)
+                }
+                
+            }
+            
+            Section {
+                Button {
+                    showSheetForSignature.toggle()
+                } label: {
+                    Label("Signature", systemImage: "signature")
+                }
+                .sheet(isPresented: $showSheetForSignature) {
+                    SignatureViewCustom(availableTabs: [.draw, .image, .type]) { signature in
+                        self.signature = signature
+                        showSheetForSignature.toggle()
+                    } onCancel: {
+                        showSheetForSignature.toggle()
+                    }
+                }
+                
+                if let sign = signature {
+                    Image(uiImage: sign)
+                        .resizable()
+                        .scaledToFit()
+                }
+            }
+            
+            Section {
+                PhotosPicker(selection: $selectedPhotoSociete, matching: .images, photoLibrary: .shared()) {
+                    Label(selectedImage != nil ? "Modifier le logo de société" : "Ajouter un logo de société", systemImage: "photo")
+                }
+                .onChange(of: selectedPhotoSociete) { oldItem, newItem in
+                    Task {
+                        // Retrive selected asset in the form of Data
+                        if let loaded = try? await newItem?.loadTransferable(type: Data.self) {
+                            selectedImage = UIImage(data: loaded)
+                        }
+                    }
+                }
+                
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
                 }
             }
         }
@@ -225,6 +254,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         }
         .navigationTitle(isOnBoarding ? "" : titre)
         .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
+        .headerProminence(.increased)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
         .toolbar {
@@ -344,10 +374,14 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         nom = user.lastname 
         email = user.email 
         numero = user.phone 
-        website = user.website 
+        website = user.website
         
         if let dataSignature = user.signature, let uiImage = UIImage(data: dataSignature) {
             signature = uiImage
+        }
+        
+        if let dataLogoSociete = user.logoSociete, let uiImage = UIImage(data: dataLogoSociete) {
+            selectedImage = uiImage
         }
         
         if let adresses = user.adresses {
@@ -357,6 +391,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 codePostal = lieu.codepostal ?? ""
                 rue = lieu.rue ?? ""
                 ville = lieu.ville ?? ""
+                etageOrAppt = lieu.etageAppt ?? ""
             }
         }
     }
