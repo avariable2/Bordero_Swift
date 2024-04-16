@@ -29,6 +29,10 @@ struct PDFModel {
     var elements: [TTLTypeActe]
     var optionsDocument : OptionsLegalDocument
     
+    var totalTTC = 0
+    var totalTVA = 0
+    var totalHT = 0
+    
     init() {
         self.optionsDocument = OptionsLegalDocument(
             typeDocument: .facture,
@@ -45,6 +49,38 @@ struct PDFModel {
         self.praticien = nil
         self.elements = []
         self.client = nil
+    }
+    
+    func calcTotalTTC() -> Decimal {
+        return calcTotalHT() + calcTotalTVA()
+    }
+    
+    func calcTotalHT() -> Decimal  {
+        var sousTot : Decimal = 0
+        for element in elements {
+            sousTot += Decimal(element.typeActeReal.price) * Decimal(element.quantity)
+        }
+        
+        if self.optionsDocument.remise.montant != 0 {
+            switch self.optionsDocument.remise.type {
+            case .pourcentage:
+                sousTot -= self.optionsDocument.remise.montant * sousTot
+            case .montantFixe:
+                sousTot -= self.optionsDocument.remise.montant
+            }
+        }
+        
+        return sousTot
+    }
+    
+    func calcTotalTVA() -> Decimal {
+        var montantTVA : Decimal = 0
+        for element in elements {
+            if element.typeActeReal.tva != 0 {
+                montantTVA += ((Decimal(element.typeActeReal.price) * Decimal(element.typeActeReal.tva)) + Decimal(element.typeActeReal.price)) * Decimal(element.quantity)
+            }
+        }
+        return montantTVA
     }
 }
 

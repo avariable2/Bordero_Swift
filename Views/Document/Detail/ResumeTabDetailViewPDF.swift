@@ -9,7 +9,7 @@ import SwiftUI
 import SafariServices
 
 struct ResumeTabDetailViewPDF: View {
-    @State var presentURL: URL?
+    @State var presentURL: URL? = nil
     @State var documentData : PDFModel
     
     func determineStatut() -> String {
@@ -66,7 +66,6 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity)
-//                    .padding([.leading, .trailing], -6)
                 } header: {
                     Text("Attention")
                 }
@@ -148,9 +147,9 @@ struct ResumeTabDetailViewPDF: View {
                 }
                 
                 Section {
-                    RowMontantDetail(text: "Total H.T.", price: 30)
-                    RowMontantDetail(text: "T.V.A", price: 0)
-                    RowMontantDetail(text: "Total T.T.C", price: 30)
+                    RowMontantDetail(text: "Total H.T.", price: documentData.calcTotalHT())
+                    RowMontantDetail(text: "T.V.A", price: documentData.calcTotalTVA())
+                    RowMontantDetail(text: "Total T.T.C", price: documentData.calcTotalTTC())
                         .bold()
                 } header: {
                     Text("Détail")

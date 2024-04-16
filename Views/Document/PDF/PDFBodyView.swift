@@ -84,20 +84,20 @@ struct CoutPartView: View {
                 
                 RowSousTableView(text: "Sous total", value: sousTot)
                 
-                RowSousTableView(text: "Montant TVA", value: montantTva)
-                
                 if remise.montant != 0 {
                     switch remise.type {
                     case .pourcentage:
                         
-                            RowSousTableView(text: "Taux de remise", value: remise.montant, isPourcent: true)
-                            
-                            RowSousTableView(text: "Montant de remise", value: remise.montant)
+                        RowSousTableView(text: "Taux de remise", value: remise.montant, isPourcent: true)
+//                            
+//                        RowSousTableView(text: "Montant de remise", value: sousTot * remise.montant)
                         
                     case .montantFixe:
                         RowSousTableView(text: "Remise", value: remise.montant)
                     }
                 }
+                
+                RowSousTableView(text: "Montant TVA", value: montantTva)
                 
                 Divider()
                 

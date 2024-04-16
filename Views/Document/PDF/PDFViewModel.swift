@@ -103,9 +103,8 @@ class PDFViewModel {
         let tableHeaderView = TableHeaderView().frame(width: widthView, height: 50)
         let tableHeaderRenderer = ImageRenderer(content: tableHeaderView)
         
-        let coutFinaux = getInfosCoutFinaux(data: documentData.elements, remise: documentData.optionsDocument.remise)
-        let coutPartView = CoutPartView(remise: coutFinaux.remise, sousTot: coutFinaux.sousTot, montantTva: coutFinaux.montantTva, total: coutFinaux.total)
-            .frame(width: widthView, height: coutFinaux.remise.montant == 0 ? 100 : 150)
+        let coutPartView = CoutPartView(remise: documentData.optionsDocument.remise, sousTot: documentData.calcTotalHT(), montantTva: documentData.calcTotalTVA(), total: documentData.calcTotalTTC())
+            .frame(width: widthView, height: documentData.optionsDocument.remise.montant == 0 ? 100 : 150)
         let coutPartRenderer = ImageRenderer(content: coutPartView)
        
         let payementSignatureView = PayementEtSignature(data: documentData).frame(width: widthView)
@@ -187,37 +186,6 @@ class PDFViewModel {
             currentY = 780 // On reinitialise en haut de la page
             currentY -= sizeView.height // et on recommence à enlever la taille
         }
-    }
-    
-    struct CoutFinal {
-        var sousTot : Decimal = 0
-        var montantTva : Decimal = 0
-        var total : Decimal = 0
-        var remise : Remise = Remise(type: Remise.TypeRemise.montantFixe, montant: 0)
-    }
-    
-    func getInfosCoutFinaux(data: [TTLTypeActe], remise: Remise) -> CoutFinal {
-        var coutFinal = CoutFinal()
-        
-        for tableElement in data {
-            coutFinal.sousTot += Decimal(tableElement.typeActeReal.price)
-            coutFinal.montantTva += (Decimal(tableElement.typeActeReal.tva) * Decimal(tableElement.typeActeReal.price))
-            
-            coutFinal.total += Decimal(tableElement.typeActeReal.total)
-        }
-        
-        if remise.montant != 0 {
-            switch remise.type {
-            case .pourcentage:
-                coutFinal.total = coutFinal.total / remise.montant
-            case .montantFixe:
-                coutFinal.total -= remise.montant
-            }
-        }
-        
-        coutFinal.remise = remise
-        
-        return coutFinal
     }
     
     func getTableElement(_ ttlTA : TTLTypeActe) -> PDFTableData {
