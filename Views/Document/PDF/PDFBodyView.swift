@@ -17,7 +17,7 @@ struct PDFBodyView : View {
     var body: some View {
         VStack() {
             HeaderPDFView(data: data)
-                .frame(height: 150)
+                .frame(height: 160)
             
             PDFGridInfoInvoiceView(data: data)
                 .frame(height: 140)
@@ -47,7 +47,8 @@ struct HeaderPDFView : View {
                     VStack(alignment: .leading) {
                         Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
                         if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
-                            Text("\(coordonne.rue ?? ""), \(coordonne.codepostal ?? "") \(coordonne.ville ?? "")")
+                            
+                            Text(getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                         }
                         Text(praticien.phone)
                         Text(verbatim: praticien.email)
@@ -66,6 +67,24 @@ struct HeaderPDFView : View {
                 .foregroundStyle(.secondary)
         }
         .font(.callout)
+    }
+    
+    func getTableauInfoAdresse(_ coordonne : Adresse) -> [String] {
+        var tab : [String] = []
+        if let rue = coordonne.rue {
+            tab.append(rue)
+        }
+        if let rue = coordonne.codepostal {
+            tab.append(rue)
+        }
+        if let rue = coordonne.etageAppt {
+            tab.append(rue)
+        }
+        if let rue = coordonne.ville {
+            tab.append(rue)
+        }
+        
+        return tab
     }
 }
 
