@@ -95,25 +95,25 @@ struct TableGridRowView : View {
                     
                     Text(purchase.libelle)
                 }
-                .frame(maxWidth: 300)
+                .frame(maxWidth: 315)
                 
                 Text("\(purchase.quantity)")
-                    .frame(maxWidth: 75)
+                    .frame(maxWidth: 65)
                 
                 Text(purchase.priceHT.formatted(.currency(code: "EUR")))
-                    .frame(maxWidth: 75)
+                    .frame(maxWidth: 70)
                 
                 Text(purchase.tva, format: .percent)
-                    .frame(maxWidth: 75)
+                    .frame(maxWidth: 70)
                 
                 Text(purchase.priceTTC.formatted(.currency(code: "EUR")))
                     .fontWeight(.semibold)
-                    .frame(maxWidth: 75)
+                    .frame(maxWidth: 70)
                 
             }
             .padding([.top, .bottom], 5)
         }
-        .font(.callout)
+        .font(.caption)
         .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 }

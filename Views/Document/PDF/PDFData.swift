@@ -8,14 +8,9 @@
 import Foundation
 import CoreData
 
-struct PDFModel /*: Identifiable, Equatable*/ {
-//    var id: UUID = UUID()
-//    
-//    static func == (lhs: PDFModel, rhs: PDFModel) -> Bool {
-//        lhs.id == rhs.id
-//    }
+struct PDFModel {
     
-    struct OptionsLegalDocument {
+    struct OptionsLegalDocument : Codable {
         var typeDocument : TypeDoc
         var numeroDocument: String
         var payementAllow : [Payement]
@@ -53,8 +48,8 @@ struct PDFModel /*: Identifiable, Equatable*/ {
     }
 }
 
-struct Evenement : Identifiable {
-    enum TypeEvenement : String, CaseIterable, Identifiable {
+struct Evenement : Identifiable, Codable {
+    enum TypeEvenement : String, CaseIterable, Identifiable, Codable {
         var id : Self { self }
         
         case création = "Création"
@@ -70,13 +65,13 @@ struct Evenement : Identifiable {
     var date : Date
 }
 
-enum TypeDoc : String, CaseIterable, Identifiable {
+enum TypeDoc : String, CaseIterable, Identifiable, Codable {
     case facture, devis
     
     var id: Self { self }
 }
 
-enum Payement : String, CaseIterable, Identifiable {
+enum Payement : String, CaseIterable, Identifiable, Codable {
     case carte, especes, virement, cheque
     
     var id : Self { self }
@@ -94,8 +89,8 @@ enum Payement : String, CaseIterable, Identifiable {
     }
 }
 
-struct Remise {
-    enum TypeRemise: CaseIterable, Identifiable, CustomStringConvertible {
+struct Remise: Codable {
+    enum TypeRemise: CaseIterable, Identifiable, CustomStringConvertible, Codable {
         case pourcentage
         case montantFixe
         
