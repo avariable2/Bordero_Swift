@@ -119,24 +119,29 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             Section {
                 
                 TextField("Nom de l'entreprise", text: $nomSociete)
+                    .keyboardType(.default)
                     .multilineTextAlignment(.leading)
                 
                 ViewThatFits {
                     LabeledContent("Numéro de SIRET") {
                         TextField("Important", text: $siret)
+                            .keyboardType(.numberPad)
                     }
                     
                     LabeledContent("SIRET") {
                         TextField("Important", text: $siret)
+                            .keyboardType(.numberPad)
                     }
                 }
                 
                 ViewThatFits {
                     LabeledContent("Numéro ADELI") {
                         TextField("Important", text: $adeli)
+                            .keyboardType(.numberPad)
                     }
                     LabeledContent("ADELI") {
                         TextField("Important", text: $adeli)
+                            .keyboardType(.numberPad)
                     }
                 }
                 
@@ -165,18 +170,23 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             Section {
                 LabeledContent("Prénom") {
                     TextField(textFacultatif, text: $prenom)
+                        .keyboardType(.alphabet)
                 }
                 LabeledContent("Nom") {
                     TextField(textFacultatif, text: $nom)
+                        .keyboardType(.alphabet)
                 }
                 LabeledContent("Téléphone") {
                     TextField(textFacultatif, text: $numero)
+                        .keyboardType(.phonePad)
                 }
                 LabeledContent("E-mail") {
                     TextField(textFacultatif, text: $email)
+                        .keyboardType(.emailAddress)
                 }
                 LabeledContent("Site web") {
                     TextField(textFacultatif, text: $website)
+                        .keyboardType(.URL)
                 }
             } header: {
                 Text("Contact")
@@ -189,18 +199,22 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 
                 LabeledContent("Rue") {
                     TextField(textFacultatif, text: $rue)
+                        .keyboardType(.default)
                 }
                 
                 LabeledContent("Étage, appt.") {
                     TextField(textFacultatif, text: $etageOrAppt)
+                        .keyboardType(.default)
                 }
                 
                 LabeledContent("Code postal") {
                     TextField(textFacultatif, text: $codePostal)
+                        .keyboardType(.numberPad)
                 }
                 
                 LabeledContent("Ville") {
                     TextField(textFacultatif, text: $ville)
+                        .keyboardType(.default)
                 }
                 
             }
