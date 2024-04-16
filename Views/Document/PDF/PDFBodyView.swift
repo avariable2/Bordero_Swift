@@ -66,7 +66,6 @@ struct HeaderPDFView : View {
                 .foregroundStyle(.secondary)
         }
         .font(.callout)
-        .padding()
     }
 }
 
@@ -119,11 +118,8 @@ struct CoutPartView: View {
                 
                 Divider()
             }
-            .padding()
-            
         }
         .font(.callout)
-        .padding()
     }
 }
 
@@ -212,7 +208,6 @@ struct PayementEtSignature: View {
             }
         }
         .font(.caption)
-        .padding()
     }
 }
 
