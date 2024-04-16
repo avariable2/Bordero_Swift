@@ -71,17 +71,17 @@ struct HeaderPDFView : View {
     
     func getTableauInfoAdresse(_ coordonne : Adresse) -> [String] {
         var tab : [String] = []
-        if let rue = coordonne.rue {
+        if let rue = coordonne.rue, !rue.isEmpty {
             tab.append(rue)
         }
-        if let rue = coordonne.codepostal {
-            tab.append(rue)
+        if let codepostal = coordonne.codepostal, !codepostal.isEmpty {
+            tab.append(codepostal)
         }
-        if let rue = coordonne.etageAppt {
-            tab.append(rue)
+        if let etageAppt = coordonne.etageAppt, !etageAppt.isEmpty {
+            tab.append(etageAppt)
         }
-        if let rue = coordonne.ville {
-            tab.append(rue)
+        if let ville = coordonne.ville, !ville.isEmpty {
+            tab.append(ville)
         }
         
         return tab

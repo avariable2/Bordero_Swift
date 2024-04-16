@@ -84,6 +84,7 @@ struct CellInGridView<Content : View>: View {
         VStack(alignment: .leading) {
             Text(titre.uppercased())
                 .font(.caption2)
+                .fixedSize()
                 .foregroundStyle(.primary.opacity(0.65))
             
             content
