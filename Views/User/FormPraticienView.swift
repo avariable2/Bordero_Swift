@@ -89,6 +89,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                         return
                     }
                     
+                    image = nil
                     if contact.imageDataAvailable {
                         if let imageData = contact.thumbnailImageData, let uiImage = UIImage(data: imageData) {
                             image = uiImage
