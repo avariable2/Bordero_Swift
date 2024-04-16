@@ -16,7 +16,7 @@ struct DocumentOptionsView: View, Saveable {
     @State private var echeance = Date()
     
     @State private var selectedTypeRemise : Remise.TypeRemise = .pourcentage
-    @State private var remise : Decimal = 0
+    @State private var montantDeLaRemise : Decimal = 0
     
     @State private var carte : Bool
     @State private var especes : Bool
@@ -31,6 +31,9 @@ struct DocumentOptionsView: View, Saveable {
     
     init(viewModel : PDFViewModel) {
         self.viewModel = viewModel
+        
+        selectedTypeRemise = viewModel.documentData.optionsDocument.remise.type
+        montantDeLaRemise = viewModel.documentData.optionsDocument.remise.montant
         
         carte = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.carte)
         especes = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.especes)
@@ -81,16 +84,16 @@ struct DocumentOptionsView: View, Saveable {
                     
                     LabeledContent("Montant de remise") {
                         if selectedTypeRemise == .pourcentage {
-                            TextField("0%", value: $remise, format: .percent)
+                            TextField("0%", value: $montantDeLaRemise, format: .percent)
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                         } else {
-                            TextField("0,00€", value: $remise, format: .currency(code: "EUR"))
+                            TextField("0,00€", value: $montantDeLaRemise, format: .currency(code: "EUR"))
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                         }
                     }
-                    .onChange(of: remise) { oldValue, newValue in
+                    .onChange(of: montantDeLaRemise) { oldValue, newValue in
                         viewModel.documentData.optionsDocument.remise.montant = newValue
                     }
                 }
