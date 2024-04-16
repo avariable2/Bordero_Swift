@@ -33,6 +33,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var codePostal = ""
     @State private var ville = ""
     
+    @State private var nomSociete = ""
     @State private var applyTVA : Bool = true
     @State private var siret = ""
     @State private var adeli = ""
@@ -47,7 +48,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     // MARK: Option d'affichage du formulaire
     var isOnBoarding : Bool
     var titre = "Renseignements professionnel"
-    var textFacultatif = "Facultatif"
+    var textFacultatif = "facultatif"
     
     @State var praticien : Praticien?
     var callback : (() -> Void)?
@@ -112,16 +113,45 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             }
             
             Section {
-                Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
-                    .toggleStyle(SwitchToggleStyle(tint: .purple))
-                    .sensoryFeedback(.success, trigger: applyTVA)
+                TextField("Nom de l'entreprise", text: $nomSociete)
+                    .multilineTextAlignment(.leading)
                 
-                LabeledContent("Numéro de SIRET") {
-                    TextField("Important", text: $siret)
+                ViewThatFits {
+                    Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
+                        .toggleStyle(SwitchToggleStyle(tint: .green))
+                        .sensoryFeedback(.success, trigger: applyTVA)
+                    
+                    VStack(alignment: .center) {
+                        Text("Appliquer la TVA sur les factures")
+                            .multilineTextAlignment(.leading)
+                        
+                        Toggle("", isOn: $applyTVA)
+                            .toggleStyle(SwitchToggleStyle(tint: .green))
+                            .sensoryFeedback(.success, trigger: applyTVA)
+                    }
+                    
                 }
-                LabeledContent("Numéro ADELI") {
-                    TextField("Important", text: $adeli)
+                
+                
+                ViewThatFits {
+                    LabeledContent("Numéro de SIRET") {
+                        TextField("Important", text: $siret)
+                    }
+                    
+                    LabeledContent("SIRET") {
+                        TextField("Important", text: $siret)
+                    }
                 }
+                
+                ViewThatFits {
+                    LabeledContent("Numéro ADELI") {
+                        TextField("Important", text: $adeli)
+                    }
+                    LabeledContent("ADELI") {
+                        TextField("Important", text: $adeli)
+                    }
+                }
+                
             } header: {
                 Text("Identification")
             } footer: {
@@ -266,6 +296,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         
         praticien.profilPicture = image?.jpegData(compressionQuality: 1.0)
         
+        praticien.nom_proffession = nomSociete
         praticien.adeli = adeli
         praticien.siret = siret
         praticien.applyTVA = applyTVA
@@ -304,7 +335,8 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             image = UIImage(data: data) ?? nil
         }
         
-        adeli = user.adeli 
+        nomSociete = user.nom_proffession ?? ""
+        adeli = user.adeli
         siret = user.siret 
         applyTVA = user.applyTVA
         
@@ -331,5 +363,5 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
 }
 
 #Preview {
-    FormPraticienView(isOnBoarding: true)
+    FormPraticienView(isOnBoarding: false)
 }

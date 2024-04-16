@@ -16,7 +16,7 @@ struct PDFGridInfoInvoiceView : View {
                 Grid(alignment: .topLeading, horizontalSpacing: 1, verticalSpacing: 1) {
                     GridRow {
                         CellInGridView(titre: "Nom de société") {
-                            Text("Cabinet d'ostéopathie")
+                            Text(data.praticien?.nom_proffession ?? "")
                         }
                             .gridCellColumns(5)
                     }
