@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PDFBodyView : View {
     static let color : Color = .gray.opacity(0.05)
-    static let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR")
+    static let currencyStyle = Decimal.FormatStyle.Currency(code: "EUR").locale(.current)
     
     let data : PDFModel
     
@@ -46,10 +46,10 @@ struct HeaderPDFView : View {
                 if let praticien = data.praticien {
                     VStack(alignment: .leading) {
                         Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
-                        if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first, ((coordonne.rue?.isEmpty) == nil) || ((coordonne.ville?.isEmpty) == nil) {
+                        if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
                             Text("\(coordonne.rue ?? ""), \(coordonne.codepostal ?? "") \(coordonne.ville ?? "")")
                         }
-                        Text("\(praticien.phone)")
+                        Text(praticien.phone)
                         Text(verbatim: praticien.email)
                             .foregroundStyle(.blue)
                         Text(verbatim: praticien.website)
@@ -109,7 +109,7 @@ struct CoutPartView: View {
                     
                     Divider()
                     
-                    Text(total, format: .currency(code: "EUR"))
+                    Text(total.formatted(.currency(code: "EUR")))
                         .font(.body)
                         .bold()
                         .padding(.leading, 50)
@@ -143,13 +143,12 @@ struct RowSousTableView: View {
                 Text(value, format: .percent)
                     .bold()
             } else {
-                Text(value, format: .currency(code: "EUR"))
+                Text(value.formatted(.currency(code: "EUR")))
                     .bold()
             }
             
         }
         .font(.caption)
-        .padding()
     }
 }
 
@@ -201,13 +200,13 @@ struct PayementEtSignature: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 200)
-                        .frame(maxHeight: 50)
-                        .border(Color.black)
+                        .frame(maxHeight: 60)
                 }
                     
             }
         }
         .font(.caption)
+        .padding(.top)
     }
 }
 

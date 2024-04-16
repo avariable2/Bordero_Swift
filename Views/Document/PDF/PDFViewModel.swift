@@ -88,7 +88,7 @@ class PDFViewModel {
         }
         
         let widthView : CGFloat = 560
-        var currentY: CGFloat = 780 // Début en haut de la page
+        var currentY: CGFloat = pageSize.height - 30 // Début en haut de la page
         
         // MARK: - Initialisation de la view
         pdfContext.beginPDFPage(nil)
@@ -105,7 +105,7 @@ class PDFViewModel {
         
         let coutFinaux = getInfosCoutFinaux(data: documentData.elements, remise: documentData.optionsDocument.remise)
         let coutPartView = CoutPartView(remise: coutFinaux.remise, sousTot: coutFinaux.sousTot, montantTva: coutFinaux.montantTva, total: coutFinaux.total)
-            .frame(width: widthView)
+            .frame(width: widthView, height: coutFinaux.remise.montant == 0 ? 100 : 150)
         let coutPartRenderer = ImageRenderer(content: coutPartView)
        
         let payementSignatureView = PayementEtSignature(data: documentData).frame(width: widthView)

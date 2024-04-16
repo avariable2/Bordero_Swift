@@ -100,13 +100,13 @@ struct TableGridRowView : View {
                 Text("\(purchase.quantity)")
                     .frame(maxWidth: 75)
                 
-                Text(purchase.priceHT, format: PDFBodyView.currencyStyle)
+                Text(purchase.priceHT.formatted(.currency(code: "EUR")))
                     .frame(maxWidth: 75)
                 
                 Text(purchase.tva, format: .percent)
                     .frame(maxWidth: 75)
                 
-                Text(purchase.priceTTC, format: PDFBodyView.currencyStyle)
+                Text(purchase.priceTTC.formatted(.currency(code: "EUR")))
                     .fontWeight(.semibold)
                     .frame(maxWidth: 75)
                 
