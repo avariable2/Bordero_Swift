@@ -10,7 +10,7 @@ import SwiftUI
 struct DocumentDetailView: View {
     @State private var selectedTab: Tab = .résumé
     
-    let documentData : PDFModel
+    @State var documentData : PDFModel
     
     var body: some View {
         VStack {
@@ -30,12 +30,39 @@ struct DocumentDetailView: View {
         .navigationTitle("\(documentData.optionsDocument.typeDocument.rawValue.capitalized) # \(documentData.optionsDocument.numeroDocument)")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
+                Menu {
+                    Button {
+                        
+                    } label: {
+                        Text("Modifier")
+                    }
+                    
+                    Divider()
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Dupliquer")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Exporter en PDF")
+                    }
+                
+                    Divider()
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Effacer")
+                            .foregroundStyle(.red)
+                    }
                     
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
-
             }
         }
     }
@@ -49,8 +76,8 @@ enum Tab : String, CaseIterable, Identifiable {
 
 struct ChoosenView : View {
     var selectedElement : Tab
-    let documentData : PDFModel
-    let viewModel : PDFViewModel
+    @State var documentData : PDFModel
+    @State var viewModel : PDFViewModel
     
     init(selectedElement: Tab, documentData: PDFModel) {
         self.selectedElement = selectedElement

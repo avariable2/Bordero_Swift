@@ -16,34 +16,8 @@ struct PDFBodyView : View {
     
     var body: some View {
         VStack() {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading) {
-                    Image(systemName: "apple.logo")
-                        .font(.largeTitle)
-                        .padding(.bottom)
-                    
-                    if let praticien = data.praticien {
-                        VStack(alignment: .leading) {
-                            Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
-                            if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first, ((coordonne.rue?.isEmpty) == nil) || ((coordonne.ville?.isEmpty) == nil) {
-                                Text("\(coordonne.rue ?? ""), \(coordonne.codepostal ?? "") \(coordonne.ville ?? "")")
-                            }
-                            Text("\(praticien.phone)")
-                            Text(verbatim: praticien.email)
-                                .foregroundStyle(.blue)
-                            Text(verbatim: praticien.website)
-                                .foregroundStyle(.blue)
-                        }
-                        .font(.caption)
-                    }
-                }
-                
-                Spacer()
-                
-                Text(data.optionsDocument.typeDocument.rawValue.capitalized)
-                    .font(.largeTitle)
-                    .foregroundStyle(.secondary)
-            }
+            HeaderPDFView(data: data)
+                .frame(height: 150)
             
             PDFGridInfoInvoiceView(data: data)
                 .frame(height: 140)
@@ -52,12 +26,47 @@ struct PDFBodyView : View {
             
             PayementEtSignature(data: data)
         }
-        .font(.callout)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
         .background(
             .windowBackground
         )
+    }
+}
+
+struct HeaderPDFView : View {
+    
+    let data: PDFModel
+    
+    var body: some View {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading) {
+                Image(systemName: "apple.logo")
+                    .font(.largeTitle)
+                    .padding(.bottom)
+                
+                if let praticien = data.praticien {
+                    VStack(alignment: .leading) {
+                        Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
+                        if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first, ((coordonne.rue?.isEmpty) == nil) || ((coordonne.ville?.isEmpty) == nil) {
+                            Text("\(coordonne.rue ?? ""), \(coordonne.codepostal ?? "") \(coordonne.ville ?? "")")
+                        }
+                        Text("\(praticien.phone)")
+                        Text(verbatim: praticien.email)
+                            .foregroundStyle(.blue)
+                        Text(verbatim: praticien.website)
+                            .foregroundStyle(.blue)
+                    }
+                    .font(.caption)
+                }
+            }
+            
+            Spacer()
+            
+            Text(data.optionsDocument.typeDocument.rawValue.capitalized)
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
+        }
+        .font(.callout)
+        .padding()
     }
 }
 
@@ -113,6 +122,8 @@ struct CoutPartView: View {
             .padding()
             
         }
+        .font(.callout)
+        .padding()
     }
 }
 
@@ -142,6 +153,7 @@ struct RowSousTableView: View {
             
         }
         .font(.caption)
+        .padding()
     }
 }
 
@@ -204,6 +216,7 @@ struct PayementEtSignature: View {
     }
 }
 
-//#Preview() {
-//    PDFBodyView(data: PDFModel())
-//}
+#Preview() {
+    PDFBodyView(data: PDFModel())
+        .frame(width: 600)
+}

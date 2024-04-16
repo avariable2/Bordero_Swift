@@ -181,7 +181,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     Text("Préstation(s)")
                 } footer : {
                     Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
-                        .foregroundStyle(.secondary)
+//                        .foregroundStyle(.secondary)
                 }
                 .onChange(of: listTypeActes) { oldValue, newValue in
                     viewModel.documentData.elements = newValue
@@ -238,7 +238,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
         }
         .navigationTitle("Document")
-        .listStyle(.plain)
+//        .listStyle(.plain)
         .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

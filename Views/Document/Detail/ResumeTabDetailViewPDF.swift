@@ -10,7 +10,7 @@ import SafariServices
 
 struct ResumeTabDetailViewPDF: View {
     @State var presentURL: URL?
-    let documentData : PDFModel
+    @State var documentData : PDFModel
     
     func determineStatut() -> String {
         let typesPresent = Set(documentData.historique.map { $0.nom })
@@ -76,7 +76,9 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     NavigationLink {
-                        ClientDetailView(client: documentData.client!)
+                        if let client = documentData.client {
+                            ClientDetailView(client: client)
+                        }
                     } label: {
                         HStack {
                             ProfilImageView(imageData: nil)

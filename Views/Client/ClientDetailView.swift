@@ -49,15 +49,6 @@ struct ClientDetailView: View {
                 }
             }
             
-            Section {
-                NavigationLink {
-                    EmptyView()
-                } label: {
-                    Text("Creer un document à partir de ce client")
-                        .foregroundStyle(.blue)
-                }
-            }
-            
             Section("Historique") {
                 Text("Vous trouverez ici dans de futures mise à jour l'ensemble des documents pour ce client. Mais également les restes à payer, ect.")
                     .foregroundStyle(.secondary)
