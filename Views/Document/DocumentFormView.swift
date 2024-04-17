@@ -14,6 +14,7 @@ struct TTLTypeActe : Identifiable, Equatable {
 }
 
 struct DocumentFormView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
@@ -25,6 +26,23 @@ struct DocumentFormView: View {
     
     var body: some View {
         ModifierDocumentView(viewModel: viewModel)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        viewModel.reset()
+                        dismiss()
+                    } label: {
+                        withAnimation {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("Retour")
+                            }
+                        }
+                    }
+
+                }
+            }
             .task {
                 viewModel.documentData.praticien = praticien.first
                 

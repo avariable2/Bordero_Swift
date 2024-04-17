@@ -17,6 +17,10 @@ class PDFViewModel {
         self.documentData = documentData
     }
     
+    func reset() {
+        documentData = PDFModel()
+    }
+    
     @MainActor
     func renderView() -> URL? {
         // MARK: - Initialisation des constantes du pdf
