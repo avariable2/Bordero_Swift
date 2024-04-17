@@ -140,8 +140,13 @@ class PDFViewModel {
     }
     
     func getTableElement(_ ttlTA : TTLTypeActe) -> PDFTableData {
+        var libelleFinalAvecOuSansDate = ttlTA.typeActeReal.name
+        if !Calendar.current.isDateInToday(ttlTA.date) {
+            libelleFinalAvecOuSansDate.append(" du \(ttlTA.date.formatted(.dateTime.day().month().year()))")
+        }
+        
         return PDFTableData(
-            libelle: ttlTA.typeActeReal.name,
+            libelle: libelleFinalAvecOuSansDate,
             quantity: ttlTA.quantity,
             priceHT: ttlTA.typeActeReal.price,
             tva: ttlTA.typeActeReal.tva,

@@ -25,12 +25,18 @@ struct PDFTableView : View {
     private var total : Double = 0
     private var remise : Remise
     
-    // Memo : TABLE ELEMENT => (quantité, TypeActe object)
+    // Memo : TABLE ELEMENT => (quantité, date, TypeActe object)
     init(data: [TTLTypeActe], remise: Remise) {
         for tableElement in data {
+            
+            var libelleFinalAvecOuSansDate = tableElement.typeActeReal.name
+            if !Calendar.current.isDateInToday(tableElement.date) {
+                libelleFinalAvecOuSansDate.append(" du \(tableElement.date.formatted(.dateTime.day().month().year()))")
+            }
+            
             self.dataTab.append(
                 PDFTableData(
-                    libelle: tableElement.typeActeReal.name,
+                    libelle: libelleFinalAvecOuSansDate,
                     quantity: tableElement.quantity,
                     priceHT: tableElement.typeActeReal.price,
                     tva: tableElement.typeActeReal.tva,

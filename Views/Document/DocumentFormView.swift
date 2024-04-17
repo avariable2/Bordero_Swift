@@ -134,7 +134,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                                     self.client = nil
                                 }
                             } label: {
-                                Image(systemName: "minus.circle")
+                                Image(systemName: "minus.circle.fill")
                                     .symbolRenderingMode(.monochrome)
                                     .foregroundStyle(.red)
                             }
@@ -335,7 +335,7 @@ private struct TypeActeRowView: View {
             showSheet.toggle()
         } label: {
             Label {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 5) {
                     
                     HStack {
                         Text(text)
@@ -349,7 +349,7 @@ private struct TypeActeRowView: View {
                                 onDelete()
                             }
                         } label: {
-                            Image(systemName: "minus.circle")
+                            Image(systemName: "minus.circle.fill")
                                 .symbolRenderingMode(.monochrome)
                                 .foregroundStyle(.red)
                         }
