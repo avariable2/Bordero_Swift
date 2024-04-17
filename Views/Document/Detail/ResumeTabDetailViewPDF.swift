@@ -185,7 +185,7 @@ struct ResumeTabDetailViewPDF: View {
 
 struct RowMontantDetail: View {
     let text : String
-    let price : Decimal
+    let price : Double
     
     var body: some View {
         HStack {

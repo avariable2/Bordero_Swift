@@ -76,9 +76,9 @@ struct HeaderPDFView : View {
 struct CoutPartView: View {
     
     let remise : Remise
-    let sousTot : Decimal
-    let montantTva : Decimal
-    let total : Decimal
+    let sousTot : Double
+    let montantTva : Double
+    let total : Double
     
     var body: some View {
         HStack {
@@ -129,10 +129,10 @@ struct CoutPartView: View {
 
 struct RowSousTableView: View {
     let text : String
-    let value : Decimal
+    let value : Double
     var isPourcent : Bool
     
-    init(text: String, value: Decimal, isPourcent : Bool = false) {
+    init(text: String, value: Double, isPourcent : Bool = false) {
         self.text = text
         self.value = value
         self.isPourcent = isPourcent

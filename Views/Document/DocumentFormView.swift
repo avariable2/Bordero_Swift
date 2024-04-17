@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-struct TTLTypeActe : Identifiable, Equatable {
-    var id : UUID = UUID()
-    var typeActeReal: TypeActe
-    var quantity : Int
-}
-
 struct DocumentFormView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) var moc
@@ -40,7 +34,7 @@ struct DocumentFormView: View {
                             }
                         }
                     }
-
+                    
                 }
             }
             .task {
@@ -168,18 +162,19 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 // MARK: - Partie type Acte
                 Section {
                     if !listTypeActes.isEmpty {
-                        
-                            ForEach(listTypeActes.indices, id: \.self) { index in
-                                TypeActeRowView(
-                                    text: listTypeActes[index].typeActeReal.name,
-                                    price: String(format: "%.2f €", listTypeActes[index].typeActeReal.total),
-                                    ttl: $listTypeActes[index]
-                                )
-                            }
-                            .onDelete(perform: { indexSet in
-                                listTypeActes.remove(atOffsets: indexSet)
-                            })
-                        
+                        ForEach(listTypeActes.indices, id: \.self) { index in
+                            TypeActeRowView(
+                                text: listTypeActes[index].typeActeReal.name,
+                                price: listTypeActes[index].typeActeReal.total,
+                                ttl: $listTypeActes[index],
+                                onDelete: {
+                                    listTypeActes.remove(at: index)
+                                }
+                            )
+                        }
+                        .onDelete(perform: { indexSet in
+                            listTypeActes.remove(atOffsets: indexSet)
+                        })
                     }
                     
                     Button {
@@ -198,7 +193,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     Text("Préstation(s)")
                 } footer : {
                     Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
-//                        .foregroundStyle(.secondary)
                 }
                 .onChange(of: listTypeActes) { oldValue, newValue in
                     viewModel.documentData.elements = newValue
@@ -255,7 +249,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
         }
         .navigationTitle("Document")
-        .headerProminence(.increased)
+        //        .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Options") {
@@ -280,7 +274,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                             } label: {
                                 Text("Retour")
                             }
-
+                            
                         }
                     }
                 case .selectTypeActe:
@@ -294,7 +288,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                             } label: {
                                 Text("Retour")
                             }
-
+                            
                         }
                     }
                 default:
@@ -330,47 +324,77 @@ private struct ClientRowView: View {
 
 private struct TypeActeRowView: View {
     let text : String
-    let price : String
+    let price : Double
     @Binding var ttl : TTLTypeActe
+    @State private var showSheet = false
+    
+    let onDelete : () -> Void
     
     var body: some View {
-        Label {
-            HStack(alignment: .top) {
+        Button {
+            showSheet.toggle()
+        } label: {
+            Label {
                 VStack(alignment: .leading) {
-                    Text(text)
-                        .font(.body)
-                        .tint(.primary)
                     
-                    Text(price)
-                        .font(.caption)
+                    HStack {
+                        Text(text)
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                        
+                        Spacer()
+                        
+                        Button {
+                            withAnimation {
+                                onDelete()
+                            }
+                        } label: {
+                            Image(systemName: "minus.circle")
+                                .symbolRenderingMode(.monochrome)
+                                .foregroundStyle(.red)
+                        }
+                    }
+                    
+                    LabeledContent("Quantité", value: ttl.quantity, format: .number)
                         .foregroundStyle(.secondary)
-                }
-                
-                Spacer()
-                
-                Picker("", selection: $ttl.quantity) {
-                    ForEach(1...100, id: \.self) { number in
-                        Text("\(number)")
+                    
+                    LabeledContent("Prix", value: price, format: .currency(code: "EUR"))
+                        .foregroundStyle(.secondary)
+                    
+                    if !Calendar.current.isDateInToday(ttl.date) {
+                        LabeledContent("Date", value: ttl.date.formatted(.dateTime.day().month().year()))
+                            .foregroundStyle(.secondary)
                     }
                 }
-                .frame(width: 100)
+                .tint(.primary)
+            } icon : {
+                Image(systemName: "cross.case.circle.fill")
+                    .imageScale(.large)
+                    .foregroundStyle(.white, .purple)
             }
-            
-        } icon : {
-            Image(systemName: "cross.case.circle.fill")
-                .imageScale(.large)
-                .foregroundStyle(.white, .purple)
         }
-        .labelStyle(TypeActeRowStyle())
-    }
-}
-
-// Uniquement pour faire en sorte que l'icon soit aligner avec le contenu verticalement
-struct TypeActeRowStyle : LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            configuration.icon
-            configuration.title
+        .sheet(isPresented: $showSheet) {
+            NavigationStack {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Quantité")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    Stepper(
+                        value: $ttl.quantity,
+                        in: 0...100
+                    ) {
+                        Text(ttl.quantity, format: .number)
+                    }
+                    
+                }
+                
+                DatePicker("Date de l'acte", selection: $ttl.date, displayedComponents: .date)
+                
+            }
+            .padding()
+            .navigationTitle("Option de \(text)")
+            .presentationDetents([.fraction(0.2), .medium])
         }
     }
 }
@@ -449,9 +473,9 @@ struct FormButtonsPrimaryActionView: View {
 }
 
 #Preview {
-//    TypeActeRowView(text: "AAA", price: "50", ttl: .constant(TTLTypeActe(typeActeReal: TypeActe(name: "aa", price: 50, tva: 0.2, context: DataController.shared.container.viewContext), quantity: 1)))
+    //    TypeActeRowView(text: "AAA", price: "50", ttl: .constant(TTLTypeActe(typeActeReal: TypeActe(name: "aa", price: 50, tva: 0.2, context: DataController.shared.container.viewContext), quantity: 1)))
     
     DocumentFormView()
     
-//    ClientRowView(firstname: "AAA", name: "AAA")
+    //    ClientRowView(firstname: "AAA", name: "AAA")
 }

@@ -28,7 +28,7 @@ class PDFViewModel {
             return nil
         }
         let url = directory
-            .appendingPathComponent("\(UUID())")
+            .appendingPathComponent("pdfTmp")
             .appendingPathExtension(for: .pdf)
         
         var pageSize = CGRect(x: 0, y: 0, width: 600, height: 800)
@@ -142,10 +142,10 @@ class PDFViewModel {
     func getTableElement(_ ttlTA : TTLTypeActe) -> PDFTableData {
         return PDFTableData(
             libelle: ttlTA.typeActeReal.name,
-            quantity: Decimal(ttlTA.quantity),
-            priceHT: Decimal(ttlTA.typeActeReal.price),
-            tva: Decimal(ttlTA.typeActeReal.tva),
-            priceTTC: Decimal(ttlTA.typeActeReal.total)
+            quantity: ttlTA.quantity,
+            priceHT: ttlTA.typeActeReal.price,
+            tva: ttlTA.typeActeReal.tva,
+            priceTTC: ttlTA.typeActeReal.total
         )
     }
 }

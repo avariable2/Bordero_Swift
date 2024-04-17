@@ -16,7 +16,7 @@ struct DocumentOptionsView: View, Saveable {
     @State private var echeance = Date()
     
     @State private var selectedTypeRemise : Remise.TypeRemise = .pourcentage
-    @State private var montantDeLaRemise : Decimal = 0
+    @State private var montantDeLaRemise : Double = 0
     
     @State private var carte : Bool
     @State private var especes : Bool

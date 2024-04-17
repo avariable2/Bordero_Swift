@@ -9,10 +9,10 @@ import SwiftUI
 
 struct PDFTableData: Identifiable {
     let libelle: String
-    let quantity: Decimal
-    let priceHT: Decimal
-    let tva: Decimal
-    let priceTTC: Decimal
+    let quantity: Double
+    let priceHT: Double
+    let tva: Double
+    let priceTTC: Double
     
     let id = UUID()
 }
@@ -20,9 +20,9 @@ struct PDFTableData: Identifiable {
 struct PDFTableView : View {
     private var dataTab : [PDFTableData]  = []
     
-    private var sousTot : Decimal = 0
-    private var montantTva : Decimal = 0
-    private var total : Decimal = 0
+    private var sousTot : Double = 0
+    private var montantTva : Double = 0
+    private var total : Double = 0
     private var remise : Remise
     
     // Memo : TABLE ELEMENT => (quantité, TypeActe object)
@@ -31,17 +31,17 @@ struct PDFTableView : View {
             self.dataTab.append(
                 PDFTableData(
                     libelle: tableElement.typeActeReal.name,
-                    quantity: Decimal(tableElement.quantity),
-                    priceHT: Decimal(tableElement.typeActeReal.price),
-                    tva: Decimal(tableElement.typeActeReal.tva),
-                    priceTTC: Decimal(tableElement.typeActeReal.total)
+                    quantity: tableElement.quantity,
+                    priceHT: tableElement.typeActeReal.price,
+                    tva: tableElement.typeActeReal.tva,
+                    priceTTC: tableElement.typeActeReal.total
                 )
             )
             
-            sousTot = sousTot + Decimal(tableElement.typeActeReal.price)
-            montantTva = montantTva + (Decimal(tableElement.typeActeReal.tva) * Decimal(tableElement.typeActeReal.price))
+            sousTot = sousTot + tableElement.typeActeReal.price
+            montantTva = montantTva + (tableElement.typeActeReal.tva * tableElement.typeActeReal.price)
             
-            total = total + Decimal(tableElement.typeActeReal.total)
+            total = total + tableElement.typeActeReal.total
         }
         
         self.remise = remise
@@ -97,7 +97,7 @@ struct TableGridRowView : View {
                 }
                 .frame(maxWidth: 315)
                 
-                Text("\(purchase.quantity)")
+                Text(purchase.quantity, format: .number.precision(.fractionLength(2)))
                     .frame(maxWidth: 65)
                 
                 Text(purchase.priceHT.formatted(.currency(code: "EUR")))

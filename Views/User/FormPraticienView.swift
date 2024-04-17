@@ -183,10 +183,14 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 LabeledContent("E-mail") {
                     TextField(textFacultatif, text: $email)
                         .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
                 }
                 LabeledContent("Site web") {
                     TextField(textFacultatif, text: $website)
                         .keyboardType(.URL)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
                 }
             } header: {
                 Text("Contact")

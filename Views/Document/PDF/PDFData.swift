@@ -51,14 +51,14 @@ struct PDFModel {
         self.client = nil
     }
     
-    func calcTotalTTC() -> Decimal {
+    func calcTotalTTC() -> Double {
         return calcTotalHT() + calcTotalTVA()
     }
     
-    func calcTotalHT() -> Decimal  {
-        var sousTot : Decimal = 0
+    func calcTotalHT() -> Double  {
+        var sousTot : Double = 0
         for element in elements {
-            sousTot += Decimal(element.typeActeReal.price) * Decimal(element.quantity)
+            sousTot += Double(element.typeActeReal.price) * Double(element.quantity)
         }
         
         if self.optionsDocument.remise.montant != 0 {
@@ -73,11 +73,11 @@ struct PDFModel {
         return sousTot
     }
     
-    func calcTotalTVA() -> Decimal {
-        var montantTVA : Decimal = 0
+    func calcTotalTVA() -> Double {
+        var montantTVA : Double = 0
         for element in elements {
             if element.typeActeReal.tva != 0 {
-                montantTVA += ((Decimal(element.typeActeReal.price) * Decimal(element.typeActeReal.tva)) + Decimal(element.typeActeReal.price)) * Decimal(element.quantity)
+                montantTVA += ((Double(element.typeActeReal.price) * Double(element.typeActeReal.tva)) + Double(element.typeActeReal.price)) * Double(element.quantity)
             }
         }
         return montantTVA
@@ -142,6 +142,12 @@ struct Remise: Codable {
     }
     
     var type : TypeRemise
-    var montant : Decimal
+    var montant : Double
 }
 
+struct TTLTypeActe : Identifiable, Equatable {
+    var id : UUID = UUID()
+    var typeActeReal: TypeActe
+    var quantity : Double
+    var date = Date()
+}
