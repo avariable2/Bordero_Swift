@@ -26,13 +26,20 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     @State private var quantity: Double = 1
     @State private var unit : String = ""
     
-    @State private var applyTVA = false
+    @State var applyTVA : Bool
     @State private var tauxTVA : Double = 0.20
     @State private var tot : Decimal = 0
     @State private var addFavoris = false
     
     private var disableForm: Bool {
         nom.isEmpty
+    }
+    
+    init(applyTVA : Bool = false, typeActeToModify : TypeActe? = nil, onSave: (() -> Void)? = nil, onCancel: (() -> Void)? = nil) {
+        self.applyTVA = applyTVA
+        self.onSave = onSave
+        self.typeActeToModify = typeActeToModify
+        self.onCancel = onCancel
     }
     
     var body: some View {

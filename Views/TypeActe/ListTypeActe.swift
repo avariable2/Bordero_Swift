@@ -19,6 +19,8 @@ struct ListTypeActe: View {
     @State private var showingAlert: Bool = false
     @State private var activeSheet : ActiveSheet?
     
+    var applyTvaOnTypeActe : Bool = false
+    
     // MARK: - Uniquement pour la partie document
     var callbackClick : ((TypeActe) -> Void)?
     
@@ -79,17 +81,26 @@ struct ListTypeActe: View {
         .sheet(item: $activeSheet) { item in
             switch item {
             case .createTypeActe:
-                FormTypeActeSheet(onCancel: {
-                    activeSheet = nil
-                }, onSave: {
-                    activeSheet = nil
-                })
+                FormTypeActeSheet(
+                    applyTVA: applyTvaOnTypeActe,
+                    onSave: {
+                        activeSheet = nil
+                    }, 
+                    onCancel: {
+                        activeSheet = nil
+                    }
+                )
             case .editTypeActe(let type):
-                FormTypeActeSheet(typeActeToModify: type, onCancel: {
-                    activeSheet = nil
-                }, onSave: {
-                    activeSheet = nil
-                })
+                FormTypeActeSheet(
+                    applyTVA: applyTvaOnTypeActe,
+                    typeActeToModify: type,
+                    onSave: {
+                        activeSheet = nil
+                    }, 
+                    onCancel: {
+                        activeSheet = nil
+                    }
+                )
             default :
                 EmptyView() // IMPOSSIBLE
             }

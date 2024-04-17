@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ExploreView: View {
     @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
     
     @State private var activeSheet: ActiveSheet?
     
@@ -24,7 +25,7 @@ struct ExploreView: View {
                 }
                 
                 NavigationLink {
-                    ListTypeActe()
+                    ListTypeActe(applyTvaOnTypeActe: praticien.first?.applyTVA ?? false)
                 } label: {
                     Label {
                         Text("Consulter tous les types d'acte")
@@ -102,7 +103,7 @@ struct ExploreView: View {
             switch item {
                 
             case .createTypeActe:
-                FormTypeActeSheet(onCancel: {
+                FormTypeActeSheet(applyTVA: praticien.first?.applyTVA ?? false, onCancel: {
                     activeSheet = nil
                 })
                 .presentationDetents([.large])

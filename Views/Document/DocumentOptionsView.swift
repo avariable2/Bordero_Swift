@@ -25,7 +25,7 @@ struct DocumentOptionsView: View, Saveable {
     
     @State private var unChangementCoreDataAEuLieu = false
     
-    @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
+    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
     
     var viewModel : PDFViewModel
     
