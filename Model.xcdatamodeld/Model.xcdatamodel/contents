@@ -11,6 +11,7 @@
         <relationship name="occupant" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Client" inverseName="adresses" inverseEntity="Client"/>
     </entity>
     <entity name="Client" representedClassName="Client" syncable="YES" codeGenerationType="class">
+        <attribute name="code_entreprise" optional="YES" attributeType="String"/>
         <attribute name="email_" optional="YES" attributeType="String"/>
         <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -18,6 +19,33 @@
         <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="occupant" inverseEntity="Adresse"/>
+    </entity>
+    <entity name="Document" representedClassName="Document" syncable="YES" codeGenerationType="class">
+        <attribute name="dateEcheance" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateEmission" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="estFacture" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="numeroDocument" optional="YES" attributeType="String"/>
+        <attribute name="payementAllow" optional="YES" attributeType="Composite" composite="DocumentPayementAllow"/>
+        <attribute name="payementFinish" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="payementUse" optional="YES" attributeType="String"/>
+        <attribute name="remise" optional="YES" attributeType="Composite" composite="Remise"/>
+        <attribute name="snapshotClient" optional="YES" attributeType="Composite" composite="SnapshotClient"/>
+        <attribute name="snapshotPraticien" optional="YES" attributeType="Composite" composite="SnapshotPraticien"/>
+        <attribute name="totalHT" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="totalTTC" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="totalTVA" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="elements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SnapshotTypeActe" inverseName="estUnElementDe" inverseEntity="SnapshotTypeActe"/>
+        <relationship name="historique" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HistoriqueEvenement" inverseName="correspond" inverseEntity="HistoriqueEvenement"/>
+    </entity>
+    <entity name="HistoriqueEvenement" representedClassName="HistoriqueEvenement" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="nom" optional="YES" attributeType="String"/>
+        <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="correspond" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="historique" inverseEntity="Document"/>
     </entity>
     <entity name="Praticien" representedClassName="Praticien" syncable="YES" codeGenerationType="class">
         <attribute name="adeli_" optional="YES" attributeType="String"/>
@@ -40,6 +68,18 @@
         <attribute name="website_" optional="YES" attributeType="String"/>
         <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="appartient" inverseEntity="Adresse"/>
     </entity>
+    <entity name="SnapshotTypeActe" representedClassName="SnapshotTypeActe" syncable="YES" codeGenerationType="class">
+        <attribute name="dateExecutionTypeActe" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="info_" optional="YES" attributeType="String"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <attribute name="price_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="total_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="tva_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="estUnElementDe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="elements" inverseEntity="Document"/>
+    </entity>
     <entity name="TypeActe" representedClassName="TypeActe" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="info_" optional="YES" attributeType="String"/>
@@ -49,4 +89,32 @@
         <attribute name="tva_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <composite name="DocumentPayementAllow">
+        <attribute name="carte" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="especes" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="virement" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="cheque" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </composite>
+    <composite name="Remise">
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="montant" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </composite>
+    <composite name="SnapshotClient">
+        <attribute name="lastname" optional="YES" attributeType="String"/>
+        <attribute name="firstname" optional="YES" attributeType="String"/>
+        <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="code_entreprise" optional="YES" attributeType="String"/>
+        <attribute name="adresse" optional="YES" attributeType="String"/>
+    </composite>
+    <composite name="SnapshotPraticien">
+        <attribute name="lastname" optional="YES" attributeType="String"/>
+        <attribute name="firstname" optional="YES" attributeType="String"/>
+        <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="adresse" optional="YES" attributeType="String"/>
+        <attribute name="website" optional="YES" attributeType="String"/>
+        <attribute name="logo" optional="YES" attributeType="Binary"/>
+        <attribute name="signature" optional="YES" attributeType="Binary"/>
+    </composite>
 </model>
