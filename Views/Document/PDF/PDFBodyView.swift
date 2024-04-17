@@ -45,10 +45,13 @@ struct HeaderPDFView : View {
                 
                 if let praticien = data.praticien {
                     VStack(alignment: .leading) {
-                        Text("\(praticien.lastname.uppercased()) \(praticien.firstname)")
+                        Text(praticien.lastname.uppercased()).bold()
+                            + Text(" ")
+                            + Text(praticien.firstname)
+                        
                         if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
                             
-                            Text(getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
+                            Text(PDFUtils.getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                         }
                         Text(praticien.phone)
                         Text(verbatim: praticien.email)
@@ -67,24 +70,6 @@ struct HeaderPDFView : View {
                 .foregroundStyle(.secondary)
         }
         .font(.callout)
-    }
-    
-    func getTableauInfoAdresse(_ coordonne : Adresse) -> [String] {
-        var tab : [String] = []
-        if let rue = coordonne.rue, !rue.isEmpty {
-            tab.append(rue)
-        }
-        if let codepostal = coordonne.codepostal, !codepostal.isEmpty {
-            tab.append(codepostal)
-        }
-        if let etageAppt = coordonne.etageAppt, !etageAppt.isEmpty {
-            tab.append(etageAppt)
-        }
-        if let ville = coordonne.ville, !ville.isEmpty {
-            tab.append(ville)
-        }
-        
-        return tab
     }
 }
 

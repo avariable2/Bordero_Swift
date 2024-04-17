@@ -52,16 +52,18 @@ struct PDFGridInfoInvoiceView : View {
                     HStack {
                         if let client = data.client {
                             VStack(alignment: .leading) {
-                                Text("\(client.lastname.uppercased())")
-                                Text("\(client.firstname)")
-                                if let tabAddr = client.adresses as? Set<Adresse> {
-                                    ForEach(tabAddr.sorted { $0.id < $1.id }, id : \.self) { adresse in
-                                        Text("\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")")
-                                    }
+                                Text("\(client.lastname.uppercased()) \(client.firstname)")
+                                if let tabAddr = client.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
+                                    
+                                    Text(PDFUtils.getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                                 }
                                 Text(client.phone)
                                 Text(client.email)
                                     .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)
+                                
+                                if let siret = client.code_entreprise {
+                                    Text("Numero de SIRET : \(siret)")
+                                }
                             }
                             Spacer()
                         }
