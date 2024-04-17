@@ -33,9 +33,9 @@
         <attribute name="remise" optional="YES" attributeType="Composite" composite="Remise"/>
         <attribute name="snapshotClient" optional="YES" attributeType="Composite" composite="SnapshotClient"/>
         <attribute name="snapshotPraticien" optional="YES" attributeType="Composite" composite="SnapshotPraticien"/>
-        <attribute name="totalHT" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="totalTTC" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="totalTVA" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="totalHT" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="totalTTC" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="totalTVA" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="elements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SnapshotTypeActe" inverseName="estUnElementDe" inverseEntity="SnapshotTypeActe"/>
         <relationship name="historique" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HistoriqueEvenement" inverseName="correspond" inverseEntity="HistoriqueEvenement"/>
@@ -77,6 +77,7 @@
         <attribute name="quantity" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="total_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="tva_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="uuidTypeActe" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="estUnElementDe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="elements" inverseEntity="Document"/>
     </entity>
@@ -106,6 +107,7 @@
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="code_entreprise" optional="YES" attributeType="String"/>
         <attribute name="adresse" optional="YES" attributeType="String"/>
+        <attribute name="uuidClient" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </composite>
     <composite name="SnapshotPraticien">
         <attribute name="lastname" optional="YES" attributeType="String"/>
@@ -116,5 +118,7 @@
         <attribute name="website" optional="YES" attributeType="String"/>
         <attribute name="logo" optional="YES" attributeType="Binary"/>
         <attribute name="signature" optional="YES" attributeType="Binary"/>
+        <attribute name="siret" optional="YES" attributeType="String"/>
+        <attribute name="adeli" optional="YES" attributeType="String"/>
     </composite>
 </model>

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ScrollableGradientBackground
 
 struct TTLTypeActe : Identifiable, Equatable {
     var id : UUID = UUID()
@@ -238,7 +237,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
         }
         .navigationTitle("Document")
-//        .listStyle(.plain)
         .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

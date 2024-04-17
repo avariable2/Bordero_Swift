@@ -23,7 +23,7 @@ struct PDFDisplayView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let url = viewModel.renderViewDecouper() {
+                if let url = viewModel.renderView() {
                     PDFKitView(url: url)
                 } else {
                     VStack {
