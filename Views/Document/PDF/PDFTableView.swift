@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PDFTableData: Identifiable {
     let libelle: String
+    let infoLibelle : String
     let quantity: Double
     let priceHT: Double
     let tva: Double
@@ -37,6 +38,7 @@ struct PDFTableView : View {
             self.dataTab.append(
                 PDFTableData(
                     libelle: libelleFinalAvecOuSansDate,
+                    infoLibelle: tableElement.typeActeReal.info,
                     quantity: tableElement.quantity,
                     priceHT: tableElement.typeActeReal.price,
                     tva: tableElement.typeActeReal.tva,
@@ -99,7 +101,16 @@ struct TableGridRowView : View {
                         .imageScale(.large)
                         .foregroundStyle(.white, .purple)
                     
-                    Text(purchase.libelle)
+                    VStack(alignment: .leading) {
+                        Text(purchase.libelle)
+                        
+                        if !purchase.infoLibelle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            Text(purchase.infoLibelle)
+                                .foregroundStyle(.secondary)
+                                .font(.footnote)
+                        }
+                        
+                    }
                 }
                 .frame(maxWidth: 315)
                 
@@ -126,7 +137,7 @@ struct TableGridRowView : View {
 
 #Preview {
     ScrollView {
-        TableGridRowView(purchase: PDFTableData(libelle: "Je", quantity: 1, priceHT: 50, tva: 2, priceTTC: 50))
+        TableGridRowView(purchase: PDFTableData(libelle: "Je", infoLibelle: "Une potenciel description pour illustrer notre exemple", quantity: 1, priceHT: 50, tva: 2, priceTTC: 50))
             .border(Color.black)
     }
     .frame(width: 600)

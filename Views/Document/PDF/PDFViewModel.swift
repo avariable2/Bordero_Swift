@@ -146,7 +146,8 @@ class PDFViewModel {
         }
         
         return PDFTableData(
-            libelle: libelleFinalAvecOuSansDate,
+            libelle: libelleFinalAvecOuSansDate, 
+            infoLibelle: ttlTA.typeActeReal.info,
             quantity: ttlTA.quantity,
             priceHT: ttlTA.typeActeReal.price,
             tva: ttlTA.typeActeReal.tva,
@@ -157,6 +158,7 @@ class PDFViewModel {
     func getDocument() -> Document {
         let moc = DataController.shared.container.viewContext
         let document = Document(context: moc)
+        document.id = UUID()
         document.estFacture = self.documentData.optionsDocument.typeDocument == .facture
         document.numeroDocument = self.documentData.optionsDocument.numeroDocument
         

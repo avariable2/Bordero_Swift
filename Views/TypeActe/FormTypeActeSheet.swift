@@ -28,7 +28,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     
     @State var applyTVA : Bool
     @State private var tauxTVA : Double = 0.20
-    @State private var tot : Decimal = 0
+    @State private var tot : Double = 0
     @State private var addFavoris = false
     
     private var disableForm: Bool {
@@ -64,10 +64,14 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                         TextField("facultatif", value: $prix, format: .currency(code: "EUR"))
                     }
                     
-                    LabeledContent("Description") {
-                        TextField("facultatif", text: $description)
-                            .keyboardType(.default)
-                    }
+                    Text("Description")
+                        .listRowSeparator(.hidden, edges: .bottom)
+                    
+                    TextEditor(text: $description)
+                        .lineSpacing(3)
+                        .keyboardType(.default)
+                        .multilineTextAlignment(.leading)
+                    
                 }
                 
                 Section {
@@ -128,9 +132,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                 
                 applyTVA = typeActe.tva != 0
                 tauxTVA = typeActe.tva
-                tot = Decimal(typeActe.total)
+                tot = typeActe.total
                 
-//                addFavoris = typeActe.favoris
             }
         }
     }
@@ -154,12 +157,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         typeActe.name = nom
         typeActe.info = description
         typeActe.price = prix
-        
         typeActe.tva = applyTVA ? tauxTVA : 0
-        
         typeActe.total = montantFinal()
-        
-//        typeActe.favoris = addFavoris
         
         save()
     }

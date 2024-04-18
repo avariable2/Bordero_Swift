@@ -239,7 +239,13 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
             .safeAreaInset(edge: .bottom) {
                 NavigationStack {
-                    FormButtonsPrimaryActionView(activeSheet: $activeSheet, model: viewModel.documentData)
+                    FormButtonsPrimaryActionView(
+                        activeSheet: $activeSheet,
+                        model: viewModel.documentData,
+                        callback: {
+                            self.save()
+                        }
+                    )
                 }
                 
             }
@@ -407,6 +413,8 @@ struct FormButtonsPrimaryActionView: View {
     @Binding var activeSheet : ActiveSheet?
     var model : PDFModel
     
+    var callback : () -> Void
+    
     private var userDontAddClient : Bool {
         model.client == nil
     }
@@ -423,6 +431,9 @@ struct FormButtonsPrimaryActionView: View {
                     } icon: {
                         Image(systemName: "square.and.arrow.down")
                     }
+                    .onTapGesture(perform: {
+                        callback()
+                    })
                     .foregroundStyle(.white)
                     .padding(6)
                     .background(

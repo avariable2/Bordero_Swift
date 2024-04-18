@@ -7,8 +7,10 @@
 
 import Foundation
 import CoreData
+import Observation
 
-struct PDFModel {
+@Observable
+class PDFModel {
     
     struct OptionsLegalDocument : Codable {
         var typeDocument : TypeDoc
