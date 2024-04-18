@@ -53,10 +53,11 @@ struct PDFGridInfoInvoiceView : View {
                         if let client = data.client {
                             VStack(alignment: .leading) {
                                 Text("\(client.lastname.uppercased()) \(client.firstname)")
-                                if let tabAddr = client.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
-                                    
-                                    Text(PDFUtils.getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
+                                
+                                if let coordonne = client.adresse1 {
+                                    Text(PDFUtils.getRowAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                                 }
+                                
                                 Text(client.phone)
                                 Text(client.email)
                                     .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)

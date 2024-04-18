@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Adresse" representedClassName="Adresse" syncable="YES" codeGenerationType="class">
-        <attribute name="codepostal" optional="YES" attributeType="String"/>
-        <attribute name="etageAppt" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="pays" optional="YES" attributeType="String"/>
-        <attribute name="rue" optional="YES" attributeType="String"/>
-        <attribute name="ville" optional="YES" attributeType="String"/>
-        <relationship name="appartient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Praticien" inverseName="adresses" inverseEntity="Praticien"/>
-        <relationship name="occupant" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Client" inverseName="adresses" inverseEntity="Client"/>
-    </entity>
     <entity name="Client" representedClassName="Client" syncable="YES" codeGenerationType="class">
+        <attribute name="adresse1" optional="YES" attributeType="Composite" composite="Adresse"/>
+        <attribute name="adresse2" optional="YES" attributeType="Composite" composite="Adresse"/>
+        <attribute name="adresse3" optional="YES" attributeType="Composite" composite="Adresse"/>
         <attribute name="code_entreprise" optional="YES" attributeType="String"/>
         <attribute name="email_" optional="YES" attributeType="String"/>
         <attribute name="firstname_" optional="YES" attributeType="String"/>
@@ -18,7 +11,6 @@
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="occupant" inverseEntity="Adresse"/>
     </entity>
     <entity name="Document" representedClassName="Document" syncable="YES" codeGenerationType="class">
         <attribute name="dateEcheance" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -49,6 +41,7 @@
     </entity>
     <entity name="Praticien" representedClassName="Praticien" syncable="YES" codeGenerationType="class">
         <attribute name="adeli_" optional="YES" attributeType="String"/>
+        <attribute name="adresse1" optional="YES" attributeType="Composite" composite="Adresse"/>
         <attribute name="applyTVA" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="carte" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="cheque" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -66,7 +59,6 @@
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="virement_bancaire" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="website_" optional="YES" attributeType="String"/>
-        <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="appartient" inverseEntity="Adresse"/>
     </entity>
     <entity name="SnapshotTypeActe" representedClassName="SnapshotTypeActe" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -90,6 +82,14 @@
         <attribute name="tva_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <composite name="Adresse">
+        <attribute name="rue" optional="YES" attributeType="String"/>
+        <attribute name="etage_appt" optional="YES" attributeType="String"/>
+        <attribute name="code_postal" optional="YES" attributeType="String"/>
+        <attribute name="ville" optional="YES" attributeType="String"/>
+        <attribute name="province_etat" optional="YES" attributeType="String"/>
+        <attribute name="pays" optional="YES" attributeType="String"/>
+    </composite>
     <composite name="DocumentPayementAllow">
         <attribute name="carte" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="especes" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

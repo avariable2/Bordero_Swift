@@ -9,18 +9,27 @@ import Foundation
 
 struct PDFUtils {
     
-    static func getTableauInfoAdresse(_ coordonne : Adresse) -> [String] {
+    static func getRowAdresse(_ coordonne : [String : Any]) -> [String] {
+        PDFUtils.getTableauInfoAdresse(
+            coordonne["rue"] as? String,
+            (coordonne["code_postal"] as? Int32)?.description,
+            coordonne["etage_appt"] as? String,
+            coordonne["ville"] as? String
+        )
+    }
+    
+    static func getTableauInfoAdresse(_ rue : String?, _ codePostal: String?, _ etageAppt : String?, _ ville : String?) -> [String] {
         var tab : [String] = []
-        if let rue = coordonne.rue, !rue.isEmpty {
+        if let rue = rue, !rue.isEmpty {
             tab.append(rue)
         }
-        if let codepostal = coordonne.codepostal, !codepostal.isEmpty {
+        if let codepostal = codePostal, !codepostal.isEmpty {
             tab.append(codepostal)
         }
-        if let etageAppt = coordonne.etageAppt, !etageAppt.isEmpty {
+        if let etageAppt = etageAppt, !etageAppt.isEmpty {
             tab.append(etageAppt)
         }
-        if let ville = coordonne.ville, !ville.isEmpty {
+        if let ville = ville, !ville.isEmpty {
             tab.append(ville)
         }
         

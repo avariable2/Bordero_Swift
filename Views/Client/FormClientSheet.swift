@@ -33,7 +33,6 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
     // MARK: - Input pour l'utilisateur
     @State var nom : String = ""
     @State var prenom : String = ""
-    @State var adresse : String = ""
     @State var codePostal : String = ""
     @State var ville : String = ""
     @State var numero : String = ""
@@ -47,6 +46,10 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
     @FocusState private var focusedField : FocusedField?
     
     var callbackOnDelete : (() -> Void)?
+    
+    var checkClientA3AdresseMax: Bool {
+        adresses.count >= 3
+    }
     
     var body: some View {
         NavigationStack {
@@ -80,6 +83,8 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                         nom = contact.familyName
                         numero = contact.phoneNumbers.first?.value.stringValue ?? ""
                         email = String(contact.emailAddresses.first?.value ?? "")
+                        
+                        adresses.removeAll()
                         
                         for address in contact.postalAddresses {
                             let infoAdress = address.value
@@ -167,6 +172,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                                     .foregroundStyle(.white, .green)
                             }
                         }
+                        .disabled(checkClientA3AdresseMax)
                     }
                 } footer: {
                     Text("Pour supprimer une addresse, il vous suffit de la faire glisser sur la gauche et de clicquer sur supprimer.")
@@ -225,22 +231,28 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                 numero = client.phone
                 email = client.email
                 
-                if client.adresses != nil {
-                    for address in client.adresses! {
-                        let infoAdress = address as! Adresse
-                        
-                        let rue = infoAdress.rue
-                        let ville = infoAdress.ville
-                        let codepostal = infoAdress.codepostal
-                        
-                        let nouvelleAdresse = TTLAdresse(rue: rue!, ville : ville!, codePostal: codepostal!)
-                        adresses.append(nouvelleAdresse)
-                    }
+                // Si le tableau n'est pas vide on ajoute les informations à montrer
+                if let adresse1 = client.adresse1, !adresse1.isEmpty {
+                    createTTLAdresse(adresse1)
                 }
-                
+                if let adresse2 = client.adresse2, !adresse2.isEmpty {
+                    createTTLAdresse(adresse2)
+                }
+                if let adresse3 = client.adresse3, !adresse3.isEmpty {
+                    createTTLAdresse(adresse3)
+                }
             }
         }
         
+    }
+    
+    func createTTLAdresse(_ adresse : [String: Any]) {
+        let rue : String = adresse["rue"] as? String ?? ""
+        let ville : String  = adresse["ville"] as? String ?? ""
+        let codepostal : String = adresse["code_postal"] as? String ?? ""
+        
+        let nouvelleAdresse = TTLAdresse(rue: rue, ville : ville, codePostal: codepostal)
+        adresses.append(nouvelleAdresse)
     }
     
     func isAtLeastOneFieldFilled() -> Bool {
@@ -270,25 +282,43 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         client.email = email
         client.phone = numero
         
-        let tab = client.adresses?.mutableCopy() as! NSMutableSet
-        tab.removeAllObjects()
-        
-        client.adresses = tab
+        removeAllAddresses(for: client)
         
         for ttl in adresses {
-            client.adresses?.adding(createAdresse(ttl, client: client))
+            createAdresseAndAffectItToClient(ttl, client: client)
         }
+        
+        self.clientToModify = client
         
         save()
     }
     
-    private func createAdresse(_ ttl : TTLAdresse, client : Client) {
-        let userAdresse = Adresse(context: moc)
-        userAdresse.id = UUID()
-        userAdresse.rue = ttl.rue
-        userAdresse.codepostal = ttl.codePostal
-        userAdresse.ville = ttl.ville
-        userAdresse.occupant = client
+    func removeAllAddresses(for client: Client) {
+        client.adresse1 = [:]
+        client.adresse2 = [:]
+        client.adresse3 = [:]
+    }
+    
+    private func createAdresseAndAffectItToClient(_ ttl : TTLAdresse, client : Client) {
+        let adresse = [
+            "rue" : ttl.rue,
+            "etage_appt" : "",
+            "code_postal" : ttl.codePostal,
+            "ville" : ttl.ville,
+            "province_etat" : "",
+            "pays" : ""
+        ]
+        
+        if let addresse1 = client.adresse1, addresse1.isEmpty {
+            client.adresse1 = adresse
+        } else if let addresse2 = client.adresse2, addresse2.isEmpty {
+            client.adresse2 = adresse
+        } else if let addresse3 = client.adresse3, addresse3.isEmpty {
+            client.adresse3 = adresse
+        } else {
+            return
+        }
+        
     }
     
     func delete() {

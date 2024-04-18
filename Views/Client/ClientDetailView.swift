@@ -88,7 +88,7 @@ struct ClientDetailView: View {
 
 struct ClientDetailHeaderView: View {
     
-    let client : Client
+    @ObservedObject var client : Client
     @State private var showAdresses = false
     
     var body: some View {
@@ -152,29 +152,44 @@ struct ClientDetailHeaderView: View {
                 }
             }
             
-            if showAdresses, let adresses = client.adresses as? Set<Adresse> {
-                ForEach(adresses.sorted { $0.id < $1.id }, id : \.self) { adresse in
-                    RowIconColor(
-                        text: "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")",
-                        systemName: "house.circle.fill",
-                        color: .brown,
-                        accessibility: "Adresse renseigné pour le client"
-                    )
-                    .contextMenu {
-                        Button(action: {
-                            UIPasteboard.general.string = "\(adresse.rue ?? ""), \(adresse.codepostal ?? "") \(adresse.ville ?? "")"
-                        }) {
-                            Text("Copier")
-                            Image(systemName: "doc.on.doc")
-                        }
-                    }
-                    
+            if showAdresses {
+                
+                if let coordonne1 = client.adresse1, !coordonne1.isEmpty {
+                    RowAdresse(adresseSurUneLigne: client.getAdresseSurUneLigne(coordonne1))
+                }
+                if let coordonne2 = client.adresse2, !coordonne2.isEmpty {
+                    RowAdresse(adresseSurUneLigne: client.getAdresseSurUneLigne(coordonne2))
+                }
+                if let coordonne3 = client.adresse3, !coordonne3.isEmpty {
+                    RowAdresse(adresseSurUneLigne: client.getAdresseSurUneLigne(coordonne3))
                 }
             }
         }
         .onTapGesture {
             withAnimation {
                 showAdresses.toggle()
+            }
+        }
+    }
+}
+
+struct RowAdresse: View {
+    
+    let adresseSurUneLigne : String
+    
+    var body: some View {
+        RowIconColor(
+            text: adresseSurUneLigne,
+            systemName: "house.circle.fill",
+            color: .brown,
+            accessibility: "Adresse renseigné pour le client"
+        )
+        .contextMenu {
+            Button(action: {
+                UIPasteboard.general.string = adresseSurUneLigne
+            }) {
+                Text("Copier")
+                Image(systemName: "doc.on.doc")
             }
         }
     }

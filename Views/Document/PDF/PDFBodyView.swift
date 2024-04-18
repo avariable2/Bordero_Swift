@@ -49,9 +49,8 @@ struct HeaderPDFView : View {
                             + Text(" ")
                             + Text(praticien.firstname)
                         
-                        if let tabAddr = praticien.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
-                            
-                            Text(PDFUtils.getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
+                        if let coordonne = praticien.adresse1 {
+                            Text(PDFUtils.getRowAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                         }
                         Text(praticien.phone)
                         Text(verbatim: praticien.email)
@@ -190,7 +189,7 @@ struct PayementEtSignature: View {
             Spacer()
             
             VStack {
-                if let tabAddr = praticien?.adresses as? Set<Adresse>, let ville = tabAddr.first?.ville, !ville.isEmpty {
+                if let adresse1 = praticien?.adresse1, let ville : String = adresse1["ville"] as? String, !ville.isEmpty {
                     Text("A \(ville), le \(data.optionsDocument.dateEmission.formatted(date: .numeric, time: .omitted)),")
                         .padding()
                 }

@@ -46,9 +46,13 @@ extension Praticien {
     }
     
     func getAdresseSurUneLigne() -> String {
-        if let tabAddr = self.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
-            
-            return PDFUtils.getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow))
+        if let coordonne = self.adresse1 {
+            return PDFUtils.getTableauInfoAdresse(
+                coordonne["etage_appt"] as? String,
+                coordonne["rue"] as? String,
+                (coordonne["code_postal"] as? Int32)?.description,
+                coordonne["ville"] as? String
+            ).formatted(.list(type: .and, width: .narrow))
         }
         return ""
     }

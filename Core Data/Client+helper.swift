@@ -30,10 +30,11 @@ extension Client {
         set { phone_ = newValue }
     }
     
-    func getAdresseSurUneLigne() -> String {
-        if let tabAddr = self.adresses as? Set<Adresse>, let coordonne = tabAddr.first {
-            
-            return PDFUtils.getTableauInfoAdresse(coordonne).formatted(.list(type: .and, width: .narrow))
+    func getAdresseSurUneLigne(_ adresse : [String : Any]?) -> String {
+        if let coordonne = adresse {
+            return PDFUtils.getRowAdresse(
+                coordonne
+            ).formatted(.list(type: .and, width: .narrow))
         }
         return ""
     }

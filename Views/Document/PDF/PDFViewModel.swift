@@ -166,7 +166,7 @@ class PDFViewModel {
                 "firstname" : client.firstname,
                 "phone" : client.phone,
                 "email" : client.email,
-                "adresse" : client.getAdresseSurUneLigne(),
+                "adresse" : client.getAdresseSurUneLigne(client.adresse1),
                 "code_entreprise" : client.code_entreprise ?? "",
             ]
         }

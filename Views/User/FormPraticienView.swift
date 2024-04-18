@@ -108,6 +108,10 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                     numero = contact.phoneNumbers.first?.value.stringValue ?? ""
                     email = String(contact.emailAddresses.first?.value ?? "")
                     
+                    ville = contact.postalAddresses.first?.value.city ?? ""
+                    rue = contact.postalAddresses.first?.value.street ?? ""
+                    codePostal = contact.postalAddresses.first?.value.postalCode ?? ""
+                    
                 }
                 .multilineTextAlignment(.leading)
                 
@@ -357,25 +361,20 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         
         modifiyAdresseToPraticien(praticien)
         
+        praticien.signature = signature?.jpegData(compressionQuality: 1)
+        
         return praticien
     }
     
     func modifiyAdresseToPraticien(_ praticien : Praticien) {
-        
-        let tab = praticien.adresses?.mutableCopy() as! NSMutableSet
-        tab.removeAllObjects()
-        
-        let adressePraticien = Adresse(context: moc)
-        adressePraticien.id = UUID()
-        adressePraticien.codepostal = codePostal
-        adressePraticien.appartient = praticien
-        adressePraticien.rue = rue
-        adressePraticien.ville = ville
-        
-        tab.add(adressePraticien)
-        
-        praticien.adresses = tab
-        praticien.signature = signature?.jpegData(compressionQuality: 1)
+        praticien.adresse1 = [
+            "rue" : rue,
+            "etage_appt" : "",
+            "code_postal" : codePostal,
+            "ville" : ville,
+            "province_etat" : "",
+            "pays" : ""
+        ]
     }
     
     func retrieveInfoFormPraticienNotNull(_ user : Praticien) {
@@ -402,15 +401,12 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             selectedImage = uiImage
         }
         
-        if let adresses = user.adresses {
-            for adresse in adresses {
-                let lieu = adresse as! Adresse
-                
-                codePostal = lieu.codepostal ?? ""
-                rue = lieu.rue ?? ""
-                ville = lieu.ville ?? ""
-                etageOrAppt = lieu.etageAppt ?? ""
-            }
+        if let adresse = user.adresse1 {
+            
+            codePostal = adresse["code_postal"] as? String ?? ""
+            rue = adresse["rue"] as? String ?? ""
+            ville = adresse["ville"] as? String ?? ""
+            etageOrAppt = adresse["etage_appt"] as? String ?? ""
         }
     }
 }
