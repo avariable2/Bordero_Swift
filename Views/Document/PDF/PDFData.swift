@@ -152,4 +152,5 @@ struct TTLTypeActe : Identifiable, Equatable {
     var typeActeReal: TypeActe
     var quantity : Double
     var date = Date()
+    var remarque : String = ""
 }

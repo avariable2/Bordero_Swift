@@ -356,12 +356,12 @@ private struct TypeActeRowView: View {
                         
                         Button {
                             withAnimation {
-                                onDelete()
+                                showSheet.toggle()
                             }
                         } label: {
-                            Image(systemName: "minus.circle.fill")
+                            Image(systemName: "info.circle.fill")
                                 .symbolRenderingMode(.monochrome)
-                                .foregroundStyle(.red)
+                                .foregroundStyle(.blue)
                         }
                     }
                     
@@ -374,6 +374,21 @@ private struct TypeActeRowView: View {
                     if !Calendar.current.isDateInToday(ttl.date) {
                         LabeledContent("Date", value: ttl.date.formatted(.dateTime.day().month().year()))
                             .foregroundStyle(.secondary)
+                    }
+                    
+                    if !ttl.remarque.isEmpty {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Remarque :")
+                                .foregroundStyle(.secondary)
+                            
+                            Text("«")
+                            +
+                            Text(ttl.remarque)
+                                .foregroundStyle(.secondary)
+                            +
+                            Text("»")
+                        }
+                        
                     }
                 }
                 .tint(.primary)
@@ -401,10 +416,28 @@ private struct TypeActeRowView: View {
                 
                 DatePicker("Date de l'acte", selection: $ttl.date, displayedComponents: .date)
                 
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Remarque")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    TextEditor(text: $ttl.remarque)
+                        .lineSpacing(2)
+                        .keyboardType(.default)
+                        .multilineTextAlignment(.leading)
+                        .padding(2)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.tertiary, lineWidth: 1)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                
             }
             .padding()
             .navigationTitle("Option de \(text)")
-            .presentationDetents([.fraction(0.2), .medium])
+            .presentationDetents([.fraction(0.3), .medium])
         }
     }
 }

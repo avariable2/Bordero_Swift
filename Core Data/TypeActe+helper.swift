@@ -44,7 +44,7 @@ extension TypeActe {
      
      - Returns: Un snapshot (une copie gelée) du type d'acte
      */
-    func getSnapshot(_ document : Document, date : Date, quantite: Double) -> SnapshotTypeActe {
+    func getSnapshot(_ document : Document, date : Date, quantite: Double, remarque : String) -> SnapshotTypeActe {
         let snapshot = SnapshotTypeActe(context: DataController.shared.container.viewContext)
         
         snapshot.id = UUID()
@@ -58,6 +58,7 @@ extension TypeActe {
         snapshot.total_ = self.total
         snapshot.date = date
         snapshot.quantity = quantite
+        snapshot.remarque = remarque
         
         return snapshot
     }

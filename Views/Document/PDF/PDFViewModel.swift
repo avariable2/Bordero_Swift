@@ -147,7 +147,8 @@ class PDFViewModel {
         
         return PDFTableData(
             libelle: libelleFinalAvecOuSansDate, 
-            infoLibelle: ttlTA.typeActeReal.info,
+            infoLibelle: ttlTA.typeActeReal.info, 
+            remarque: ttlTA.remarque,
             quantity: ttlTA.quantity,
             priceHT: ttlTA.typeActeReal.price,
             tva: ttlTA.typeActeReal.tva,
@@ -174,7 +175,12 @@ class PDFViewModel {
         }
         
         for element in self.documentData.elements {
-            let snapshotTypeActe = element.typeActeReal.getSnapshot(document, date: element.date, quantite: element.quantity)
+            let snapshotTypeActe = element.typeActeReal.getSnapshot(
+                document,
+                date: element.date,
+                quantite: element.quantity,
+                remarque: element.remarque
+            )
             document.elements?.adding(snapshotTypeActe)
         }
         
