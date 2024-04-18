@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    
+    @Environment(\.colorScheme) var colorScheme
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
     @State private var userHasSeenAllOnBoarding = false
@@ -21,7 +21,7 @@ struct HomeView: View {
             maxHeight: 200,
             minHeight: 0,
             startColor: Color.green.opacity(0.85),
-            endColor: Color(uiColor: .secondarySystemBackground),
+            endColor: colorScheme == .dark ? Color(uiColor: .systemBackground) : Color(uiColor: .secondarySystemBackground),
             navigationTitle: "Résumé",
             content: {
                 

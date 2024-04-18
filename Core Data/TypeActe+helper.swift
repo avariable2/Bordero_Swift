@@ -35,6 +35,33 @@ extension TypeActe {
         set { total_ = newValue }
     }
     
+    /**
+     Fonction qui à pour objectif de creer une copie du type d'acte pour etre sauvegarder en l'etat et évité que celui ci puisse etre modifier dans le future.
+     Il prend un document en cours de création dans ces parametres pour l'affecté au champ **estUnElementDe**.
+     - Parameters:
+        - date: la date à laquel le type d'acte à été fait
+        - quantite: le nombre de fois que ce type d'acte à été fait
+     
+     - Returns: Un snapshot (une copie gelée) du type d'acte
+     */
+    func getSnapshot(_ document : Document, date : Date, quantite: Double) -> SnapshotTypeActe {
+        let snapshot = SnapshotTypeActe(context: DataController.shared.container.viewContext)
+        
+        snapshot.id = UUID()
+        snapshot.uuidTypeActe = self.id
+        snapshot.estUnElementDe = document
+        
+        snapshot.name_ = self.name
+        snapshot.info_ = self.info
+        snapshot.price_ = self.price
+        snapshot.tva_ = self.tva
+        snapshot.total_ = self.total
+        snapshot.date = date
+        snapshot.quantity = quantite
+        
+        return snapshot
+    }
+    
     convenience init(
         name : String,
         info : String = "",

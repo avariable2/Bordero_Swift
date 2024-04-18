@@ -69,7 +69,7 @@
         <relationship name="adresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Adresse" inverseName="appartient" inverseEntity="Adresse"/>
     </entity>
     <entity name="SnapshotTypeActe" representedClassName="SnapshotTypeActe" syncable="YES" codeGenerationType="class">
-        <attribute name="dateExecutionTypeActe" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="info_" optional="YES" attributeType="String"/>
         <attribute name="name_" optional="YES" attributeType="String"/>

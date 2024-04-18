@@ -42,13 +42,14 @@ struct ArticleComponentView: View {
     }
     
     var backgroundColor : Color {
-        colorScheme == .dark ? .black : .white
+        if colorScheme == .dark {
+            Color(uiColor: .quaternarySystemFill)
+        } else {
+            .white
+        }
     }
 }
 
 #Preview {
     ArticleComponentView(titre: "Suivi de vos traitements", sousTitre: "Découvrez en quoi il est important de suivre les traitements que vous prenez.", image: "ArticleImageFacture")
-        .background(
-            Color.red
-        )
 }

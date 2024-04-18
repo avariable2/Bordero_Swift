@@ -18,21 +18,23 @@ struct BandeauCreateDocument: View {
                 Image(systemName: "doc.fill.badge.plus")
                     .foregroundStyle(.green, .gray)
             }
-                .background(backgroundColor)
+            .background(backgroundColor)
                 .cornerRadius(8)
         }
         .buttonStyle(.plain)
-        
-//        .cornerRadius(10)
     }
     
     var backgroundColor : Color {
-        colorScheme == .dark ? .black : .white
+        if colorScheme == .dark {
+            Color(uiColor: .quaternarySystemFill)
+        } else {
+            .white
+        }
     }
 }
 
 #Preview {
-    VStack {
+    NavigationStack {
         BandeauCreateDocument()
     }
     

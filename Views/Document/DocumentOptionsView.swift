@@ -72,7 +72,7 @@ struct DocumentOptionsView: View, Saveable {
                         }
                 }
                 
-                Section("Remise sur votre facture") {
+                Section("Remise sur votre \(viewModel.documentData.optionsDocument.typeDocument.rawValue)") {
                     Picker("Type de remise", selection: $selectedTypeRemise) {
                         ForEach(Remise.TypeRemise.allCases) { option in
                             Text(String(describing: option))

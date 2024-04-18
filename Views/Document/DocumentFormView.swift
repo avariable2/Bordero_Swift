@@ -67,9 +67,8 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
         return 1
     }
     
-    enum FocusedField {
-        case numero
-    }
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.managedObjectContext) var moc
     
     var viewModel : PDFViewModel
     
@@ -86,11 +85,9 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     
     @State var numero : String = ""
     
-    @FocusState private var focusedField: FocusedField?
-    
     var body: some View {
         NavigationStack {
-            List {
+            Form {
                 Section {
                     Picker("Type de document", selection: $typeSelected.animation()) {
                         ForEach(TypeDoc.allCases) { type in
@@ -106,7 +103,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                     LabeledContent {
                         TextField("obligatoire", text: $numero.animation())
                             .multilineTextAlignment(.trailing)
-                            .focused($focusedField, equals: .numero)
                             .onChange(of: numero) { oldValue, newValue in
                                 viewModel.documentData.optionsDocument.numeroDocument = newValue
                             }
@@ -249,7 +245,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
         }
         .navigationTitle("Document")
-        //        .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Options") {
@@ -300,7 +295,16 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     }
     
     func save() {
+        let document = viewModel.getDocument()
         
+        print(document)
+        
+//        do {
+//            try moc.save()
+//            
+//        } catch _ {
+//            
+//        }
     }
 }
 

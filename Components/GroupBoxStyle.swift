@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CustomGroupBoxStyle : GroupBoxStyle {
+    @Environment(\.colorScheme) var colorScheme
+    
     func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .leading) {
             configuration.label
@@ -15,11 +17,20 @@ struct CustomGroupBoxStyle : GroupBoxStyle {
             configuration.content
         }
         .padding()
-        .background(Color.white.opacity(1))
+        .background(background)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+    
+    var background : Color {
+        colorScheme == .dark ? Color(uiColor: .secondarySystemBackground) : Color.white
     }
 }
 
-//#Preview {
-//    GroupBoxStyle()
-//}
+#Preview {
+    VStack {
+        GroupBox {
+            Text("Salut")
+        }
+        .groupBoxStyle(CustomGroupBoxStyle())
+    }
+}
