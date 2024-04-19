@@ -61,13 +61,13 @@
         <attribute name="website_" optional="YES" attributeType="String"/>
     </entity>
     <entity name="SnapshotTypeActe" representedClassName="SnapshotTypeActe" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="info_" optional="YES" attributeType="String"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="price_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="quantity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="remarque" optional="YES" attributeType="String"/>
+        <attribute name="remarque_" optional="YES" attributeType="String"/>
         <attribute name="total_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="tva_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="uuidTypeActe" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>

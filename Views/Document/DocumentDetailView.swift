@@ -15,13 +15,12 @@ struct DocumentDetailView: View, Saveable {
     
     @ObservedObject var document : Document
     
-    init(viewModel: PDFViewModel?, document: Document?) {
-        self.selectedTab = Tab.résumé
-        if let doc = document {
-            self.document = doc
-        } else if let vm = viewModel {
-            self.document = vm.getDocument()
-        }
+    init(viewModel : PDFViewModel) {
+        self.document = viewModel.getDocument()
+    }
+    
+    init(document : Document) {
+        self.document = document
     }
     
     var body: some View {
@@ -34,12 +33,12 @@ struct DocumentDetailView: View, Saveable {
             .pickerStyle(SegmentedPickerStyle())
             .padding([.trailing, .leading])
             
-            ChoosenView(
-                selectedElement: selectedTab,
-                viewModel: $viewModel
-            )
+//            ChoosenView(
+//                selectedElement: selectedTab,
+//                viewModel: $viewModel
+//            )
         }
-        .navigationTitle("\(document.estFacture ? "Facture" : "Devis") # \(document.numeroDocument ?? "")")
+        .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -113,7 +112,7 @@ struct ChoosenView : View {
 
 #Preview {
     NavigationStack {
-        DocumentDetailView(viewModel: PDFViewModel(), document: nil)
+        DocumentDetailView(viewModel: PDFViewModel())
     }
 }
 

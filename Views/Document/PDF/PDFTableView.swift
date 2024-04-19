@@ -31,7 +31,7 @@ struct PDFTableView : View {
     init(data: [TTLTypeActe], remise: Remise) {
         for tableElement in data {
             
-            var libelleFinalAvecOuSansDate = tableElement.typeActeReal.name
+            var libelleFinalAvecOuSansDate = tableElement.snapshotTypeActe.name
             if !Calendar.current.isDateInToday(tableElement.date) {
                 libelleFinalAvecOuSansDate.append(" du \(tableElement.date.formatted(.dateTime.day().month().year()))")
             }
@@ -39,19 +39,19 @@ struct PDFTableView : View {
             self.dataTab.append(
                 PDFTableData(
                     libelle: libelleFinalAvecOuSansDate,
-                    infoLibelle: tableElement.typeActeReal.info, 
+                    infoLibelle: tableElement.snapshotTypeActe.info,
                     remarque: tableElement.remarque,
                     quantity: tableElement.quantity,
-                    priceHT: tableElement.typeActeReal.price,
-                    tva: tableElement.typeActeReal.tva,
-                    priceTTC: tableElement.typeActeReal.total
+                    priceHT: tableElement.snapshotTypeActe.price,
+                    tva: tableElement.snapshotTypeActe.tva,
+                    priceTTC: tableElement.snapshotTypeActe.total
                 )
             )
             
-            sousTot = sousTot + tableElement.typeActeReal.price
-            montantTva = montantTva + (tableElement.typeActeReal.tva * tableElement.typeActeReal.price)
+            sousTot = sousTot + tableElement.snapshotTypeActe.price
+            montantTva = montantTva + (tableElement.snapshotTypeActe.tva * tableElement.snapshotTypeActe.price)
             
-            total = total + tableElement.typeActeReal.total
+            total = total + tableElement.snapshotTypeActe.total
         }
         
         self.remise = remise

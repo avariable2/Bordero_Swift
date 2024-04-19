@@ -62,7 +62,7 @@ struct DocumentFormView: View {
     }
 }
 
-struct ModifierDocumentView: View, Saveable, Versionnable {
+struct ModifierDocumentView: View, Versionnable {
     static func getVersion() -> Int32 {
         return 1
     }
@@ -75,7 +75,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @State private var activeSheet: ActiveSheet?
     
     @State private var client : Client? = nil
-    @State private var listTypeActes = [TTLTypeActe]()
+    @State private var listSnapshotTypeActes = [SnapshotTypeActe]()
     
     @State private var docIsFacture: Bool = true
     @State private var estPayer: Bool = false
@@ -157,20 +157,13 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 
                 // MARK: - Partie type Acte
                 Section {
-                    if !listTypeActes.isEmpty {
-                        ForEach(listTypeActes.indices, id: \.self) { index in
-                            TypeActeRowView(
-                                text: listTypeActes[index].typeActeReal.name,
-                                price: listTypeActes[index].typeActeReal.total,
-                                ttl: $listTypeActes[index],
-                                onDelete: {
-                                    listTypeActes.remove(at: index)
-                                }
-                            )
+                    if !listSnapshotTypeActes.isEmpty {
+                        ForEach(listSnapshotTypeActes.indices, id: \.self) { index in
+                            TypeActeRowView(snapshotTypeActe: $listSnapshotTypeActes[index])
                         }
-                        .onDelete(perform: { indexSet in
-                            listTypeActes.remove(atOffsets: indexSet)
-                        })
+                        .onDelete { indexSet in
+                            listSnapshotTypeActes.remove(atOffsets: indexSet)
+                        }
                     }
                     
                     Button {
@@ -184,15 +177,15 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                                 .foregroundStyle(.green)
                         }
                     }
-                    .disabled(listTypeActes.count >= 4)
+                    .disabled(listSnapshotTypeActes.count >= 4)
                 } header : {
                     Text("Préstation(s)")
                 } footer : {
                     Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
                 }
-                .onChange(of: listTypeActes) { oldValue, newValue in
-                    viewModel.documentData.elements = newValue
-                }
+//                .onChange(of: listSnapshotTypeActes) { oldValue, newValue in
+//                    viewModel.documentData.elements = newValue
+//                }
                 
                 if typeSelected == .facture {
                     Section("Réglement") {
@@ -276,9 +269,10 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                         }
                     }
                 case .selectTypeActe:
-                    ListTypeActe(callbackClick: { type in
-                        listTypeActes.append(TTLTypeActe(typeActeReal: type, quantity: 1))
-                    })
+                    ListTypeActe { type in
+                        let snapshot = type.getSnapshot(date: Date(), quantite: 1, remarque: "")
+                        listSnapshotTypeActes.append(snapshot)
+                    }
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button {
@@ -295,19 +289,6 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
             }
             
         }
-    }
-    
-    func save() {
-        let document = viewModel.getDocument()
-        
-        print(document)
-        
-//        do {
-//            try moc.save()
-//            
-//        } catch _ {
-//            
-//        }
     }
 }
 
@@ -330,12 +311,8 @@ private struct ClientRowView: View {
 }
 
 private struct TypeActeRowView: View {
-    let text : String
-    let price : Double
-    @Binding var ttl : TTLTypeActe
+    @Binding var snapshotTypeActe : SnapshotTypeActe
     @State private var showSheet = false
-    
-    let onDelete : () -> Void
     
     var body: some View {
         Button {
@@ -345,7 +322,7 @@ private struct TypeActeRowView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     
                     HStack {
-                        Text(text)
+                        Text(snapshotTypeActe.name)
                             .font(.headline)
                             .fontWeight(.semibold)
                         
@@ -362,25 +339,25 @@ private struct TypeActeRowView: View {
                         }
                     }
                     
-                    LabeledContent("Quantité", value: ttl.quantity, format: .number)
+                    LabeledContent("Quantité", value: snapshotTypeActe.quantity, format: .number)
                         .foregroundStyle(.secondary)
                     
-                    LabeledContent("Prix", value: price, format: .currency(code: "EUR"))
+                    LabeledContent("Prix", value: snapshotTypeActe.price, format: .currency(code: "EUR"))
                         .foregroundStyle(.secondary)
                     
-                    if !Calendar.current.isDateInToday(ttl.date) {
-                        LabeledContent("Date", value: ttl.date.formatted(.dateTime.day().month().year()))
+                    if !Calendar.current.isDateInToday(snapshotTypeActe.date) {
+                        LabeledContent("Date", value: snapshotTypeActe.date.formatted(.dateTime.day().month().year()))
                             .foregroundStyle(.secondary)
                     }
                     
-                    if !ttl.remarque.isEmpty {
+                    if !snapshotTypeActe.remarque.isEmpty {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Remarque :")
                                 .foregroundStyle(.secondary)
                             
                             Text("«")
                             +
-                            Text(ttl.remarque)
+                            Text(snapshotTypeActe.remarque)
                                 .foregroundStyle(.secondary)
                             +
                             Text("»")
@@ -403,22 +380,22 @@ private struct TypeActeRowView: View {
                         .foregroundStyle(.secondary)
                     
                     Stepper(
-                        value: $ttl.quantity,
+                        value: $snapshotTypeActe.quantity,
                         in: 0...100
                     ) {
-                        Text(ttl.quantity, format: .number)
+                        Text(snapshotTypeActe.quantity, format: .number)
                     }
                     
                 }
                 
-                DatePicker("Date de l'acte", selection: $ttl.date, displayedComponents: .date)
+                DatePicker("Date de l'acte", selection: $snapshotTypeActe.date, displayedComponents: .date)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Remarque")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
-                    TextEditor(text: $ttl.remarque)
+                    TextEditor(text: $snapshotTypeActe.remarque)
                         .lineSpacing(2)
                         .keyboardType(.default)
                         .multilineTextAlignment(.leading)
@@ -433,7 +410,7 @@ private struct TypeActeRowView: View {
                 
             }
             .padding()
-            .navigationTitle("Option de \(text)")
+            .navigationTitle("Option de \(snapshotTypeActe.name)")
             .presentationDetents([.fraction(0.3), .medium])
         }
     }
@@ -451,7 +428,7 @@ struct FormButtonsPrimaryActionView: View {
         ViewThatFits {
             HStack {
                 NavigationLink {
-                    DocumentDetailView(viewModel: viewModel, document: nil)
+                    DocumentDetailView(viewModel: viewModel)
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -480,7 +457,7 @@ struct FormButtonsPrimaryActionView: View {
             
             VStack {
                 NavigationLink {
-                    DocumentDetailView(viewModel: viewModel, document: nil)
+                    DocumentDetailView(viewModel: viewModel)
                 } label: {
                     Label {
                         Text("Sauvegarder")

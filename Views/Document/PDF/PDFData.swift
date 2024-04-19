@@ -59,7 +59,7 @@ class PDFModel {
     func calcTotalHT() -> Double  {
         var sousTot : Double = 0
         for element in elements {
-            sousTot += Double(element.typeActeReal.price) * Double(element.quantity)
+            sousTot += Double(element.snapshotTypeActe.price) * Double(element.quantity)
         }
         
         if self.optionsDocument.remise.montant != 0 {
@@ -77,8 +77,8 @@ class PDFModel {
     func calcTotalTVA() -> Double {
         var montantTVA : Double = 0
         for element in elements {
-            if element.typeActeReal.tva != 0 {
-                montantTVA += ((Double(element.typeActeReal.price) * Double(element.typeActeReal.tva)) + Double(element.typeActeReal.price)) * Double(element.quantity)
+            if element.snapshotTypeActe.tva != 0 {
+                montantTVA += ((Double(element.snapshotTypeActe.price) * Double(element.snapshotTypeActe.tva)) + Double(element.snapshotTypeActe.price)) * Double(element.quantity)
             }
         }
         return montantTVA
@@ -148,7 +148,7 @@ struct Remise: Codable {
 
 struct TTLTypeActe : Identifiable, Equatable {
     var id : UUID = UUID()
-    var typeActeReal: TypeActe
+    var snapshotTypeActe: SnapshotTypeActe
     var quantity : Double
     var date = Date()
     var remarque : String = ""

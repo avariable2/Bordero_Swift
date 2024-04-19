@@ -140,19 +140,19 @@ class PDFViewModel {
     }
     
     func getTableElement(_ ttlTA : TTLTypeActe) -> PDFTableData {
-        var libelleFinalAvecOuSansDate = ttlTA.typeActeReal.name
+        var libelleFinalAvecOuSansDate = ttlTA.snapshotTypeActe.name
         if !Calendar.current.isDateInToday(ttlTA.date) {
             libelleFinalAvecOuSansDate.append(" du \(ttlTA.date.formatted(.dateTime.day().month().year()))")
         }
         
         return PDFTableData(
             libelle: libelleFinalAvecOuSansDate, 
-            infoLibelle: ttlTA.typeActeReal.info, 
+            infoLibelle: ttlTA.snapshotTypeActe.info,
             remarque: ttlTA.remarque,
             quantity: ttlTA.quantity,
-            priceHT: ttlTA.typeActeReal.price,
-            tva: ttlTA.typeActeReal.tva,
-            priceTTC: ttlTA.typeActeReal.total
+            priceHT: ttlTA.snapshotTypeActe.price,
+            tva: ttlTA.snapshotTypeActe.tva,
+            priceTTC: ttlTA.snapshotTypeActe.total
         )
     }
     
@@ -177,12 +177,14 @@ class PDFViewModel {
         }
         
         for element in self.documentData.elements {
-            let snapshotTypeActe = element.typeActeReal.getSnapshot(
-                document,
-                date: element.date,
-                quantite: element.quantity,
-                remarque: element.remarque
-            )
+//            let snapshotTypeActe = element.typeActeReal.getSnapshot(
+//                document,
+//                date: element.date,
+//                quantite: element.quantity,
+//                remarque: element.remarque
+//            )
+//            
+            let snapshotTypeActe = element.snapshotTypeActe
             document.elements?.adding(snapshotTypeActe)
         }
         
