@@ -70,7 +70,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
     
-    var viewModel : PDFViewModel
+    @State var viewModel : PDFViewModel
     
     @State private var activeSheet: ActiveSheet?
     
@@ -241,10 +241,7 @@ struct ModifierDocumentView: View, Saveable, Versionnable {
                 NavigationStack {
                     FormButtonsPrimaryActionView(
                         activeSheet: $activeSheet,
-                        model: viewModel.documentData,
-                        callback: {
-                            self.save()
-                        }
+                        viewModel: $viewModel
                     )
                 }
                 
@@ -444,19 +441,17 @@ private struct TypeActeRowView: View {
 
 struct FormButtonsPrimaryActionView: View {
     @Binding var activeSheet : ActiveSheet?
-    var model : PDFModel
-    
-    var callback : () -> Void
+    @Binding var viewModel : PDFViewModel
     
     private var userDontAddClient : Bool {
-        model.client == nil
+        viewModel.documentData.client == nil
     }
     
     var body: some View {
         ViewThatFits {
             HStack {
                 NavigationLink {
-                    DocumentDetailView(documentData: model)
+                    DocumentDetailView(viewModel: viewModel, document: nil)
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -464,9 +459,6 @@ struct FormButtonsPrimaryActionView: View {
                     } icon: {
                         Image(systemName: "square.and.arrow.down")
                     }
-                    .onTapGesture(perform: {
-                        callback()
-                    })
                     .foregroundStyle(.white)
                     .padding(6)
                     .background(
@@ -488,7 +480,7 @@ struct FormButtonsPrimaryActionView: View {
             
             VStack {
                 NavigationLink {
-                    DocumentDetailView(documentData: model)
+                    DocumentDetailView(viewModel: viewModel, document: nil)
                 } label: {
                     Label {
                         Text("Sauvegarder")

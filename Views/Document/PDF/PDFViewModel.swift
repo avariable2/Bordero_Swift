@@ -159,19 +159,21 @@ class PDFViewModel {
     func getDocument() -> Document {
         let moc = DataController.shared.container.viewContext
         let document = Document(context: moc)
-        document.id = UUID()
-        document.estFacture = self.documentData.optionsDocument.typeDocument == .facture
-        document.numeroDocument = self.documentData.optionsDocument.numeroDocument
+        document.id_ = UUID()
+        document.estDeTypeFacture = self.documentData.optionsDocument.typeDocument == .facture
+        document.numero = self.documentData.optionsDocument.numeroDocument
         
         if let client = self.documentData.client {
-            document.snapshotClient = [
-                "lastname" : client.lastname,
-                "firstname" : client.firstname,
-                "phone" : client.phone,
-                "email" : client.email,
-                "adresse" : client.getAdresseSurUneLigne(client.adresse1),
-                "code_entreprise" : client.code_entreprise ?? "",
-            ]
+            
+            document.snapshotClient = Document.SnapshotClient(
+                lastname: client.lastname,
+                firstname: client.firstname,
+                phone: client.phone,
+                email: client.email,
+                code_entreprise: client.code_entreprise ?? "",
+                adresse: client.getAdresseSurUneLigne(client.adresse1),
+                uuidClient: client.id
+            )
         }
         
         for element in self.documentData.elements {
@@ -189,35 +191,35 @@ class PDFViewModel {
         document.note = self.documentData.optionsDocument.note
         
         if let praticien = self.documentData.praticien {
-            document.snapshotPraticien = [
-                "lastname" : praticien.lastname,
-                "firstname" : praticien.firstname,
-                "phone" : praticien.phone,
-                "email" : praticien.email,
-                "adresse" : praticien.getAdresseSurUneLigne(),
-                "website" : praticien.website,
-                "logo" : praticien.logoSociete as Any,
-                "signature" : praticien.signature as Any,
-                "siret" : praticien.siret,
-                "adeli" : praticien.adeli
-            ]
+            
+            document.snapshotPraticien = Document.SnapshotPraticien(
+                lastname: praticien.lastname,
+                firstname: praticien.firstname,
+                phone: praticien.phone,
+                email: praticien.email,
+                website:  praticien.website,
+                adresse: praticien.getAdresseSurUneLigne(),
+                siret: praticien.siret,
+                adeli: praticien.adeli,
+                signature: praticien.signature,
+                logo : praticien.logoSociete
+            )
         }
         
         // Params
         document.dateEmission = self.documentData.optionsDocument.dateEmission
         document.dateEcheance = self.documentData.optionsDocument.dateEcheance
         
-        document.remise = [
-            "type" : self.documentData.optionsDocument.remise.type,
-            "montant" : self.documentData.optionsDocument.remise.montant
-        ]
+        document.remise = Document.Remise(
+            type: self.documentData.optionsDocument.remise.type.description,
+            montant: self.documentData.optionsDocument.remise.montant
+        )
         
-        document.payementAllow = [
-            "carte" : self.documentData.optionsDocument.payementAllow.contains(.carte),
-            "especes" : self.documentData.optionsDocument.payementAllow.contains(.especes),
-            "virement" : self.documentData.optionsDocument.payementAllow.contains(.virement),
-            "cheque" : self.documentData.optionsDocument.payementAllow.contains(.cheque)
-        ]
+        document.payementAllow = Document.PayementAllow(
+            carte: self.documentData.optionsDocument.payementAllow.contains(.carte),
+            cheque: self.documentData.optionsDocument.payementAllow.contains(.cheque),
+            virement: self.documentData.optionsDocument.payementAllow.contains(.virement),
+            especes: self.documentData.optionsDocument.payementAllow.contains(.especes))
         
         document.totalHT = self.documentData.calcTotalHT()
         document.totalTVA = self.documentData.calcTotalTVA()

@@ -7,10 +7,22 @@
 
 import SwiftUI
 
-struct DocumentDetailView: View {
+struct DocumentDetailView: View, Saveable {
+    @Environment(\.managedObjectContext) var moc
     @State private var selectedTab: Tab = .résumé
     
-    @State var documentData : PDFModel
+//    @State var viewModel : PDFViewModel
+    
+    @ObservedObject var document : Document
+    
+    init(viewModel: PDFViewModel?, document: Document?) {
+        self.selectedTab = Tab.résumé
+        if let doc = document {
+            self.document = doc
+        } else if let vm = viewModel {
+            self.document = vm.getDocument()
+        }
+    }
     
     var body: some View {
         VStack {
@@ -24,10 +36,10 @@ struct DocumentDetailView: View {
             
             ChoosenView(
                 selectedElement: selectedTab,
-                documentData: documentData
+                viewModel: $viewModel
             )
         }
-        .navigationTitle("\(documentData.optionsDocument.typeDocument.rawValue.capitalized) # \(documentData.optionsDocument.numeroDocument)")
+        .navigationTitle("\(document.estFacture ? "Facture" : "Devis") # \(document.numeroDocument ?? "")")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -66,6 +78,15 @@ struct DocumentDetailView: View {
             }
         }
     }
+    
+    func save() {
+        do {
+            try moc.save()
+            print("success")
+        } catch _ {
+            print("Error")
+        }
+    }
 }
 
 enum Tab : String, CaseIterable, Identifiable {
@@ -76,30 +97,23 @@ enum Tab : String, CaseIterable, Identifiable {
 
 struct ChoosenView : View {
     var selectedElement : Tab
-    @State var documentData : PDFModel
-    @State var viewModel : PDFViewModel
-    
-    init(selectedElement: Tab, documentData: PDFModel) {
-        self.selectedElement = selectedElement
-        self.documentData = documentData
-        self.viewModel = PDFViewModel(documentData: documentData)
-    }
+    @Binding var viewModel : PDFViewModel
     
     var body: some View {
         switch selectedElement {
         case .résumé:
-            ResumeTabDetailViewPDF(documentData: documentData)
+            ResumeTabDetailViewPDF(documentData: viewModel.documentData)
         case .aperçu:
             PDFDisplayView(viewModel: viewModel, showToolbar: false)
         case .historique:
-            HistoriqueTabDetailView(historique: documentData.historique)
+            HistoriqueTabDetailView(historique: viewModel.documentData.historique)
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        DocumentDetailView(documentData: PDFModel())
+        DocumentDetailView(viewModel: PDFViewModel(), document: nil)
     }
 }
 

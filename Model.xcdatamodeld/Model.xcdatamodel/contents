@@ -13,21 +13,21 @@
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="Document" representedClassName="Document" syncable="YES" codeGenerationType="class">
-        <attribute name="dateEcheance" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="dateEmission" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="estFacture" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="note" optional="YES" attributeType="String"/>
-        <attribute name="numeroDocument" optional="YES" attributeType="String"/>
-        <attribute name="payementAllow" optional="YES" attributeType="Composite" composite="DocumentPayementAllow"/>
-        <attribute name="payementFinish" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="payementUse" optional="YES" attributeType="String"/>
-        <attribute name="remise" optional="YES" attributeType="Composite" composite="Remise"/>
-        <attribute name="snapshotClient" optional="YES" attributeType="Composite" composite="SnapshotClient"/>
-        <attribute name="snapshotPraticien" optional="YES" attributeType="Composite" composite="SnapshotPraticien"/>
-        <attribute name="totalHT" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="totalTTC" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="totalTVA" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="dateEcheance_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateEmission_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="estFacture_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id_" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="note_" optional="YES" attributeType="String"/>
+        <attribute name="numeroDocument_" optional="YES" attributeType="String"/>
+        <attribute name="payementAllow_" optional="YES" attributeType="Composite" composite="DocumentPayementAllow"/>
+        <attribute name="payementFinish_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="payementUse_" optional="YES" attributeType="String"/>
+        <attribute name="remise_" optional="YES" attributeType="Composite" composite="Remise"/>
+        <attribute name="snapshotClient_" optional="YES" attributeType="Composite" composite="SnapshotClient"/>
+        <attribute name="snapshotPraticien_" optional="YES" attributeType="Composite" composite="SnapshotPraticien"/>
+        <attribute name="totalHT_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="totalTTC_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="totalTVA_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="elements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SnapshotTypeActe" inverseName="estUnElementDe" inverseEntity="SnapshotTypeActe"/>
         <relationship name="historique" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HistoriqueEvenement" inverseName="correspond" inverseEntity="HistoriqueEvenement"/>
