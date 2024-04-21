@@ -447,12 +447,8 @@ struct FormButtonsPrimaryActionView: View {
                     } icon: {
                         Image(systemName: "square.and.arrow.down")
                     }
-                    .foregroundStyle(.white)
-                    .padding(6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 5)
-                    )
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(userDontAddClient)
                 
                 Spacer()
@@ -479,12 +475,8 @@ struct FormButtonsPrimaryActionView: View {
                     } icon: {
                         Image(systemName: "square.and.arrow.down")
                     }
-                    .foregroundStyle(.white)
-                    .padding(6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 5)
-                    )
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(userDontAddClient)
                 .padding(.bottom)
                 

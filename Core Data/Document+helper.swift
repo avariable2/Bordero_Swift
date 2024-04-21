@@ -43,9 +43,41 @@ extension Document {
         var especes : Bool
     }
     
+    enum Status : Identifiable {
+        var id: Int {
+            switch self {
+            case .created:
+                0
+            case .payed:
+                1
+            case .unknow:
+                2
+            }
+        }
+        
+        case created, payed, unknow
+    }
+    
     var numero : String {
         get { numeroDocument_ ?? "" }
         set { numeroDocument_ = newValue }
+    }
+    
+    var status : Status {
+        get {
+            switch status_ {
+            case 0: .created
+            case 1: .payed
+            default: .unknow
+            }
+        }
+        set {
+            status_ = switch newValue {
+            case .created: 0
+            case .payed: 1
+            default : 2
+            }
+        }
     }
     
     var note : String {

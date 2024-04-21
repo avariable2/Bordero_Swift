@@ -166,12 +166,7 @@ class PDFViewModel {
         let moc = DataController.shared.container.viewContext
         let document = getDocument(context: moc)
         
-        do {
-            try moc.save()
-            print("success create document")
-        } catch _ {
-            print("Error")
-        }
+        DataController.saveContext()
         
         reset() // reset before launch the new screen
         
@@ -183,6 +178,7 @@ class PDFViewModel {
         document.id_ = UUID()
         document.estDeTypeFacture = self.documentData.optionsDocument.typeDocument == .facture
         document.numero = self.documentData.optionsDocument.numeroDocument
+        document.status = .created
         
         if let client = self.documentData.client {
             

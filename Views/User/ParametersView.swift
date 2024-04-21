@@ -83,7 +83,7 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Paramètres du modèle",
                             systemName: "lightswitch.on.square.fill",
-                            color: .blue,
+                            color: .purple,
                             accessibility: "Bouton pour modifier les options de votre facture"
                         )
                     }
@@ -128,12 +128,11 @@ struct ParametersView: View {
                                     Text("Contacter le développeur")
                                 },
                                 icon: {
-                                    Image(systemName: "person.bubble")
-                                        .foregroundStyle(.blue, .gray)
+                                    Image(systemName: "person.crop.square.filled.and.at.rectangle.fill")
+                                        .foregroundStyle(.white, .blue)
                                 }
                             )
                         }
-                        
                         .disabled(!MFMailComposeViewController.canSendMail())
                         .sheet(isPresented: $isShowingMailView) {
                             MailView(result: self.$result)

@@ -6,102 +6,149 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ListDocument: View {
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [
-        
-    ], predicate: NSPredicate(
-        format: "version <= %d",
-        argumentArray: [DocumentFormView.getVersion()]
-    ))  var documents: FetchedResults<Document>
+    
+    @State var sortDescriptor = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
+    @State private var sortType : Int = 0
     
     var body: some View {
         VStack {
-            if documents.isEmpty {
-                ContentUnavailableView(
-                    "Aucun document",
-                    systemImage: "folder.badge.questionmark",
-                    description: Text("Les documents créer apparaitront ici.").foregroundStyle(.secondary))
-            } else {
-                List {
-                    ForEach(documents) { document in
-                        let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
-                        RowDocumentView(text: nomFichier)
-                    }
-//                    .onDelete(perform: delete)
+            Picker(selection: $sortType) {
+                Text("Tous").tag(0)
+                Text("Ouvert").tag(1)
+                Text("Payer").tag(2)
+            } label: {
+                Text("Trie des documents")
+            }
+            .onChange(of: sortType) { oldValue, newValue in
+                sortType = newValue
+                switch newValue {
+                case 1:
+                    sortDescriptor = NSSortDescriptor(keyPath: \Document.status_, ascending: true)
+                default:
+                    sortDescriptor = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
                 }
             }
+            .pickerStyle(.segmented)
+            .padding([.trailing, .leading])
+            
+            DisplayListWithSort(sortDescriptor: sortDescriptor)
         }
         .navigationTitle("Documents")
     }
+}
+
+struct DisplayListWithSort : View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest var documents: FetchedResults<Document>
     
-//    func delete(at offsets: IndexSet) {
-//        for index in offsets {
-//            let doc = documents[index]
-//            moc.delete(doc)
-//        }
-//        
-//        do {
-//            try moc.save()
-//            print("Success")
-//        } catch let err {
-//            print(err.localizedDescription)
-//        }
-//    }
+    init(sortDescriptor : NSSortDescriptor) {
+        let request: NSFetchRequest<Document> = Document.fetchRequest()
+        let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
+        request.sortDescriptors = [sortByDate, sortDescriptor]
+        _documents = FetchRequest<Document>(fetchRequest: request, animation: .default)
+    }
+    
+    func titleForDate(_ date: Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return "Aujourd'hui"
+        } else if Calendar.current.isDateInYesterday(date) {
+            return "Hier"
+        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .weekOfYear) {
+            return "Cette semaine"
+        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .month) {
+            return "Ce mois"
+        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .year) {
+            return "Cette année"
+        } else {
+            return "Années précédentes"
+        }
+    }
+    
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }
+
+    
+    var body: some View {
+        
+        if documents.isEmpty {
+            ContentUnavailableView(
+                "Aucun document",
+                systemImage: "folder.badge.questionmark",
+                description: Text("Les documents créer apparaitront ici.").foregroundStyle(.secondary)
+            )
+        } else {
+            List {
+                ForEach(documents, id: \.id_) { document in
+                    let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
+                    Section {
+                        RowDocumentView(
+                            titre: nomFichier,
+                            date: document.dateEmission,
+                            montantTot: document.totalTTC,
+                            etat: "Ouvert"
+                        )
+                    } header: {
+                        Text(titleForDate(document.dateEmission))
+                    }
+                }
+            }
+        }
+    }
 }
 
 struct RowDocumentView :View {
-    let text : String
+    let titre : String
+    let date : Date
+    let montantTot : Double
+    let etat : String
     
     var body: some View {
         Label {
-            Text(text)
+            VStack {
+                
+                HStack {
+                    Text(titre)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Text(montantTot, format: .currency(code: "EUR"))
+                        .fontWeight(.semibold)
+                }
+                
+                HStack {
+                    
+                    Text("Crée le: ")
+                        .foregroundStyle(.secondary)
+                    +
+                    Text(date, format: .dateTime.day().month().year())
+                        .foregroundStyle(.secondary)
+                        
+                    
+                    Spacer()
+                    
+                    Label {
+                        Text(etat)
+                            .foregroundStyle(.primary)
+                    } icon: {
+                        Image(systemName: "circle.circle.fill")
+                            .foregroundStyle(.black, .yellow)
+                    }
+                }
+                .font(.footnote)
+                
+            }
         } icon: {
-            ColoredIconView(imageName: "doc", foregroundColor: .white, backgroundColor: .blue)
+            Image(systemName: "doc.circle.fill")
+                .imageScale(.large)
+                .foregroundStyle(.white, .blue)
         }
         
-    }
-}
-
-struct ColoredIconView: View {
-
-    let imageName: String
-    let foregroundColor: Color
-    let backgroundColor: Color
-    @State private var frameSize: CGSize = CGSize(width: 30, height: 30)
-    @State private var cornerRadius: CGFloat = 5
-    
-    var body: some View {
-        Image(systemName: imageName)
-            .overlay(
-                GeometryReader { proxy in
-                    Color.clear
-                        .preference(key: SFSymbolKey.self, value: max(proxy.size.width, proxy.size.height))
-                }
-            )
-            
-            .onPreferenceChange(SFSymbolKey.self) {
-                let size = $0 * 1.05
-                frameSize = CGSize(width:size, height: size)
-                cornerRadius = $0 / 6.4
-            }
-            .frame(width: frameSize.width, height: frameSize.height)
-            .foregroundColor(foregroundColor)
-            .padding(1)
-            .background(
-//                RoundedRectangle(cornerRadius: cornerRadius)
-                Circle()
-                    .fill(backgroundColor)
-            )
-    }
-}
-
-fileprivate struct SFSymbolKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
     }
 }
 
