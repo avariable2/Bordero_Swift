@@ -15,6 +15,12 @@ import Observation
     
     var container: NSPersistentCloudKitContainer
     
+    static var sharedStoreURL: URL {
+        let id = "group.com.bigVariable.bordero" // Use App Group's id here.
+        let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: id)!
+        return containerURL.appendingPathComponent("Bordero.sqlite")
+    }
+    
     private init() {
         self.container = DataController.setupSyncContainer(iCloudIsOn: false) // Charge une premiere fois pour initialiser la description à nul puis le refresh si nécessaire.
         
@@ -39,20 +45,19 @@ import Observation
             fatalError("###\(#function): Failed to retrieve a persistent store description.")
         }
         
+        description.url = sharedStoreURL
+        
+        // leave the default cloudKitContainerOptions value as it is, then it will sync automatically
         if !iCloudIsOn {
             description.cloudKitContainerOptions = nil
         }
         
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        
         let remoteChangeKey = "NSPersistentStoreRemoteChangeNotificationOptionKey"
         description.setOption(true as NSNumber,
                               forKey: remoteChangeKey)
         
-        // leave the default cloudKitContainerOptions value as it is, then it will sync automatically
-        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
@@ -62,6 +67,7 @@ import Observation
         
         // sets the merge conflict strategy. If this property is not set, Core Data will default to using NSErrorMergePolicy as the conflict resolution strategy (do not handle any conflicts, directly report an error), which will cause iCloud data to not merge correctly into the local database.
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
         do {
             try container.viewContext.setQueryGenerationFrom(.current)
         } catch {
@@ -69,5 +75,29 @@ import Observation
         }
         
         return container
+    }
+    
+    static func saveContext() {
+        let context = shared.container.viewContext
+        
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+}
+
+public extension URL {
+    /// Returns a URL for the given app group and database pointing to the sqlite database.
+    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+
+        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
     }
 }

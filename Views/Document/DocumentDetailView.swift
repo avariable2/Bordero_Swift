@@ -10,15 +10,8 @@ import SwiftUI
 struct DocumentDetailView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var selectedTab: Tab = .résumé
-    
-//    @State var viewModel : PDFViewModel
-    
     @ObservedObject var document : Document
-    
-//    init(viewModel : PDFViewModel) {
-//        self.document = viewModel.getDocument(context: DataController.shared.container.viewContext)
-//    }
-    
+
     init(document : Document) {
         self.document = document
     }
@@ -87,14 +80,15 @@ enum Tab : String, CaseIterable, Identifiable {
 
 //struct ChoosenView : View {
 //    var selectedElement : Tab
-//    var document : Document
+//    @Binding var document : Document
 //    
 //    var body: some View {
 //        switch selectedElement {
 //        case .résumé:
-//            ResumeTabDetailViewPDF(documentData: viewModel.documentData)
+//            ResumeTabDetailViewPDF(document: document)
 //        case .aperçu:
-//            PDFDisplayView(viewModel: viewModel, showToolbar: false)
+//            EmptyView()
+////            PDFDisplayView(viewModel: viewModel, showToolbar: false)
 //        case .historique:
 //            HistoriqueTabDetailView(historique: viewModel.documentData.historique)
 //        }

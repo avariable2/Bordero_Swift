@@ -118,7 +118,7 @@ struct NavigationIpad : View {
                 case 7:
                     DocumentFormView()
                 case 8:
-                    EmptyView()
+                    ListDocument()
                 default:
                     EmptyView()
                 }

@@ -172,6 +172,9 @@ class PDFViewModel {
         } catch _ {
             print("Error")
         }
+        
+        reset() // reset before launch the new screen
+        
         completion(document)
     }
     
