@@ -47,33 +47,9 @@ struct DisplayListWithSort : View {
     init(sortDescriptor : NSSortDescriptor) {
         let request: NSFetchRequest<Document> = Document.fetchRequest()
         let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
-        request.sortDescriptors = [sortByDate, sortDescriptor]
+        request.sortDescriptors = [ sortByDate, sortDescriptor]
         _documents = FetchRequest<Document>(fetchRequest: request, animation: .default)
     }
-    
-    func titleForDate(_ date: Date) -> String {
-        if Calendar.current.isDateInToday(date) {
-            return "Aujourd'hui"
-        } else if Calendar.current.isDateInYesterday(date) {
-            return "Hier"
-        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .weekOfYear) {
-            return "Cette semaine"
-        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .month) {
-            return "Ce mois"
-        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .year) {
-            return "Cette année"
-        } else {
-            return "Années précédentes"
-        }
-    }
-    
-    var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter
-    }
-
     
     var body: some View {
         
@@ -86,8 +62,8 @@ struct DisplayListWithSort : View {
         } else {
             List {
                 ForEach(documents, id: \.id_) { document in
-                    let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
                     Section {
+                        let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
                         RowDocumentView(
                             titre: nomFichier,
                             date: document.dateEmission,
@@ -95,7 +71,7 @@ struct DisplayListWithSort : View {
                             etat: "Ouvert"
                         )
                     } header: {
-                        Text(titleForDate(document.dateEmission))
+                        Text(document.sectionTitleByDate)
                     }
                 }
             }

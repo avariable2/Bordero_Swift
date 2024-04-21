@@ -95,6 +95,10 @@ extension Document {
         set { dateEcheance_ = newValue }
     }
     
+    var sectionTitleByDate : String {
+        get { titleForDate(dateEmission) }
+    }
+    
     var dateEmission : Date {
         get { dateEmission_ ?? Date() }
         set { dateEmission_ = newValue }
@@ -229,4 +233,19 @@ extension Document {
         }
     }
     
+    func titleForDate(_ date: Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return "Aujourd'hui"
+        } else if Calendar.current.isDateInYesterday(date) {
+            return "Hier"
+        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .weekOfYear) {
+            return "Cette semaine"
+        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .month) {
+            return "Ce mois"
+        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .year) {
+            return "Cette année"
+        } else {
+            return "Années précédentes"
+        }
+    }
 }
