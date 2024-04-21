@@ -10,32 +10,10 @@ import SafariServices
 
 struct ResumeTabDetailViewPDF: View {
     @State var presentURL: URL? = nil
-    @State var documentData : PDFModel
+    @State var document : Document
     
-    func determineStatut() -> String {
-        let typesPresent = Set(documentData.historique.map { $0.nom })
-        
-        // Vérifier si l'événement 'payer' est présent
-        if typesPresent.contains(.payer) {
-            return "Payer"
-        }
-        
-        // Vérifier si l'événement 'envoie' est présent
-        if typesPresent.contains(.envoie) {
-            return "Envoyée"
-        }
-        
-        // Si ni 'envoie' ni 'payer' ne sont présents
-        return "Créer"
-    }
-    
-    func determineColor(_ text : String) -> Color {
-        return switch text {
-        case "Payer": .purple
-        case "Envoyée": .blue
-        default : .green
-        }
-    }
+    @State var showDetailClient = false
+    @State var client : Client? = nil
     
     var body: some View {
         VStack {
@@ -71,20 +49,16 @@ struct ResumeTabDetailViewPDF: View {
                 }
                 
                 Section {
-                    NavigationLink {
-                        if let client = documentData.client {
-                            ClientDetailView(client: client)
-                        }
+                    Button {
+                        showDetailClient = true
                     } label: {
                         HStack {
                             ProfilImageView(imageData: nil)
                                 .font(.title)
                             
-                            if let client = documentData.client {
-                                Text("\(client.firstname) \(client.lastname)")
-                                    .font(.title2)
-                                    .bold()
-                            }
+                            Text("\(document.snapshotClient.firstname) \(document.snapshotClient.lastname)")
+                                .font(.title2)
+                                .bold()
                         }
                     }
                 } header: {
@@ -93,7 +67,7 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
-                        let status = determineStatut()
+                        let status = document.determineStatut()
                         Image(systemName: "waveform.path.ecg")
                             .imageScale(.large)
                             .foregroundStyle(.pink)
@@ -107,7 +81,7 @@ struct ResumeTabDetailViewPDF: View {
                             Text(status)
                                 .padding(5)
                                 .background(RoundedRectangle(cornerRadius: 25)
-                                    .foregroundStyle(determineColor(status))
+                                    .foregroundStyle(document.determineColor())
                                 )
                                 .foregroundStyle(.white)
                         }
@@ -144,9 +118,9 @@ struct ResumeTabDetailViewPDF: View {
                 }
                 
                 Section {
-                    RowMontantDetail(text: "Total H.T.", price: documentData.calcTotalHT())
-                    RowMontantDetail(text: "T.V.A", price: documentData.calcTotalTVA())
-                    RowMontantDetail(text: "Total T.T.C", price: documentData.calcTotalTTC())
+                    RowMontantDetail(text: "Total H.T.", price: document.totalHT)
+                    RowMontantDetail(text: "T.V.A", price: document.totalTVA)
+                    RowMontantDetail(text: "Total T.T.C", price: document.totalTTC)
                         .bold()
                 } header: {
                     Text("Détail")
@@ -178,6 +152,12 @@ struct ResumeTabDetailViewPDF: View {
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(.regularMaterial)
+            }
+            .navigationDestination(isPresented: $showDetailClient) {
+                if client != nil {
+                    ClientDetailView(client: client!)
+                }
+                
             }
         }
     }

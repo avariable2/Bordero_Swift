@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Document {
     struct SnapshotClient {
@@ -43,19 +44,24 @@ extension Document {
         var especes : Bool
     }
     
-    enum Status : Identifiable {
+    enum Status : String, Identifiable, CaseIterable {
         var id: Int {
             switch self {
             case .created:
                 0
             case .payed:
                 1
-            case .unknow:
+            case .send:
                 2
+            case .unknow:
+                3
             }
         }
         
-        case created, payed, unknow
+        case created = "Crée"
+        case payed = "Payée"
+        case send = "Envoyée"
+        case unknow = "Inconnu"
     }
     
     var numero : String {
@@ -68,6 +74,7 @@ extension Document {
             switch status_ {
             case 0: .created
             case 1: .payed
+            case 2: .send
             default: .unknow
             }
         }
@@ -75,7 +82,8 @@ extension Document {
             status_ = switch newValue {
             case .created: 0
             case .payed: 1
-            default : 2
+            case .send : 2
+            default : 3
             }
         }
     }
@@ -246,6 +254,24 @@ extension Document {
             return "Cette année"
         } else {
             return "Années précédentes"
+        }
+    }
+    
+    func determineStatut() -> String {
+        return switch self.status {
+        case .created: "Créer"
+        case .payed: "Payer"
+        case .send: "Envoyée"
+        default: "Inconnu"
+        }
+    }
+    
+    func determineColor() -> Color {
+        return switch self.status {
+        case .created: .yellow
+        case .payed: .pink
+        case .send: .blue
+        default: .brown
         }
     }
 }

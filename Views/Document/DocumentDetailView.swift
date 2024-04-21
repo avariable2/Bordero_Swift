@@ -10,7 +10,7 @@ import SwiftUI
 struct DocumentDetailView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var selectedTab: Tab = .résumé
-    @ObservedObject var document : Document
+    @State var document : Document
 
     init(document : Document) {
         self.document = document
@@ -26,10 +26,10 @@ struct DocumentDetailView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding([.trailing, .leading])
             
-//            ChoosenView(
-//                selectedElement: selectedTab,
-//                document: document
-//            )
+            ChoosenView(
+                selectedElement: selectedTab,
+                document: $document
+            )
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
         .toolbar {
@@ -78,22 +78,23 @@ enum Tab : String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-//struct ChoosenView : View {
-//    var selectedElement : Tab
-//    @Binding var document : Document
-//    
-//    var body: some View {
-//        switch selectedElement {
-//        case .résumé:
-//            ResumeTabDetailViewPDF(document: document)
-//        case .aperçu:
-//            EmptyView()
-////            PDFDisplayView(viewModel: viewModel, showToolbar: false)
-//        case .historique:
-//            HistoriqueTabDetailView(historique: viewModel.documentData.historique)
-//        }
-//    }
-//}
+struct ChoosenView : View {
+    var selectedElement : Tab
+    @Binding var document : Document
+    
+    var body: some View {
+        switch selectedElement {
+        case .résumé:
+            ResumeTabDetailViewPDF(document: document)
+        case .aperçu:
+            EmptyView()
+//            PDFDisplayView(viewModel: viewModel, showToolbar: false)
+        case .historique:
+            EmptyView()
+//            HistoriqueTabDetailView(document: document)
+        }
+    }
+}
 
 //#Preview {
 //    NavigationStack {

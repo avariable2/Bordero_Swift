@@ -6,9 +6,18 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct HistoriqueTabDetailView: View {
-    var historique : [Evenement]
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest var historique: FetchedResults<HistoriqueEvenement>
+    
+    init(document: Document) {
+        let request: NSFetchRequest<HistoriqueEvenement> = HistoriqueEvenement.fetchRequest()
+        request.predicate = NSPredicate(format: "correspond == %@",
+                                        argumentArray: [document])
+        _historique = FetchRequest<HistoriqueEvenement>(fetchRequest: request, animation: .default)
+    }
     
     var body: some View {
         List {
@@ -20,49 +29,53 @@ struct HistoriqueTabDetailView: View {
 }
 
 struct RowHistorique : View {
-    let evenement : Evenement
+    let evenement : HistoriqueEvenement
     
     private var color : Color {
         switch evenement.nom {
-        case .création:
-            .green
-        case .modification:
+        case Evenement.TypeEvenement.création.rawValue:
+            .yellow
+        case Evenement.TypeEvenement.modification.rawValue:
             .red
-        case .envoie, .exporté:
+        case Evenement.TypeEvenement.envoie.rawValue,
+            Evenement.TypeEvenement.exporté.rawValue:
             .blue
-        case .renvoie:
+        case Evenement.TypeEvenement.renvoie.rawValue:
             .indigo
-        case .payer:
-            .purple
+        case Evenement.TypeEvenement.payer.rawValue:
+            .pink
+        default: .gray
         }
     }
     
     private var image : String {
         switch evenement.nom {
-        case .création:
+        case Evenement.TypeEvenement.création.rawValue:
             "doc.badge.plus"
-        case .modification:
+        case Evenement.TypeEvenement.modification.rawValue:
             "doc.badge.ellipsis"
-        case .envoie:
+        case Evenement.TypeEvenement.envoie.rawValue:
             "paperplane"
-        case .renvoie:
+        case Evenement.TypeEvenement.renvoie.rawValue:
             "arrowshape.turn.up.right"
-        case .payer:
+        case Evenement.TypeEvenement.payer.rawValue:
             "bag.badge.plus"
-        case .exporté:
+        case Evenement.TypeEvenement.exporté.rawValue:
             "square.and.arrow.up"
+        default:
+            "doc"
         }
     }
     
     var body: some View {
         HStack {
-            Image(systemName: "doc.badge.plus")
+            Image(systemName: image)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(color, .gray)
                 .imageScale(.large)
             
             VStack(alignment: .leading) {
-                Text(evenement.nom.rawValue.capitalized)
+                Text(evenement.nom.capitalized)
                     .foregroundStyle(.primary)
                 
                 Text(evenement.date, format: .dateTime)
@@ -73,6 +86,6 @@ struct RowHistorique : View {
     }
 }
 
-#Preview {
-    HistoriqueTabDetailView(historique: [Evenement(nom: .création, date: Date())])
-}
+//#Preview {
+//    HistoriqueTabDetailView(historique: [Evenement(nom: .création, date: Date())])
+//}

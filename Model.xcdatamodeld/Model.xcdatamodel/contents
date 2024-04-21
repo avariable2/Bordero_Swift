@@ -34,9 +34,9 @@
         <relationship name="historique" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HistoriqueEvenement" inverseName="correspond" inverseEntity="HistoriqueEvenement"/>
     </entity>
     <entity name="HistoriqueEvenement" representedClassName="HistoriqueEvenement" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="nom" optional="YES" attributeType="String"/>
+        <attribute name="nom_" optional="YES" attributeType="String"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="correspond" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="historique" inverseEntity="Document"/>
     </entity>

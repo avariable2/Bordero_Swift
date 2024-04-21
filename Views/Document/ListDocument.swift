@@ -63,13 +63,11 @@ struct DisplayListWithSort : View {
             List {
                 ForEach(documents, id: \.id_) { document in
                     Section {
-                        let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
-                        RowDocumentView(
-                            titre: nomFichier,
-                            date: document.dateEmission,
-                            montantTot: document.totalTTC,
-                            etat: "Ouvert"
-                        )
+                        NavigationLink {
+                            DocumentDetailView(document: document)
+                        } label: {
+                            RowDocumentView(document: document)
+                        }
                     } header: {
                         Text(document.sectionTitleByDate)
                     }
@@ -80,20 +78,18 @@ struct DisplayListWithSort : View {
 }
 
 struct RowDocumentView :View {
-    let titre : String
-    let date : Date
-    let montantTot : Double
-    let etat : String
+    
+    let document : Document
     
     var body: some View {
         Label {
             VStack {
-                
                 HStack {
-                    Text(titre)
+                    let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
+                    Text(nomFichier)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text(montantTot, format: .currency(code: "EUR"))
+                    Text(document.totalTTC, format: .currency(code: "EUR"))
                         .fontWeight(.semibold)
                 }
                 
@@ -102,18 +98,18 @@ struct RowDocumentView :View {
                     Text("Crée le: ")
                         .foregroundStyle(.secondary)
                     +
-                    Text(date, format: .dateTime.day().month().year())
+                    Text(document.dateEmission, format: .dateTime.day().month().year())
                         .foregroundStyle(.secondary)
                         
                     
                     Spacer()
                     
                     Label {
-                        Text(etat)
+                        Text(document.determineStatut())
                             .foregroundStyle(.primary)
                     } icon: {
                         Image(systemName: "circle.circle.fill")
-                            .foregroundStyle(.black, .yellow)
+                            .foregroundStyle(.black, document.determineColor())
                     }
                 }
                 .font(.footnote)
