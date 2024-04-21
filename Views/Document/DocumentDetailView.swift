@@ -90,8 +90,8 @@ struct ChoosenView : View {
             EmptyView()
 //            PDFDisplayView(viewModel: viewModel, showToolbar: false)
         case .historique:
-            EmptyView()
-//            HistoriqueTabDetailView(document: document)
+//            EmptyView()
+            HistoriqueTabDetailView(document: document)
         }
     }
 }

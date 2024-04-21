@@ -67,10 +67,9 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
-                        let status = document.determineStatut()
-                        Image(systemName: "waveform.path.ecg")
+                        Image(systemName: "heart.circle.fill")
                             .imageScale(.large)
-                            .foregroundStyle(.pink)
+                            .foregroundStyle(.white, .pink)
                         
                         HStack {
                             Text("Status")
@@ -78,7 +77,7 @@ struct ResumeTabDetailViewPDF: View {
                             
                             Spacer()
                             
-                            Text(status)
+                            Text(document.determineStatut())
                                 .padding(5)
                                 .background(RoundedRectangle(cornerRadius: 25)
                                     .foregroundStyle(document.determineColor())
@@ -88,9 +87,9 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     
                     HStack {
-                        Image(systemName: "eurosign.circle")
+                        Image(systemName: "creditcard.circle.fill")
                             .imageScale(.large)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(.white, .yellow)
                         
                         HStack {
                             Text("Reste à payé")
@@ -98,20 +97,22 @@ struct ResumeTabDetailViewPDF: View {
                             
                             Spacer()
                             
-                            Text(30, format: .currency(code: "EUR"))
+                            Text(document.totalTTC - document.montantPayer, format: .currency(code: "EUR"))
                         }
                     }
                     
                     RowInformationDate(
-                        logo: "calendar.badge.clock",
+                        logo: "calendar.circle.fill",
                         titre: "Date d'émission",
-                        color: .yellow
+                        date: document.dateEmission,
+                        color: .cyan
                     )
                     
                     RowInformationDate(
-                        logo: "calendar.badge.exclamationmark",
+                        logo: "calendar.circle.fill",
                         titre: "Date d'échéance",
-                        color: .red.opacity(0.9)
+                        date: document.dateEcheance,
+                        color: .purple
                     )
                 } header: {
                     Text("Informations")
@@ -184,6 +185,7 @@ struct RowInformationDate: View {
     
     let logo : String
     let titre : String
+    let date: Date
     let color: Color
     
     var body: some View {
@@ -197,7 +199,7 @@ struct RowInformationDate: View {
                 Text(titre)
                     .font(.title3)
                 
-                Text(Date(), format: .dateTime)
+                Text(date, format: .dateTime.day().month().year())
                     .foregroundStyle(.secondary)
             }
         }

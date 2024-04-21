@@ -237,6 +237,8 @@ class PDFViewModel {
         document.totalTVA = self.documentData.calcTotalTVA()
         document.totalTTC = self.documentData.calcTotalTTC()
         
+        document.montantPayer = self.documentData.optionsDocument.payementFinish ? self.documentData.calcTotalTTC() : 0
+        
         // Creation de l'historique
         for event in self.documentData.historique {
             let evenementCreation = HistoriqueEvenement(context: context)

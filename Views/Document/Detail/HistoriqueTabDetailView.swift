@@ -14,6 +14,8 @@ struct HistoriqueTabDetailView: View {
     
     init(document: Document) {
         let request: NSFetchRequest<HistoriqueEvenement> = HistoriqueEvenement.fetchRequest()
+        let sortByDate = NSSortDescriptor(keyPath: \HistoriqueEvenement.date_, ascending: false)
+        request.sortDescriptors = [ sortByDate]
         request.predicate = NSPredicate(format: "correspond == %@",
                                         argumentArray: [document])
         _historique = FetchRequest<HistoriqueEvenement>(fetchRequest: request, animation: .default)

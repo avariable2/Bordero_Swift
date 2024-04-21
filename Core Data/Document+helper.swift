@@ -241,6 +241,11 @@ extension Document {
         }
     }
     
+    var montantPayer : Double {
+        get { montantPayer_ }
+        set { montantPayer_ = newValue }
+    }
+    
     func titleForDate(_ date: Date) -> String {
         if Calendar.current.isDateInToday(date) {
             return "Aujourd'hui"
@@ -268,7 +273,7 @@ extension Document {
     
     func determineColor() -> Color {
         return switch self.status {
-        case .created: .yellow
+        case .created: .orange
         case .payed: .pink
         case .send: .blue
         default: .brown
