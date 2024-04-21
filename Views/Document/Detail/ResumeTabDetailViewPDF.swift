@@ -69,9 +69,6 @@ struct ResumeTabDetailViewPDF: View {
                 } header: {
                     Text("Attention")
                 }
-                .sheet(item: $presentURL) { url in
-                    SafariView(url: url)
-                }
                 
                 Section {
                     NavigationLink {
@@ -154,6 +151,9 @@ struct ResumeTabDetailViewPDF: View {
                 } header: {
                     Text("Détail")
                 }
+            }
+            .sheet(item: $presentURL) { url in
+                SafariView(url: url)
             }
             .headerProminence(.increased)
             .safeAreaInset(edge: .bottom) {

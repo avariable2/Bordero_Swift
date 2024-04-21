@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreText
 import PDFKit
+import CoreData
 
 @Observable
 class PDFViewModel {
@@ -22,13 +23,18 @@ class PDFViewModel {
     }
     
     @MainActor
-    func renderView() -> URL? {
+    func renderView(_ urlFile : URL? = nil) -> URL? {
         // MARK: - Initialisation des constantes du pdf
         guard let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return nil
         }
-        let url = directory
-            .appendingPathComponent("pdfTmp")
+        
+//        let url = documentData.urlFilePreview != nil ? documentData.urlFilePreview! : directory
+//            .appendingPathComponent(UUID().uuidString)
+//            .appendingPathExtension(for: .pdf)
+        
+        let url = urlFile != nil ? urlFile! : directory
+            .appendingPathComponent(UUID().uuidString)
             .appendingPathExtension(for: .pdf)
         
         var pageSize = CGRect(x: 0, y: 0, width: 600, height: 800)
@@ -139,26 +145,38 @@ class PDFViewModel {
         }
     }
     
-    func getTableElement(_ ttlTA : TTLTypeActe) -> PDFTableData {
-        var libelleFinalAvecOuSansDate = ttlTA.snapshotTypeActe.name
+    func getTableElement(_ ttlTA : SnapshotTypeActe) -> PDFTableData {
+        var libelleFinalAvecOuSansDate = ttlTA.name
         if !Calendar.current.isDateInToday(ttlTA.date) {
             libelleFinalAvecOuSansDate.append(" du \(ttlTA.date.formatted(.dateTime.day().month().year()))")
         }
         
         return PDFTableData(
             libelle: libelleFinalAvecOuSansDate, 
-            infoLibelle: ttlTA.snapshotTypeActe.info,
+            infoLibelle: ttlTA.info,
             remarque: ttlTA.remarque,
             quantity: ttlTA.quantity,
-            priceHT: ttlTA.snapshotTypeActe.price,
-            tva: ttlTA.snapshotTypeActe.tva,
-            priceTTC: ttlTA.snapshotTypeActe.total
+            priceHT: ttlTA.price,
+            tva: ttlTA.tva,
+            priceTTC: ttlTA.total
         )
     }
     
-    func getDocument() -> Document {
+    func finalizeAndSave(completion: (Document) -> Void) {
         let moc = DataController.shared.container.viewContext
-        let document = Document(context: moc)
+        let document = getDocument(context: moc)
+        
+        do {
+            try moc.save()
+            print("success create document")
+        } catch _ {
+            print("Error")
+        }
+        completion(document)
+    }
+    
+    func getDocument(context : NSManagedObjectContext) -> Document {
+        let document = Document(context: context)
         document.id_ = UUID()
         document.estDeTypeFacture = self.documentData.optionsDocument.typeDocument == .facture
         document.numero = self.documentData.optionsDocument.numeroDocument
@@ -176,15 +194,8 @@ class PDFViewModel {
             )
         }
         
-        for element in self.documentData.elements {
-//            let snapshotTypeActe = element.typeActeReal.getSnapshot(
-//                document,
-//                date: element.date,
-//                quantite: element.quantity,
-//                remarque: element.remarque
-//            )
-//            
-            let snapshotTypeActe = element.snapshotTypeActe
+        for snapshotTypeActe in self.documentData.elements {
+            snapshotTypeActe.estUnElementDe = document
             document.elements?.adding(snapshotTypeActe)
         }
         
@@ -229,12 +240,14 @@ class PDFViewModel {
         
         // Creation de l'historique
         for event in self.documentData.historique {
-            let evenementCreation = HistoriqueEvenement(context: moc)
+            let evenementCreation = HistoriqueEvenement(context: context)
             evenementCreation.correspond = document
             evenementCreation.date = Date()
             evenementCreation.nom = event.nom.rawValue
             document.historique?.adding(evenementCreation)
         }
+        
+//        document.pdfData = url
         
         return document
     }

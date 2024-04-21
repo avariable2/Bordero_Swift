@@ -15,6 +15,8 @@ struct PDFDisplayView: View {
     let viewModel : PDFViewModel
     let showToolbar : Bool
     
+    @State var fileUrl : URL? = nil
+    
     init(viewModel: PDFViewModel, showToolbar : Bool = true) {
         self.viewModel = viewModel
         self.showToolbar = showToolbar
@@ -23,13 +25,21 @@ struct PDFDisplayView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let url = viewModel.renderView() {
+                if let url = fileUrl {
                     PDFKitView(url: url)
                 } else {
                     VStack {
                         ProgressView()
                         Text("Génération du PDF en cours...")
                     }
+                }
+            }
+            .onAppear {
+                if viewModel.documentData.urlFilePreview == nil {
+                    fileUrl = viewModel.renderView()
+                    viewModel.documentData.urlFilePreview = fileUrl
+                } else {
+                    fileUrl = viewModel.renderView(viewModel.documentData.urlFilePreview)
                 }
             }
             .navigationTitle("Aperçu")

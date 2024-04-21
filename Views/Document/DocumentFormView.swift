@@ -12,6 +12,11 @@ struct DocumentFormView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
+    // MARK: - Versionning des possibles mise a jour de l'entity
+    static func getVersion() -> Int32 {
+        return 1
+    }
+    
     private var viewModel : PDFViewModel
     
     init() {
@@ -183,9 +188,9 @@ struct ModifierDocumentView: View, Versionnable {
                 } footer : {
                     Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
                 }
-//                .onChange(of: listSnapshotTypeActes) { oldValue, newValue in
-//                    viewModel.documentData.elements = newValue
-//                }
+                .onChange(of: listSnapshotTypeActes) { oldValue, newValue in
+                    viewModel.documentData.elements = newValue
+                }
                 
                 if typeSelected == .facture {
                     Section("Réglement") {
@@ -420,6 +425,9 @@ struct FormButtonsPrimaryActionView: View {
     @Binding var activeSheet : ActiveSheet?
     @Binding var viewModel : PDFViewModel
     
+    @State private var showDetail = false
+    @State private var detailDocument : Document?
+    
     private var userDontAddClient : Bool {
         viewModel.documentData.client == nil
     }
@@ -427,8 +435,11 @@ struct FormButtonsPrimaryActionView: View {
     var body: some View {
         ViewThatFits {
             HStack {
-                NavigationLink {
-                    DocumentDetailView(viewModel: viewModel)
+                Button {
+                    viewModel.finalizeAndSave { document in
+                        showDetail = true
+                        detailDocument = document
+                    }
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -456,8 +467,11 @@ struct FormButtonsPrimaryActionView: View {
             }
             
             VStack {
-                NavigationLink {
-                    DocumentDetailView(viewModel: viewModel)
+                Button {
+                    viewModel.finalizeAndSave { document in
+                        showDetail = true
+                        detailDocument = document
+                    }
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -486,6 +500,12 @@ struct FormButtonsPrimaryActionView: View {
         .padding()
         .frame(maxWidth: .infinity)
         .background(.regularMaterial)
+        .navigationDestination(isPresented: $showDetail) {
+            if detailDocument != nil {
+                DocumentDetailView(document: detailDocument!)
+            }
+            
+        }
     }
 }
 

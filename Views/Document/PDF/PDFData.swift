@@ -6,11 +6,8 @@
 //
 
 import Foundation
-import Observation
 
-@Observable
-class PDFModel {
-    
+struct PDFModel {    
     struct OptionsLegalDocument : Codable {
         var typeDocument : TypeDoc
         var numeroDocument: String
@@ -27,8 +24,10 @@ class PDFModel {
     var historique : [Evenement]
     var praticien: Praticien?
     var client: Client?
-    var elements: [TTLTypeActe]
+    var elements: [SnapshotTypeActe]
     var optionsDocument : OptionsLegalDocument
+    
+    var urlFilePreview : URL? = nil
     
     var totalTTC = 0
     var totalTVA = 0
@@ -59,7 +58,7 @@ class PDFModel {
     func calcTotalHT() -> Double  {
         var sousTot : Double = 0
         for element in elements {
-            sousTot += Double(element.snapshotTypeActe.price) * Double(element.quantity)
+            sousTot += Double(element.price) * Double(element.quantity)
         }
         
         if self.optionsDocument.remise.montant != 0 {
@@ -77,8 +76,8 @@ class PDFModel {
     func calcTotalTVA() -> Double {
         var montantTVA : Double = 0
         for element in elements {
-            if element.snapshotTypeActe.tva != 0 {
-                montantTVA += ((Double(element.snapshotTypeActe.price) * Double(element.snapshotTypeActe.tva)) + Double(element.snapshotTypeActe.price)) * Double(element.quantity)
+            if element.tva != 0 {
+                montantTVA += ((Double(element.price) * Double(element.tva)) + Double(element.price)) * Double(element.quantity)
             }
         }
         return montantTVA

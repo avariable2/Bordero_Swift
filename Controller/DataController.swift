@@ -22,24 +22,18 @@ import Observation
     }
     
     func updateICloudSettings() {
-        let iCloudToken = FileManager.default.ubiquityIdentityToken // check si l'utilisateur à activé icloud ou non
-        
-        if iCloudToken != nil {
+        if DataController.getStatusiCloud() {
             self.container = DataController.setupSyncContainer(iCloudIsOn: true)
         }
     }
     
     static func getStatusiCloud() -> Bool {
-        let iCloudToken = FileManager.default.ubiquityIdentityToken
+        let iCloudToken = FileManager.default.ubiquityIdentityToken // check si l'utilisateur à activé icloud ou non
         return iCloudToken != nil
     }
     
     static func setupSyncContainer(iCloudIsOn : Bool) -> NSPersistentCloudKitContainer {
         let container = NSPersistentCloudKitContainer(name: "Model")
-        
-        let url = URL.storeURL(for: "group.com.bigVariable.bordero", databaseName: "Model")
-        let storeDescription = NSPersistentStoreDescription(url: url)
-        container.persistentStoreDescriptions = [storeDescription]
         
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("###\(#function): Failed to retrieve a persistent store description.")
@@ -75,14 +69,5 @@ import Observation
         }
         
         return container
-    }
-}
-
-public extension URL {
-    static func storeURL(for appGroup : String, databaseName : String) -> URL {
-        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
-            fatalError("Unable to create URL for \(appGroup)")
-        }
-        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
     }
 }

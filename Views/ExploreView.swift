@@ -79,7 +79,7 @@ struct ExploreView: View {
                 }
                 
                 NavigationLink {
-                    EmptyView()
+                    ListDocument()
                 } label: {
                     Label {
                         Text("Consulter les documents")

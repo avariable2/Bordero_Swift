@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DocumentDetailView: View, Saveable {
+struct DocumentDetailView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var selectedTab: Tab = .résumé
     
@@ -15,9 +15,9 @@ struct DocumentDetailView: View, Saveable {
     
     @ObservedObject var document : Document
     
-    init(viewModel : PDFViewModel) {
-        self.document = viewModel.getDocument()
-    }
+//    init(viewModel : PDFViewModel) {
+//        self.document = viewModel.getDocument(context: DataController.shared.container.viewContext)
+//    }
     
     init(document : Document) {
         self.document = document
@@ -35,7 +35,7 @@ struct DocumentDetailView: View, Saveable {
             
 //            ChoosenView(
 //                selectedElement: selectedTab,
-//                viewModel: $viewModel
+//                document: document
 //            )
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
@@ -77,15 +77,6 @@ struct DocumentDetailView: View, Saveable {
             }
         }
     }
-    
-    func save() {
-        do {
-            try moc.save()
-            print("success")
-        } catch _ {
-            print("Error")
-        }
-    }
 }
 
 enum Tab : String, CaseIterable, Identifiable {
@@ -94,25 +85,25 @@ enum Tab : String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-struct ChoosenView : View {
-    var selectedElement : Tab
-    @Binding var viewModel : PDFViewModel
-    
-    var body: some View {
-        switch selectedElement {
-        case .résumé:
-            ResumeTabDetailViewPDF(documentData: viewModel.documentData)
-        case .aperçu:
-            PDFDisplayView(viewModel: viewModel, showToolbar: false)
-        case .historique:
-            HistoriqueTabDetailView(historique: viewModel.documentData.historique)
-        }
-    }
-}
+//struct ChoosenView : View {
+//    var selectedElement : Tab
+//    var document : Document
+//    
+//    var body: some View {
+//        switch selectedElement {
+//        case .résumé:
+//            ResumeTabDetailViewPDF(documentData: viewModel.documentData)
+//        case .aperçu:
+//            PDFDisplayView(viewModel: viewModel, showToolbar: false)
+//        case .historique:
+//            HistoriqueTabDetailView(historique: viewModel.documentData.historique)
+//        }
+//    }
+//}
 
-#Preview {
-    NavigationStack {
-        DocumentDetailView(viewModel: PDFViewModel())
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        DocumentDetailView(viewModel: PDFViewModel())
+//    }
+//}
 
