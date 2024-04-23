@@ -21,6 +21,7 @@ struct DocumentDetailView: View {
     @State var pdfDocument : PDFDocument? = nil
     @State private var client: Client?
 
+    @State private var urlSharing : URL? = nil
     
     init(document : Document) {
         self.document = document
@@ -43,9 +44,12 @@ struct DocumentDetailView: View {
             )
         }
         .onAppear() {
-            loadClient()
+//            loadClient()
             if let dataPDF = document.contenuPdf {
                 pdfDocument = PDFDocument(data: dataPDF) ?? nil
+            }
+            if urlSharing == nil {
+                urlSharing =  getUrlForSharing()
             }
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
@@ -62,8 +66,8 @@ struct DocumentDetailView: View {
                         
                     }
                     
-                    if let _ = pdfDocument {
-                        ShareLink(item: getUrlForSharing())
+                    if let _ = pdfDocument, let url = urlSharing {
+                        ShareLink(item: url)
                     }
                     
                     Divider()
