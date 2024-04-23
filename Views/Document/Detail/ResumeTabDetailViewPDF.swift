@@ -54,10 +54,10 @@ struct ResumeTabDetailViewPDF: View {
                     } label: {
                         HStack {
                             ProfilImageView(imageData: nil)
-                                .font(.title)
+                                .font(.body)
                             
                             Text("\(document.snapshotClient.firstname) \(document.snapshotClient.lastname)")
-                                .font(.title2)
+                                .font(.body)
                                 .bold()
                         }
                     }
@@ -67,37 +67,47 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
-                        Image(systemName: "heart.circle.fill")
-                            .imageScale(.large)
-                            .foregroundStyle(.white, .pink)
+//                        Image(systemName: "heart.circle.fill")
+//                            .imageScale(.large)
+//                            .foregroundStyle(.white, .pink)
                         
                         HStack {
                             Text("Status")
-                                .font(.title3)
+//                                .font(.title3)
                             
                             Spacer()
                             
-                            Text(document.determineStatut())
-                                .padding(5)
-                                .background(RoundedRectangle(cornerRadius: 25)
-                                    .foregroundStyle(document.determineColor())
-                                )
-                                .foregroundStyle(.white)
+//                            Text(document.determineStatut())
+//                                .padding(5)
+//                                .background(RoundedRectangle(cornerRadius: 25)
+//                                    .foregroundStyle(document.determineColor())
+//                                )
+//                                .foregroundStyle(.white)
+                            
+                            HStack(spacing: nil) {
+                                Image(systemName: "circle.circle.fill")
+                                    .foregroundStyle(.black, document.determineColor())
+                                
+                                Text(document.determineStatut())
+                                    .foregroundStyle(.primary)
+                                    .fontWeight(.light)
+                            }
                         }
                     }
                     
                     HStack {
-                        Image(systemName: "creditcard.circle.fill")
-                            .imageScale(.large)
-                            .foregroundStyle(.white, .yellow)
+//                        Image(systemName: "creditcard.circle.fill")
+//                            .imageScale(.large)
+//                            .foregroundStyle(.white, .yellow)
                         
                         HStack {
                             Text("Reste à payé")
-                                .font(.title3)
+//                                .font(.title3)
                             
                             Spacer()
                             
                             Text(document.totalTTC - document.montantPayer, format: .currency(code: "EUR"))
+                                .fontWeight(.semibold)
                         }
                     }
                     
@@ -122,7 +132,7 @@ struct ResumeTabDetailViewPDF: View {
                     RowMontantDetail(text: "Total H.T.", price: document.totalHT)
                     RowMontantDetail(text: "T.V.A", price: document.totalTVA)
                     RowMontantDetail(text: "Total T.T.C", price: document.totalTTC)
-                        .bold()
+//                        .bold()
                 } header: {
                     Text("Détail")
                 }
@@ -130,7 +140,6 @@ struct ResumeTabDetailViewPDF: View {
             .sheet(item: $presentURL) { url in
                 SafariView(url: url)
             }
-            .headerProminence(.increased)
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     Button {
@@ -177,6 +186,7 @@ struct RowMontantDetail: View {
             Spacer()
             
             Text(price, format: .currency(code: "EUR"))
+                .fontWeight(.light)
         }
     }
 }
@@ -190,17 +200,21 @@ struct RowInformationDate: View {
     
     var body: some View {
         HStack {
-            Image(systemName: logo)
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(color, .gray.opacity(0.7))
-                .imageScale(.large)
+//            Image(systemName: logo)
+//                .symbolRenderingMode(.palette)
+//                .foregroundStyle(color, .gray.opacity(0.7))
+//                .imageScale(.large)
             
-            VStack(alignment: .leading) {
+            HStack() {
                 Text(titre)
-                    .font(.title3)
+//                    .font(.title3)
+                
+                Spacer()
                 
                 Text(date, format: .dateTime.day().month().year())
-                    .foregroundStyle(.secondary)
+//                    .foregroundStyle(.secondary)
+//                    .fontWeight(.regular)
+                    .fontWeight(.light)
             }
         }
     }

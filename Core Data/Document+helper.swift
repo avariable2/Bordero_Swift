@@ -264,7 +264,7 @@ extension Document {
     
     func determineStatut() -> String {
         return switch self.status {
-        case .created: "Créer"
+        case .created: "Ouvert"
         case .payed: "Payer"
         case .send: "Envoyée"
         default: "Inconnu"
@@ -274,7 +274,7 @@ extension Document {
     func determineColor() -> Color {
         return switch self.status {
         case .created: .orange
-        case .payed: .pink
+        case .payed: .green
         case .send: .blue
         default: .brown
         }

@@ -44,7 +44,7 @@ struct DisplayListWithSort : View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest var documents: FetchedResults<Document>
     
-    init(sortDescriptor : NSSortDescriptor) {
+    init(sortDescriptor : NSSortDescriptor, predicate: NSPredicate? = nil) {
         let request: NSFetchRequest<Document> = Document.fetchRequest()
         let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
         request.sortDescriptors = [ sortByDate, sortDescriptor]
@@ -63,11 +63,13 @@ struct DisplayListWithSort : View {
             List {
                 ForEach(documents, id: \.id_) { document in
                     Section {
-                        NavigationLink {
-                            DocumentDetailView(document: document)
-                        } label: {
-                            RowDocumentView(document: document)
-                        }
+                        RowDocumentView(document: document)
+                            .background(
+                                NavigationLink("") {
+                                    DocumentDetailView(document: document)
+                                }
+                                    .opacity(0)
+                            )
                     } header: {
                         Text(document.sectionTitleByDate)
                     }
@@ -82,16 +84,23 @@ struct RowDocumentView :View {
     let document : Document
     
     var body: some View {
-        Label {
+        
+        HStack {
+            Image(systemName: "doc.circle.fill")
+                .imageScale(.large)
+                .foregroundStyle(.white, .blue)
+            
             VStack {
                 HStack {
                     let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
                     Text(nomFichier)
-                        .fontWeight(.semibold)
+                    
                     Spacer()
+                    
                     Text(document.totalTTC, format: .currency(code: "EUR"))
-                        .fontWeight(.semibold)
+                        
                 }
+                .fontWeight(.medium)
                 
                 HStack {
                     
@@ -104,23 +113,18 @@ struct RowDocumentView :View {
                     
                     Spacer()
                     
-                    Label {
-                        Text(document.determineStatut())
-                            .foregroundStyle(.primary)
-                    } icon: {
+                    HStack(spacing: nil) {
                         Image(systemName: "circle.circle.fill")
                             .foregroundStyle(.black, document.determineColor())
+                        
+                        Text(document.determineStatut())
+                            .foregroundStyle(.primary)
+                            .fontWeight(.light)
                     }
                 }
                 .font(.footnote)
-                
             }
-        } icon: {
-            Image(systemName: "doc.circle.fill")
-                .imageScale(.large)
-                .foregroundStyle(.white, .blue)
         }
-        
     }
 }
 
