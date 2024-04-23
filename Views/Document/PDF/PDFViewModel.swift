@@ -240,15 +240,12 @@ class PDFViewModel {
         document.montantPayer = self.documentData.optionsDocument.payementFinish ? self.documentData.calcTotalTTC() : 0
         
         // Creation de l'historique
-        for event in self.documentData.historique {
-            let evenementCreation = HistoriqueEvenement(context: context)
-            evenementCreation.correspond = document
-            evenementCreation.date = Date()
-            evenementCreation.nom = event.nom.rawValue
-            document.historique?.adding(evenementCreation)
-        }
-        
-//        document.pdfData = url
+        let objEvenement = Evenement(nom: .création, date: Date())
+        let evenementCreation = HistoriqueEvenement(context: context)
+        evenementCreation.correspond = document
+        evenementCreation.date = objEvenement.date
+        evenementCreation.nom = objEvenement.nom.rawValue
+        document.historique?.adding(evenementCreation)
         
         return document
     }

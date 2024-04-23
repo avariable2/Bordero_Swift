@@ -67,22 +67,11 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
-//                        Image(systemName: "heart.circle.fill")
-//                            .imageScale(.large)
-//                            .foregroundStyle(.white, .pink)
                         
                         HStack {
                             Text("Status")
-//                                .font(.title3)
                             
                             Spacer()
-                            
-//                            Text(document.determineStatut())
-//                                .padding(5)
-//                                .background(RoundedRectangle(cornerRadius: 25)
-//                                    .foregroundStyle(document.determineColor())
-//                                )
-//                                .foregroundStyle(.white)
                             
                             HStack(spacing: nil) {
                                 Image(systemName: "circle.circle.fill")
@@ -96,13 +85,8 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     
                     HStack {
-//                        Image(systemName: "creditcard.circle.fill")
-//                            .imageScale(.large)
-//                            .foregroundStyle(.white, .yellow)
-                        
                         HStack {
                             Text("Reste à payé")
-//                                .font(.title3)
                             
                             Spacer()
                             
@@ -132,7 +116,6 @@ struct ResumeTabDetailViewPDF: View {
                     RowMontantDetail(text: "Total H.T.", price: document.totalHT)
                     RowMontantDetail(text: "T.V.A", price: document.totalTVA)
                     RowMontantDetail(text: "Total T.T.C", price: document.totalTTC)
-//                        .bold()
                 } header: {
                     Text("Détail")
                 }
@@ -200,20 +183,13 @@ struct RowInformationDate: View {
     
     var body: some View {
         HStack {
-//            Image(systemName: logo)
-//                .symbolRenderingMode(.palette)
-//                .foregroundStyle(color, .gray.opacity(0.7))
-//                .imageScale(.large)
             
             HStack() {
                 Text(titre)
-//                    .font(.title3)
                 
                 Spacer()
                 
                 Text(date, format: .dateTime.day().month().year())
-//                    .foregroundStyle(.secondary)
-//                    .fontWeight(.regular)
                     .fontWeight(.light)
             }
         }
