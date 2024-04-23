@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DocumentDetailView: View {
+    @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @State private var selectedTab: Tab = .résumé
     @State var document : Document
@@ -57,11 +58,8 @@ struct DocumentDetailView: View {
                 
                     Divider()
                     
-                    Button {
-                        
-                    } label: {
-                        Text("Effacer")
-                            .foregroundStyle(.red)
+                    Button("Supprimer", role: .destructive) {
+                        delete()
                     }
                     
                 } label: {
@@ -69,6 +67,13 @@ struct DocumentDetailView: View {
                 }
             }
         }
+    }
+    
+    func delete() {
+        moc.delete(document)
+        
+        DataController.saveContext()
+        dismiss()
     }
 }
 

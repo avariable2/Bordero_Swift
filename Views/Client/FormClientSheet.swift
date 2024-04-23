@@ -325,16 +325,11 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         guard let client = clientToModify else { return }
         moc.delete(client)
         
-        do {
-            try moc.save()
-            if let call = callbackOnDelete {
-                call()
-            }
-            onCancel?()
-        } catch {
-            print("Échec de la suppression du client: \(error.localizedDescription)")
-            // Gérer l'erreur de manière appropriée
+        DataController.saveContext()
+        if let call = callbackOnDelete {
+            call()
         }
+        onCancel?()
     }
 }
 

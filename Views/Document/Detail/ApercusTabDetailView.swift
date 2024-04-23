@@ -9,7 +9,7 @@ import SwiftUI
 import PDFKit
 
 struct DocumentApercus : View {
-    @State var document: Document
+    var document: Document
     
     var body: some View {
         if let data = document.contenuPdf {
