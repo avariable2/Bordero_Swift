@@ -29,10 +29,6 @@ class PDFViewModel {
             return nil
         }
         
-//        let url = documentData.urlFilePreview != nil ? documentData.urlFilePreview! : directory
-//            .appendingPathComponent(UUID().uuidString)
-//            .appendingPathExtension(for: .pdf)
-        
         let url = urlFile != nil ? urlFile! : directory
             .appendingPathComponent(UUID().uuidString)
             .appendingPathExtension(for: .pdf)
@@ -162,9 +158,9 @@ class PDFViewModel {
         )
     }
     
-    func finalizeAndSave(completion: (Document) -> Void) {
+    func finalizeAndSave(completion: (Document) -> Void) async {
         let moc = DataController.shared.container.viewContext
-        let document = getDocument(context: moc)
+        let document = await getDocument(context: moc)
         
         DataController.saveContext()
         
@@ -173,7 +169,7 @@ class PDFViewModel {
         completion(document)
     }
     
-    func getDocument(context : NSManagedObjectContext) -> Document {
+    func getDocument(context : NSManagedObjectContext) async -> Document {
         let document = Document(context: context)
         document.id_ = UUID()
         document.estDeTypeFacture = self.documentData.optionsDocument.typeDocument == .facture
@@ -239,7 +235,7 @@ class PDFViewModel {
         
         document.montantPayer = self.documentData.optionsDocument.payementFinish ? self.documentData.calcTotalTTC() : 0
         
-        // Creation de l'historique
+        // MARK: Creation de l'historique
         let objEvenement = Evenement(nom: .création, date: Date())
         let evenementCreation = HistoriqueEvenement(context: context)
         evenementCreation.correspond = document
@@ -247,6 +243,25 @@ class PDFViewModel {
         evenementCreation.nom = objEvenement.nom.rawValue
         document.historique?.adding(evenementCreation)
         
+        // MARK: Sauvegarde du rendu du pdf pour etre affiché
+        // Déclaration d'une propriété pour stocker le document PDF
+        var pdfDocument: PDFDocument?
+
+        if let url = self.documentData.urlFilePreview {
+            pdfDocument = PDFDocument(url: url)
+        } else {
+            if let url = await self.renderView() {
+                pdfDocument = PDFDocument(url: url)
+            }
+        }
+        
+        if let pdf = pdfDocument {
+            document.contenuPdf = pdf.dataRepresentation()
+        } else {
+            // Gérer le cas où pdfDocument est nil
+            print("Erreur : Le document PDF n'a pas pu être chargé ou créé.")
+        }
+
         return document
     }
 }

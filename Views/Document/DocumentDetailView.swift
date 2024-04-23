@@ -87,8 +87,7 @@ struct ChoosenView : View {
         case .résumé:
             ResumeTabDetailViewPDF(document: document)
         case .aperçu:
-            EmptyView()
-//            PDFDisplayView(viewModel: viewModel, showToolbar: false)
+            DocumentApercus(document: document)
         case .historique:
             HistoriqueTabDetailView(document: document)
         }

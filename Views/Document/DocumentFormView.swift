@@ -182,7 +182,6 @@ struct ModifierDocumentView: View, Versionnable {
                                 .foregroundStyle(.green)
                         }
                     }
-                    .disabled(listSnapshotTypeActes.count >= 4)
                 } header : {
                     Text("Préstation(s)")
                 } footer : {
@@ -436,9 +435,11 @@ struct FormButtonsPrimaryActionView: View {
         ViewThatFits {
             HStack {
                 Button {
-                    viewModel.finalizeAndSave { document in
-                        showDetail = true
-                        detailDocument = document
+                    Task {
+                        await viewModel.finalizeAndSave { document in
+                            showDetail = true
+                            detailDocument = document
+                        }
                     }
                 } label: {
                     Label {
@@ -464,9 +465,11 @@ struct FormButtonsPrimaryActionView: View {
             
             VStack {
                 Button {
-                    viewModel.finalizeAndSave { document in
-                        showDetail = true
-                        detailDocument = document
+                    Task {
+                        await viewModel.finalizeAndSave { document in
+                            showDetail = true
+                            detailDocument = document
+                        }
                     }
                 } label: {
                     Label {

@@ -13,6 +13,7 @@
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="Document" representedClassName="Document" syncable="YES" codeGenerationType="class">
+        <attribute name="contenuPdf" optional="YES" attributeType="Binary"/>
         <attribute name="dateEcheance_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="dateEmission_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="estFacture_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
