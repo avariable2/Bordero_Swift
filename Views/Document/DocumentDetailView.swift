@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PDFKit
+import CoreData
 
 struct DocumentDetailView: View {
     enum TroubleShotCreationFichier {
@@ -18,6 +19,8 @@ struct DocumentDetailView: View {
     @State private var selectedTab: Tab = .résumé
     @State var document : Document
     @State var pdfDocument : PDFDocument? = nil
+    @State private var client: Client?
+
     
     init(document : Document) {
         self.document = document
@@ -35,10 +38,12 @@ struct DocumentDetailView: View {
             
             ChoosenView(
                 selectedElement: selectedTab,
-                document: $document
+                document: $document, 
+                client: $client
             )
         }
         .onAppear() {
+            loadClient()
             if let dataPDF = document.contenuPdf {
                 pdfDocument = PDFDocument(data: dataPDF) ?? nil
             }
@@ -74,6 +79,20 @@ struct DocumentDetailView: View {
         }
     }
     
+    private func loadClient() {
+        guard let uuid = document.snapshotClient.uuidClient else { return }
+        let request: NSFetchRequest<Client> = Client.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", uuid as CVarArg)
+        request.fetchLimit = 1
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            let results = try? moc.fetch(request)
+            DispatchQueue.main.async {
+                self.client = results?.first
+            }
+        }
+    }
+    
     func getUrlForSharing() -> URL {
         if let path = document.nomFichierPdf, !path.isEmpty && FileManager.default.fileExists(atPath: path) {
             return URL(string: path)!
@@ -81,7 +100,6 @@ struct DocumentDetailView: View {
             let result = writeDocument()
             return result == .success ? URL(string: document.nomFichierPdf!)! : URL(string: "")!
         }
-        
     }
     
     func writeDocument() -> TroubleShotCreationFichier {
@@ -126,11 +144,12 @@ enum Tab : String, CaseIterable, Identifiable {
 struct ChoosenView : View {
     var selectedElement : Tab
     @Binding var document : Document
+    @Binding var client : Client?
     
     var body: some View {
         switch selectedElement {
         case .résumé:
-            ResumeTabDetailViewPDF(document: document)
+            ResumeTabDetailViewPDF(document: document, client: $client)
         case .aperçu:
             DocumentApercus(document: document)
         case .historique:

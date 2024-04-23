@@ -13,7 +13,7 @@ struct ResumeTabDetailViewPDF: View {
     @State var document : Document
     
     @State var showDetailClient = false
-    @State var client : Client? = nil
+    @Binding var client : Client?
     
     var body: some View {
         VStack {
@@ -50,7 +50,7 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     Button {
-                        showDetailClient = true
+//                        showDetailClient = true
                     } label: {
                         HStack {
                             ProfilImageView(imageData: nil)
@@ -59,8 +59,16 @@ struct ResumeTabDetailViewPDF: View {
                             Text("\(document.snapshotClient.firstname) \(document.snapshotClient.lastname)")
                                 .font(.body)
                                 .bold()
+                            
+//                            Spacer()
+//                            
+//                            Image(systemName: "chevron.right")
+//                                .foregroundStyle(.secondary)
                         }
+                        .tint(.primary)
                     }
+//                    .disabled(client == nil)
+                    
                 } header: {
                     Text("Créer pour")
                 }
