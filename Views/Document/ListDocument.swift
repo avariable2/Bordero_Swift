@@ -92,8 +92,7 @@ struct RowDocumentView :View {
             
             VStack {
                 HStack {
-                    let nomFichier = "\(document.snapshotClient.firstname) \(document.snapshotClient.lastname) \(document.estDeTypeFacture ? "Facture" : "Devis")"
-                    Text(nomFichier)
+                    Text(document.getNameOfDocument())
                     
                     Spacer()
                     

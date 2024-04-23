@@ -51,3 +51,21 @@ struct DocumentPDFKitView: UIViewRepresentable {
         // NE pas modifier l'element ici puisqu'il ne change pas
     }
 }
+
+extension PDFDocument : Transferable {
+    public static var transferRepresentation: some TransferRepresentation {
+        DataRepresentation(contentType: .pdf) { pdf in
+            return pdf.dataRepresentation() ?? Data()
+        } importing: { data in
+            if let pdf = PDFDocument(data: data) {
+                return pdf
+            } else {
+                return PDFDocument()
+            }
+        }
+        
+        DataRepresentation(exportedContentType: .pdf) { pdf in
+            return pdf.dataRepresentation() ?? Data()
+        }
+    }
+}

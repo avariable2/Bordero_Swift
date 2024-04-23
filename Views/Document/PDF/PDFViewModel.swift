@@ -261,6 +261,7 @@ class PDFViewModel {
             // Gérer le cas où pdfDocument est nil
             print("Erreur : Le document PDF n'a pas pu être chargé ou créé.")
         }
+        document.nomFichierPdf = self.documentData.urlFilePreview?.absoluteString
 
         return document
     }

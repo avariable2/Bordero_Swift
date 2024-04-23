@@ -279,4 +279,8 @@ extension Document {
         default: .brown
         }
     }
+    
+    func getNameOfDocument() -> String {
+        return "\(self.snapshotClient.firstname) \(self.snapshotClient.lastname) \(self.estDeTypeFacture ? "Facture" : "Devis")"
+    }
 }

@@ -62,7 +62,7 @@ struct ResumeTabDetailViewPDF: View {
                         }
                     }
                 } header: {
-                    Text("Client")
+                    Text("Créer pour")
                 }
                 
                 Section {
@@ -117,7 +117,7 @@ struct ResumeTabDetailViewPDF: View {
                     RowMontantDetail(text: "T.V.A", price: document.totalTVA)
                     RowMontantDetail(text: "Total T.T.C", price: document.totalTTC)
                 } header: {
-                    Text("Détail")
+                    Text("Détails")
                 }
             }
             .sheet(item: $presentURL) { url in
