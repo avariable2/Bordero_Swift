@@ -97,38 +97,60 @@ struct DocumentDetailView: View {
         }
     }
     
-    func getUrlForSharing() -> URL {
-        if let path = document.nomFichierPdf, !path.isEmpty && FileManager.default.fileExists(atPath: path) {
-            return URL(string: path)!
+    func getUrlForSharing() -> URL? {
+        // Trouver le répertoire des documents
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Failed to locate the document directory.")
+            return nil
+        }
+        
+        // Construire l'URL complet avec le nom du fichier
+        if let nomFichier = document.nomFichierPdf, !nomFichier.isEmpty {
+            let fileURL = documentsDirectory.appendingPathComponent(nomFichier)
+            
+            // Vérifier si le fichier existe déjà
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                print("File already exists, no need to recreate it.")
+                return fileURL
+            } else {
+                print("File does not exist, attempting to write it.")
+                // Écrire le document si le fichier n'existe pas
+                let result = writeDocument()
+                if result == .success {
+                    return fileURL
+                } else {
+                    print("Failed to write document.")
+                    return nil
+                }
+            }
         } else {
-            let result = writeDocument()
-            return result == .success ? URL(string: document.nomFichierPdf!)! : URL(string: "")!
+            print("Invalid or empty filename.")
+            return nil
         }
     }
     
     func writeDocument() -> TroubleShotCreationFichier {
-        guard let data = document.contenuPdf, let path = getPathForDocument() else { return .failure }
+        guard let data = document.contenuPdf else { return .failure }
+        let path = getPathForDocument() ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(UUID().uuidString).appendingPathExtension(for: .pdf)
+        
         do {
-            try data.write(to: path, options: [.atomic, .completeFileProtection])
-            print("Réecriture reussi")
+            try data.write(to: path!, options: [.atomic, .completeFileProtection])
+            print("Document écrit avec succès")
+            document.nomFichierPdf = path!.lastPathComponent
+            DataController.saveContext()
+            return .success
         } catch {
-            print(error.localizedDescription)
+            print("Échec de l'écriture du document: \(error.localizedDescription)")
             return .failure
         }
-        document.nomFichierPdf = path.absoluteString
-        DataController.saveContext()
-        
-        return .success
     }
+
     
     func getPathForDocument() -> URL? {
-        guard
-            let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?
-                .appendingPathComponent(document.getNameOfDocument())
-                .appendingPathExtension(for: .pdf) else {
+        guard let nomFichier = document.nomFichierPdf else {
             return nil
         }
-        return path
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(nomFichier)
     }
     
     func delete() {
