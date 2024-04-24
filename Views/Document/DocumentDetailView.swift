@@ -104,40 +104,44 @@ struct DocumentDetailView: View {
             return nil
         }
         
-        // Construire l'URL complet avec le nom du fichier
+        let fileURL: URL
         if let nomFichier = document.nomFichierPdf, !nomFichier.isEmpty {
-            let fileURL = documentsDirectory.appendingPathComponent(nomFichier)
-            
-            // Vérifier si le fichier existe déjà
-            if FileManager.default.fileExists(atPath: fileURL.path) {
-                print("File already exists, no need to recreate it.")
+            // Construire l'URL complet avec le nom du fichier existant
+            fileURL = documentsDirectory.appendingPathComponent(nomFichier)
+        } else {
+            // Générer un nouveau nom de fichier unique si nomFichier est vide ou inexistant
+            let newFileName = UUID().uuidString + ".pdf"
+            fileURL = documentsDirectory.appendingPathComponent(newFileName)
+            document.nomFichierPdf = newFileName // Assigner le nouveau nom au document
+            print("Generated new filename for document.")
+        }
+        
+        // Vérifier si le fichier existe déjà
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            print("File already exists, no need to recreate it.")
+            return fileURL
+        } else {
+            print("File does not exist, attempting to write it.")
+            // Écrire le document si le fichier n'existe pas
+            let result = writeDocument()
+            if result == .success {
+                DataController.saveContext() // Sauvegarder les changements dans CoreData
                 return fileURL
             } else {
-                print("File does not exist, attempting to write it.")
-                // Écrire le document si le fichier n'existe pas
-                let result = writeDocument()
-                if result == .success {
-                    return fileURL
-                } else {
-                    print("Failed to write document.")
-                    return nil
-                }
+                print("Failed to write document.")
+                return nil
             }
-        } else {
-            print("Invalid or empty filename.")
-            return nil
         }
     }
-    
+
+    /// Écrire les données du document dans le fichier spécifié et gérer l'état de succès ou d'échec
     func writeDocument() -> TroubleShotCreationFichier {
         guard let data = document.contenuPdf else { return .failure }
-        let path = getPathForDocument() ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(UUID().uuidString).appendingPathExtension(for: .pdf)
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(document.nomFichierPdf ?? UUID().uuidString.appending(".pdf"))
         
         do {
             try data.write(to: path!, options: [.atomic, .completeFileProtection])
             print("Document écrit avec succès")
-            document.nomFichierPdf = path!.lastPathComponent
-            DataController.saveContext()
             return .success
         } catch {
             print("Échec de l'écriture du document: \(error.localizedDescription)")
@@ -147,9 +151,7 @@ struct DocumentDetailView: View {
 
     
     func getPathForDocument() -> URL? {
-        guard let nomFichier = document.nomFichierPdf else {
-            return nil
-        }
+        let nomFichier = UUID().uuidString
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(nomFichier)
     }
     
