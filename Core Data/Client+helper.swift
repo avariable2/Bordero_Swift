@@ -30,6 +30,11 @@ extension Client {
         set { phone_ = newValue }
     }
     
+    var listDocuments : Set<Document> {
+        get { documents_ as? Set<Document> ?? [] }
+        set { documents_ = newValue as NSSet }
+    }
+    
     func getAdresseSurUneLigne(_ adresse : [String : Any]?) -> String {
         if let coordonne = adresse {
             return PDFUtils.getRowAdresse(
@@ -51,4 +56,30 @@ extension Client {
             self.phone  = phone
             self.email = email
     }
+    public override func awakeFromInsert() {
+        self.id = UUID()
+    }
+    
+    static func delete(client : Client) {
+        guard let context = client.managedObjectContext else { return }
+        
+        context.delete(client)
+    }
+    
+    static func fetch(_ predicate : NSPredicate = .all) -> NSFetchRequest<Client> {
+        let request = Client.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Client.name_, ascending: true)]
+        request.predicate = predicate
+        
+        return request
+    }
+    
+    static var example : Client {
+        let context = DataController.shared.container.viewContext
+        let client = Client(firstname: "Ad", lastname: "VORY", phone: "0102030405", email: "ad.vory@gmail.com", context: context)
+        
+        client.listDocuments.insert(Document.example)
+        return client
+    }
+    
 }

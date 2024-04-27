@@ -29,17 +29,18 @@ struct ResumeTabDetailViewPDF: View {
                             }
                             .frame(maxHeight: 65)
                             
-                            Text("En savoir plus")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(.link)
-                            
-                        } label: {
                             Button {
                                 presentURL = URL(string: "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191855")!
                             } label: {
-                                Label("Rappel à la loi", systemImage: "building.columns")
-                                    .tint(.primary)
+                                Text("En savoir plus")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .foregroundStyle(.link)
                             }
+                            
+                        } label: {
+                            
+                            Label("Loi française", systemImage: "building.columns")
+                                .tint(.primary)
                         }
                     }
                     .multilineTextAlignment(.leading)
@@ -52,19 +53,7 @@ struct ResumeTabDetailViewPDF: View {
                     Button {
 //                        showDetailClient = true
                     } label: {
-                        HStack {
-                            ProfilImageView(imageData: nil)
-                                .font(.body)
-                            
-                            Text("\(document.snapshotClient.firstname) \(document.snapshotClient.lastname)")
-                                .font(.body)
-                                .bold()
-                            
-//                            Spacer()
-//                            
-//                            Image(systemName: "chevron.right")
-//                                .foregroundStyle(.secondary)
-                        }
+                        ClientRowView(firstname: client?.firstname ?? "AAA", name: client?.lastname ?? "AAA")
                         .tint(.primary)
                     }
 //                    .disabled(client == nil)
@@ -154,12 +143,12 @@ struct ResumeTabDetailViewPDF: View {
                 .frame(maxWidth: .infinity)
                 .background(.regularMaterial)
             }
-            .navigationDestination(isPresented: $showDetailClient) {
-                if client != nil {
-                    ClientDetailView(client: client!)
-                }
-                
-            }
+//            .navigationDestination(isPresented: $showDetailClient) {
+//                if client != nil {
+//                    ClientDetailView(client: client!)
+//                }
+//                
+//            }
         }
     }
 }

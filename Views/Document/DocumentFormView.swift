@@ -245,6 +245,7 @@ struct ModifierDocumentView: View, Versionnable {
             }
         }
         .navigationTitle("Document")
+        .contentMargins(.top, 2)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink("Options") {
@@ -292,24 +293,6 @@ struct ModifierDocumentView: View, Versionnable {
                 }
             }
             
-        }
-    }
-}
-
-private struct ClientRowView: View {
-    let firstname : String
-    let name : String
-    
-    var body: some View {
-        Label {
-            VStack {
-                Text(firstname)
-                + Text(" ")
-                + Text(name)
-                    .bold()
-            }
-        } icon: {
-            ProfilImageView(imageData: nil)
         }
     }
 }

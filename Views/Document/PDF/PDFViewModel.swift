@@ -187,6 +187,8 @@ class PDFViewModel {
                 adresse: client.getAdresseSurUneLigne(client.adresse1),
                 uuidClient: client.id
             )
+            
+            document.client_ = client
         }
         
         for snapshotTypeActe in self.documentData.elements {

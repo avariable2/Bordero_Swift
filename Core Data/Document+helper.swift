@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 extension Document {
     struct SnapshotClient {
@@ -42,6 +43,24 @@ extension Document {
         var cheque : Bool
         var virement : Bool
         var especes : Bool
+        
+        func enabledPaymentsString() -> [String] {
+            var payments: [String] = []
+            if carte {
+                payments.append("Carte bancaire")
+            }
+            if cheque {
+                payments.append("Chèque")
+            }
+            if virement {
+                payments.append("Virement bancaire")
+            }
+            if especes {
+                payments.append("Espèces")
+            }
+            return payments
+        }
+
     }
     
     enum Status : String, Identifiable, CaseIterable {
@@ -208,10 +227,10 @@ extension Document {
     var payementAllow : PayementAllow {
         get {
             PayementAllow(
-                carte: payementAllow_?["carte"] as! Bool ,
-                cheque: payementAllow_?["cheque"] as! Bool ,
-                virement: payementAllow_?["virement"] as! Bool ,
-                especes: payementAllow_?["especes"] as! Bool
+                carte: payementAllow_?["carte"] as? Bool ?? true,
+                cheque: payementAllow_?["cheque"] as? Bool ?? true,
+                virement: payementAllow_?["virement"] as? Bool ?? true,
+                especes: payementAllow_?["especes"] as? Bool ?? true
             )
         }
         set {
@@ -223,6 +242,12 @@ extension Document {
             ]
         }
     }
+    
+    var listSnapshotTypeActe: Set<SnapshotTypeActe> {
+        get { self.elements as? Set<SnapshotTypeActe> ?? [] }
+        set { self.elements = newValue as NSSet }
+    }
+
     
     var payementFinish : Bool {
         get { payementFinish_ }
@@ -281,6 +306,29 @@ extension Document {
     }
     
     func getNameOfDocument() -> String {
-        return "\(self.snapshotClient.firstname) \(self.snapshotClient.lastname) \(self.estDeTypeFacture ? "Facture" : "Devis")"
+//        return "\(self.snapshotClient.firstname) \(self.snapshotClient.lastname) \(self.estDeTypeFacture ? "Facture" : "Devis")"
+        return "\(client_?.firstname ?? "") \(client_?.lastname ?? "") \(self.estDeTypeFacture ? "Facture" : "Devis")"
     }
+    
+    static func delete(document: Document) {
+        guard let context = document.managedObjectContext else { return }
+        
+        context.delete(document)
+    }
+    
+    static func fetch(_ predicate: NSPredicate = .all) -> NSFetchRequest<Document> {
+        let request = Document.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)]
+        request.predicate = predicate
+        
+        return request
+    }
+    
+    static var example: Document {
+        let context = DataController.shared.container.viewContext
+        let document = Document(context: context)
+        
+        return document
+    }
+
 }
