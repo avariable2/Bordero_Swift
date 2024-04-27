@@ -8,19 +8,20 @@
 import SwiftUI
 
 struct DocumentFormView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
-    
     // MARK: - Versionning des possibles mise a jour de l'entity
     static func getVersion() -> Int32 {
         return 1
     }
     
-    private var viewModel : PDFViewModel
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
-    init() {
-        self.viewModel = PDFViewModel()
+    private var viewModel : PDFViewModel = PDFViewModel()
+    var document : Document?
+    
+    init(document: Document? = nil) {
+        self.document = document
     }
     
     var body: some View {
@@ -42,25 +43,35 @@ struct DocumentFormView: View {
                     
                 }
             }
+            .onAppear() {
+                
+                if let document = document, viewModel.documentObject == nil {
+                    self.viewModel.retrieveDataFromDocument(document: document)
+                }
+            }
             .task {
-                viewModel.documentData.praticien = praticien.first
+                if let document = document, viewModel.documentObject == nil {
+                    viewModel.retrieveDataFromDocument(document: document)
+                }
+                
+                viewModel.pdfModel.praticien = praticien.first
                 
                 // MARK: Reinitialise le tableau pour s'adapter au changement de l'utilisateur
-                viewModel.documentData.optionsDocument.payementAllow.removeAll()
+                viewModel.pdfModel.optionsDocument.payementAllow.removeAll()
                 if let cheque = praticien.first?.cheque, cheque == true {
-                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.cheque)
+                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.cheque)
                 }
                 
                 if let carte = praticien.first?.carte, carte == true {
-                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.carte)
+                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.carte)
                 }
                 
                 if let virement = praticien.first?.virement_bancaire, virement == true {
-                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.virement)
+                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.virement)
                 }
                 
                 if let espece = praticien.first?.espece, espece == true {
-                    viewModel.documentData.optionsDocument.payementAllow.append(Payement.especes)
+                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.especes)
                 }
                 
             }
@@ -101,16 +112,16 @@ struct ModifierDocumentView: View, Versionnable {
                         }
                     }
                     .pickerStyle(.segmented)
+                    .onAppear() {
+                        typeSelected = viewModel.pdfModel.optionsDocument.estFacture ? .facture : .devis
+                    }
                     .onChange(of: typeSelected) { oldValue, newValue in
-                        viewModel.documentData.optionsDocument.typeDocument = newValue
+                        viewModel.pdfModel.optionsDocument.estFacture = newValue == .facture
                     }
                     
                     LabeledContent {
-                        TextField("obligatoire", text: $numero.animation())
+                        TextField("obligatoire", text: $viewModel.pdfModel.optionsDocument.numeroDocument.animation())
                             .multilineTextAlignment(.trailing)
-                            .onChange(of: numero) { oldValue, newValue in
-                                viewModel.documentData.optionsDocument.numeroDocument = newValue
-                            }
                     } label : {
                         ViewThatFits {
                             Text("Numéro de \(typeSelected.rawValue.capitalized):")
@@ -121,7 +132,7 @@ struct ModifierDocumentView: View, Versionnable {
                 }
                 
                 Section {
-                    if let client = client {
+                    if let client = viewModel.pdfModel.client {
                         HStack {
                             ClientRowView(
                                 firstname: client.firstname,
@@ -132,7 +143,7 @@ struct ModifierDocumentView: View, Versionnable {
                             
                             Button {
                                 withAnimation {
-                                    self.client = nil
+                                    viewModel.pdfModel.client = nil
                                 }
                             } label: {
                                 Image(systemName: "minus.circle.fill")
@@ -156,18 +167,15 @@ struct ModifierDocumentView: View, Versionnable {
                 } header: {
                     Text("Client")
                 }
-                .onChange(of: client) { oldValue, newValue in
-                    viewModel.documentData.client = newValue
-                }
                 
                 // MARK: - Partie type Acte
                 Section {
-                    if !listSnapshotTypeActes.isEmpty {
-                        ForEach(listSnapshotTypeActes.indices, id: \.self) { index in
-                            TypeActeRowView(snapshotTypeActe: $listSnapshotTypeActes[index])
+                    if !viewModel.pdfModel.elements.isEmpty {
+                        ForEach(viewModel.pdfModel.elements.indices, id: \.self) { index in
+                            TypeActeRowView(snapshotTypeActe: $viewModel.pdfModel.elements[index])
                         }
                         .onDelete { indexSet in
-                            listSnapshotTypeActes.remove(atOffsets: indexSet)
+                            viewModel.pdfModel.elements.remove(atOffsets: indexSet)
                         }
                     }
                     
@@ -186,9 +194,6 @@ struct ModifierDocumentView: View, Versionnable {
                     Text("Préstation(s)")
                 } footer : {
                     Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
-                }
-                .onChange(of: listSnapshotTypeActes) { oldValue, newValue in
-                    viewModel.documentData.elements = newValue
                 }
                 
                 if typeSelected == .facture {
@@ -216,22 +221,16 @@ struct ModifierDocumentView: View, Versionnable {
                             }
                         }
                     }
-                    .onChange(of: estPayer) { oldValue, newValue in
-                        viewModel.documentData.optionsDocument.payementFinish = newValue
-                    }
                     .onChange(of: selectedPayement) { oldValue, newValue in
-                        viewModel.documentData.optionsDocument.payementUse = newValue
+                        viewModel.pdfModel.optionsDocument.payementUse = newValue
                     }
                 }
                 
                 Section {
-                    TextEditor(text: $notes)
+                    TextEditor(text: $viewModel.pdfModel.optionsDocument.note)
                         .lineSpacing(3)
                 } header: {
                     Text("Note")
-                }
-                .onChange(of: notes) { oldValue, newValue in
-                    viewModel.documentData.optionsDocument.note = newValue
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -261,7 +260,7 @@ struct ModifierDocumentView: View, Versionnable {
                         .presentationDetents([.large])
                 case .selectClient:
                     ListClients(callbackClientClick: { client in
-                        self.client = client
+                        viewModel.pdfModel.client = client
                     })
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -276,7 +275,7 @@ struct ModifierDocumentView: View, Versionnable {
                 case .selectTypeActe:
                     ListTypeActe { type in
                         let snapshot = type.getSnapshot(date: Date(), quantite: 1, remarque: "")
-                        listSnapshotTypeActes.append(snapshot)
+                        viewModel.pdfModel.elements.append(snapshot)
                     }
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -411,7 +410,7 @@ struct FormButtonsPrimaryActionView: View {
     @State private var detailDocument : Document?
     
     private var userDontAddClient : Bool {
-        viewModel.documentData.client == nil
+        viewModel.pdfModel.client == nil
     }
     
     var body: some View {

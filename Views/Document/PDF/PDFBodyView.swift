@@ -132,8 +132,8 @@ struct PayementEtSignature: View {
                     Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue }.joined(separator: ", "))")
                 }
                 
-                if data.optionsDocument.payementFinish && data.optionsDocument.typeDocument == .facture {
-                    Text("\(data.optionsDocument.typeDocument.rawValue.capitalized) réglée avec : \(data.optionsDocument.payementUse)")
+                if data.optionsDocument.payementFinish && data.optionsDocument.estFacture {
+                    Text("Facture réglée avec : \(data.optionsDocument.payementUse)")
                 }
                 
                 if data.optionsDocument.afficherDateEcheance {

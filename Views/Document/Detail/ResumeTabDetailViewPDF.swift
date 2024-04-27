@@ -13,7 +13,6 @@ struct ResumeTabDetailViewPDF: View {
     @State var document : Document
     
     @State var showDetailClient = false
-    @Binding var client : Client?
     
     var body: some View {
         VStack {
@@ -53,7 +52,7 @@ struct ResumeTabDetailViewPDF: View {
                     Button {
 //                        showDetailClient = true
                     } label: {
-                        ClientRowView(firstname: client?.firstname ?? "AAA", name: client?.lastname ?? "AAA")
+                        ClientRowView(firstname: document.client_?.firstname ?? "AAA", name: document.client_?.lastname ?? "AAA")
                         .tint(.primary)
                     }
 //                    .disabled(client == nil)
@@ -143,12 +142,6 @@ struct ResumeTabDetailViewPDF: View {
                 .frame(maxWidth: .infinity)
                 .background(.regularMaterial)
             }
-//            .navigationDestination(isPresented: $showDetailClient) {
-//                if client != nil {
-//                    ClientDetailView(client: client!)
-//                }
-//                
-//            }
         }
     }
 }

@@ -32,13 +32,13 @@ struct DocumentOptionsView: View, Saveable {
     init(viewModel : PDFViewModel) {
         self.viewModel = viewModel
         
-        selectedTypeRemise = viewModel.documentData.optionsDocument.remise.type
-        montantDeLaRemise = viewModel.documentData.optionsDocument.remise.montant
+        selectedTypeRemise = viewModel.pdfModel.optionsDocument.remise.type
+        montantDeLaRemise = viewModel.pdfModel.optionsDocument.remise.montant
         
-        carte = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.carte)
-        especes = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.especes)
-        virementB = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.virement)
-        cheque = viewModel.documentData.optionsDocument.payementAllow.contains(Payement.cheque)
+        carte = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.carte)
+        especes = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.especes)
+        virementB = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.virement)
+        cheque = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.cheque)
     }
     
     var body: some View {
@@ -60,26 +60,26 @@ struct DocumentOptionsView: View, Saveable {
                 Section {
                     DatePickerViewCustom(text: "Date d'émission", selection: $emission)
                         .onChange(of: emission) { oldValue, newValue in
-                            viewModel.documentData.optionsDocument.dateEmission = newValue
+                            viewModel.pdfModel.optionsDocument.dateEmission = newValue
                         }
                     
                     DatePickerViewCustom(text: "Date d'échéance", selection: $echeance)
                         .onAppear {
-                            echeance = viewModel.documentData.optionsDocument.dateEcheance
+                            echeance = viewModel.pdfModel.optionsDocument.dateEcheance
                         }
                         .onChange(of: echeance) { oldValue, newValue in
-                            viewModel.documentData.optionsDocument.dateEcheance = newValue
+                            viewModel.pdfModel.optionsDocument.dateEcheance = newValue
                         }
                 }
                 
-                Section("Remise sur votre \(viewModel.documentData.optionsDocument.typeDocument.rawValue)") {
+                Section("Remise sur votre \(viewModel.pdfModel.optionsDocument.estFacture ? "Facture" : "Devis")") {
                     Picker("Type de remise", selection: $selectedTypeRemise) {
                         ForEach(Remise.TypeRemise.allCases) { option in
                             Text(String(describing: option))
                         }
                     }
                     .onChange(of: selectedTypeRemise) { oldValue, newValue in
-                        viewModel.documentData.optionsDocument.remise.type = newValue
+                        viewModel.pdfModel.optionsDocument.remise.type = newValue
                     }
                     
                     LabeledContent("Montant de remise") {
@@ -94,7 +94,7 @@ struct DocumentOptionsView: View, Saveable {
                         }
                     }
                     .onChange(of: montantDeLaRemise) { oldValue, newValue in
-                        viewModel.documentData.optionsDocument.remise.montant = newValue
+                        viewModel.pdfModel.optionsDocument.remise.montant = newValue
                     }
                 }
                 

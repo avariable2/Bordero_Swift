@@ -39,12 +39,10 @@ struct DocumentDetailView: View {
             
             ChoosenView(
                 selectedElement: selectedTab,
-                document: $document, 
-                client: $client
+                document: $document
             )
         }
         .onAppear() {
-//            loadClient()
             if let dataPDF = document.contenuPdf {
                 pdfDocument = PDFDocument(data: dataPDF) ?? nil
             }
@@ -56,15 +54,15 @@ struct DocumentDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Button("Modifier") {
-                        
+                    NavigationLink("Modifier") {
+                        DocumentFormView(document: document)
                     }
                     
                     Divider()
                     
-                    Button("Dupliquer") {
-                        
-                    }
+//                    Button("Dupliquer") {
+//                        
+//                    }
                     
                     if let _ = pdfDocument, let url = urlSharing {
                         ShareLink(item: url)
@@ -79,20 +77,6 @@ struct DocumentDetailView: View {
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
-            }
-        }
-    }
-    
-    private func loadClient() {
-        guard let uuid = document.snapshotClient.uuidClient else { return }
-        let request: NSFetchRequest<Client> = Client.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %@", uuid as CVarArg)
-        request.fetchLimit = 1
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            let results = try? moc.fetch(request)
-            DispatchQueue.main.async {
-                self.client = results?.first
             }
         }
     }
@@ -172,12 +156,11 @@ enum Tab : String, CaseIterable, Identifiable {
 struct ChoosenView : View {
     var selectedElement : Tab
     @Binding var document : Document
-    @Binding var client : Client?
     
     var body: some View {
         switch selectedElement {
         case .résumé:
-            ResumeTabDetailViewPDF(document: document, client: $client)
+            ResumeTabDetailViewPDF(document: document)
         case .aperçu:
             DocumentApercus(document: document)
         case .historique:

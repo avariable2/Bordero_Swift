@@ -9,7 +9,7 @@ import Foundation
 
 struct PDFModel {    
     struct OptionsLegalDocument : Codable {
-        var typeDocument : TypeDoc
+        var estFacture : Bool
         var numeroDocument: String
         var payementAllow : [Payement]
         var payementFinish : Bool
@@ -35,7 +35,7 @@ struct PDFModel {
     
     init() {
         self.optionsDocument = OptionsLegalDocument(
-            typeDocument: .facture,
+            estFacture: true,
             numeroDocument: "",
             payementAllow: [],
             payementFinish: false,
@@ -108,20 +108,12 @@ enum TypeDoc : String, CaseIterable, Identifiable, Codable {
 }
 
 enum Payement : String, CaseIterable, Identifiable, Codable {
-    case carte, especes, virement, cheque
+    case carte = "Carte bancaire", especes = "Espèces", virement = "Virement bancaire", cheque = "Chèque"
     
-    var id : Self { self }
-    var rawValue: String {
-        switch self {
-        case .carte:
-            "Carte bancaire"
-        case .especes:
-            "Espèces"
-        case .virement:
-            "Virement bancaire"
-        case .cheque:
-            "Chèque"
-        }
+    var id: Self { self }
+    
+    static func findPaymentType(from string: String) -> Payement? {
+        return Payement.allCases.first(where: { $0.rawValue == string })
     }
 }
 
@@ -138,6 +130,10 @@ struct Remise: Codable {
             case .montantFixe:
                 return "Montant Fixe"
             }
+        }
+        
+        static func findDiscountType(from description: String) -> TypeRemise? {
+            return TypeRemise.allCases.first(where: { $0.description == description })
         }
     }
     

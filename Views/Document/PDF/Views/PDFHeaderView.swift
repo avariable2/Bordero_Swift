@@ -39,7 +39,7 @@ struct HeaderPDFView : View {
             
             Spacer()
             
-            Text(data.optionsDocument.typeDocument.rawValue.capitalized)
+            Text(data.optionsDocument.estFacture ? "Facture" : "Devis")
                 .font(.largeTitle)
                 .foregroundStyle(.secondary)
         }

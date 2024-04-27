@@ -36,11 +36,11 @@ struct PDFDisplayView: View {
                 }
             }
             .onAppear {
-                if viewModel.documentData.urlFilePreview == nil {
+                if viewModel.pdfModel.urlFilePreview == nil {
                     fileUrl = viewModel.renderView()
-                    viewModel.documentData.urlFilePreview = fileUrl
+                    viewModel.pdfModel.urlFilePreview = fileUrl
                 } else {
-                    fileUrl = viewModel.renderView(viewModel.documentData.urlFilePreview)
+                    fileUrl = viewModel.renderView(viewModel.pdfModel.urlFilePreview)
                 }
             }
             .navigationTitle("Aperçu")

@@ -12,14 +12,18 @@ import CoreData
 
 @Observable
 class PDFViewModel {
-    var documentData : PDFModel
+    var pdfModel : PDFModel
+    var documentObject : Document? = nil
     
-    init(documentData : PDFModel = PDFModel()) {
-        self.documentData = documentData
+    init(document: Document? = nil) {
+        self.pdfModel = PDFModel()
+        if let document = document {
+            retrieveDataFromDocument(document: document)
+        }
     }
     
     func reset() {
-        documentData = PDFModel()
+        pdfModel = PDFModel()
     }
     
     @MainActor
@@ -49,18 +53,18 @@ class PDFViewModel {
         pdfContext.translateBy(x: 0, y: 20) // Positionne le contexte en haut de la page
         
         // MARK: - View initialisation
-        let headerView = HeaderPDFView(data: documentData).frame(width: widthView, height: 150)
+        let headerView = HeaderPDFView(data: pdfModel).frame(width: widthView, height: 150)
         let headerRenderer = ImageRenderer(content: headerView)
-        let gridView = PDFGridInfoInvoiceView(data: documentData).frame(width: widthView, height: 140)
+        let gridView = PDFGridInfoInvoiceView(data: pdfModel).frame(width: widthView, height: 140)
         let gridRenderer = ImageRenderer(content: gridView)
         let tableHeaderView = TableHeaderView().frame(width: widthView, height: 50)
         let tableHeaderRenderer = ImageRenderer(content: tableHeaderView)
         
-        let coutPartView = CoutPartView(remise: documentData.optionsDocument.remise, sousTot: documentData.calcTotalHT(), montantTva: documentData.calcTotalTVA(), total: documentData.calcTotalTTC())
-            .frame(width: widthView, height: documentData.optionsDocument.remise.montant == 0 ? 100 : 150)
+        let coutPartView = CoutPartView(remise: pdfModel.optionsDocument.remise, sousTot: pdfModel.calcTotalHT(), montantTva: pdfModel.calcTotalTVA(), total: pdfModel.calcTotalTTC())
+            .frame(width: widthView, height: pdfModel.optionsDocument.remise.montant == 0 ? 100 : 150)
         let coutPartRenderer = ImageRenderer(content: coutPartView)
        
-        let payementSignatureView = PayementEtSignature(data: documentData).frame(width: widthView)
+        let payementSignatureView = PayementEtSignature(data: pdfModel).frame(width: widthView)
         let payementSignatureRenderer = ImageRenderer(content: payementSignatureView)
         
         // MARK: - View Rendu
@@ -88,7 +92,7 @@ class PDFViewModel {
             pdfContext.restoreGState()
         }
         
-        for ttlTypeActe in documentData.elements {
+        for ttlTypeActe in pdfModel.elements {
             let tableElement = TableGridRowView(purchase: self.getTableElement(ttlTypeActe)).frame(width: widthView)
             let tableElementRenderer = ImageRenderer(content: tableElement)
             
@@ -172,11 +176,11 @@ class PDFViewModel {
     func getDocument(context : NSManagedObjectContext) async -> Document {
         let document = Document(context: context)
         document.id_ = UUID()
-        document.estDeTypeFacture = self.documentData.optionsDocument.typeDocument == .facture
-        document.numero = self.documentData.optionsDocument.numeroDocument
+        document.estDeTypeFacture = self.pdfModel.optionsDocument.estFacture
+        document.numero = self.pdfModel.optionsDocument.numeroDocument
         document.status = .created
         
-        if let client = self.documentData.client {
+        if let client = self.pdfModel.client {
             
             document.snapshotClient = Document.SnapshotClient(
                 lastname: client.lastname,
@@ -191,16 +195,16 @@ class PDFViewModel {
             document.client_ = client
         }
         
-        for snapshotTypeActe in self.documentData.elements {
+        for snapshotTypeActe in self.pdfModel.elements {
             snapshotTypeActe.estUnElementDe = document
             document.elements?.adding(snapshotTypeActe)
         }
         
-        document.payementFinish = self.documentData.optionsDocument.payementFinish
-        document.payementUse = self.documentData.optionsDocument.payementUse.rawValue // Prend le nom du payement pour le retrouvé après
-        document.note = self.documentData.optionsDocument.note
+        document.payementFinish = self.pdfModel.optionsDocument.payementFinish
+        document.payementUse = self.pdfModel.optionsDocument.payementUse.rawValue // Prend le nom du payement pour le retrouvé après
+        document.note = self.pdfModel.optionsDocument.note
         
-        if let praticien = self.documentData.praticien {
+        if let praticien = self.pdfModel.praticien {
             
             document.snapshotPraticien = Document.SnapshotPraticien(
                 lastname: praticien.lastname,
@@ -217,25 +221,25 @@ class PDFViewModel {
         }
         
         // Params
-        document.dateEmission = self.documentData.optionsDocument.dateEmission
-        document.dateEcheance = self.documentData.optionsDocument.dateEcheance
+        document.dateEmission = self.pdfModel.optionsDocument.dateEmission
+        document.dateEcheance = self.pdfModel.optionsDocument.dateEcheance
         
         document.remise = Document.Remise(
-            type: self.documentData.optionsDocument.remise.type.description,
-            montant: self.documentData.optionsDocument.remise.montant
+            type: self.pdfModel.optionsDocument.remise.type.description,
+            montant: self.pdfModel.optionsDocument.remise.montant
         )
         
         document.payementAllow = Document.PayementAllow(
-            carte: self.documentData.optionsDocument.payementAllow.contains(.carte),
-            cheque: self.documentData.optionsDocument.payementAllow.contains(.cheque),
-            virement: self.documentData.optionsDocument.payementAllow.contains(.virement),
-            especes: self.documentData.optionsDocument.payementAllow.contains(.especes))
+            carte: self.pdfModel.optionsDocument.payementAllow.contains(.carte),
+            cheque: self.pdfModel.optionsDocument.payementAllow.contains(.cheque),
+            virement: self.pdfModel.optionsDocument.payementAllow.contains(.virement),
+            especes: self.pdfModel.optionsDocument.payementAllow.contains(.especes))
         
-        document.totalHT = self.documentData.calcTotalHT()
-        document.totalTVA = self.documentData.calcTotalTVA()
-        document.totalTTC = self.documentData.calcTotalTTC()
+        document.totalHT = self.pdfModel.calcTotalHT()
+        document.totalTVA = self.pdfModel.calcTotalTVA()
+        document.totalTTC = self.pdfModel.calcTotalTTC()
         
-        document.montantPayer = self.documentData.optionsDocument.payementFinish ? self.documentData.calcTotalTTC() : 0
+        document.montantPayer = self.pdfModel.optionsDocument.payementFinish ? self.pdfModel.calcTotalTTC() : 0
         
         // MARK: Creation de l'historique
         let objEvenement = Evenement(nom: .création, date: Date())
@@ -249,7 +253,7 @@ class PDFViewModel {
         // Déclaration d'une propriété pour stocker le document PDF
         var pdfDocument: PDFDocument?
 
-        if let url = self.documentData.urlFilePreview {
+        if let url = self.pdfModel.urlFilePreview {
             pdfDocument = PDFDocument(url: url)
         } else {
             if let url = await self.renderView() {
@@ -263,8 +267,45 @@ class PDFViewModel {
             // Gérer le cas où pdfDocument est nil
             print("Erreur : Le document PDF n'a pas pu être chargé ou créé.")
         }
-        document.nomFichierPdf = self.documentData.urlFilePreview?.absoluteString
+        document.nomFichierPdf = self.pdfModel.urlFilePreview?.absoluteString
 
         return document
+    }
+    
+    func retrieveDataFromDocument(document : Document) {
+        documentObject = document
+        pdfModel.optionsDocument.estFacture = document.estDeTypeFacture 
+        pdfModel.optionsDocument.numeroDocument = document.numero
+        
+        pdfModel.client = document.client_
+        
+        pdfModel.elements = Array(document.listSnapshotTypeActe)
+        
+        pdfModel.optionsDocument.payementFinish = document.payementFinish
+        pdfModel.optionsDocument.payementUse = Payement.findPaymentType(from: document.payementUse) ?? Payement.carte
+        if document.payementAllow.carte {
+            pdfModel.optionsDocument.payementAllow.append(.carte)
+        }
+        if document.payementAllow.especes {
+            pdfModel.optionsDocument.payementAllow.append(.especes)
+        }
+        if document.payementAllow.virement {
+            pdfModel.optionsDocument.payementAllow.append(.virement)
+        }
+        if document.payementAllow.cheque {
+            pdfModel.optionsDocument.payementAllow.append(.cheque)
+        }
+        pdfModel.optionsDocument.note = document.note
+        
+        pdfModel.optionsDocument.dateEcheance = document.dateEcheance
+        pdfModel.optionsDocument.dateEcheance = document.dateEcheance
+        
+        pdfModel.optionsDocument.remise = Remise(
+            type: Remise.TypeRemise.findDiscountType(from: document.remise.type) ?? .pourcentage,
+            montant: document.remise.montant
+        )
+        
+        pdfModel.urlFilePreview = URL(string: document.nomFichierPdf ?? "")
+        
     }
 }
