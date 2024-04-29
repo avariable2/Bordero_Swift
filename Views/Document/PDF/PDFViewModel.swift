@@ -22,8 +22,8 @@ class PDFViewModel {
         }
     }
     
-    func reset() {
-        if documentObject == nil, let fileNeedToBeDeleted = pdfModel.urlFilePreview, !fileNeedToBeDeleted.lastPathComponent.isEmpty {
+    func reset(needToDeleteFile : Bool = true) {
+        if documentObject == nil, let fileNeedToBeDeleted = pdfModel.urlFilePreview, !fileNeedToBeDeleted.lastPathComponent.isEmpty, needToDeleteFile {
             deleteFile(fileNeedToBeDeleted)
         }
         pdfModel = PDFModel()
@@ -186,14 +186,13 @@ class PDFViewModel {
         
         DataController.saveContext()
         
-        reset() // reset before launch the new screen
-        
         completion(document)
+        
+        reset(needToDeleteFile: false) // reset before launch the new screen
     }
     
     func getDocument(context : NSManagedObjectContext) async -> Document {
         let document = Document(context: context)
-        document.id_ = UUID()
         document.estDeTypeFacture = self.pdfModel.optionsDocument.estFacture
         document.numero = self.pdfModel.optionsDocument.numeroDocument
         document.status = .created
