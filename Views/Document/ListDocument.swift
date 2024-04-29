@@ -10,86 +10,86 @@ import CoreData
 
 struct ListDocument: View {
     
-    @State var sortDescriptor = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
-    @State private var sortType : Int = 0
-    
-    var body: some View {
-        VStack {
-            Picker(selection: $sortType) {
-                Text("Tous").tag(0)
-                Text("Ouvert").tag(1)
-                Text("Payer").tag(2)
-            } label: {
-                Text("Trie des documents")
-            }
-            .onChange(of: sortType) { oldValue, newValue in
-                sortType = newValue
-                switch newValue {
-                case 1:
-                    sortDescriptor = NSSortDescriptor(keyPath: \Document.status_, ascending: true)
-                default:
-                    sortDescriptor = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding([.trailing, .leading])
-            
-            DisplayListWithSort(sortDescriptor: sortDescriptor)
-        }
-        .navigationTitle("Documents")
-    }
-}
-
-struct DisplayListWithSort : View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest var documents: FetchedResults<Document>
     @State private var searchText = ""
+    @State private var documentScope : Document.Status = .all
     
-    init(sortDescriptor : NSSortDescriptor, predicate: NSPredicate? = nil) {
+    init() {
         let request: NSFetchRequest<Document> = Document.fetchRequest()
         let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
-        request.sortDescriptors = [ sortByDate, sortDescriptor]
+        request.sortDescriptors = [ sortByDate]
         _documents = FetchRequest<Document>(fetchRequest: request, animation: .default)
     }
     
     var fileteredListDocuments : [Document] {
-        guard !searchText.isEmpty else { return Array(documents) }
+//        guard !searchText.isEmpty else { return Array(documents) }
         
-        return documents.filter { document in
-            document.getNameOfDocument().lowercased().contains(searchText.lowercased())
+        var documentTrier = Array(documents)
+        
+        switch documentScope {
+        case .all, .unknow:
+            break
+        case .created:
+            documentTrier = documents.filter { $0.status == .created }
+        case .payed:
+            documentTrier = documents.filter { $0.status == .payed }
+        case .send:
+            documentTrier = documents.filter { $0.status == .send }
         }
+        
+        if !searchText.isEmpty {
+            documentTrier = documentTrier.filter { document in
+                document.getNameOfDocument().lowercased().contains(searchText.lowercased())
+            }
+        }
+        
+        return documentTrier
     }
     
     var body: some View {
-        
-        if documents.isEmpty {
-            ContentUnavailableView(
-                "Aucun document",
-                systemImage: "folder.badge.questionmark",
-                description: Text("Les documents créer apparaitront ici.").foregroundStyle(.secondary)
-            )
-        } else {
-            List {
-                if fileteredListDocuments.isEmpty {
-                    ContentUnavailableView.search(text: searchText)
-                } else {
-                    ForEach(fileteredListDocuments, id: \.self) { document in
-                        Section {
-                            RowDocumentView(document: document)
-                                .background(
-                                    NavigationLink("") {
-                                        DocumentDetailView(document: document)
-                                    }
-                                        .opacity(0)
-                                )
-                        } header: {
-                            Text(document.sectionTitleByDate)
+        VStack {
+            Picker(selection: $documentScope) {
+                Text(Document.Status.all.rawValue).tag(Document.Status.all)
+                Text(Document.Status.created.rawValue).tag(Document.Status.created)
+                Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
+                Text(Document.Status.send.rawValue).tag(Document.Status.send)
+            } label: {
+                Text("Trie des documents")
+            }
+            .pickerStyle(.segmented)
+            .padding([.trailing, .leading])
+            
+            if documents.isEmpty {
+                ContentUnavailableView(
+                    "Aucun document",
+                    systemImage: "folder.badge.questionmark",
+                    description: Text("Les documents créer apparaitront ici.").foregroundStyle(.secondary)
+                )
+            } else {
+                List {
+                    if fileteredListDocuments.isEmpty {
+                        ContentUnavailableView.search(text: searchText)
+                    } else {
+                        ForEach(fileteredListDocuments, id: \.self) { document in
+                            Section {
+                                RowDocumentView(document: document)
+                                    .tag(document.status)
+                                    .background(
+                                        NavigationLink("") {
+                                            DocumentDetailView(document: document)
+                                        }.opacity(0)
+                                    )
+                            } header: {
+                                Text(document.sectionTitleByDate)
+                            }
                         }
                     }
                 }
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             }
-            .searchable(text: $searchText)
         }
+        .navigationTitle("Documents")
     }
 }
 

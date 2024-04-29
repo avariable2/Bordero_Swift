@@ -64,22 +64,13 @@ extension Document {
     }
     
     enum Status : String, Identifiable, CaseIterable {
-        var id: Int {
-            switch self {
-            case .created:
-                0
-            case .payed:
-                1
-            case .send:
-                2
-            case .unknow:
-                3
-            }
-        }
-        
+        case all = "Tous"
         case created = "Crée"
         case payed = "Payée"
         case send = "Envoyée"
+        
+        var id: String { rawValue }
+        
         case unknow = "Inconnu"
     }
     
