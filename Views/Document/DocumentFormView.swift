@@ -44,6 +44,12 @@ struct DocumentFormView: View {
                 }
             }
             .onAppear() {
+                if let document = document {
+                    if viewModel.documentObject == nil {
+                        self.viewModel.retrieveDataFromDocument(document: document)
+                    }
+                }
+                
                 viewModel.pdfModel.praticien = praticien.first
                 
                 if viewModel.pdfModel.optionsDocument.payementAllow.isEmpty {
@@ -53,13 +59,6 @@ struct DocumentFormView: View {
                     viewModel.modifyPayementAllow(.especes, value: praticien.first?.espece ?? false)
                 }
                 
-            }
-            .task {
-                if let document = document {
-                    if viewModel.documentObject == nil {
-                        self.viewModel.retrieveDataFromDocument(document: document)
-                    }
-                }
             }
     }
 }
