@@ -36,16 +36,16 @@ struct RowHistorique : View {
     private var color : Color {
         switch evenement.nom {
         case Evenement.TypeEvenement.création.rawValue:
-            .yellow
+            .orange
         case Evenement.TypeEvenement.modification.rawValue:
-            .red
+            .brown
         case Evenement.TypeEvenement.envoie.rawValue,
             Evenement.TypeEvenement.exporté.rawValue:
             .blue
         case Evenement.TypeEvenement.renvoie.rawValue:
             .indigo
         case Evenement.TypeEvenement.payer.rawValue:
-            .pink
+            .green
         default: .gray
         }
     }
@@ -70,20 +70,20 @@ struct RowHistorique : View {
     }
     
     var body: some View {
-        HStack {
+        Label {
+            Text(evenement.nom.capitalized)
+                .foregroundStyle(.primary)
+            
+            Spacer()
+            
+            Text(evenement.date, format: .dateTime)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        } icon: {
             Image(systemName: image)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(color, .gray)
                 .imageScale(.large)
-            
-            VStack(alignment: .leading) {
-                Text(evenement.nom.capitalized)
-                    .foregroundStyle(.primary)
-                
-                Text(evenement.date, format: .dateTime)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-            }
         }
     }
 }

@@ -192,7 +192,32 @@ class PDFViewModel {
     }
     
     func getDocument(context : NSManagedObjectContext) async -> Document {
-        let document = Document(context: context)
+        let document : Document
+        if let doc = documentObject {
+            document = doc
+            
+            // MARK: Creation de l'historique
+            let objEvenement = Evenement(nom: .modification, date: Date())
+            let evenementCreation = HistoriqueEvenement(context: context)
+            evenementCreation.id = UUID()
+            evenementCreation.correspond = document
+            evenementCreation.date = objEvenement.date
+            evenementCreation.nom = objEvenement.nom.rawValue
+            document.historique?.adding(evenementCreation)
+            
+        } else {
+            document = Document(context: context)
+            
+            // MARK: Creation de l'historique
+            let objEvenement = Evenement(nom: .création, date: Date())
+            let evenementCreation = HistoriqueEvenement(context: context)
+            evenementCreation.id = UUID()
+            evenementCreation.correspond = document
+            evenementCreation.date = objEvenement.date
+            evenementCreation.nom = objEvenement.nom.rawValue
+            document.historique?.adding(evenementCreation)
+        }
+        
         document.estDeTypeFacture = self.pdfModel.optionsDocument.estFacture
         document.numero = self.pdfModel.optionsDocument.numeroDocument
         document.status = .created
@@ -258,24 +283,12 @@ class PDFViewModel {
         
         document.montantPayer = self.pdfModel.optionsDocument.payementFinish ? self.pdfModel.calcTotalTTC() : 0
         
-        // MARK: Creation de l'historique
-        let objEvenement = Evenement(nom: .création, date: Date())
-        let evenementCreation = HistoriqueEvenement(context: context)
-        evenementCreation.correspond = document
-        evenementCreation.date = objEvenement.date
-        evenementCreation.nom = objEvenement.nom.rawValue
-        document.historique?.adding(evenementCreation)
-        
         // MARK: Sauvegarde du rendu du pdf pour etre affiché
         // Déclaration d'une propriété pour stocker le document PDF
         var pdfDocument: PDFDocument?
 
-        if let url = self.pdfModel.urlFilePreview {
+        if let url = await self.renderView() {
             pdfDocument = PDFDocument(url: url)
-        } else {
-            if let url = await self.renderView() {
-                pdfDocument = PDFDocument(url: url)
-            }
         }
         
         if let pdf = pdfDocument {

@@ -397,6 +397,7 @@ private struct TypeActeRowView: View {
 }
 
 struct FormButtonsPrimaryActionView: View {
+    @Environment(\.dismiss) private var dismiss
     @Binding var activeSheet : ActiveSheet?
     @Binding var viewModel : PDFViewModel
     
@@ -412,9 +413,14 @@ struct FormButtonsPrimaryActionView: View {
             HStack {
                 Button {
                     Task {
-                        await viewModel.finalizeAndSave { document in
-                            showDetail = true
-                            detailDocument = document
+                        await save()
+                        DispatchQueue.main.async {
+                            // Mettez à jour l'interface utilisateur ici
+                            if viewModel.documentObject == nil {
+                                showDetail = true
+                            } else {
+                                dismiss()
+                            }
                         }
                     }
                 } label: {
@@ -442,9 +448,14 @@ struct FormButtonsPrimaryActionView: View {
             VStack {
                 Button {
                     Task {
-                        await viewModel.finalizeAndSave { document in
-                            showDetail = true
-                            detailDocument = document
+                        await save()
+                        DispatchQueue.main.async {
+                            // Mettez à jour l'interface utilisateur ici
+                            if viewModel.documentObject == nil {
+                                showDetail = true
+                            } else {
+                                dismiss()
+                            }
                         }
                     }
                 } label: {
@@ -476,6 +487,12 @@ struct FormButtonsPrimaryActionView: View {
                 DocumentDetailView(document: detailDocument!)
             }
             
+        }
+    }
+    
+    func save() async {
+        await viewModel.finalizeAndSave { document in
+            detailDocument = document
         }
     }
 }
