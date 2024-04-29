@@ -61,7 +61,7 @@ struct DisplayListWithSort : View {
             )
         } else {
             List {
-                ForEach(documents, id: \.id_) { document in
+                ForEach(documents, id: \.self) { document in
                     Section {
                         RowDocumentView(document: document)
                             .background(
@@ -81,7 +81,7 @@ struct DisplayListWithSort : View {
 
 struct RowDocumentView :View {
     
-    let document : Document
+    @ObservedObject var document : Document
     
     var body: some View {
         

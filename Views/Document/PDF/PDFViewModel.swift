@@ -190,18 +190,26 @@ class PDFViewModel {
         )
     }
     
-    func finalizeAndSave(completion: (Document) -> Void) async {
+    func finalizeAndSave(completion: @escaping (Document) -> Void) async {
         let moc = DataController.shared.container.viewContext
-        let document = await getDocument(context: moc)
         
-        DataController.saveContext()
+        let pdfDocument = await Task.detached(priority: .userInitiated) {
+            return PDFDocument(url: await self.renderView()!)
+        }.value
         
-        completion(document)
-        
-        reset(needToDeleteFile: false) // reset before launch the new screen
+        await moc.perform() {
+            let document = self.attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
+            
+            DataController.saveContext()
+            
+            completion(document)
+            
+            self.reset(needToDeleteFile: false) // reset before launch the new screen
+        }
     }
     
-    func getDocument(context : NSManagedObjectContext) async -> Document {
+    
+    func attributeViewModelToDocument(context : NSManagedObjectContext, pdfDocument : PDFDocument?) -> Document {
         let document : Document
         if let doc = documentObject {
             document = doc
@@ -295,12 +303,6 @@ class PDFViewModel {
         
         // MARK: Sauvegarde du rendu du pdf pour etre affiché
         // Déclaration d'une propriété pour stocker le document PDF
-        var pdfDocument: PDFDocument?
-
-        if let url = await self.renderView() {
-            pdfDocument = PDFDocument(url: url)
-        }
-        
         if let pdf = pdfDocument {
             document.contenuPdf = pdf.dataRepresentation()
         } else {

@@ -10,18 +10,18 @@ import PDFKit
 import CoreData
 
 struct DocumentDetailView: View {
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.managedObjectContext) var moc
+    
+    @ObservedObject var document : Document
+    
+    @State private var selectedTab: Tab = .résumé
+    @State var pdfDocument : PDFDocument? = nil
+    @State private var urlSharing : URL? = nil
+    
     enum TroubleShotCreationFichier {
         case success, failure
     }
-    
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.managedObjectContext) var moc
-    @State private var selectedTab: Tab = .résumé
-    @ObservedObject var document : Document
-    @State var pdfDocument : PDFDocument? = nil
-    @State private var client: Client?
-
-    @State private var urlSharing : URL? = nil
     
     init(document : Document) {
         self.document = document
@@ -47,8 +47,9 @@ struct DocumentDetailView: View {
                 pdfDocument = PDFDocument(data: dataPDF) ?? nil
             }
             if urlSharing == nil {
-                urlSharing =  getUrlForSharing()
+                
             }
+            urlSharing =  getUrlForSharing()
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
         .toolbar {
@@ -57,19 +58,11 @@ struct DocumentDetailView: View {
                     NavigationLink("Modifier") {
                         DocumentFormView(document: document)
                     }
-                    
                     Divider()
-                    
-//                    Button("Dupliquer") {
-//                        
-//                    }
-                    
                     if let _ = pdfDocument, let url = urlSharing {
                         ShareLink(item: url)
                     }
-                    
                     Divider()
-                    
                     Button("Supprimer", role: .destructive) {
                         delete()
                     }
@@ -165,7 +158,7 @@ enum Tab : String, CaseIterable, Identifiable {
 
 struct ChoosenView : View {
     var selectedElement : Tab
-    var document : Document
+    @ObservedObject var document : Document
     
     var body: some View {
         switch selectedElement {

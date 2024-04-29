@@ -10,7 +10,7 @@ import SafariServices
 
 struct ResumeTabDetailViewPDF: View {
     @State var presentURL: URL? = nil
-    @State var document : Document
+    @ObservedObject var document : Document
     
     @State var showDetailClient = false
     

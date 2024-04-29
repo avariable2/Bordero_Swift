@@ -69,7 +69,6 @@ struct ModifierDocumentView: View, Versionnable {
     }
     
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.managedObjectContext) var moc
     
     @State var viewModel : PDFViewModel
     
@@ -388,12 +387,16 @@ private struct TypeActeRowView: View {
 }
 
 struct FormButtonsPrimaryActionView: View {
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
+    
     @Binding var activeSheet : ActiveSheet?
     @Binding var viewModel : PDFViewModel
     
     @State private var showDetail = false
     @State private var detailDocument : Document?
+    
+    @State private var launchSauvegarde: Bool = false
     
     private var userDontAddClient : Bool {
         viewModel.pdfModel.client == nil
@@ -403,14 +406,7 @@ struct FormButtonsPrimaryActionView: View {
         ViewThatFits {
             HStack {
                 Button {
-                    Task {
-                        await save()
-                        if viewModel.documentObject == nil {
-                            showDetail = true
-                        } else {
-                            dismiss()
-                        }
-                    }
+                    launchSauvegarde.toggle()
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -435,14 +431,7 @@ struct FormButtonsPrimaryActionView: View {
             
             VStack {
                 Button {
-                    Task {
-                        await save()
-                        if viewModel.documentObject == nil {
-                            showDetail = true
-                        } else {
-                            dismiss()
-                        }
-                    }
+                    launchSauvegarde.toggle()
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -464,26 +453,37 @@ struct FormButtonsPrimaryActionView: View {
                 
             }
         }
+        .task(id: launchSauvegarde) {
+            guard launchSauvegarde else { return }
+            print("updating")
+            
+            await viewModel.finalizeAndSave { document in // get the document for be send to DocumentDetail
+                
+                // if we modifier current object, we dismiss of we show DocumentDetailView
+                if viewModel.documentObject == nil {
+                    self.detailDocument = document
+                    self.showDetail = true
+                    
+                } else {
+                    dismiss()
+                }
+            }
+            
+            launchSauvegarde = false
+            print("done")
+        }
         .padding()
         .frame(maxWidth: .infinity)
         .background(.regularMaterial)
         .navigationDestination(isPresented: $showDetail) {
-            if detailDocument != nil {
-                DocumentDetailView(document: detailDocument!)
+            if let document = detailDocument {
+                DocumentDetailView(document: document)
             }
             
         }
     }
-    
-    func save() async {
-        detailDocument = await viewModel.getDocument(context: DataController.shared.container.viewContext)
-    }
 }
 
 #Preview {
-    //    TypeActeRowView(text: "AAA", price: "50", ttl: .constant(TTLTypeActe(typeActeReal: TypeActe(name: "aa", price: 50, tva: 0.2, context: DataController.shared.container.viewContext), quantity: 1)))
-    
     DocumentFormView()
-    
-    //    ClientRowView(firstname: "AAA", name: "AAA")
 }
