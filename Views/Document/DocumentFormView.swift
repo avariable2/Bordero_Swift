@@ -43,21 +43,15 @@ struct DocumentFormView: View {
                     
                 }
             }
-            .onAppear() {
+            .task {
                 
                 if let document = document, viewModel.documentObject == nil {
                     self.viewModel.retrieveDataFromDocument(document: document)
-                }
-            }
-            .task {
-                if let document = document, viewModel.documentObject == nil {
-                    viewModel.retrieveDataFromDocument(document: document)
                 }
                 
                 viewModel.pdfModel.praticien = praticien.first
                 
                 // MARK: Reinitialise le tableau pour s'adapter au changement de l'utilisateur
-                viewModel.pdfModel.optionsDocument.payementAllow.removeAll()
                 if let cheque = praticien.first?.cheque, cheque == true {
                     viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.cheque)
                 }

@@ -11,35 +11,16 @@ struct DocumentOptionsView: View, Saveable {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
-    @State private var numeroFacture = ""
-    @State private var emission = Date()
-    @State private var echeance = Date()
-    
     @State private var selectedTypeRemise : Remise.TypeRemise = .pourcentage
-    @State private var montantDeLaRemise : Double = 0
     
-    @State private var carte : Bool
-    @State private var especes : Bool
-    @State private var virementB : Bool
-    @State private var cheque : Bool
-    
-    @State private var unChangementCoreDataAEuLieu = false
+    @State private var carte : Bool = false
+    @State private var especes : Bool = false
+    @State private var virementB : Bool = false
+    @State private var cheque : Bool = false
     
     @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
     
-    @State var viewModel : PDFViewModel
-    
-    init(viewModel : PDFViewModel) {
-        self.viewModel = viewModel
-        
-        selectedTypeRemise = viewModel.pdfModel.optionsDocument.remise.type
-        montantDeLaRemise = viewModel.pdfModel.optionsDocument.remise.montant
-        
-        carte = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.carte)
-        especes = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.especes)
-        virementB = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.virement)
-        cheque = viewModel.pdfModel.optionsDocument.payementAllow.contains(Payement.cheque)
-    }
+    @Bindable var viewModel : PDFViewModel
     
     var body: some View {
         NavigationStack {
@@ -59,20 +40,11 @@ struct DocumentOptionsView: View, Saveable {
                 
                 Section {
                     DatePickerViewCustom(text: "Date d'émission", selection: $viewModel.pdfModel.optionsDocument.dateEmission)
-//                        .onChange(of: emission) { oldValue, newValue in
-//                            viewModel.pdfModel.optionsDocument.dateEmission = newValue
-//                        }
                     
                     DatePickerViewCustom(text: "Date d'échéance", selection: $viewModel.pdfModel.optionsDocument.dateEcheance)
-//                        .onAppear {
-//                            echeance = viewModel.pdfModel.optionsDocument.dateEcheance
-//                        }
-//                        .onChange(of: echeance) { oldValue, newValue in
-//                            viewModel.pdfModel.optionsDocument.dateEcheance = newValue
-//                        }
                 }
                 
-                Section("Remise sur votre \(viewModel.pdfModel.optionsDocument.estFacture ? "Facture" : "Devis")") {
+                Section("Remise sur votre \(viewModel.pdfModel.optionsDocument.estFacture ? "facture" : "devis")") {
                     Picker("Type de remise", selection: $selectedTypeRemise) {
                         ForEach(Remise.TypeRemise.allCases) { option in
                             Text(String(describing: option))
@@ -84,17 +56,14 @@ struct DocumentOptionsView: View, Saveable {
                     
                     LabeledContent("Montant de remise") {
                         if selectedTypeRemise == .pourcentage {
-                            TextField("0%", value: $montantDeLaRemise, format: .percent)
+                            TextField("0%", value: $viewModel.pdfModel.optionsDocument.remise.montant, format: .percent)
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                         } else {
-                            TextField("0,00€", value: $montantDeLaRemise, format: .currency(code: "EUR"))
+                            TextField("0,00€", value: $viewModel.pdfModel.optionsDocument.remise.montant, format: .currency(code: "EUR"))
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                         }
-                    }
-                    .onChange(of: montantDeLaRemise) { oldValue, newValue in
-                        viewModel.pdfModel.optionsDocument.remise.montant = newValue
                     }
                 }
                 
@@ -103,31 +72,28 @@ struct DocumentOptionsView: View, Saveable {
                         .onChange(of: carte) { oldValue, newValue in
                             praticien.first?.carte = newValue
                             
-                            unChangementCoreDataAEuLieu = true
+                            modifyPayementMethod(type: .carte, value: newValue)
                         }
                     
                     Toggle("Espèces", isOn: $especes)
                         .onChange(of: especes) { oldValue, newValue in
                             praticien.first?.espece = newValue
                             
-                            unChangementCoreDataAEuLieu = true
-                            
+                            modifyPayementMethod(type: .especes, value: newValue)
                         }
                     
                     Toggle("Virement bancaire", isOn: $virementB)
                         .onChange(of: virementB) { oldValue, newValue in
                             praticien.first?.virement_bancaire = newValue
                             
-                            unChangementCoreDataAEuLieu = true
-                            
+                            modifyPayementMethod(type: .virement, value: newValue)
                         }
                     
                     Toggle("Chèque", isOn: $cheque)
                         .onChange(of: cheque) { oldValue, newValue in
                             praticien.first?.cheque = newValue
                             
-                            unChangementCoreDataAEuLieu = true
-                            
+                            modifyPayementMethod(type: .cheque, value: newValue)
                         }
                     
                 }
@@ -137,33 +103,40 @@ struct DocumentOptionsView: View, Saveable {
             .navigationTitle("Options document")
             .navigationBarTitleDisplayMode(.large)
             .headerProminence(.increased)
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        save()
-                        
-                        dismiss()
-                    } label: {
-                        HStack {
-                            Image(systemName: "chevron.backward")
-                            Text("Document")
-                        }
+            .onAppear() {
+                selectedTypeRemise = viewModel.pdfModel.optionsDocument.remise.type
+                
+                let options = viewModel.pdfModel.optionsDocument
+                if !options.payementAllow.isEmpty {
+                    carte = options.payementAllow.contains(Payement.carte)
+                    especes = options.payementAllow.contains(Payement.especes)
+                    virementB = options.payementAllow.contains(Payement.virement)
+                    cheque = options.payementAllow.contains(Payement.cheque)
+                } else {
+                    if let praticien = praticien.first {
+                        carte = praticien.carte
+                        especes = praticien.espece
+                        virementB = praticien.virement_bancaire
+                        cheque = praticien.cheque
                     }
                 }
+            }
+            .onDisappear() {
+                save()
             }
         }
     }
     
-    func save() {
-        if unChangementCoreDataAEuLieu {
-            do {
-                try moc.save()
-                print("Success")
-            } catch let err {
-                print("error \(err)")
-            }
+    func modifyPayementMethod(type : Payement, value: Bool) {
+        if value == false {
+            viewModel.pdfModel.optionsDocument.payementAllow.removeAll { $0 == type }
+        } else {
+            viewModel.pdfModel.optionsDocument.payementAllow.append(type)
         }
+    }
+    
+    func save() {
+        DataController.saveContext()
     }
     
 }
