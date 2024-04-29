@@ -405,13 +405,10 @@ struct FormButtonsPrimaryActionView: View {
                 Button {
                     Task {
                         await save()
-                        DispatchQueue.main.async {
-                            // Mettez à jour l'interface utilisateur ici
-                            if viewModel.documentObject == nil {
-                                showDetail = true
-                            } else {
-                                dismiss()
-                            }
+                        if viewModel.documentObject == nil {
+                            showDetail = true
+                        } else {
+                            dismiss()
                         }
                     }
                 } label: {
@@ -440,13 +437,10 @@ struct FormButtonsPrimaryActionView: View {
                 Button {
                     Task {
                         await save()
-                        DispatchQueue.main.async {
-                            // Mettez à jour l'interface utilisateur ici
-                            if viewModel.documentObject == nil {
-                                showDetail = true
-                            } else {
-                                dismiss()
-                            }
+                        if viewModel.documentObject == nil {
+                            showDetail = true
+                        } else {
+                            dismiss()
                         }
                     }
                 } label: {
@@ -482,9 +476,7 @@ struct FormButtonsPrimaryActionView: View {
     }
     
     func save() async {
-        await viewModel.finalizeAndSave { document in
-            detailDocument = document
-        }
+        detailDocument = await viewModel.getDocument(context: DataController.shared.container.viewContext)
     }
 }
 

@@ -17,7 +17,7 @@ struct DocumentDetailView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
     @State private var selectedTab: Tab = .résumé
-    @State var document : Document
+    @ObservedObject var document : Document
     @State var pdfDocument : PDFDocument? = nil
     @State private var client: Client?
 
@@ -39,7 +39,7 @@ struct DocumentDetailView: View {
             
             ChoosenView(
                 selectedElement: selectedTab,
-                document: $document
+                document: document
             )
         }
         .onAppear() {
@@ -165,7 +165,7 @@ enum Tab : String, CaseIterable, Identifiable {
 
 struct ChoosenView : View {
     var selectedElement : Tab
-    @Binding var document : Document
+    var document : Document
     
     var body: some View {
         switch selectedElement {
