@@ -37,9 +37,8 @@ struct ResumeTabDetailViewPDF: View {
                             }
                             
                         } label: {
-                            
-                            Label("Loi française", systemImage: "building.columns")
-                                .tint(.primary)
+                            Label("Loi Française", systemImage: "building.columns")
+                                .tint(.white)
                         }
                     }
                     .multilineTextAlignment(.leading)

@@ -46,10 +46,10 @@ struct DocumentDetailView: View {
             if let dataPDF = document.contenuPdf {
                 pdfDocument = PDFDocument(data: dataPDF) ?? nil
             }
-            if urlSharing == nil {
-                
-            }
+            
             urlSharing =  getUrlForSharing()
+            
+            
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
         .toolbar {
@@ -94,20 +94,29 @@ struct DocumentDetailView: View {
         }
         
         // Vérifier si le fichier existe déjà
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            print("File already exists, no need to recreate it.")
+//        if FileManager.default.fileExists(atPath: fileURL.path) {
+//            print("File already exists, no need to recreate it.")
+//            return fileURL
+//        } else {
+//            print("File does not exist, attempting to write it.")
+//            // Écrire le document si le fichier n'existe pas
+//            let result = writeDocument()
+//            if result == .success {
+//                DataController.saveContext() // Sauvegarder les changements dans CoreData
+//                return fileURL
+//            } else {
+//                print("Failed to write document.")
+//                return nil
+//            }
+//        }
+        
+        let result = writeDocument()
+        if result == .success {
+            DataController.saveContext() // Sauvegarder les changements dans CoreData
             return fileURL
         } else {
-            print("File does not exist, attempting to write it.")
-            // Écrire le document si le fichier n'existe pas
-            let result = writeDocument()
-            if result == .success {
-                DataController.saveContext() // Sauvegarder les changements dans CoreData
-                return fileURL
-            } else {
-                print("Failed to write document.")
-                return nil
-            }
+            print("Failed to write document.")
+            return nil
         }
     }
 
