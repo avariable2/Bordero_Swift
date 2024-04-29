@@ -27,7 +27,7 @@ struct DocumentOptionsView: View, Saveable {
     
     @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
     
-    var viewModel : PDFViewModel
+    @State var viewModel : PDFViewModel
     
     init(viewModel : PDFViewModel) {
         self.viewModel = viewModel
@@ -58,18 +58,18 @@ struct DocumentOptionsView: View, Saveable {
                 }
                 
                 Section {
-                    DatePickerViewCustom(text: "Date d'émission", selection: $emission)
-                        .onChange(of: emission) { oldValue, newValue in
-                            viewModel.pdfModel.optionsDocument.dateEmission = newValue
-                        }
+                    DatePickerViewCustom(text: "Date d'émission", selection: $viewModel.pdfModel.optionsDocument.dateEmission)
+//                        .onChange(of: emission) { oldValue, newValue in
+//                            viewModel.pdfModel.optionsDocument.dateEmission = newValue
+//                        }
                     
-                    DatePickerViewCustom(text: "Date d'échéance", selection: $echeance)
-                        .onAppear {
-                            echeance = viewModel.pdfModel.optionsDocument.dateEcheance
-                        }
-                        .onChange(of: echeance) { oldValue, newValue in
-                            viewModel.pdfModel.optionsDocument.dateEcheance = newValue
-                        }
+                    DatePickerViewCustom(text: "Date d'échéance", selection: $viewModel.pdfModel.optionsDocument.dateEcheance)
+//                        .onAppear {
+//                            echeance = viewModel.pdfModel.optionsDocument.dateEcheance
+//                        }
+//                        .onChange(of: echeance) { oldValue, newValue in
+//                            viewModel.pdfModel.optionsDocument.dateEcheance = newValue
+//                        }
                 }
                 
                 Section("Remise sur votre \(viewModel.pdfModel.optionsDocument.estFacture ? "Facture" : "Devis")") {

@@ -140,6 +140,14 @@ struct DocumentDetailView: View {
     }
     
     func delete() {
+        let fileManager = FileManager.default
+        do {
+            try fileManager.removeItem(at: getUrlForSharing() ?? URL(string: "")!)
+            print("Fichier supprimé avec succès")
+        } catch {
+            print("Erreur lors de la suppression du fichier: \(error)")
+        }
+        
         moc.delete(document)
         
         DataController.saveContext()

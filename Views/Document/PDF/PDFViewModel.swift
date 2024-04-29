@@ -23,7 +23,20 @@ class PDFViewModel {
     }
     
     func reset() {
+        if documentObject == nil, let fileNeedToBeDeleted = pdfModel.urlFilePreview, !fileNeedToBeDeleted.lastPathComponent.isEmpty {
+            deleteFile(fileNeedToBeDeleted)
+        }
         pdfModel = PDFModel()
+    }
+    
+    func deleteFile(_ urlFile : URL) {
+        let fileManager = FileManager.default
+        do {
+            try fileManager.removeItem(at: urlFile)
+            print("Fichier supprimé avec succès")
+        } catch {
+            print("Erreur lors de la suppression du fichier: \(error)")
+        }
     }
     
     @MainActor
@@ -33,9 +46,14 @@ class PDFViewModel {
             return nil
         }
         
-        let url = urlFile != nil ? urlFile! : directory
-            .appendingPathComponent(UUID().uuidString)
-            .appendingPathExtension(for: .pdf)
+        let url : URL
+        if let alreadyExistingUrlFile = urlFile {
+            url = directory.appendingPathComponent(alreadyExistingUrlFile.lastPathComponent)
+        } else {
+            url = directory
+                .appendingPathComponent(UUID().uuidString)
+                .appendingPathExtension(for: .pdf)
+        }
         
         var pageSize = CGRect(x: 0, y: 0, width: 600, height: 800)
         guard let consumer = CGDataConsumer(url: url as CFURL),
@@ -297,7 +315,7 @@ class PDFViewModel {
         }
         pdfModel.optionsDocument.note = document.note
         
-        pdfModel.optionsDocument.dateEcheance = document.dateEcheance
+        pdfModel.optionsDocument.dateEmission = document.dateEmission
         pdfModel.optionsDocument.dateEcheance = document.dateEcheance
         
         pdfModel.optionsDocument.remise = Remise(

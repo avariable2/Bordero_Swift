@@ -171,8 +171,8 @@ struct ModifierDocumentView: View, Versionnable {
                 // MARK: - Partie type Acte
                 Section {
                     if !viewModel.pdfModel.elements.isEmpty {
-                        ForEach(viewModel.pdfModel.elements.indices, id: \.self) { index in
-                            TypeActeRowView(snapshotTypeActe: $viewModel.pdfModel.elements[index])
+                        ForEach($viewModel.pdfModel.elements, id: \.self) { snapshot in
+                            TypeActeRowView(snapshotTypeActe: snapshot)
                         }
                         .onDelete { indexSet in
                             viewModel.pdfModel.elements.remove(atOffsets: indexSet)
