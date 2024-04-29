@@ -43,12 +43,21 @@ struct ListDocument: View {
 struct DisplayListWithSort : View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest var documents: FetchedResults<Document>
+    @State private var searchText = ""
     
     init(sortDescriptor : NSSortDescriptor, predicate: NSPredicate? = nil) {
         let request: NSFetchRequest<Document> = Document.fetchRequest()
         let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
         request.sortDescriptors = [ sortByDate, sortDescriptor]
         _documents = FetchRequest<Document>(fetchRequest: request, animation: .default)
+    }
+    
+    var fileteredListDocuments : [Document] {
+        guard !searchText.isEmpty else { return Array(documents) }
+        
+        return documents.filter { document in
+            document.getNameOfDocument().lowercased().contains(searchText.lowercased())
+        }
     }
     
     var body: some View {
@@ -61,20 +70,25 @@ struct DisplayListWithSort : View {
             )
         } else {
             List {
-                ForEach(documents, id: \.self) { document in
-                    Section {
-                        RowDocumentView(document: document)
-                            .background(
-                                NavigationLink("") {
-                                    DocumentDetailView(document: document)
-                                }
-                                    .opacity(0)
-                            )
-                    } header: {
-                        Text(document.sectionTitleByDate)
+                if fileteredListDocuments.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
+                } else {
+                    ForEach(fileteredListDocuments, id: \.self) { document in
+                        Section {
+                            RowDocumentView(document: document)
+                                .background(
+                                    NavigationLink("") {
+                                        DocumentDetailView(document: document)
+                                    }
+                                        .opacity(0)
+                                )
+                        } header: {
+                            Text(document.sectionTitleByDate)
+                        }
                     }
                 }
             }
+            .searchable(text: $searchText)
         }
     }
 }
