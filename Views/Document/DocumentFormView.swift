@@ -43,31 +43,23 @@ struct DocumentFormView: View {
                     
                 }
             }
-            .task {
-                
-                if let document = document, viewModel.documentObject == nil {
-                    self.viewModel.retrieveDataFromDocument(document: document)
-                }
-                
+            .onAppear() {
                 viewModel.pdfModel.praticien = praticien.first
                 
-                // MARK: Reinitialise le tableau pour s'adapter au changement de l'utilisateur
-                if let cheque = praticien.first?.cheque, cheque == true {
-                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.cheque)
+                if viewModel.pdfModel.optionsDocument.payementAllow.isEmpty {
+                    viewModel.modifyPayementAllow(.cheque, value: praticien.first?.cheque ?? false)
+                    viewModel.modifyPayementAllow(.carte, value: praticien.first?.carte ?? false)
+                    viewModel.modifyPayementAllow(.virement, value: praticien.first?.virement_bancaire ?? false)
+                    viewModel.modifyPayementAllow(.especes, value: praticien.first?.espece ?? false)
                 }
                 
-                if let carte = praticien.first?.carte, carte == true {
-                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.carte)
+            }
+            .task {
+                if let document = document {
+                    if viewModel.documentObject == nil {
+                        self.viewModel.retrieveDataFromDocument(document: document)
+                    }
                 }
-                
-                if let virement = praticien.first?.virement_bancaire, virement == true {
-                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.virement)
-                }
-                
-                if let espece = praticien.first?.espece, espece == true {
-                    viewModel.pdfModel.optionsDocument.payementAllow.append(Payement.especes)
-                }
-                
             }
     }
 }

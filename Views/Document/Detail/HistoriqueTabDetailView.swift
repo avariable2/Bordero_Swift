@@ -57,13 +57,13 @@ struct RowHistorique : View {
         case Evenement.TypeEvenement.modification.rawValue:
             "doc.badge.ellipsis"
         case Evenement.TypeEvenement.envoie.rawValue:
-            "paperplane"
+            "doc.badge.arrow.up"
         case Evenement.TypeEvenement.renvoie.rawValue:
-            "arrowshape.turn.up.right"
+            "doc.badge.arrow.up"
         case Evenement.TypeEvenement.payer.rawValue:
-            "bag.badge.plus"
+            "eurosign.arrow.circlepath"
         case Evenement.TypeEvenement.exporté.rawValue:
-            "square.and.arrow.up"
+            "arrow.up.doc"
         default:
             "doc"
         }

@@ -39,6 +39,16 @@ class PDFViewModel {
         }
     }
     
+    func modifyPayementAllow(_ type : Payement, value: Bool) {
+        if value {
+            if !pdfModel.optionsDocument.payementAllow.contains(type) {
+                pdfModel.optionsDocument.payementAllow.append(type)
+            }
+        } else {
+            pdfModel.optionsDocument.payementAllow.removeAll { $0 == type }
+        }
+    }
+    
     @MainActor
     func renderView(_ urlFile : URL? = nil) -> URL? {
         // MARK: - Initialisation des constantes du pdf

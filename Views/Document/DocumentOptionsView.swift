@@ -72,28 +72,28 @@ struct DocumentOptionsView: View, Saveable {
                         .onChange(of: carte) { oldValue, newValue in
                             praticien.first?.carte = newValue
                             
-                            modifyPayementMethod(type: .carte, value: newValue)
+                            viewModel.modifyPayementAllow(.carte, value: newValue)
                         }
                     
                     Toggle("Espèces", isOn: $especes)
                         .onChange(of: especes) { oldValue, newValue in
                             praticien.first?.espece = newValue
                             
-                            modifyPayementMethod(type: .especes, value: newValue)
+                            viewModel.modifyPayementAllow(.especes, value: newValue)
                         }
                     
                     Toggle("Virement bancaire", isOn: $virementB)
                         .onChange(of: virementB) { oldValue, newValue in
                             praticien.first?.virement_bancaire = newValue
                             
-                            modifyPayementMethod(type: .virement, value: newValue)
+                            viewModel.modifyPayementAllow(.virement, value: newValue)
                         }
                     
                     Toggle("Chèque", isOn: $cheque)
                         .onChange(of: cheque) { oldValue, newValue in
                             praticien.first?.cheque = newValue
                             
-                            modifyPayementMethod(type: .cheque, value: newValue)
+                            viewModel.modifyPayementAllow(.cheque, value: newValue)
                         }
                     
                 }
@@ -124,14 +124,6 @@ struct DocumentOptionsView: View, Saveable {
             .onDisappear() {
                 save()
             }
-        }
-    }
-    
-    func modifyPayementMethod(type : Payement, value: Bool) {
-        if value == false {
-            viewModel.pdfModel.optionsDocument.payementAllow.removeAll { $0 == type }
-        } else {
-            viewModel.pdfModel.optionsDocument.payementAllow.append(type)
         }
     }
     
