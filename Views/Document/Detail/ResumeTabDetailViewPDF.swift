@@ -51,10 +51,22 @@ struct ResumeTabDetailViewPDF: View {
                     Button {
 //                        showDetailClient = true
                     } label: {
-                        ClientRowView(firstname: document.client_?.firstname ?? "AAA", name: document.client_?.lastname ?? "AAA")
-                        .tint(.primary)
+                        if let client = document.client_ {
+                            ClientRowView(firstname: client.firstname, name: client.lastname)
+                            .tint(.primary)
+                        } else {
+                            Label {
+                                Text("Le client n'à pas été retrouvé ou bien à été supprimer.")
+                                    .fontWeight(.regular)
+                            } icon: {
+                                Image(systemName: "person.crop.circle.badge.questionmark.fill")
+                                    .foregroundStyle(.yellow, .gray)
+                                    .imageScale(.large)
+                            }
+                            .tint(.primary)
+                        }
+                       
                     }
-//                    .disabled(client == nil)
                     
                 } header: {
                     Text("Créer pour")
