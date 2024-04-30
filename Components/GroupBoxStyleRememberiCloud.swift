@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomGroupBoxStyle : GroupBoxStyle {
+struct GroupBoxStyleRememberiCloud : GroupBoxStyle {
     @Environment(\.colorScheme) var colorScheme
     
     func makeBody(configuration: Configuration) -> some View {
@@ -31,6 +31,6 @@ struct CustomGroupBoxStyle : GroupBoxStyle {
         GroupBox {
             Text("Salut")
         }
-        .groupBoxStyle(CustomGroupBoxStyle())
+        .groupBoxStyle(GroupBoxStyleRememberiCloud())
     }
 }

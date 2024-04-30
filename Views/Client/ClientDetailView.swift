@@ -13,6 +13,12 @@ struct ClientDetailView: View {
     @State private var activeSheet: ActiveSheet?
     @ObservedObject var client : Client
     
+    @State private var numberOfDocumentWaiting : Int = 0
+    @State private var numberOfDocumentPayed : Int = 0
+    @State private var amountPayed : Double = 0
+    @State private var amountWaiting : Double = 0
+    @State private var numberOfDocumentThisMonth : Int = 0
+    
     var body: some View {
         List {
             ClientDetailHeaderView(client: client)
@@ -49,13 +55,61 @@ struct ClientDetailView: View {
                 }
             }
             
+            Section("Données sur le mois en cours") {
+                GroupBox {
+                    DataValueView(
+                        value: amountWaiting.description,
+                        unit: "€ sur \(numberOfDocumentWaiting) document(s) envoyer"
+                    )
+                } label: {
+                    Label("Montant en attente", systemImage: "bag.fill.badge.questionmark")
+                }
+                .groupBoxStyle(
+                    GroupBoxStyleData(
+                        color: .pink,
+                        destination: Text("Oui")
+                    )
+                )
+                
+                GroupBox {
+                    DataValueView(
+                        value: amountPayed.description,
+                        unit: "€ sur \(numberOfDocumentPayed) documents payer"
+                    )
+                } label: {
+                    Label("Total payé par le client", systemImage: "bag.fill.badge.plus")
+                }
+                .groupBoxStyle(GroupBoxStyleData(color: .indigo, destination: Text("Oui")))
+                
+                GroupBox {
+                    DataValueView(value: numberOfDocumentThisMonth.description, unit: "document(s)")
+                } label: {
+                    Label("Document(s) créer", systemImage: "folder.fill")
+                }
+                .groupBoxStyle(GroupBoxStyleData(color: .orange, destination: Text("Oui")))
+            }
+            .listRowInsets(.some(.init(top: 0, leading: 10, bottom: 0, trailing: 20)))
+            
             Section("Historique") {
-                Text("Vous trouverez ici dans de futures mise à jour l'ensemble des documents pour ce client. Mais également les restes à payer, ect.")
-                    .foregroundStyle(.secondary)
+                let listDocuments = Array(client.listDocuments)
+                if listDocuments.isEmpty {
+                    Text("Aucun document")
+                } else {
+                    LazyVStack {
+                        ForEach(listDocuments) { document in
+                            RowDocumentView(document: document)
+                        }
+                    }
+                }
+                
             }
             
         }
         .navigationTitle("Fiche client")
+        .headerProminence(.increased)
+        .onAppear() {
+            getDataFormClient()
+        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Modifier") {
@@ -79,6 +133,50 @@ struct ClientDetailView: View {
                 EmptyView() // IMPOSSIBLE
             }
         }
+    }
+    
+    func getDataFormClient() {
+        let listDocuments = client.listDocuments.filter { $0.dateEmission.formatted(.dateTime.month()) == Date().formatted(.dateTime.month()) }
+        
+        numberOfDocumentWaiting = getNumberOfDocumentWaiting(listDocuments)
+        numberOfDocumentPayed = getNumberOfDocumentPayed(listDocuments)
+        amountPayed = getAmountPayed(listDocuments)
+        numberOfDocumentThisMonth = getNumberOfDocumentThisMonth(listDocuments)
+    }
+    
+    func getNumberOfDocumentWaiting(_ listDocuments : Set<Document>) -> Int {
+        
+        return listDocuments.filter { $0.status == .send && $0.payementFinish == false }.count
+    }
+    
+    func getNumberOfDocumentPayed(_ listDocuments : Set<Document>) -> Int {
+        
+        return listDocuments.filter { $0.status == .payed }.count
+    }
+    
+    func getAmountWaiting(_ listDocuments : Set<Document>) -> Double {
+        let documentsWaiting = listDocuments.filter {  $0.status == .created && $0.payementFinish == false }
+        
+        var amountWaiting : Double = 0
+        for documentWaiting in documentsWaiting {
+            amountWaiting += documentWaiting.totalTTC
+        }
+        return amountWaiting
+    }
+    
+    func getAmountPayed(_ listDocuments : Set<Document>) -> Double {
+        let documentsPayed = listDocuments.filter { $0.status == .payed }
+        
+        var amountPayed : Double = 0
+        for documentsPay in documentsPayed {
+            amountPayed += documentsPay.totalTTC
+        }
+        return amountPayed
+    }
+    
+    func getNumberOfDocumentThisMonth(_ listDocuments : Set<Document>) -> Int {
+        
+        return listDocuments.count
     }
 }
 

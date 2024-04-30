@@ -49,7 +49,7 @@ struct HomeView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    .groupBoxStyle(CustomGroupBoxStyle())
+                    .groupBoxStyle(GroupBoxStyleRememberiCloud())
                     .padding(.bottom)
                 }
                 
