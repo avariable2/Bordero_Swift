@@ -15,93 +15,71 @@ struct ExploreView: View {
     
     var body: some View {
         List {
-            Section("Type de séance") {
+            Section("Action rapides") {
                 Button {
                     activeSheet = .createTypeActe
                 } label: {
-                    Label("Ajouter un type d'acte", systemImage: "square.and.pencil")
-                        .tint(.primary)
-                        .foregroundStyle(.primary, .purple)
+                    RowExploreView(
+                        text: "Ajouter un acte",
+                        systemName: "cross.vial",
+                        primaryColor: .mint,
+                        secondaryColor : .mint,
+                        needToShowArrow : true
+                    )
                 }
                 
                 NavigationLink {
                     ListTypeActe(applyTvaOnTypeActe: praticien.first?.applyTVA ?? false)
                 } label: {
-                    Label {
-                        Text("Consulter tous les types d'acte")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "eyeglasses")
-                            .foregroundStyle( .purple, .orange)
-                    }
+                    RowExploreView(
+                        text: "Liste des actes",
+                        systemName: "cross.case.fill",
+                        primaryColor: .purple,
+                        secondaryColor: .purple
+                    )
                 }
-            }
-            
-//            Section {
-//                Button {
-//                    activeSheet = .createClient
-//                } label: {
-//                    Label {
-//                        Text("Ajouter un client")
-//                            .tint(.primary)
-//                    } icon: {
-//                        Image(systemName: "person.crop.rectangle.badge.plus")
-//                            .foregroundStyle( .green, .orange)
-//                    }
-//                }
-//                
-//                NavigationLink {
-//                    ListClients()
-//                } label: {
-//                    Label {
-//                        Text("Consulter la liste des clients")
-//                            .tint(.primary)
-//                    } icon: {
-//                        Image(systemName: "person.crop.rectangle.stack")
-//                            .foregroundStyle(.orange)
-//                    }
-//                }
-//            } header: {
-//                Text("Clients")
-//            }
-            
-            Section("Documents") {
+                
                 NavigationLink {
                     DocumentFormView()
                 } label: {
-                    Label {
-                        Text("Créer un document")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "doc.badge.plus")
-                            .foregroundStyle(.green, .gray)
-                    }
+                    RowExploreView(
+                        text: "Créer document",
+                        systemName: "doc.badge.plus",
+                        primaryColor: .blue,
+                        secondaryColor : .blue
+                    )
                 }
                 
                 NavigationLink {
                     ListDocument()
                 } label: {
-                    Label {
-                        Text("Consulter les documents")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "doc.text.magnifyingglass")
-                            .foregroundStyle(.primary, .gray, .primary)
-                    }
-                }
-            }
-            .navigationTitle("Parcourir")
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                    RowExploreView(
+                        text: "Liste des docs",
+                        systemName: "doc.text.magnifyingglass",
+                        primaryColor: .gray,
+                        secondaryColor: .blue
+                    )
                 }
             }
             
+            Section {
+                Button {
+                    activeSheet = .parameters
+                } label: {
+                    RowExploreProfilView(praticien: praticien.first)
+                }
+                
+            }
+        }
+        .navigationTitle("Parcourir")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+            }
         }
         .headerProminence(.increased)
         .sheet(item: $activeSheet) { item in
             
             switch item {
-                
             case .createTypeActe:
                 FormTypeActeSheet(applyTVA: praticien.first?.applyTVA ?? false, onCancel: {
                     activeSheet = nil
@@ -114,6 +92,9 @@ struct ExploreView: View {
                     activeSheet = nil
                 })
                 .presentationDetents([.large])
+                
+            case .parameters:
+                ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
             default:
                 EmptyView() // IMPOSSIBLE
             }
@@ -121,6 +102,78 @@ struct ExploreView: View {
     }
 }
 
+struct RowExploreView : View {
+    let text : String
+    let systemName : String
+    let primaryColor : Color
+    var secondaryColor : Color = .primary
+    
+    var needToShowArrow : Bool = false
+    
+    var body: some View {
+        Label {
+            if needToShowArrow {
+                HStack {
+                    Text(text)
+                        .padding([.top, .bottom], 8)
+                        .tint(.primary)
+                        .font(.headline)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.tertiary)
+                        .tint(.primary)
+                }
+            } else {
+                Text(text)
+                    .padding([.top, .bottom], 8)
+                    .tint(.primary)
+                    .font(.headline)
+            }
+            
+        } icon: {
+            Image(systemName: systemName)
+                .foregroundStyle(primaryColor, secondaryColor)
+                .font(.title3)
+                .symbolRenderingMode(.hierarchical)
+                .fontWeight(.semibold)
+        }
+        .fontWeight(.medium)
+    }
+}
+
+struct RowExploreProfilView : View {
+    @State var praticien : Praticien?
+    
+    var body: some View {
+        Label {
+            HStack {
+                Text("Paramètres")
+                    .padding([.top, .bottom], 8)
+                    
+                    .font(.headline)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.tertiary)
+            }
+            .tint(.primary)
+        } icon: {
+            ProfilImageView(imageData: praticien?.profilPicture)
+                .font(.title3)
+        }
+        .fontWeight(.medium)
+    }
+}
+
 #Preview {
-    ExploreView()
+    NavigationStack {
+        ExploreView()
+    }
 }

@@ -45,13 +45,14 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         NavigationStack {
             List {
-                
                 VStack(alignment: .center) {
-                    
-                    Image(systemName: "cross.case.circle.fill")
-                        .foregroundStyle(.white, .purple)
+                    Image(systemName: "cross.vial")
+                        .foregroundStyle(.white)
+                        .padding()
+                        .font(.largeTitle)
                         .frame(height: 80)
-                        .font(.system(size: 60))
+                        .clipShape(Circle())
+                        .background(Circle().fill(.mint))
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -65,13 +66,14 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     }
                     
                     Text("Description")
+                        .foregroundStyle(.secondary)
+                        .fontWeight(.light)
                         .listRowSeparator(.hidden, edges: .bottom)
                     
                     TextEditor(text: $description)
                         .lineSpacing(3)
                         .keyboardType(.default)
                         .multilineTextAlignment(.leading)
-                    
                 }
                 
                 Section {
@@ -82,7 +84,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     if applyTVA {
                         LabeledContent("TVA") {
                             TextField("pourcentage de TVA", value: $tauxTVA, format: .percent)
-                                .foregroundStyle(.purple)
+                                .foregroundStyle(.mint)
                         }
                         .multilineTextAlignment(.trailing)
                         
@@ -101,7 +103,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     .multilineTextAlignment(.center)
                     .bold()
             }
-            .tint(.purple)
+            .tint(.mint)
+            .listStyle(.grouped)
             .multilineTextAlignment(.trailing)
             .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name)")
             .toolbar {
