@@ -98,30 +98,24 @@ struct TableGridRowView : View {
             verticalSpacing: 2
         ) {
             GridRow {
-                HStack(alignment: .center) {
-                    Image(systemName: "cross.case.circle.fill")
-                        .imageScale(.large)
-                        .foregroundStyle(.white, .purple)
+                VStack(alignment: .leading) {
+                    Text(purchase.libelle)
                     
-                    VStack(alignment: .leading) {
-                        Text(purchase.libelle)
-                        
-                        if !purchase.infoLibelle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            Text(purchase.infoLibelle)
-                                .foregroundStyle(.secondary)
-                                .font(.footnote)
-                        }
-                        
-                        if !purchase.remarque.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            Text("Remarque : ")
-                                .foregroundStyle(.primary.opacity(0.8)).fontWeight(.medium)
-                            +
-                            Text(purchase.remarque)
-                                .foregroundStyle(.primary.opacity(0.8))
-                                .font(.footnote)
-                        }
-                        
+                    if !purchase.infoLibelle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text(purchase.infoLibelle)
+                            .foregroundStyle(.secondary)
+                            .font(.footnote)
                     }
+                    
+                    if !purchase.remarque.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text("Remarque : ")
+                            .foregroundStyle(.primary.opacity(0.8)).fontWeight(.medium)
+                        +
+                        Text(purchase.remarque)
+                            .foregroundStyle(.primary.opacity(0.8))
+                            .font(.footnote)
+                    }
+                    
                 }
                 .frame(maxWidth: 315)
                 

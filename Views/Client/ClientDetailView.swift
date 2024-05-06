@@ -22,6 +22,8 @@ struct ClientDetailView: View {
     
     @State private var listDocumentsToShow : Array<Document> = []
     
+    @State private var topExpanded: Bool = true
+    
     var body: some View {
         List {
             ClientDetailHeaderView(client: client)
@@ -94,7 +96,7 @@ struct ClientDetailView: View {
             .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 20))
             
             Section {
-                LazyVStack {
+                DisclosureGroup(isExpanded: $topExpanded) {
                     if listDocumentsToShow.isEmpty {
                         Text("Aucun document")
                     } else {
@@ -102,13 +104,16 @@ struct ClientDetailView: View {
                             RowDocumentView(document: document)
                         }
                     }
+                } label: {
+                    Text("Historique")
+                        .bold()
                 }
             } header : {
-                Text("Historique")
+                
             } footer : {
                 Text("Affiche uniquement les 20 dernières documents crées.\n")
                 + Text("Veuillez consulter la section ")
-                + Text("\"Consulter les documents\"")
+                + Text("\"Liste des docs\"")
                     .foregroundStyle(.green)
                     .bold()
                 + Text(" pour accèder à des documents plus ancien.")
@@ -313,6 +318,6 @@ struct RowAdresse: View {
     }
 }
 
-#Preview {
-    ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
-}
+//#Preview {
+//    ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
+//}
