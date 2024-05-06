@@ -44,68 +44,63 @@ struct ListClients: View {
                 })
                 
             } else {
-                NavigationStack {
-                    ScrollViewReader { proxy in
-                        
-                        let noNameClients = filteredClients.filter {
-                            let firstChar = $0.name_?.uppercased().prefix(1) ?? "#"
-                            return !alphabet.contains(String(firstChar))
-                        }
-                        
-                        ZStack {
-                            List {
-                                // Sections pour les contacts avec nom
-                                ForEach(alphabet, id: \.self) { letter in
-                                    
-                                    // Filtre les nom par la lettre
-                                    let tabFiltered = filteredClients.filter({ client -> Bool in
-                                        guard let firstLetter = client.name_?.prefix(1).uppercased() else { return false }
-                                        return firstLetter == letter
-                                    })
-                                    
-                                    // Affiche uniquement si la liste de nom n'est pas vide
-                                    if !tabFiltered.isEmpty {
-                                        Section {
-                                            ForEach(tabFiltered) { client in
-                                                ClientRow(client: client, callback : callbackClientClick)
-                                            }
-                                        } header: {
-                                            Text(letter).id(letter)
-                                        }
-                                    }
-                                }
+                ScrollViewReader { proxy in
+                    
+                    let noNameClients = filteredClients.filter {
+                        let firstChar = $0.name_?.uppercased().prefix(1) ?? "#"
+                        return !alphabet.contains(String(firstChar))
+                    }
+                    
+                    ZStack {
+                        List {
+                            // Sections pour les contacts avec nom
+                            ForEach(alphabet, id: \.self) { letter in
                                 
-                                // Section pour les contacts sans nom
-                                if !noNameClients.isEmpty {
+                                // Filtre les nom par la lettre
+                                let tabFiltered = filteredClients.filter({ client -> Bool in
+                                    guard let firstLetter = client.name_?.prefix(1).uppercased() else { return false }
+                                    return firstLetter == letter
+                                })
+                                
+                                // Affiche uniquement si la liste de nom n'est pas vide
+                                if !tabFiltered.isEmpty {
                                     Section {
-                                        ForEach(noNameClients) { client in
-                                            ClientRow(client: client, callback: callbackClientClick)
+                                        ForEach(tabFiltered) { client in
+                                            ClientRow(client: client, callback : callbackClientClick)
                                         }
                                     } header: {
-                                        Text("#").id("#")
+                                        Text(letter).id(letter)
                                     }
                                 }
                             }
-                            .navigationDestination(for: Client.self) { client in
-                                ClientDetailView(client: client)
+                            
+                            // Section pour les contacts sans nom
+                            if !noNameClients.isEmpty {
+                                Section {
+                                    ForEach(noNameClients) { client in
+                                        ClientRow(client: client, callback: callbackClientClick)
+                                    }
+                                } header: {
+                                    Text("#").id("#")
+                                }
                             }
-                            .overlay(content: {
-                                if filteredClients.isEmpty {
-                                    ContentUnavailableView.search(text: searchText)
-                                }
-                            })
-                            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
-                            .headerProminence(.increased)
+                        }
+                        .overlay(content: {
+                            if filteredClients.isEmpty {
+                                ContentUnavailableView.search(text: searchText)
+                            }
+                        })
+                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
+                        .headerProminence(.increased)
 
-                            VStack {
-                                ForEach(alphabet, id: \.self) { letter in
-                                    SectionIndexButton(letter: letter, proxy: proxy, filteredClients: filteredClients)
-                                }
-                                
-                                // Index de section ajusté pour inclure la section des contacts sans nom
-                                if !noNameClients.isEmpty {
-                                    SectionIndexButton(letter: "#", proxy: proxy)
-                                }
+                        VStack {
+                            ForEach(alphabet, id: \.self) { letter in
+                                SectionIndexButton(letter: letter, proxy: proxy, filteredClients: filteredClients)
+                            }
+                            
+                            // Index de section ajusté pour inclure la section des contacts sans nom
+                            if !noNameClients.isEmpty {
+                                SectionIndexButton(letter: "#", proxy: proxy)
                             }
                         }
                     }
@@ -114,6 +109,9 @@ struct ListClients: View {
         }
         .navigationTitle("Clients")
         .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
+        .navigationDestination(for: Client.self) { client in
+            ClientDetailView(client: client)
+        }
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 Button {
@@ -220,35 +218,37 @@ struct SectionIndexButton: View {
 
 struct ClientRow: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(NavigationDestinationClient.self) var path
     
     let client: Client
     let callback : ((Client) -> Void)?
     
     var body: some View {
-        if let call = callback {
-            Button {
-                call(client)
-                dismiss()
-            } label: {
-                HStack {
-                    Text(client.firstname)
-                    + Text(" ")
-                    + Text(client.lastname).bold()
-                    Spacer()
+        VStack {
+            if let call = callback {
+                Button {
+                    call(client)
+                    dismiss()
+                } label: {
+                    HStack {
+                        Text(client.firstname)
+                        + Text(" ")
+                        + Text(client.lastname).bold()
+                        Spacer()
+                    }
+                    .tint(.primary)
                 }
-                .tint(.primary)
-            }
-        } else {
-            NavigationLink(value: client) {
-                HStack {
-                    Text(client.firstname)
-                    + Text(" ")
-                    + Text(client.lastname).bold()
-                    Spacer()
+            } else {
+                NavigationLink(value: client) {
+                    HStack {
+                        Text(client.firstname)
+                        + Text(" ")
+                        + Text(client.lastname).bold()
+                        Spacer()
+                    }
                 }
             }
         }
-        
     }
 }
 
@@ -264,6 +264,6 @@ extension Client : Comparable {
     }
 }
 
-#Preview {
-    ListClients()
-}
+//#Preview {
+//    ListClients(path: NavigationPath())
+//}

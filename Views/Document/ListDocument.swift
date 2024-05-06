@@ -75,11 +75,6 @@ struct ListDocument: View {
                             Section {
                                 RowDocumentView(document: document)
                                     .tag(document.status)
-                                    .background(
-                                        NavigationLink("") {
-                                            DocumentDetailView(document: document)
-                                        }.opacity(0)
-                                    )
                             } header: {
                                 Text(document.sectionTitleByDate)
                             }
@@ -138,6 +133,11 @@ struct RowDocumentView :View {
                 .font(.footnote)
             }
         }
+        .background(
+            NavigationLink("") {
+                DocumentDetailView(document: document)
+            }.opacity(0)
+        )
     }
 }
 

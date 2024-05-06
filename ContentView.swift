@@ -6,9 +6,17 @@
 //
 
 import SwiftUI
+import Observation
+
+@Observable
+class NavigationDestinationClient {
+    var path = NavigationPath()
+}
 
 struct ContentView: View {
     @State var userNeediCloud : UseriCloudController.StateCheckiCloud
+    
+    @State var path = NavigationDestinationClient()
     
     var body: some View {
         
@@ -24,9 +32,10 @@ struct ContentView: View {
                     Text("Résumé")
                 }
                 
-                NavigationStack {
+                NavigationStack(path: $path.path) {
                     ListClients()
                 }
+                .environment(path)
                 .tabItem {
                     Image(systemName: "person.2")
                     Text("Clients")

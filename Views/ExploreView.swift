@@ -37,33 +37,33 @@ struct ExploreView: View {
                 }
             }
             
-            Section {
-                Button {
-                    activeSheet = .createClient
-                } label: {
-                    Label {
-                        Text("Ajouter un client")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "person.crop.rectangle.badge.plus")
-                            .foregroundStyle( .green, .orange)
-                    }
-                }
-                
-                NavigationLink {
-                    ListClients()
-                } label: {
-                    Label {
-                        Text("Consulter la liste des clients")
-                            .tint(.primary)
-                    } icon: {
-                        Image(systemName: "person.crop.rectangle.stack")
-                            .foregroundStyle(.orange)
-                    }
-                }
-            } header: {
-                Text("Clients")
-            }
+//            Section {
+//                Button {
+//                    activeSheet = .createClient
+//                } label: {
+//                    Label {
+//                        Text("Ajouter un client")
+//                            .tint(.primary)
+//                    } icon: {
+//                        Image(systemName: "person.crop.rectangle.badge.plus")
+//                            .foregroundStyle( .green, .orange)
+//                    }
+//                }
+//                
+//                NavigationLink {
+//                    ListClients()
+//                } label: {
+//                    Label {
+//                        Text("Consulter la liste des clients")
+//                            .tint(.primary)
+//                    } icon: {
+//                        Image(systemName: "person.crop.rectangle.stack")
+//                            .foregroundStyle(.orange)
+//                    }
+//                }
+//            } header: {
+//                Text("Clients")
+//            }
             
             Section("Documents") {
                 NavigationLink {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ClientDetailView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(NavigationDestinationClient.self) var path
     
     @State private var activeSheet: ActiveSheet?
     @ObservedObject var client : Client
@@ -18,6 +19,8 @@ struct ClientDetailView: View {
     @State private var amountPayed : Double = 0
     @State private var amountWaiting : Double = 0
     @State private var numberOfDocumentThisMonth : Int = 0
+    
+    @State private var listDocumentsToShow : Array<Document> = []
     
     var body: some View {
         List {
@@ -90,18 +93,25 @@ struct ClientDetailView: View {
             }
             .listRowInsets(.some(.init(top: 0, leading: 10, bottom: 0, trailing: 20)))
             
-            Section("Historique") {
-                let listDocuments = Array(client.listDocuments)
-                if listDocuments.isEmpty {
-                    Text("Aucun document")
-                } else {
-                    LazyVStack {
-                        ForEach(listDocuments) { document in
+            Section {
+                LazyVStack {
+                    if listDocumentsToShow.isEmpty {
+                        Text("Aucun document")
+                    } else {
+                        ForEach(listDocumentsToShow) { document in
                             RowDocumentView(document: document)
                         }
                     }
                 }
-                
+            } header : {
+                Text("Historique")
+            } footer : {
+                Text("Affiche uniquement les 20 dernières documents crées.\n")
+                + Text("Veuillez consulter la section ")
+                + Text("Documents")
+                    .foregroundStyle(.green)
+                    .bold()
+                + Text(" pour accèder à des documents plus ancien.")
             }
             
         }
@@ -139,9 +149,14 @@ struct ClientDetailView: View {
         let listDocuments = client.listDocuments.filter { $0.dateEmission.formatted(.dateTime.month()) == Date().formatted(.dateTime.month()) }
         
         numberOfDocumentWaiting = getNumberOfDocumentWaiting(listDocuments)
+        amountWaiting = getAmountWaiting(listDocuments)
+        
         numberOfDocumentPayed = getNumberOfDocumentPayed(listDocuments)
         amountPayed = getAmountPayed(listDocuments)
+        
         numberOfDocumentThisMonth = getNumberOfDocumentThisMonth(listDocuments)
+        
+        listDocumentsToShow = get20LastDocuments()
     }
     
     func getNumberOfDocumentWaiting(_ listDocuments : Set<Document>) -> Int {
@@ -178,10 +193,15 @@ struct ClientDetailView: View {
         
         return listDocuments.count
     }
-}
-
-#Preview {
-    ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
+    
+    func get20LastDocuments() -> Array<Document> {
+        let tabDocuments = Array(client.listDocuments.suffix(20))
+        
+        let sortedDocuments = tabDocuments.sorted { $0.dateEmission > $1.dateEmission }
+        
+        let tabFinal = Array(sortedDocuments.prefix(20))
+        return tabFinal
+    }
 }
 
 struct ClientDetailHeaderView: View {
@@ -291,4 +311,8 @@ struct RowAdresse: View {
             }
         }
     }
+}
+
+#Preview {
+    ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
 }
