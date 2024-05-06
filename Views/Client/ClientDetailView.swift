@@ -91,7 +91,7 @@ struct ClientDetailView: View {
                 }
                 .groupBoxStyle(GroupBoxStyleData(color: .orange, destination: Text("Oui")))
             }
-            .listRowInsets(.some(.init(top: 0, leading: 10, bottom: 0, trailing: 20)))
+            .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 20))
             
             Section {
                 LazyVStack {
@@ -108,7 +108,7 @@ struct ClientDetailView: View {
             } footer : {
                 Text("Affiche uniquement les 20 dernières documents crées.\n")
                 + Text("Veuillez consulter la section ")
-                + Text("Documents")
+                + Text("\"Consulter les documents\"")
                     .foregroundStyle(.green)
                     .bold()
                 + Text(" pour accèder à des documents plus ancien.")
