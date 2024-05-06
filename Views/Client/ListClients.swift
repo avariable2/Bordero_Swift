@@ -109,9 +109,6 @@ struct ListClients: View {
         }
         .navigationTitle("Clients")
         .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
-        .navigationDestination(for: Client.self) { client in
-            ClientDetailView(client: client)
-        }
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 Button {
@@ -218,7 +215,6 @@ struct SectionIndexButton: View {
 
 struct ClientRow: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(NavigationDestinationClient.self) var path
     
     let client: Client
     let callback : ((Client) -> Void)?
@@ -239,7 +235,9 @@ struct ClientRow: View {
                     .tint(.primary)
                 }
             } else {
-                NavigationLink(value: client) {
+                NavigationLink{
+                    ClientDetailView(client: client)
+                } label: {
                     HStack {
                         Text(client.firstname)
                         + Text(" ")
