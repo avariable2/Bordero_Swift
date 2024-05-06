@@ -22,7 +22,7 @@ struct ClientDetailView: View {
     
     @State private var listDocumentsToShow : Array<Document> = []
     
-    @State private var topExpanded: Bool = true
+    @State private var topExpanded: Bool = false
     
     var body: some View {
         List {

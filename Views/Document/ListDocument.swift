@@ -22,29 +22,31 @@ struct ListDocument: View {
         _documents = FetchRequest<Document>(fetchRequest: request, animation: .default)
     }
     
-    var fileteredListDocuments : [Document] {
-//        guard !searchText.isEmpty else { return Array(documents) }
-        
-        var documentTrier = Array(documents)
-        
+    var fileteredListDocuments: Dictionary<String, [Document]> {
+        // Determine the filtered documents based on scope
+        let filteredDocuments: [Document]
         switch documentScope {
-        case .all, .unknow:
-            break
         case .created:
-            documentTrier = documents.filter { $0.status == .created }
+            filteredDocuments = documents.filter { $0.status == .created }
         case .payed:
-            documentTrier = documents.filter { $0.status == .payed }
+            filteredDocuments = documents.filter { $0.status == .payed }
         case .send:
-            documentTrier = documents.filter { $0.status == .send }
+            filteredDocuments = documents.filter { $0.status == .send }
+        case .all, .unknow:
+            filteredDocuments = Array(documents)
         }
-        
-        if !searchText.isEmpty {
-            documentTrier = documentTrier.filter { document in
-                document.getNameOfDocument().lowercased().contains(searchText.lowercased())
+
+        // Filter based on search text if necessary
+        let documentsToGroup = searchText.isEmpty
+            ? filteredDocuments
+            : filteredDocuments.filter {
+                $0.getNameOfDocument().lowercased().contains(searchText.lowercased())
             }
+
+        // Group documents by section title by date
+        return Dictionary(grouping: documentsToGroup) { document in
+            document.sectionTitleByDate
         }
-        
-        return documentTrier
     }
     
     var body: some View {
@@ -71,14 +73,14 @@ struct ListDocument: View {
                     if fileteredListDocuments.isEmpty {
                         ContentUnavailableView.search(text: searchText)
                     } else {
-                        ForEach(fileteredListDocuments, id: \.self) { document in
-                            Section {
-                                RowDocumentView(document: document)
-                                    .tag(document.status)
-                            } header: {
-                                Text(document.sectionTitleByDate)
+                        ForEach(fileteredListDocuments.keys.sorted(), id: \.self) { key in
+                                Section(header: Text(key)) {
+                                    ForEach(fileteredListDocuments[key]!, id: \.self) { document in
+                                        RowDocumentView(document: document)
+                                            .tag(document.status)
+                                    }
+                                }
                             }
-                        }
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
@@ -99,7 +101,7 @@ struct RowDocumentView :View {
                 .imageScale(.large)
                 .foregroundStyle(.white, .blue)
             
-            VStack {
+            VStack(spacing: 6) {
                 HStack {
                     Text(document.getNameOfDocument())
                     
