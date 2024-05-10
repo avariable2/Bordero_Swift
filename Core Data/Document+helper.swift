@@ -263,18 +263,28 @@ extension Document {
     }
     
     func titleForDate(_ date: Date) -> String {
-        if Calendar.current.isDateInToday(date) {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        if calendar.isDateInToday(date) {
             return "Aujourd'hui"
-        } else if Calendar.current.isDateInYesterday(date) {
+        } else if calendar.isDateInYesterday(date) {
             return "Hier"
-        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .weekOfYear) {
+        } else if calendar.isDate(date, equalTo: currentDate, toGranularity: .weekOfYear) {
             return "Cette semaine"
-        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .month) {
+        } else if calendar.isDate(date, equalTo: currentDate, toGranularity: .month) {
             return "Ce mois"
-        } else if Calendar.current.isDate(date, equalTo: Date(), toGranularity: .year) {
-            return "Cette année"
         } else {
-            return "Années précédentes"
+            // Calculate the start date for 6 months ago
+            let sixMonthsAgo = calendar.date(byAdding: .month, value: -6, to: currentDate)!
+            
+            if date >= sixMonthsAgo {
+                return "6 derniers mois"
+            } else if calendar.isDate(date, equalTo: currentDate, toGranularity: .year) {
+                return "Cette année"
+            } else {
+                return "Années précédentes"
+            }
         }
     }
     
