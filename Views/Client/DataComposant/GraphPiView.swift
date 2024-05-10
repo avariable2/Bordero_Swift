@@ -36,7 +36,7 @@ struct GraphPiView: View {
                     .annotation(position: .overlay, alignment: .center) {
                         if dataItem.value != 0 {
                             Text("\(dataItem.annotation, format: .currency(code: "EUR"))")
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.primary)
                         }
                     }
                     .accessibilityLabel(dataItem.name)
@@ -92,36 +92,31 @@ struct GraphPiView: View {
         }
     }
     
-    func getResteAPayer(documents : Set<Document>) {
-        let documentsAPayerDuMois = documents.filter { $0.estDeTypeFacture && $0.payementFinish == false }
-        if documentsAPayerDuMois.count == 0 { return }
-        
-        var resteAPayer : Double = 0
-        for doc in documentsAPayerDuMois {
-            resteAPayer += doc.totalTTC
-        }
-        
-        let pourcentageSur100 : Double = Double(documentsAPayerDuMois.count / documents.count)
-        data.append(PieChartData(name: "Reste à payer", value: pourcentageSur100, annotation: resteAPayer))
+    func getResteAPayer(documents: Set<Document>) {
+        calculateChartData(for: documents, isPaid: false, title: "Reste à payer")
+    }
+
+    func getMontantPayer(documents: Set<Document>) {
+        calculateChartData(for: documents, isPaid: true, title: "Montant payé")
     }
     
-    func getMontantPayer(documents : Set<Document>) {
-        let documentsPayer = documents.filter { $0.estDeTypeFacture && $0.payementFinish == true }
-        let pourcentageSur100 : Double = Double(documentsPayer.count / documents.count)
-        guard documents.count > 0 else {
-            data.append(PieChartData(name: "Montant payer", value: pourcentageSur100, annotation: 0))
+    func calculateChartData(for documents: Set<Document>, isPaid: Bool, title: String) {
+        let filteredDocuments = documents.filter { $0.estDeTypeFacture && $0.payementFinish == isPaid }
+        
+        guard !filteredDocuments.isEmpty else {
+            data.append(PieChartData(name: title, value: 0, annotation: 0))
             return
         }
         
+        let totalTTC = filteredDocuments.reduce(0) { $0 + $1.totalTTC }
         
-        
-        var restePayer : Double = 0
-        for doc in documentsPayer {
-            restePayer += doc.montantPayer
-        }
-        
-        
-        data.append(PieChartData(name: "Montant payer", value: pourcentageSur100, annotation: restePayer))
+        data.append(
+            PieChartData(
+                name: title,
+                value: Double(filteredDocuments.count) / Double(documents.count),
+                annotation: totalTTC
+            )
+        )
     }
     
     func getTextTemporalite() -> String {
