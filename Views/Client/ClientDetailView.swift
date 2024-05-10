@@ -181,8 +181,11 @@ struct ClientDetailView: View {
         return listDocuments.filter { $0.status == .payed }.count
     }
     
+    /**
+    Affiche le montant total de toutes les documents envoyés et dont le payement n'est pas fini en euros. 
+     */
     func getAmountWaiting(_ listDocuments : Set<Document>) -> Double {
-        let documentsWaiting = listDocuments.filter {  $0.status == .created && $0.payementFinish == false }
+        let documentsWaiting = listDocuments.filter {  $0.status == .send && $0.payementFinish == false }
         
         var amountWaiting : Double = 0
         for documentWaiting in documentsWaiting {
