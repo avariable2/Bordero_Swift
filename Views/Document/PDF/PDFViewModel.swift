@@ -92,7 +92,7 @@ class PDFViewModel {
             .frame(width: widthView, height: pdfModel.optionsDocument.remise.montant == 0 ? 100 : 150)
         let coutPartRenderer = ImageRenderer(content: coutPartView)
        
-        let payementSignatureView = PayementEtSignature(data: pdfModel).frame(width: widthView)
+        let payementSignatureView = PDFPayementAndSignature(data: pdfModel).frame(width: widthView)
         let payementSignatureRenderer = ImageRenderer(content: payementSignatureView)
         
         // MARK: - View Rendu
@@ -238,7 +238,7 @@ class PDFViewModel {
         
         document.estDeTypeFacture = self.pdfModel.optionsDocument.estFacture
         document.numero = self.pdfModel.optionsDocument.numeroDocument
-        document.status = .created
+        document.status = self.pdfModel.optionsDocument.payementFinish ? .payed : .created
         
         if let client = self.pdfModel.client {
             

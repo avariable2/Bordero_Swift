@@ -57,11 +57,17 @@ struct GraphPiView: View {
     
     func getData() {
         data.removeAll()
+        
         let documentsDeTravail = getListByTempo()
+        temporaliteText = getTextTemporalite()
+        
+        guard documentsDeTravail.count > 0 else {
+            return
+        }
         
         getResteAPayer(documents: documentsDeTravail)
         getMontantPayer(documents: documentsDeTravail)
-        temporaliteText = getTextTemporalite()
+        
     }
     
     func getListByTempo() -> Set<Document> {
@@ -100,18 +106,17 @@ struct GraphPiView: View {
     }
     
     func getMontantPayer(documents : Set<Document>) {
-        let documentsPayerDuMois = documents.filter { $0.estDeTypeFacture && $0.payementFinish == true }
-        guard documents.count > 0 else { return }
-        
-        let pourcentageSur100 : Double = Double(documentsPayerDuMois.count / documents.count)
-        
-        if documentsPayerDuMois.count == 0 {
+        let documentsPayer = documents.filter { $0.estDeTypeFacture && $0.payementFinish == true }
+        let pourcentageSur100 : Double = Double(documentsPayer.count / documents.count)
+        guard documents.count > 0 else {
             data.append(PieChartData(name: "Montant payer", value: pourcentageSur100, annotation: 0))
             return
         }
         
+        
+        
         var restePayer : Double = 0
-        for doc in documentsPayerDuMois {
+        for doc in documentsPayer {
             restePayer += doc.montantPayer
         }
         

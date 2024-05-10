@@ -205,6 +205,9 @@ struct ModifierDocumentView: View, Versionnable {
                             }
                         }
                     }
+                    .onChange(of: estPayer) { oldValue, newValue in
+                        viewModel.pdfModel.optionsDocument.payementFinish = newValue
+                    }
                     .onChange(of: selectedPayement) { oldValue, newValue in
                         viewModel.pdfModel.optionsDocument.payementUse = newValue
                     }
