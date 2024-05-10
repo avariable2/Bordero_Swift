@@ -39,6 +39,35 @@ struct GroupBoxStyleData<V: View>: GroupBoxStyle {
     }
 }
 
+struct GroupBoxStyleDataWithoutDestination<V: View>: GroupBoxStyle {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var color: Color
+    var date: Date?
+
+    @ScaledMetric var size: CGFloat = 1
+    
+    func makeBody(configuration: Configuration) -> some View {
+        GroupBox(
+            label: HStack {
+                
+                configuration.label.foregroundColor(color)
+                
+                Spacer()
+                
+                if date != nil {
+                    Text("\(date!)").font(.footnote).foregroundColor(.secondary).padding(.trailing, 4)
+                }
+            }
+            
+        ) {
+            configuration.content.padding(1)
+        }
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
+        .backgroundStyle(Color.clear)
+    }
+}
+
 #Preview {
     NavigationStack {
         Form {

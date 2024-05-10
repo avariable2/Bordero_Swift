@@ -72,7 +72,7 @@ struct ClientDetailView: View {
                 .groupBoxStyle(
                     GroupBoxStyleData(
                         color: .pink,
-                        destination: Text("Oui")
+                        destination: ClientDataView(client: client)
                     )
                 )
                 
@@ -84,14 +84,24 @@ struct ClientDetailView: View {
                 } label: {
                     Label("Total payé par le client", systemImage: "bag.fill.badge.plus")
                 }
-                .groupBoxStyle(GroupBoxStyleData(color: .indigo, destination: Text("Oui")))
+                .groupBoxStyle(
+                    GroupBoxStyleData(
+                        color: .indigo,
+                        destination: ClientDataView(client: client)
+                    )
+                )
                 
                 GroupBox {
                     DataValueView(value: numberOfDocumentThisMonth.description, unit: "document(s)")
                 } label: {
                     Label("Document(s) créer", systemImage: "folder.fill")
                 }
-                .groupBoxStyle(GroupBoxStyleData(color: .orange, destination: Text("Oui")))
+                .groupBoxStyle(
+                    GroupBoxStyleData(
+                        color: .orange,
+                        destination: ClientDataView(client: client)
+                    )
+                )
             }
             .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 20))
             
@@ -262,8 +272,4 @@ struct RowAdresse: View {
             }
         }
     }
-}
-
-#Preview {
-    ClientDetailView(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
 }
