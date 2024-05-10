@@ -28,7 +28,7 @@ struct GraphPiView: View {
                 Chart(data, id: \.name) { dataItem in
                     SectorMark(
                         angle: .value("Type", dataItem.value),
-                        innerRadius: .ratio(0.5),
+                        innerRadius: .ratio(0.618),
                         angularInset: 1.5
                     )
                     .cornerRadius(5)
@@ -36,13 +36,15 @@ struct GraphPiView: View {
                     .annotation(position: .overlay, alignment: .center) {
                         if dataItem.value != 0 {
                             Text("\(dataItem.annotation, format: .currency(code: "EUR"))")
+                                .font(.caption2)
                                 .foregroundStyle(.primary)
                         }
                     }
                     .accessibilityLabel(dataItem.name)
                     .accessibilityValue("\(dataItem.annotation) euros")
                 }
-                .frame(height: 250)
+                .chartLegend(position: .bottom, spacing: 20)
+                .frame(height: 350)
                 .padding()
             }
         }
@@ -170,7 +172,7 @@ struct GraphPiView: View {
     }
 }
 
-struct PieChartData : Identifiable {
+struct PieChartData : Identifiable, Equatable {
     let id = UUID()
     let name : String
     let value : Double
