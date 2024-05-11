@@ -39,7 +39,7 @@ struct GroupBoxStyleData<V: View>: GroupBoxStyle {
     }
 }
 
-struct GroupBoxStyleDataWithoutDestination<V: View>: GroupBoxStyle {
+struct GroupBoxStyleDataWithoutDestination: GroupBoxStyle {
     @Environment(\.colorScheme) var colorScheme
     
     var color: Color

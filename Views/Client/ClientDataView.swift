@@ -24,33 +24,34 @@ struct ClientDataView: View {
     @State var temporalite : TempoChart = .mois
     
     var body: some View {
-        Form {
-            Section {
-                Picker("Temporalité", selection: $temporalite.animation()) {
-                    ForEach(TempoChart.allCases) { type in
-                        Text(type.rawValue)
-                            .font(.title)
-                    }
+        VStack {
+            Picker("Temporalité", selection: $temporalite.animation()) {
+                ForEach(TempoChart.allCases) { type in
+                    Text(type.rawValue)
+                        .font(.title)
                 }
-                .pickerStyle(.segmented)
-                
-                GraphPiView(
-                    client: client,
-                    temporalite: $temporalite
-                )
             }
-            .frame(maxWidth: .infinity)
-            .listRowSeparator(.hidden, edges: .bottom)
-            .listRowInsets(.none)
-            .listRowSpacing(.none)
+            .pickerStyle(.segmented)
+            .padding([.leading, .trailing, .top])
             
-            Section {
-                Text("Informations")
+            Form {
+                Section {
+                    GraphPiView(
+                        client: client,
+                        temporalite: $temporalite
+                    )
+                }
+                .frame(maxWidth: .infinity)
+                .listRowSeparator(.hidden, edges: .bottom)
+                .listRowInsets(.none)
+                .listRowSpacing(.none)
+                
+                DataBrutView(client: client, temporalite: $temporalite)
+                    .listRowInsets(EdgeInsets())
             }
+            .navigationTitle("Données du client")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationTitle("Données du client")
-        .navigationBarTitleDisplayMode(.inline)
-        .contentMargins(.top, 0)
     }
 }
 

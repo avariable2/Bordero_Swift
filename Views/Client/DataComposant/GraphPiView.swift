@@ -36,7 +36,7 @@ struct GraphPiView: View {
                     .annotation(position: .overlay, alignment: .center) {
                         if dataItem.value != 0 {
                             Text("\(dataItem.annotation, format: .currency(code: "EUR"))")
-                                .font(.caption2)
+                                .font(.headline)
                                 .foregroundStyle(.primary)
                         }
                     }
@@ -83,7 +83,7 @@ struct GraphPiView: View {
                 Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .month)
             }
         case .sixMois:
-            let range = getSixMonthPeriodRange()
+            let range = ClientDataUtils.getSixMonthPeriodRange()
             return client.listDocuments.filter { doc in
                 doc.dateEmission >= range.start && doc.dateEmission <= range.end
             }
@@ -136,39 +136,11 @@ struct GraphPiView: View {
         case .mois:
             return Date().formatted(.dateTime.month().year())
         case .sixMois:
-            let range = getSixMonthPeriodRange()
+            let range = ClientDataUtils.getSixMonthPeriodRange()
             return "\(range.start.formatted(.dateTime.day().month()))-\(range.end.formatted(.dateTime.day().month().year()))"
         case .annee:
             return Date().formatted(.dateTime.year())
         }
-    }
-    
-    func getSixMonthPeriodRange() -> (start: Date, end: Date) {
-        let calendar = Calendar.current
-        let now = Date()
-        let month = calendar.component(.month, from: now)
-        
-        let year = calendar.component(.year, from: now)
-        var startComponents = DateComponents(year: year)
-        var endComponents = DateComponents(year: year, month: 7, day: 1)
-        
-        if month >= 1 && month <= 6 {
-            // Dans les 6 premiers mois, donc de janvier à juin
-            startComponents.month = 1
-            endComponents.month = 7
-            endComponents.day = 1
-        } else {
-            // Dans les 6 derniers mois, donc de juillet à décembre
-            startComponents.month = 7
-            endComponents.year = year + 1
-            endComponents.month = 1
-            endComponents.day = 1
-        }
-        
-        let startDate = calendar.date(from: startComponents)!
-        let endDate = calendar.date(from: endComponents)!
-        
-        return (startDate, endDate)
     }
 }
 
