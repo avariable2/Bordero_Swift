@@ -64,65 +64,50 @@ struct GraphPiView: View {
     
     func getData() {
         data.removeAll()
-        
+
         let documentsDeTravail = getListByTempo()
         temporaliteText = getTextTemporalite()
-        
-        guard documentsDeTravail.count > 0 else {
+
+        guard !documentsDeTravail.isEmpty else {
             return
         }
-        
-        getResteAPayer(documents: documentsDeTravail)
-        getMontantPayer(documents: documentsDeTravail)
-        getMontantImpayer(documents: documentsDeTravail)
-    }
-    
-    func getResteAPayer(documents: Set<Document>) {
-        calculateChartData(for: documents, isPaid: false, title: "Reste à payer")
+
+        calculateChartData(documents: documentsDeTravail)
     }
 
-    func getMontantPayer(documents: Set<Document>) {
-        calculateChartData(for: documents, isPaid: true, title: "Montant payé")
-    }
-    
-    func getMontantImpayer(documents: Set<Document>) {
-        let title = "Montant impayé"
-        let filteredDocuments = documents.filter { $0.estDeTypeFacture && $0.dateEcheance < Date() && $0.status != .payed }
-        
-        guard !filteredDocuments.isEmpty else {
-            data.append(PieChartData(name: title, value: 0, annotation: 0))
-            return
+    func calculateChartData(documents: Set<Document>) {
+        let currentDate = Date()
+        var montantPayé: Double = 0
+        var montantImpayé: Double = 0
+        var montantEnAttente: Double = 0
+        var countPayé = 0
+        var countImpayé = 0
+        var countEnAttente = 0
+
+        for document in documents where document.estDeTypeFacture {
+            switch document.status {
+            case .payed:
+                montantPayé += document.totalTTC
+                countPayé += 1
+            case .send where document.dateEcheance < currentDate:
+                montantImpayé += document.totalTTC
+                countImpayé += 1
+            case .send where document.dateEcheance > currentDate:
+                montantEnAttente += document.totalTTC
+                countEnAttente += 1
+            default:
+                break
+            }
         }
+
+        data.append(PieChartData(name: "Montant en attente", value: countEnAttente, annotation: montantEnAttente))
         
-        let totalTTC = filteredDocuments.reduce(0) { $0 + $1.totalTTC }
-        
-        data.append(
-            PieChartData(
-                name: title,
-                value: Double(filteredDocuments.count) / Double(documents.count),
-                annotation: totalTTC
-            )
-        )
+        data.append(PieChartData(name: "Montant payé", value: countPayé, annotation: montantPayé))
+
+        data.append(PieChartData(name: "Montant impayé", value: countImpayé, annotation: montantImpayé))
+
     }
-    
-    func calculateChartData(for documents: Set<Document>, isPaid: Bool, title: String) {
-        let filteredDocuments = documents.filter { $0.estDeTypeFacture && $0.payementFinish == isPaid }
-        
-        guard !filteredDocuments.isEmpty else {
-            data.append(PieChartData(name: title, value: 0, annotation: 0))
-            return
-        }
-        
-        let totalTTC = filteredDocuments.reduce(0) { $0 + $1.totalTTC }
-        
-        data.append(
-            PieChartData(
-                name: title,
-                value: Double(filteredDocuments.count) / Double(documents.count),
-                annotation: totalTTC
-            )
-        )
-    }
+
     
     func getTextTemporalite() -> String {
         switch temporalite {
@@ -167,15 +152,16 @@ struct GraphPiView: View {
             }
         }
     }
+
 }
 
 struct PieChartData : Identifiable, Equatable {
     let id = UUID()
     let name : String
-    let value : Double
+    let value : Int
     let annotation: Double
     
-    init(name: String, value: Double, annotation: Double) {
+    init(name: String, value: Int, annotation: Double) {
         self.name = name
         self.value = value
         self.annotation = annotation
