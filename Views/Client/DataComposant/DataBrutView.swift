@@ -17,6 +17,21 @@ struct DataBrutView: View {
     @State var acteFavoris : String = ""
     @State var derniersActesEffectuer : Array<String> = []
     
+    @State var isLoading = false
+    
+    var vocabulaireTemporalité : String {
+        switch temporalite {
+        case .semaine:
+            "la semaine"
+        case .mois:
+            "le mois"
+        case .sixMois:
+            "les 6 mois"
+        case .annee:
+            "l'année"
+        }
+    }
+    
     var body: some View {
         Section("Données") {
             HStack {
@@ -27,14 +42,14 @@ struct DataBrutView: View {
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
                 
                 GroupBox {
-                    DataValueView(value: nbrFacture.description, unit: "")
+                    DataValueView(value: nbrFacture.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
                     Label("Nbr Facture", systemImage: "doc.richtext")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
             }
             HStack {
                 GroupBox {
-                    DataValueView(value: nbrDevis.description, unit: "")
+                    DataValueView(value: nbrDevis.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
                     Label("Nbr Devis", systemImage: "doc.append")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
@@ -47,17 +62,18 @@ struct DataBrutView: View {
             }
             
             GroupBox {
-                DataValueView(value: acteFavoris.isEmpty ? "Aucun" : acteFavoris, unit: "")
+                DataValueView(value: acteFavoris.isEmpty ? "Aucun" : acteFavoris, unit: "sur \(vocabulaireTemporalité)")
             } label: {
                 Label("Acte favoris", systemImage: "heart")
             }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
             
             GroupBox {
-                DataValueView(value: derniersActesEffectuer.formatted(), unit: "")
+                DataValueView(value: derniersActesEffectuer.formatted(), unit: "sur \(vocabulaireTemporalité)")
             } label: {
                 Label("Dernier acte effectuer", systemImage: "figure.walk")
             }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
         }
+        .redacted(reason: isLoading ? .placeholder : [])
         .onAppear() {
             getData()
         }
@@ -67,6 +83,8 @@ struct DataBrutView: View {
     }
     
     func getData() {
+        isLoading = true
+        
         let list = getListByTempo()
         
         documentsEnAttente = getDocumentsEnAttentes(list)
@@ -76,6 +94,8 @@ struct DataBrutView: View {
         acteFavoris = getActeFavoris(list) ?? ""
         
         derniersActesEffectuer = getDernierActeEffectuer(list)
+        
+        isLoading = false
     }
     
     func getDocumentsEnAttentes(_ documents : Set<Document>) -> Int {
