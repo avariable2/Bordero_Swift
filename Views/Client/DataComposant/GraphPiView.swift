@@ -15,6 +15,8 @@ struct GraphPiView: View {
     @Binding var temporalite : TempoChart
     @State var temporaliteText : String = Date().formatted(.dateTime.month().year())
     
+    @State var hasInitOneTime = false
+    
     var body: some View {
         VStack {
             if data.isEmpty {
@@ -38,6 +40,7 @@ struct GraphPiView: View {
                             Text("\(dataItem.annotation, format: .currency(code: "EUR"))")
                                 .font(.headline)
                                 .foregroundStyle(.primary)
+                                .bold()
                         }
                     }
                     .accessibilityLabel(dataItem.name)
@@ -49,7 +52,9 @@ struct GraphPiView: View {
             }
         }
         .onAppear() {
-            getData()
+            if !hasInitOneTime {
+                getData()
+            }
         }
         .onChange(of: temporalite) { oldValue, newValue in
             getData()
@@ -69,29 +74,7 @@ struct GraphPiView: View {
         
         getResteAPayer(documents: documentsDeTravail)
         getMontantPayer(documents: documentsDeTravail)
-        
-    }
-    
-    func getListByTempo() -> Set<Document> {
-        switch temporalite {
-        case .semaine:
-            return client.listDocuments.filter { doc in
-                Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .weekOfYear)
-            }
-        case .mois:
-            return client.listDocuments.filter { doc in
-                Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .month)
-            }
-        case .sixMois:
-            let range = ClientDataUtils.getSixMonthPeriodRange()
-            return client.listDocuments.filter { doc in
-                doc.dateEmission >= range.start && doc.dateEmission <= range.end
-            }
-        case .annee:
-            return client.listDocuments.filter { doc in
-                Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .year)
-            }
-        }
+        getMontantImpayer(documents: documentsDeTravail)
     }
     
     func getResteAPayer(documents: Set<Document>) {
@@ -100,6 +83,26 @@ struct GraphPiView: View {
 
     func getMontantPayer(documents: Set<Document>) {
         calculateChartData(for: documents, isPaid: true, title: "Montant payé")
+    }
+    
+    func getMontantImpayer(documents: Set<Document>) {
+        let title = "Montant impayé"
+        let filteredDocuments = documents.filter { $0.estDeTypeFacture && $0.dateEcheance < Date() && $0.status != .payed }
+        
+        guard !filteredDocuments.isEmpty else {
+            data.append(PieChartData(name: title, value: 0, annotation: 0))
+            return
+        }
+        
+        let totalTTC = filteredDocuments.reduce(0) { $0 + $1.totalTTC }
+        
+        data.append(
+            PieChartData(
+                name: title,
+                value: Double(filteredDocuments.count) / Double(documents.count),
+                annotation: totalTTC
+            )
+        )
     }
     
     func calculateChartData(for documents: Set<Document>, isPaid: Bool, title: String) {
@@ -140,6 +143,28 @@ struct GraphPiView: View {
             return "\(range.start.formatted(.dateTime.day().month()))-\(range.end.formatted(.dateTime.day().month().year()))"
         case .annee:
             return Date().formatted(.dateTime.year())
+        }
+    }
+    
+    func getListByTempo() -> Set<Document> {
+        switch temporalite {
+        case .semaine:
+            return client.listDocuments.filter { doc in
+                Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .weekOfYear)
+            }
+        case .mois:
+            return client.listDocuments.filter { doc in
+                Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .month)
+            }
+        case .sixMois:
+            let range = ClientDataUtils.getSixMonthPeriodRange()
+            return client.listDocuments.filter { doc in
+                doc.dateEmission >= range.start && doc.dateEmission <= range.end
+            }
+        case .annee:
+            return client.listDocuments.filter { doc in
+                Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .year)
+            }
         }
     }
 }

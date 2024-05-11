@@ -33,7 +33,7 @@ struct DataBrutView: View {
     }
     
     var body: some View {
-        Section("Données") {
+        Section {
             HStack {
                 GroupBox {
                     DataValueView(value: documentsEnAttente.description, unit: "document(s)")
