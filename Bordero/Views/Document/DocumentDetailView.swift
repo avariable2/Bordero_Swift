@@ -67,7 +67,7 @@ struct DocumentDetailView: View {
                             prepareForSharing()
                             showingShareSheet = true
                         } label: {
-                            Text("Partager")
+                            Text("Exporter")
                         }
                         
                     }
