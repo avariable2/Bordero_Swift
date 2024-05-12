@@ -12,6 +12,11 @@ struct DataBrutView: View {
     @Binding var temporalite : TempoChart
     
     @State var documentsEnAttente : Int = 0
+    @State var facturesImpayés : Int = 0
+    
+    @State var facturePayé : Int = 0
+    @State var factureOuverte : Int = 0
+    
     @State var nbrFacture : Int = 0
     @State var nbrDevis : Int = 0
     @State var acteFavoris : String = ""
@@ -42,36 +47,54 @@ struct DataBrutView: View {
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
                 
                 GroupBox {
-                    DataValueView(value: nbrFacture.description, unit: "sur \(vocabulaireTemporalité)")
+                    DataValueView(value: facturesImpayés.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Nbr Facture", systemImage: "doc.richtext")
-                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
+                    Label("Impayés", systemImage: "doc.badge.clock")
+                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .orange))
             }
+            
+            HStack {
+                GroupBox {
+                    DataValueView(value: facturePayé.description, unit: "document(s)")
+                } label: {
+                    Label("Payer", systemImage: "checkmark")
+                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .green))
+                
+                GroupBox {
+                    DataValueView(value: factureOuverte.description, unit: "sur \(vocabulaireTemporalité)")
+                } label: {
+                    Label("Ouvert", systemImage: "pencil.and.list.clipboard")
+                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .yellow))
+            }
+            
             HStack {
                 GroupBox {
                     DataValueView(value: nbrDevis.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Nbr Devis", systemImage: "doc.append")
-                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
+                    Label("Devis", systemImage: "doc")
+                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .teal))
                 
                 GroupBox {
-                    DataValueView(value: nbrDevis.description, unit: "")
+                    DataValueView(value: nbrFacture.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Nbr docs / mois", systemImage: "heart")
-                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
+                    Label("Facture", systemImage: "doc")
+                }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .teal))
             }
             
             GroupBox {
                 DataValueView(value: acteFavoris.isEmpty ? "Aucun" : acteFavoris, unit: "sur \(vocabulaireTemporalité)")
             } label: {
                 Label("Acte favoris", systemImage: "heart")
-            }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
+            }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .pink))
             
             GroupBox {
-                DataValueView(value: derniersActesEffectuer.formatted(), unit: "sur \(vocabulaireTemporalité)")
+                DataValueView(
+                    value: derniersActesEffectuer.isEmpty ?
+                    "Aucun" : derniersActesEffectuer.formatted(),
+                    unit: "sur \(vocabulaireTemporalité)")
             } label: {
                 Label("Dernier acte effectuer", systemImage: "figure.walk")
-            }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
+            }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .purple))
         }
         .redacted(reason: isLoading ? .placeholder : [])
         .onAppear() {
@@ -88,18 +111,37 @@ struct DataBrutView: View {
         let list = getListByTempo()
         
         documentsEnAttente = getDocumentsEnAttentes(list)
+        facturesImpayés = getFacturesImpayés(list)
+        
+        facturePayé = getFacturesPayé(list)
+        factureOuverte = getFacturesCreer(list)
+        
         nbrFacture = getNbrFacture(list)
         nbrDevis = getNbrDevis(list)
         
         acteFavoris = getActeFavoris(list) ?? ""
-        
         derniersActesEffectuer = getDernierActeEffectuer(list)
         
         isLoading = false
     }
     
     func getDocumentsEnAttentes(_ documents : Set<Document>) -> Int {
-        let listDocsEnAttentes = documents.filter { $0.status == .send }
+        let listDocsEnAttentes = documents.filter { $0.status == .send && $0.dateEcheance > Date() }
+        return listDocsEnAttentes.count
+    }
+    
+    func getFacturesImpayés(_ documents : Set<Document>) -> Int {
+        let listDocsEnAttentes = documents.filter { $0.status == .send && $0.dateEcheance < Date() }
+        return listDocsEnAttentes.count
+    }
+    
+    func getFacturesPayé(_ documents : Set<Document>) -> Int {
+        let listDocsEnAttentes = documents.filter { $0.status == .payed }
+        return listDocsEnAttentes.count
+    }
+    
+    func getFacturesCreer(_ documents : Set<Document>) -> Int {
+        let listDocsEnAttentes = documents.filter { $0.status == .created }
         return listDocsEnAttentes.count
     }
     

@@ -86,9 +86,10 @@ struct DocumentDetailView: View {
     }
     
     func prepareForSharing() {
-        document.status = .send
-        
-        DataController.saveContext()
+        if document.status == .created {
+            document.status = .send
+            DataController.saveContext()
+        }
     }
     
     func getUrlForSharing() -> URL? {
