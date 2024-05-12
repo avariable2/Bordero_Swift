@@ -1,0 +1,24 @@
+{
+  "originHash" : "d04745653b8edc2d7e2aee25edae8e1d8d5dd13e47c5ca89b5f3b526a419ac0b",
+  "pins" : [
+    {
+      "identity" : "scrollablegradientbackground",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lospi/ScrollableGradientBackground",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ac89cf395140d4629ff2698ab9837033836db110"
+      }
+    },
+    {
+      "identity" : "swiftui-digital-signature",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/globulus/swiftui-digital-signature",
+      "state" : {
+        "revision" : "e4cc06d0f6c785dcb69ffc60cc1ffbd40eb02e18",
+        "version" : "0.1.2"
+      }
+    }
+  ],
+  "version" : 3
+}

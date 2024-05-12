@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>top-level-items</key>
+	<array>
+		<dict>
+			<key>children</key>
+			<array>
+				<dict>
+					<key>destination</key>
+					<dict>
+						<key>location-parameters</key>
+						<dict>
+							<key>EndingColumnNumber</key>
+							<string>0</string>
+							<key>EndingLineNumber</key>
+							<string>105</string>
+							<key>StartingColumnNumber</key>
+							<string>0</string>
+							<key>StartingLineNumber</key>
+							<string>104</string>
+							<key>Timestamp</key>
+							<string>734624354.679597</string>
+						</dict>
+						<key>rebasable-url</key>
+						<dict>
+							<key>base</key>
+							<string>workspace</string>
+							<key>payload</key>
+							<dict>
+								<key>relative-path</key>
+								<string>Bordero/Views/User/ParametersView.swift</string>
+							</dict>
+						</dict>
+					</dict>
+					<key>text-context</key>
+					<dict>
+						<key>focused</key>
+						<string>                if ProcessInfo.processInfo.isiOSAppOnMac {
+</string>
+						<key>leading</key>
+						<string>                
+                
+</string>
+						<key>trailing</key>
+						<string>                    
+                    Section {
+                        Text("Si un problème survient contacter le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
+</string>
+					</dict>
+					<key>title</key>
+					<string>Corriger le probleme pour contacter le developpeur depuis mail sur l'app sur Mac</string>
+					<key>type</key>
+					<string>bookmark</string>
+				</dict>
+				<dict>
+					<key>destination</key>
+					<dict>
+						<key>rebasable-url</key>
+						<dict>
+							<key>base</key>
+							<string>workspace</string>
+							<key>payload</key>
+							<dict>
+								<key>relative-path</key>
+								<string>Bordero/Views/FormTypeActeView.swift</string>
+							</dict>
+						</dict>
+						<key>type</key>
+						<string>DVTDocumentLocation</string>
+					</dict>
+					<key>title</key>
+					<string>Loose of perf when switch of keyboard </string>
+					<key>type</key>
+					<string>bookmark</string>
+				</dict>
+			</array>
+			<key>title</key>
+			<string>Performance optimisation</string>
+			<key>type</key>
+			<string>group</string>
+		</dict>
+		<dict>
+			<key>children</key>
+			<array>
+				<dict>
+					<key>destination</key>
+					<dict>
+						<key>location-parameters</key>
+						<dict>
+							<key>EndingColumnNumber</key>
+							<string>0</string>
+							<key>EndingLineNumber</key>
+							<string>10</string>
+							<key>StartingColumnNumber</key>
+							<string>0</string>
+							<key>StartingLineNumber</key>
+							<string>9</string>
+							<key>Timestamp</key>
+							<string>730595585.652423</string>
+						</dict>
+						<key>rebasable-url</key>
+						<dict>
+							<key>base</key>
+							<string>workspace</string>
+							<key>payload</key>
+							<dict>
+								<key>relative-path</key>
+								<string>Bordero/Views/OnBoarding/OnBoardingView.swift</string>
+							</dict>
+						</dict>
+					</dict>
+					<key>text-context</key>
+					<dict>
+						<key>focused</key>
+						<string>// TODO: Lorsque tu implémentes les push notif oublies pas de creer un ecran pour demander l'autorisation à l'utilisateur et de creer un ecran qui explique pourquoi tu en as besoin
+</string>
+						<key>leading</key>
+						<string>import SwiftUI
+
+</string>
+						<key>trailing</key>
+						<string>
+struct OnBoardingView : View {
+    @Environment(\.dismiss) var dismiss
+</string>
+					</dict>
+					<key>type</key>
+					<string>bookmark</string>
+				</dict>
+				<dict>
+					<key>destination</key>
+					<dict>
+						<key>rebasable-url</key>
+						<dict>
+							<key>base</key>
+							<string>workspace</string>
+							<key>payload</key>
+							<dict>
+								<key>relative-path</key>
+								<string>Bordero/Views/Client/ListClients.swift</string>
+							</dict>
+						</dict>
+						<key>type</key>
+						<string>DVTDocumentLocation</string>
+					</dict>
+					<key>type</key>
+					<string>bookmark</string>
+				</dict>
+				<dict>
+					<key>destination</key>
+					<dict>
+						<key>rebasable-url</key>
+						<dict>
+							<key>base</key>
+							<string>workspace</string>
+							<key>payload</key>
+							<dict>
+								<key>relative-path</key>
+								<string>Bordero/Views/Client/ListClients.swift</string>
+							</dict>
+						</dict>
+						<key>type</key>
+						<string>DVTDocumentLocation</string>
+					</dict>
+					<key>type</key>
+					<string>bookmark</string>
+				</dict>
+			</array>
+			<key>title</key>
+			<string>TODO</string>
+			<key>type</key>
+			<string>group</string>
+		</dict>
+	</array>
+</dict>
+</plist>
