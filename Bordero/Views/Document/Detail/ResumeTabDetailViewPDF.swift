@@ -125,7 +125,7 @@ struct ResumeTabDetailViewPDF: View {
                 SafariView(url: url)
             }
             .sheet(isPresented: $showSheetPayement) {
-                NavigationView {
+                NavigationStack {
                     PayementSheet(document: document)
                 }
                 .presentationDetents([.medium])
@@ -143,7 +143,7 @@ struct ResumeTabDetailViewPDF: View {
                     Button {
                         showSheetPayement = true
                     } label: {
-                        Text("Ajouter un paiement")
+                        Text(document.listPayements.isEmpty ? "Ajouter un paiement" : "Modifier le paiement")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)

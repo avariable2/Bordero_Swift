@@ -38,6 +38,7 @@
 		F76ECAC52BD283730089C739 /* Document+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76ECAC42BD283730089C739 /* Document+helper.swift */; };
 		F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76ECAC62BD2986F0089C739 /* SnapshotTypeActe+helper.swift */; };
 		F7710D2F2BF11C13009D43C0 /* PayementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */; };
+		F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D302BF132A7009D43C0 /* Paiement+helper.swift */; };
 		F77312872B8CC2F500413820 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77312862B8CC2F500413820 /* Protocol.swift */; };
 		F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729C2BEFC099001C85CE /* ClientDataUtils.swift */; };
 		F773729F2BEFC628001C85CE /* DataBrutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729E2BEFC628001C85CE /* DataBrutView.swift */; };
@@ -115,6 +116,7 @@
 		F76ECAC42BD283730089C739 /* Document+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+helper.swift"; sourceTree = "<group>"; };
 		F76ECAC62BD2986F0089C739 /* SnapshotTypeActe+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapshotTypeActe+helper.swift"; sourceTree = "<group>"; };
 		F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayementSheet.swift; sourceTree = "<group>"; };
+		F7710D302BF132A7009D43C0 /* Paiement+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Paiement+helper.swift"; sourceTree = "<group>"; };
 		F77312862B8CC2F500413820 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		F773729C2BEFC099001C85CE /* ClientDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataUtils.swift; sourceTree = "<group>"; };
 		F773729E2BEFC628001C85CE /* DataBrutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBrutView.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				F76ECAC62BD2986F0089C739 /* SnapshotTypeActe+helper.swift */,
 				F70DC1022BD5BD22004D6206 /* HistoriqueEvenement+helper.swift */,
 				F78737272BDD60A6002E6C85 /* NSPredicate+helper.swift */,
+				F7710D302BF132A7009D43C0 /* Paiement+helper.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				F7E88C832B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift in Sources */,
 				F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */,
 				F7710D2F2BF11C13009D43C0 /* PayementSheet.swift in Sources */,
+				F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */,
 				F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */,
 				F78737282BDD60A6002E6C85 /* NSPredicate+helper.swift in Sources */,
 				F7E88C812B895BAE00AAF73C /* BandeauCreateDocument.swift in Sources */,

@@ -13,9 +13,11 @@ struct PayementSheet: View {
     
     let document : Document
     
-    @State private var fullText: String = ""
+    @State private var note: String = ""
     @State private var amount : Double = 0
     @State private var date : Date = Date()
+    
+    @State private var historiquePaiement : Array<Paiement> = []
     
     var body: some View {
         VStack {
@@ -28,8 +30,26 @@ struct PayementSheet: View {
                 
                 DatePicker("Payé le", selection: $date, displayedComponents: .date)
                 
-                Section("Notes - optionnel") {
-                    TextEditor(text: $fullText)
+                Section("Note - optionnel") {
+                    TextEditor(text: $note)
+                }
+                
+                if !historiquePaiement.isEmpty {
+                    Section("Paiement reçus") {
+                        ForEach(historiquePaiement) { paiement in
+                            NavigationLink {
+                                DisplayPayementSheet(paiement: paiement)
+                            } label: {
+                                HStack {
+                                    Text(paiement.date?.formatted() ?? "Date inconnu")
+                                    Spacer()
+                                    Text(paiement.montant, format: .currency(code: "EUR"))
+                                }
+                                .fontWeight(.semibold)
+                            }
+                            
+                        }
+                    }
                 }
                 
             }
@@ -38,6 +58,7 @@ struct PayementSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .onAppear() {
                 amount = document.resteAPayer
+                historiquePaiement = Array(document.listPayements)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -67,12 +88,77 @@ struct PayementSheet: View {
         paiement.client = document.client_
         paiement.document = document
         
-        document.status = .payed
+        if document.resteAPayer >= amount {
+            document.status = .payed
+        } else {
+            document.status = .send
+        }
+        
+        let historiquePaiement = HistoriqueEvenement(context: moc)
+        historiquePaiement.id = UUID()
+        historiquePaiement.nom = Evenement.TypeEvenement.payer.rawValue
+        historiquePaiement.date = Date()
+        historiquePaiement.correspond = document
+        
+        document.historique?.adding(historiquePaiement)
         
         DataController.saveContext()
     }
 }
 
+struct DisplayPayementSheet : View {
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
+    
+    let paiement: Paiement
+    
+    var body: some View {
+        VStack {
+            List {
+                LabeledContent("Montant") {
+                    Text(paiement.montant, format: .currency(code: "EUR"))
+                }
+                
+                LabeledContent("Payé le ") {
+                    if let date = paiement.date {
+                        Text(date, format: .dateTime.day().month().year())
+                    } else {
+                        Text("Date inconnu")
+                    }
+                }
+                
+                LabeledContent("Note") {
+                    Text(paiement.note ?? "")
+                }
+            }
+            .navigationTitle("Paiement")
+            .safeAreaInset(edge: .bottom) {
+                Button(role: .destructive) {
+                    delete()
+                } label: {
+                    Text("Supprimer")
+                        .foregroundStyle(.white)
+                }
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .background(Color.red)
+            }
+        }
+       
+    }
+    
+    func delete() {
+        dismiss()
+        moc.delete(paiement)
+        try? moc.save()
+    }
+}
+
 #Preview {
-    PayementSheet(document: Document.example)
+    Group {
+        PayementSheet(document: Document.example)
+        DisplayPayementSheet(
+            paiement: Paiement(context: DataController.shared.container.viewContext)
+        )
+    }
+    
 }
