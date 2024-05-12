@@ -34,6 +34,7 @@ struct ClientDetailView: View {
                         value: amountWaiting.description,
                         unit: "€ sur \(numberOfDocumentWaiting) document(s) envoyer"
                     )
+                    .fixedSize()
                 } label: {
                     Label("Montant en attente", systemImage: "bag.badge.questionmark")
                 }
@@ -71,7 +72,7 @@ struct ClientDetailView: View {
                     )
                 )
             }
-            .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 20))
+//            .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 20))
             
             Section {
                 DisclosureGroup(isExpanded: $topExpanded) {

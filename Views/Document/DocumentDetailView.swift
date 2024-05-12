@@ -50,8 +50,6 @@ struct DocumentDetailView: View {
             }
             
             urlSharing =  getUrlForSharing()
-            
-            
         }
         .sheet(isPresented: $showingShareSheet) {
             ActivityView(activityItems: [urlSharing!], applicationActivities: nil) // normalement le boutton pour partager n'existe pas si l'url n'existe pas donc aucune raison que ça soit null

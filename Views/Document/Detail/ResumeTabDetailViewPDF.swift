@@ -12,7 +12,7 @@ struct ResumeTabDetailViewPDF: View {
     @State var presentURL: URL? = nil
     @ObservedObject var document : Document
     
-    @State var showDetailClient = false
+    @State var showSheetPayement = false
     
     var body: some View {
         VStack {
@@ -49,11 +49,11 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     Button {
-//                        showDetailClient = true
+                        
                     } label: {
                         if let client = document.client_ {
                             ClientRowView(firstname: client.firstname, name: client.lastname)
-                            .tint(.primary)
+                                .tint(.primary)
                         } else {
                             Label {
                                 Text("Le client n'à pas été retrouvé ou bien à été supprimer.")
@@ -65,7 +65,6 @@ struct ResumeTabDetailViewPDF: View {
                             }
                             .tint(.primary)
                         }
-                       
                     }
                     
                 } header: {
@@ -74,32 +73,27 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
+                        Text("Status")
                         
-                        HStack {
-                            Text("Status")
+                        Spacer()
+                        
+                        HStack(spacing: nil) {
+                            Image(systemName: "circle.circle.fill")
+                                .foregroundStyle(.black, document.determineColor())
                             
-                            Spacer()
-                            
-                            HStack(spacing: nil) {
-                                Image(systemName: "circle.circle.fill")
-                                    .foregroundStyle(.black, document.determineColor())
-                                
-                                Text(document.determineStatut())
-                                    .foregroundStyle(.primary)
-                                    .fontWeight(.light)
-                            }
+                            Text(document.determineStatut())
+                                .foregroundStyle(.primary)
+                                .fontWeight(.light)
                         }
                     }
                     
                     HStack {
-                        HStack {
-                            Text("Reste à payé")
-                            
-                            Spacer()
-                            
-                            Text(document.totalTTC - document.montantPayer, format: .currency(code: "EUR"))
-                                .fontWeight(.semibold)
-                        }
+                        Text("Reste à payé")
+                        
+                        Spacer()
+                        
+                        Text(document.totalTTC - document.montantPayer, format: .currency(code: "EUR"))
+                            .fontWeight(.semibold)
                     }
                     
                     RowInformationDate(
@@ -130,6 +124,12 @@ struct ResumeTabDetailViewPDF: View {
             .sheet(item: $presentURL) { url in
                 SafariView(url: url)
             }
+            .sheet(isPresented: $showSheetPayement) {
+                NavigationView {
+                    PayementSheet()
+                }
+                .presentationDetents([.medium])
+            }
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     Button {
@@ -141,7 +141,7 @@ struct ResumeTabDetailViewPDF: View {
                     .buttonStyle(.borderedProminent)
                     
                     Button {
-                        
+                        showSheetPayement = true
                     } label: {
                         Text("Ajouter un paiement")
                             .frame(maxWidth: .infinity)
@@ -197,9 +197,9 @@ struct RowInformationDate: View {
     }
 }
 
-//#Preview {
-//    ResumeTabDetailViewPDF(client: Client(firstname: "Adriennne", lastname: "VARY", phone: "0102030405", email: "exemple.vi@gmail.com", context: DataController.shared.container.viewContext))
-//}
+#Preview {
+    ResumeTabDetailViewPDF(document: Document.example)
+}
 
 extension URL: Identifiable {
     public var id: String {
