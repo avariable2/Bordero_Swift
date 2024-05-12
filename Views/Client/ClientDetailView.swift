@@ -28,38 +28,6 @@ struct ClientDetailView: View {
         Form {
             ClientDetailHeaderView(client: client)
             
-            Section {
-                RowIconColor(
-                    text: client.email.isEmpty ? "Aucun e-mail renseigné" : client.email,
-                    systemName: "envelope.circle.fill",
-                    color: .blue,
-                    accessibility: "L'e-mail du client"
-                )
-                .contextMenu {
-                    Button(action: {
-                        UIPasteboard.general.string = client.email
-                    }) {
-                        Text("Copier")
-                        Image(systemName: "doc.on.doc")
-                    }
-                }
-                
-                RowIconColor(
-                    text: client.phone.isEmpty ? "Aucun téléphone renseigné" : client.phone,
-                    systemName: "phone.circle.fill",
-                    color: .green,
-                    accessibility: "Le numéro de téléphone du client"
-                )
-                .contextMenu {
-                    Button(action: {
-                        UIPasteboard.general.string = client.phone
-                    }) {
-                        Text("Copier")
-                        Image(systemName: "doc.on.doc")
-                    }
-                }
-            }
-            
             Section("Données sur le mois en cours") {
                 GroupBox {
                     DataValueView(
@@ -67,11 +35,11 @@ struct ClientDetailView: View {
                         unit: "€ sur \(numberOfDocumentWaiting) document(s) envoyer"
                     )
                 } label: {
-                    Label("Montant en attente", systemImage: "bag.fill.badge.questionmark")
+                    Label("Montant en attente", systemImage: "bag.badge.questionmark")
                 }
                 .groupBoxStyle(
                     GroupBoxStyleData(
-                        color: .pink,
+                        color: .blue,
                         destination: ClientDataView(client: client)
                     )
                 )
@@ -82,11 +50,11 @@ struct ClientDetailView: View {
                         unit: "€ sur \(numberOfDocumentPayed) documents payer"
                     )
                 } label: {
-                    Label("Total payé par le client", systemImage: "bag.fill.badge.plus")
+                    Label("Total payé par le client", systemImage: "bag.badge.plus")
                 }
                 .groupBoxStyle(
                     GroupBoxStyleData(
-                        color: .indigo,
+                        color: .green,
                         destination: ClientDataView(client: client)
                     )
                 )
@@ -94,7 +62,7 @@ struct ClientDetailView: View {
                 GroupBox {
                     DataValueView(value: numberOfDocumentThisMonth.description, unit: "document(s)")
                 } label: {
-                    Label("Document(s) créer", systemImage: "folder.fill")
+                    Label("Document(s) créer", systemImage: "doc")
                 }
                 .groupBoxStyle(
                     GroupBoxStyleData(
@@ -235,6 +203,36 @@ struct ClientDetailHeaderView: View {
                 }
                 if let coordonne3 = client.adresse3, !coordonne3.isEmpty {
                     RowAdresse(adresseSurUneLigne: client.getAdresseSurUneLigne(coordonne3))
+                }
+                
+                RowIconColor(
+                    text: client.email.isEmpty ? "Aucun e-mail renseigné" : client.email,
+                    systemName: "envelope.circle.fill",
+                    color: .blue,
+                    accessibility: "L'e-mail du client"
+                )
+                .contextMenu {
+                    Button(action: {
+                        UIPasteboard.general.string = client.email
+                    }) {
+                        Text("Copier")
+                        Image(systemName: "doc.on.doc")
+                    }
+                }
+                
+                RowIconColor(
+                    text: client.phone.isEmpty ? "Aucun téléphone renseigné" : client.phone,
+                    systemName: "phone.circle.fill",
+                    color: .green,
+                    accessibility: "Le numéro de téléphone du client"
+                )
+                .contextMenu {
+                    Button(action: {
+                        UIPasteboard.general.string = client.phone
+                    }) {
+                        Text("Copier")
+                        Image(systemName: "doc.on.doc")
+                    }
                 }
             } label: {
                 HStack {
