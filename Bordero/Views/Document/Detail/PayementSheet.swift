@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct PayementSheet: View {
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    
+    let document : Document
+    
     @State private var fullText: String = ""
     @State private var amount : Double = 0
     @State private var date : Date = Date()
@@ -32,6 +36,9 @@ struct PayementSheet: View {
             .listStyle(.grouped)
             .navigationTitle("Ajouter un paiement")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear() {
+                amount = document.resteAPayer
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Retour", role: .cancel) {
@@ -41,7 +48,8 @@ struct PayementSheet: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        
+                        addPayement()
+                        dismiss()
                     } label: {
                         Text("Ajouter")
                     }
@@ -50,8 +58,21 @@ struct PayementSheet: View {
             }
         }
     }
+    
+    func addPayement() {
+        let paiement = Paiement(context: moc)
+        paiement.id = UUID()
+        paiement.date = date
+        paiement.montant = amount
+        paiement.client = document.client_
+        paiement.document = document
+        
+        document.status = .payed
+        
+        DataController.saveContext()
+    }
 }
 
 #Preview {
-    PayementSheet()
+    PayementSheet(document: Document.example)
 }

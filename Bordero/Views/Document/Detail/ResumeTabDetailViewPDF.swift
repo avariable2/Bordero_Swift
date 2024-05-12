@@ -92,7 +92,7 @@ struct ResumeTabDetailViewPDF: View {
                         
                         Spacer()
                         
-                        Text(document.totalTTC - document.montantPayer, format: .currency(code: "EUR"))
+                        Text(document.resteAPayer, format: .currency(code: "EUR"))
                             .fontWeight(.semibold)
                     }
                     
@@ -126,7 +126,7 @@ struct ResumeTabDetailViewPDF: View {
             }
             .sheet(isPresented: $showSheetPayement) {
                 NavigationView {
-                    PayementSheet()
+                    PayementSheet(document: document)
                 }
                 .presentationDetents([.medium])
             }

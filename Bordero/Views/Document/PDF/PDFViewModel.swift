@@ -289,7 +289,7 @@ class PDFViewModel {
             montant: self.pdfModel.optionsDocument.remise.montant
         )
         
-        document.payementAllow = Document.PayementAllow(
+        document.payementAllow = Document.TypePayementAllow(
             carte: self.pdfModel.optionsDocument.payementAllow.contains(.carte),
             cheque: self.pdfModel.optionsDocument.payementAllow.contains(.cheque),
             virement: self.pdfModel.optionsDocument.payementAllow.contains(.virement),

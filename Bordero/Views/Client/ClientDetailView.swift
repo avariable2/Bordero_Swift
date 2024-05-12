@@ -32,7 +32,7 @@ struct ClientDetailView: View {
                 GroupBox {
                     DataValueView(
                         value: amountWaiting.description,
-                        unit: "€ sur \(numberOfDocumentWaiting) document(s) envoyer"
+                        unit: "€ sur \(numberOfDocumentWaiting) facture(s) envoyer"
                     )
                     .fixedSize()
                 } label: {
@@ -48,7 +48,7 @@ struct ClientDetailView: View {
                 GroupBox {
                     DataValueView(
                         value: amountPayed.description,
-                        unit: "€ sur \(numberOfDocumentPayed) documents payer"
+                        unit: "€ sur \(numberOfDocumentPayed) facture(s)"
                     )
                 } label: {
                     Label("Total payé par le client", systemImage: "bag.badge.plus")
@@ -61,7 +61,7 @@ struct ClientDetailView: View {
                 )
                 
                 GroupBox {
-                    DataValueView(value: numberOfDocumentThisMonth.description, unit: "document(s)")
+                    DataValueView(value: numberOfDocumentThisMonth.description, unit: "facture(s)")
                 } label: {
                     Label("Document(s) créer", systemImage: "doc")
                 }

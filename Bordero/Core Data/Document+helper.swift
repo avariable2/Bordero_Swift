@@ -38,7 +38,7 @@ extension Document {
         var montant : Double
     }
     
-    struct PayementAllow {
+    struct TypePayementAllow {
         var carte : Bool
         var cheque : Bool
         var virement : Bool
@@ -215,9 +215,9 @@ extension Document {
         }
     }
     
-    var payementAllow : PayementAllow {
+    var payementAllow : TypePayementAllow {
         get {
-            PayementAllow(
+            TypePayementAllow(
                 carte: payementAllow_?["carte"] as? Bool ?? true,
                 cheque: payementAllow_?["cheque"] as? Bool ?? true,
                 virement: payementAllow_?["virement"] as? Bool ?? true,
@@ -251,6 +251,12 @@ extension Document {
         }
     }
     
+    var listPayements : Set<Paiement> {
+        get {
+            paiements as? Set<Paiement> ?? Set()
+        }
+    }
+    
     var listOfTypeActe : Set<SnapshotTypeActe> {
         get {
             elements as! Set<SnapshotTypeActe>
@@ -260,6 +266,14 @@ extension Document {
     var montantPayer : Double {
         get { montantPayer_ }
         set { montantPayer_ = newValue }
+    }
+    
+    var resteAPayer : Double {
+        get { 
+            totalTTC - listPayements.reduce(0) { somme, paiement in
+                somme + paiement.montant
+            }
+        }
     }
     
     func titleForDate(_ date: Date) -> String {
