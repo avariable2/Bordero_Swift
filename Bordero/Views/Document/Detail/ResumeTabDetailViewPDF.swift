@@ -140,14 +140,15 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     .buttonStyle(.borderedProminent)
                     
-                    Button {
-                        showSheetPayement = true
-                    } label: {
-                        Text(document.listPayements.isEmpty ? "Ajouter un paiement" : "Modifier le paiement")
-                            .frame(maxWidth: .infinity)
+                    if document.estDeTypeFacture {
+                        Button {
+                            showSheetPayement = true
+                        } label: {
+                            Text(document.listPayements.isEmpty ? "Ajouter un paiement" : "Modifier le paiement")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
                     }
-                    .buttonStyle(.bordered)
-                    
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
