@@ -18,10 +18,10 @@ enum TempoChart : String, CaseIterable, Identifiable, Codable {
 }
 
 struct ClientDataView: View {
-    
     @State var client : Client
-    @State var data : [PieChartData] = []
     @State var temporalite : TempoChart = .mois
+    
+    @State var showHistoriquePaiement = false
     
     var body: some View {
         VStack {
@@ -35,6 +35,19 @@ struct ClientDataView: View {
             .padding([.leading, .trailing, .top])
             
             Form {
+                Section {
+                    let listTrier = client.listPaiements.sorted { $0.date < $1.date }
+                    PaiementGraphView(
+                        temporalite: $temporalite, paiements: Array(listTrier)
+                    )
+                    
+                    Button {
+                        showHistoriquePaiement = true
+                    } label: {
+                        Text("Voir l'historique des paiements")
+                    }
+                }
+                
                 Section {
                     GraphPiView(
                         client: client,
@@ -51,6 +64,12 @@ struct ClientDataView: View {
             }
             .navigationTitle("Données du client")
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showHistoriquePaiement) {
+                NavigationStack {
+                    HistoriquePaiementView()
+                }
+                .presentationDetents([.medium, .large])
+            }
         }
     }
 }

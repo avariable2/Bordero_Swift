@@ -34,11 +34,13 @@
 		F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76704252BC840EE00257315 /* PDFGridInfoInvoiceView.swift */; };
 		F7681EC72BD045FD0058150A /* PDFUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7681EC62BD045FD0058150A /* PDFUtils.swift */; };
 		F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F768CE8C2B738B07006E587E /* ImportContactView.swift */; };
+		F76CE5A32BF381FB00C6502C /* HistoriquePaiementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */; };
 		F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F76ECAC12BD27CDF0089C739 /* Model.xcdatamodeld */; };
 		F76ECAC52BD283730089C739 /* Document+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76ECAC42BD283730089C739 /* Document+helper.swift */; };
 		F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76ECAC62BD2986F0089C739 /* SnapshotTypeActe+helper.swift */; };
 		F7710D2F2BF11C13009D43C0 /* PayementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */; };
 		F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D302BF132A7009D43C0 /* Paiement+helper.swift */; };
+		F7710D332BF141D5009D43C0 /* PaiementGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D322BF141D5009D43C0 /* PaiementGraphView.swift */; };
 		F77312872B8CC2F500413820 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77312862B8CC2F500413820 /* Protocol.swift */; };
 		F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729C2BEFC099001C85CE /* ClientDataUtils.swift */; };
 		F773729F2BEFC628001C85CE /* DataBrutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729E2BEFC628001C85CE /* DataBrutView.swift */; };
@@ -112,11 +114,13 @@
 		F76704252BC840EE00257315 /* PDFGridInfoInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFGridInfoInvoiceView.swift; sourceTree = "<group>"; };
 		F7681EC62BD045FD0058150A /* PDFUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUtils.swift; sourceTree = "<group>"; };
 		F768CE8C2B738B07006E587E /* ImportContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactView.swift; sourceTree = "<group>"; };
+		F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoriquePaiementView.swift; sourceTree = "<group>"; };
 		F76ECAC22BD27CDF0089C739 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		F76ECAC42BD283730089C739 /* Document+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+helper.swift"; sourceTree = "<group>"; };
 		F76ECAC62BD2986F0089C739 /* SnapshotTypeActe+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapshotTypeActe+helper.swift"; sourceTree = "<group>"; };
 		F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayementSheet.swift; sourceTree = "<group>"; };
 		F7710D302BF132A7009D43C0 /* Paiement+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Paiement+helper.swift"; sourceTree = "<group>"; };
+		F7710D322BF141D5009D43C0 /* PaiementGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementGraphView.swift; sourceTree = "<group>"; };
 		F77312862B8CC2F500413820 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		F773729C2BEFC099001C85CE /* ClientDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataUtils.swift; sourceTree = "<group>"; };
 		F773729E2BEFC628001C85CE /* DataBrutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBrutView.swift; sourceTree = "<group>"; };
@@ -209,6 +213,7 @@
 				F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */,
 				F7878F3A2BD7ED7000EC53E0 /* ApercusTabDetailView.swift */,
 				F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */,
+				F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -314,6 +319,7 @@
 				F786F7542BEE924300382B21 /* GraphPiView.swift */,
 				F773729C2BEFC099001C85CE /* ClientDataUtils.swift */,
 				F773729E2BEFC628001C85CE /* DataBrutView.swift */,
+				F7710D322BF141D5009D43C0 /* PaiementGraphView.swift */,
 			);
 			path = DataComposant;
 			sourceTree = "<group>";
@@ -548,7 +554,9 @@
 				F78096672BAC6BF600B3AF4A /* MailView.swift in Sources */,
 				F7DFAD9D2B66839C00C905A7 /* ConnexionView.swift in Sources */,
 				F761B5C22BC811B3003AA878 /* PDFViewModel.swift in Sources */,
+				F76CE5A32BF381FB00C6502C /* HistoriquePaiementView.swift in Sources */,
 				F73B98E72B73C94600FCEC53 /* ListClients.swift in Sources */,
+				F7710D332BF141D5009D43C0 /* PaiementGraphView.swift in Sources */,
 				F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */,
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,

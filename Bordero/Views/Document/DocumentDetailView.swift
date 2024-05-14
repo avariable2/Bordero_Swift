@@ -52,7 +52,7 @@ struct DocumentDetailView: View {
             urlSharing =  getUrlForSharing()
         }
         .sheet(isPresented: $showingShareSheet) {
-            ActivityView(activityItems: [urlSharing!], applicationActivities: nil) // normalement le boutton pour partager n'existe pas si l'url n'existe pas donc aucune raison que ça soit null
+            ShareLinkCustom(activityItems: [urlSharing!], applicationActivities: nil) // normalement le boutton pour partager n'existe pas si l'url n'existe pas donc aucune raison que ça soit null
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
         .toolbar {
@@ -188,7 +188,7 @@ struct ChoosenView : View {
     }
 }
 
-struct ActivityView: UIViewControllerRepresentable {
+struct ShareLinkCustom: UIViewControllerRepresentable {
     var activityItems: [Any]
     var applicationActivities: [UIActivity]?
     

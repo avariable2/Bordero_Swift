@@ -37,17 +37,7 @@ struct PayementSheet: View {
                 if !historiquePaiement.isEmpty {
                     Section("Paiement reçus") {
                         ForEach(historiquePaiement) { paiement in
-                            NavigationLink {
-                                DisplayPayementSheet(paiement: paiement)
-                            } label: {
-                                HStack {
-                                    Text(paiement.date?.formatted() ?? "Date inconnu")
-                                    Spacer()
-                                    Text(paiement.montant, format: .currency(code: "EUR"))
-                                }
-                                .fontWeight(.semibold)
-                            }
-                            
+                            RowPaiementView(paiement: paiement)
                         }
                     }
                 }
@@ -88,7 +78,7 @@ struct PayementSheet: View {
         paiement.client = document.client_
         paiement.document = document
         
-        if document.resteAPayer >= amount {
+        if amount >= document.resteAPayer {
             document.status = .payed
         } else {
             document.status = .send
@@ -120,7 +110,7 @@ struct DisplayPayementSheet : View {
                 }
                 
                 LabeledContent("Payé le ") {
-                    if let date = paiement.date {
+                    if let date = paiement.date_ {
                         Text(date, format: .dateTime.day().month().year())
                     } else {
                         Text("Date inconnu")
@@ -161,4 +151,21 @@ struct DisplayPayementSheet : View {
         )
     }
     
+}
+
+struct RowPaiementView : View {
+    let paiement : Paiement
+    
+    var body: some View {
+        NavigationLink {
+            DisplayPayementSheet(paiement: paiement)
+        } label: {
+            HStack {
+                Text(paiement.date_?.formatted() ?? "Date inconnu")
+                Spacer()
+                Text(paiement.montant, format: .currency(code: "EUR"))
+            }
+            .fontWeight(.semibold)
+        }
+    }
 }

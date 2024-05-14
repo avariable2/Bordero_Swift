@@ -35,6 +35,10 @@ extension Client {
         set { documents_ = newValue as NSSet }
     }
     
+    var listPaiements : Set<Paiement> {
+        get { paiements_ as? Set<Paiement> ?? [] }
+    }
+    
     func getAdresseSurUneLigne(_ adresse : [String : Any]?) -> String {
         if let coordonne = adresse {
             return PDFUtils.getRowAdresse(
