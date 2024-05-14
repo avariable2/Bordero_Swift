@@ -63,7 +63,7 @@ struct ClientDataView: View {
             .headerProminence(.increased)
             .sheet(isPresented: $showHistoriquePaiement) {
                 NavigationStack {
-                    HistoriquePaiementView()
+                    HistoriquePaiementView(client: client)
                 }
                 .presentationDetents([.medium, .large])
             }

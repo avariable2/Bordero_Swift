@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct HistoriquePaiementView: View {
     @Environment(\.dismiss) var dismiss
-    @FetchRequest(
-        entity: Paiement.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)]
-    ) var payments: FetchedResults<Paiement>
+    @Environment(\.managedObjectContext) var context
     
+    let client : Client
+    
+    @State private var payments: [Paiement] = []
     @State private var searchStart = Date()
     @State private var searchEnd = Date()
     @State private var showingSearchResults = false
@@ -50,16 +51,21 @@ struct HistoriquePaiementView: View {
                 .padding(.horizontal)
             }
             
-            List {
-                ForEach(filteredPaymentsByWeek, id: \.id) { payment in
-                    Section(header: Text(payment.week)) {
-                        ForEach(payment.payments) { paiement in
-                            RowPaiementView(paiement: paiement)
+            if filteredPaymentsByWeek.isEmpty {
+                ContentUnavailableView("Aucun paiements", systemImage: "magnifyingglass")
+            } else {
+                List {
+                    ForEach(filteredPaymentsByWeek, id: \.id) { payment in
+                        Section(header: Text(payment.week)) {
+                            ForEach(payment.payments) { paiement in
+                                RowPaiementView(paiement: paiement)
+                            }
                         }
                     }
                 }
             }
         }
+        .onAppear(perform: fetchPayments)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button {
@@ -71,6 +77,20 @@ struct HistoriquePaiementView: View {
         }
         .navigationTitle("Historique des paiements")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func fetchPayments() {
+        let request: NSFetchRequest<Paiement> = Paiement.fetchRequest()
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+        ]
+        request.predicate = NSPredicate(format: "client == %@", argumentArray: [client])
+        
+        do {
+            payments = try context.fetch(request)
+        } catch {
+            print("Error fetching payments: \(error)")
+        }
     }
 }
 
@@ -103,5 +123,5 @@ extension Date {
 }
 
 #Preview {
-    HistoriquePaiementView()
+    HistoriquePaiementView(client: Client.example)
 }

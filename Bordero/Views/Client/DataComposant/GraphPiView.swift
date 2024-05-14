@@ -20,7 +20,7 @@ struct GraphPiView: View {
     var body: some View {
         VStack {
             if data.isEmpty {
-                ContentUnavailableView("Aucun donnée", systemImage: "chart.pie", description: Text("Vous retrouverez ici l'ensemble des données d'un client (exemple : reste à payer, ...)"))
+                ContentUnavailableView("Aucun donnée", systemImage: "chart.pie", description: Text("Seront affichées ici la répartition des montant exigible de votre part. Revenez quand vous aurez envoyé des factures"))
             } else {
                 Text(temporaliteText)
                     .font(.caption)

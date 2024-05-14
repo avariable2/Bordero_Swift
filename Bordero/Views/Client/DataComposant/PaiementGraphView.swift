@@ -15,20 +15,24 @@ struct PaiementGraphView: View {
     var body: some View {
         VStack {
             let payementsData = paymentsByPeriod(payments: paiements, temporalite: temporalite)
-            Chart(payementsData) { paiement in
-                BarMark(
-                    x: .value(temporalite.rawValue, paiement.period),
-                    y: .value("Montant", paiement.montant)
-                )
-                .accessibilityLabel(temporalite.rawValue)
-                .accessibilityValue("\(paiement.montant) euros")
-                .annotation {
-                    Text(paiement.montant, format: .currency(code: "EUR"))
+            if payementsData.isEmpty {
+                ContentUnavailableView("Aucun paiements", systemImage: "chart.bar", description: Text("Changer de période ou ajouter des paiements sur vos factures"))
+            } else {
+                Chart(payementsData) { paiement in
+                    BarMark(
+                        x: .value(temporalite.rawValue, paiement.period),
+                        y: .value("Montant", paiement.montant)
+                    )
+                    .accessibilityLabel(temporalite.rawValue)
+                    .accessibilityValue("\(paiement.montant) euros")
+                    .annotation {
+                        Text(paiement.montant, format: .currency(code: "EUR"))
+                    }
                 }
+                .padding()
+                .chartXAxisLabel(ClientDataUtils.getTextTemporalite(temporalite: temporalite))
+                .chartYAxisLabel("Total")
             }
-            .padding()
-            .chartXAxisLabel(ClientDataUtils.getTextTemporalite(temporalite: temporalite))
-            .chartYAxisLabel("Total")
         }
         .frame(height: 300)
     }
@@ -77,5 +81,5 @@ func paymentsByPeriod(payments: [Paiement], temporalite : TempoChart) -> [Paymen
 }
 
 #Preview {
-    PaiementGraphView(temporalite: .constant(.mois), paiements: [Paiement.example2, Paiement.example])
+    PaiementGraphView(temporalite: .constant(.mois), paiements: [])
 }
