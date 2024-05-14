@@ -17,7 +17,7 @@ struct HomeView: View {
     
     var body: some View {
         HomeScrollableGradientBackgroundCustomView(
-            heightPercentage: 0.4,
+            heightPercentage: 0.35,
             maxHeight: 200,
             minHeight: 0,
             startColor: Color.green.opacity(0.85),

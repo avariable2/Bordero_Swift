@@ -19,14 +19,14 @@ struct BandeauCreateDocument: View {
                     .foregroundStyle(.green, .gray)
             }
             .background(backgroundColor)
-                .cornerRadius(8)
+            .cornerRadius(8)
         }
         .buttonStyle(.plain)
     }
     
     var backgroundColor : Color {
         if colorScheme == .dark {
-            Color(uiColor: .quaternarySystemFill)
+            Color(UIColor.systemGray6)
         } else {
             .white
         }

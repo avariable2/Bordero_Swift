@@ -43,7 +43,7 @@ struct ArticleComponentView: View {
     
     var backgroundColor : Color {
         if colorScheme == .dark {
-            Color(uiColor: .quaternarySystemFill)
+            Color(UIColor.systemGray6)
         } else {
             .white
         }
