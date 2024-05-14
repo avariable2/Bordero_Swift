@@ -137,6 +137,14 @@ struct DisplayPayementSheet : View {
     }
     
     func delete() {
+        if let doc = paiement.document {
+            if doc.resteAPayer + paiement.montant >= 0 { // ex : reste = -100 alors on veut verifier que le reste est supperieur à 0 pour changer l'etat
+                doc.status = .send
+            } else {
+                doc.status = .payed
+            }
+        }
+        
         dismiss()
         moc.delete(paiement)
         try? moc.save()

@@ -213,7 +213,6 @@
 				F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */,
 				F7878F3A2BD7ED7000EC53E0 /* ApercusTabDetailView.swift */,
 				F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */,
-				F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -316,6 +315,7 @@
 		F786F7532BEE922E00382B21 /* DataComposant */ = {
 			isa = PBXGroup;
 			children = (
+				F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */,
 				F786F7542BEE924300382B21 /* GraphPiView.swift */,
 				F773729C2BEFC099001C85CE /* ClientDataUtils.swift */,
 				F773729E2BEFC628001C85CE /* DataBrutView.swift */,

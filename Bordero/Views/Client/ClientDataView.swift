@@ -35,7 +35,7 @@ struct ClientDataView: View {
             .padding([.leading, .trailing, .top])
             
             Form {
-                Section {
+                Section("Paiement(s)") {
                     let listTrier = client.listPaiements.sorted { $0.date < $1.date }
                     PaiementGraphView(
                         temporalite: $temporalite, paiements: Array(listTrier)
@@ -48,22 +48,19 @@ struct ClientDataView: View {
                     }
                 }
                 
-                Section {
+                Section("Suivi document(s)") {
                     GraphPiView(
                         client: client,
                         temporalite: $temporalite
                     )
                 }
-                .frame(maxWidth: .infinity)
-                .listRowSeparator(.hidden, edges: .bottom)
-                .listRowInsets(.none)
-                .listRowSpacing(.none)
                 
                 DataBrutView(client: client, temporalite: $temporalite)
                     .listRowInsets(EdgeInsets())
             }
             .navigationTitle("Données du client")
             .navigationBarTitleDisplayMode(.inline)
+            .headerProminence(.increased)
             .sheet(isPresented: $showHistoriquePaiement) {
                 NavigationStack {
                     HistoriquePaiementView()

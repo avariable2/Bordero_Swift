@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClientDetailView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(NavigationDestinationClient.self) var path
+//    @Environment(NavigationDestinationClient.self) var path
     
     @State private var activeSheet: ActiveSheet?
     @ObservedObject var client : Client
@@ -29,50 +29,16 @@ struct ClientDetailView: View {
             ClientDetailHeaderView(client: client)
             
             Section("Données sur le mois en cours") {
-                GroupBox {
-                    DataValueView(
-                        value: amountWaiting.description,
-                        unit: "€ sur \(numberOfDocumentWaiting) facture(s) envoyer"
-                    )
-                    .fixedSize()
-                } label: {
-                    Label("Montant en attente", systemImage: "bag.badge.questionmark")
-                }
-                .groupBoxStyle(
-                    GroupBoxStyleData(
-                        color: .blue,
-                        destination: ClientDataView(client: client)
-                    )
-                )
+                GraphPiView(client: client, temporalite: .constant(.mois))
                 
-                GroupBox {
-                    DataValueView(
-                        value: amountPayed.description,
-                        unit: "€ sur \(numberOfDocumentPayed) facture(s)"
-                    )
+                NavigationLink {
+                    ClientDataView(client: client)
                 } label: {
-                    Label("Total payé par le client", systemImage: "bag.badge.plus")
+                    Text("Voir plus de statistiques")
+                        .foregroundStyle(.link)
+                        .padding([.top, .bottom], 6)
                 }
-                .groupBoxStyle(
-                    GroupBoxStyleData(
-                        color: .green,
-                        destination: ClientDataView(client: client)
-                    )
-                )
-                
-                GroupBox {
-                    DataValueView(value: numberOfDocumentThisMonth.description, unit: "facture(s)")
-                } label: {
-                    Label("Document(s) créer", systemImage: "doc")
-                }
-                .groupBoxStyle(
-                    GroupBoxStyleData(
-                        color: .orange,
-                        destination: ClientDataView(client: client)
-                    )
-                )
             }
-//            .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 20))
             
             Section {
                 DisclosureGroup(isExpanded: $topExpanded) {
@@ -274,4 +240,8 @@ struct RowAdresse: View {
             }
         }
     }
+}
+
+#Preview {
+    ClientDetailView(client: Client.example)
 }

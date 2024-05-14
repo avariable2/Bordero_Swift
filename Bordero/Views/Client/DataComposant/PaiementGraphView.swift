@@ -28,10 +28,9 @@ struct PaiementGraphView: View {
             }
             .padding()
             .chartXAxisLabel(ClientDataUtils.getTextTemporalite(temporalite: temporalite))
-            .chartYAxisLabel("Total Paiement")
+            .chartYAxisLabel("Total")
         }
         .frame(height: 300)
-        
     }
 }
 

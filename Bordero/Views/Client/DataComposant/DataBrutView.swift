@@ -41,7 +41,7 @@ struct DataBrutView: View {
         Section {
             HStack {
                 GroupBox {
-                    DataValueView(value: documentsEnAttente.description, unit: "document(s)")
+                    DataValueView(value: documentsEnAttente.description, unit: "facture(s)")
                 } label: {
                     Label("En attentes", systemImage: "doc.badge.clock")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
@@ -55,7 +55,7 @@ struct DataBrutView: View {
             
             HStack {
                 GroupBox {
-                    DataValueView(value: facturePayé.description, unit: "document(s)")
+                    DataValueView(value: facturePayé.description, unit: "facture(s)")
                 } label: {
                     Label("Payer", systemImage: "checkmark")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .green))
@@ -82,16 +82,23 @@ struct DataBrutView: View {
             }
             
             GroupBox {
-                DataValueView(value: acteFavoris.isEmpty ? "Aucun" : acteFavoris, unit: "sur \(vocabulaireTemporalité)")
+                HStack(alignment: .center ) {
+                    Text(acteFavoris.isEmpty ? "Aucun" : acteFavoris)
+                    Spacer()
+                }
+                .fontWeight(.semibold)
+                
             } label: {
                 Label("Acte favoris", systemImage: "heart")
             }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .pink))
             
             GroupBox {
-                DataValueView(
-                    value: derniersActesEffectuer.isEmpty ?
-                    "Aucun" : derniersActesEffectuer.formatted(),
-                    unit: "sur \(vocabulaireTemporalité)")
+                HStack(alignment: .center ) {
+                    Text(derniersActesEffectuer.isEmpty ?
+                         "Aucun" : derniersActesEffectuer.formatted())
+                    Spacer()
+                }
+                .fontWeight(.semibold)
             } label: {
                 Label("Dernier acte effectuer", systemImage: "figure.walk")
             }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .purple))
