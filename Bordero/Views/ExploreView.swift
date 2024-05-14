@@ -21,11 +21,12 @@ struct ExploreView: View {
                 } label: {
                     RowExploreView(
                         text: "Ajouter un acte",
-                        systemName: "cross.vial",
+                        systemName: "stethoscope",
                         primaryColor: .mint,
                         secondaryColor : .mint,
                         needToShowArrow : true
                     )
+                    .symbolRenderingMode(.multicolor)
                 }
                 
                 NavigationLink {
@@ -37,6 +38,7 @@ struct ExploreView: View {
                         primaryColor: .purple,
                         secondaryColor: .purple
                     )
+                    .symbolRenderingMode(.multicolor)
                 }
                 
                 NavigationLink {
@@ -44,10 +46,11 @@ struct ExploreView: View {
                 } label: {
                     RowExploreView(
                         text: "Créer document",
-                        systemName: "doc.badge.plus",
+                        systemName: "pencil.and.list.clipboard",
                         primaryColor: .blue,
                         secondaryColor : .blue
                     )
+                    .symbolRenderingMode(.multicolor)
                 }
                 
                 NavigationLink {
@@ -55,11 +58,12 @@ struct ExploreView: View {
                 } label: {
                     RowExploreView(
                         text: "Liste des docs",
-                        systemName: "doc.text.magnifyingglass",
+                        systemName: "list.bullet",
                         primaryColor: .gray,
                         secondaryColor: .blue
                     )
                 }
+                .symbolRenderingMode(.multicolor)
             }
             
             Section {
@@ -138,8 +142,6 @@ struct RowExploreView : View {
             Image(systemName: systemName)
                 .foregroundStyle(primaryColor, secondaryColor)
                 .font(.title3)
-                .symbolRenderingMode(.hierarchical)
-                .fontWeight(.semibold)
         }
         .fontWeight(.medium)
     }

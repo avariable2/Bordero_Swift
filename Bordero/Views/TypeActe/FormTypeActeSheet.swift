@@ -46,13 +46,9 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         NavigationStack {
             List {
                 VStack(alignment: .center) {
-                    Image(systemName: "cross.vial")
-                        .foregroundStyle(.white)
-                        .padding()
+                    Image(systemName: "stethoscope")
                         .font(.largeTitle)
-                        .frame(height: 80)
-                        .clipShape(Circle())
-                        .background(Circle().fill(.mint))
+                        .symbolRenderingMode(.multicolor)
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -84,7 +80,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     if applyTVA {
                         LabeledContent("TVA") {
                             TextField("pourcentage de TVA", value: $tauxTVA, format: .percent)
-                                .foregroundStyle(.mint)
+                                .foregroundStyle(.indigo)
                         }
                         .multilineTextAlignment(.trailing)
                         
@@ -103,7 +99,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     .multilineTextAlignment(.center)
                     .bold()
             }
-            .tint(.mint)
+            .tint(.indigo)
             .listStyle(.grouped)
             .multilineTextAlignment(.trailing)
             .navigationTitle(typeActeToModify == nil ? "Nouveau type d'acte" : "Type d'acte : \(typeActeToModify!.name)")
