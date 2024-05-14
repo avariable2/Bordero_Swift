@@ -71,14 +71,18 @@ struct ParametersView: View {
                             accessibility: "Bouton pour definir vos options de paiement"
                         )
                     }
+                    .disabled(true)
                 } header: {
                     Text("Paramètres de facturation")
+                } footer: {
+                    Text("🏗️ En construction. Disponible dans une future mise à jour.")
                 }
-                
                 
                 Section("Documents") {
                     NavigationLink {
-                        ModeleDocumentView()
+                        if let praticien = praticien {
+                            ModeleDocumentView(praticien: praticien)
+                        }
                     } label: {
                         RowIconColor(
                             text: "Paramètres du modèle",
@@ -87,6 +91,7 @@ struct ParametersView: View {
                             accessibility: "Bouton pour modifier les options de votre facture"
                         )
                     }
+                    .disabled(praticien == nil)
                     
                     NavigationLink {
                         
@@ -100,7 +105,6 @@ struct ParametersView: View {
                     }
                     .disabled(true)
                 }
-                
                 
                 if ProcessInfo.processInfo.isiOSAppOnMac {
                     
@@ -161,10 +165,8 @@ struct ParametersView: View {
                         VStack(alignment: .leading) {
                             Text("Données Bordero non synchronisées \nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud.")
                         }
-                        
                     }
                 }
-
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -183,5 +185,5 @@ struct ParametersView: View {
 
 
 #Preview {
-    ParametersView(activeSheet: .constant(nil))
+    ParametersView(activeSheet: .constant(nil), praticien: Praticien.example)
 }

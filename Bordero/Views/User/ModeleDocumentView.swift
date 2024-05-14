@@ -8,32 +8,59 @@
 import SwiftUI
 
 struct ModeleDocumentView: View {
+    @Environment(\.dismiss) var dismiss
+    @State var praticien : Praticien
+    
     @State private var color: Color = .green
+    
     var body: some View {
-        Form {
-            Section("Conception du modèle") {
-                ColorPicker("Couleur des documents", selection: $color)
-                
-                NavigationLink("Modèle de facture") {
-                    EmptyView()
+        VStack {
+            Form {
+                Section {
+                    ColorPicker("Couleur des documents", selection: $color, supportsOpacity: false)
+                        .foregroundStyle(.secondary)
+                        .disabled(true)
+                    
+                    NavigationLink("Modèle de facture") {
+                        EmptyView()
+                    }
+                    .disabled(true)
+                } header: {
+                    
+                } footer: {
+                    Text("🏗️ En construction. Disponible dans une future mise à jour.")
                 }
                 
-                Toggle(isOn: .constant(true), label: {
-                    Text("Afficher la date d'échéance")
-                })
-                
-                Toggle(isOn: .constant(true), label: {
-                    Text("Afficher les mode de paiement")
-                })
-                
-                Toggle(isOn: .constant(true), label: {
-                    Text("Afficher la date d'échéance")
-                })
+                Section {
+                    Toggle(isOn: $praticien.paramsDocument.showDateEcheance) {
+                        Text("Afficher la date d'échéance")
+                    }
+                    
+                    Toggle(isOn: $praticien.paramsDocument.showModePaiement) {
+                        Text("Afficher les mode de paiement")
+                    }
+                }
             }
         }
+        .navigationTitle("Conception du modèle")
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    save()
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
+    }
+    
+    func save() {
+        DataController.saveContext()
     }
 }
 
 #Preview {
-    ModeleDocumentView()
+    ModeleDocumentView(praticien: Praticien.example)
 }

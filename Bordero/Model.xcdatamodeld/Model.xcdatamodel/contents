@@ -68,6 +68,7 @@
         <attribute name="lastname_" optional="YES" attributeType="String"/>
         <attribute name="logoSociete" optional="YES" attributeType="Binary"/>
         <attribute name="nom_proffession" optional="YES" attributeType="String"/>
+        <attribute name="parametersDocument_" optional="YES" attributeType="Composite" composite="ParametersModeleDocument"/>
         <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="profilPicture" optional="YES" attributeType="Binary"/>
         <attribute name="signature" optional="YES" attributeType="Binary"/>
@@ -112,6 +113,10 @@
         <attribute name="especes" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="virement" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="cheque" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </composite>
+    <composite name="ParametersModeleDocument">
+        <attribute name="showDateEcheance" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="showModePaiement" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </composite>
     <composite name="Remise">
         <attribute name="type" optional="YES" attributeType="String"/>

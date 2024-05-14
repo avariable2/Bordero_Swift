@@ -9,6 +9,10 @@ import Foundation
 import CoreData
 
 extension Praticien {
+    struct ParametersModele {
+        var showDateEcheance : Bool
+        var showModePaiement : Bool
+    }
     
     var firstname : String {
         get { firstname_ ?? "" }
@@ -45,6 +49,21 @@ extension Praticien {
         set { adeli_ = newValue }
     }
     
+    var paramsDocument : ParametersModele {
+        get {
+            ParametersModele(
+                showDateEcheance: parametersDocument_?["showDateEcheance"] as? Bool ?? true,
+                showModePaiement: parametersDocument_?["showModePaiement"] as? Bool ?? true
+            )
+        }
+        set {
+            parametersDocument_ = [
+                "showDateEcheance" : newValue.showDateEcheance,
+                "showModePaiement" : newValue.showModePaiement
+            ]
+        }
+    }
+    
     func getAdresseSurUneLigne() -> String {
         if let coordonne = self.adresse1 {
             return PDFUtils.getTableauInfoAdresse(
@@ -74,5 +93,10 @@ extension Praticien {
             self.website = website
             self.siret = siret
             self.adeli = adeli
+    }
+    
+    static var example : Praticien {
+        let praticien = Praticien(firstname: "Ad", lastname: "Vori", phone: "01.02.03.04.05", email: "example@miid.fr", website: "ww.google.com", siret: "0102010201", adeli: "01001020102", context: DataController.shared.container.viewContext)
+        return praticien
     }
 }
