@@ -74,6 +74,7 @@
 		F792B75B2B715DE700FA5569 /* FormClientSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F792B75A2B715DE700FA5569 /* FormClientSheet.swift */; };
 		F792B75E2B71630C00FA5569 /* ActiveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F792B75D2B71630C00FA5569 /* ActiveSheet.swift */; };
 		F7985E132BF54997005362A4 /* NbFacturesGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */; };
+		F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
 		F7D8E0162B8BA15600D4F28B /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */; };
@@ -157,6 +158,7 @@
 		F792B75A2B715DE700FA5569 /* FormClientSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormClientSheet.swift; sourceTree = "<group>"; };
 		F792B75D2B71630C00FA5569 /* ActiveSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSheet.swift; sourceTree = "<group>"; };
 		F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NbFacturesGraphView.swift; sourceTree = "<group>"; };
+		F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceClientsGraphView.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 			children = (
 				F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */,
 				F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */,
+				F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */,
 			);
 			path = DataComposant;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				F7E88C812B895BAE00AAF73C /* BandeauCreateDocument.swift in Sources */,
 				F792B7592B70EF6200FA5569 /* FormTypeActeSheet.swift in Sources */,
 				F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */,
+				F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */,
 				F75F36AC2BD52938003FF0D0 /* ListDocument.swift in Sources */,
 				F7E88C8A2B8A432700AAF73C /* TitleWithIconColorComponentView.swift in Sources */,
 				F75F3C9E2BB0A51400514246 /* AlphabetSidebarView.swift in Sources */,

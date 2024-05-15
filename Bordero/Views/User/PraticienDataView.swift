@@ -11,8 +11,13 @@ struct PraticienDataView: View {
     var body: some View {
         VStack {
             List {
+                
                 Section("Revenu sur période") {
                     PaiementPraticienGraphView()
+                }
+                
+                Section("Top Clients par Revenu (€)") {
+                    PerformanceClientsGraphView()
                 }
                 
                 Section("Répartition factures") {
