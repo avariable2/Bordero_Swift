@@ -8,7 +8,7 @@
 import SwiftUI
 import Charts
 
-struct PaiementGraphView: View {
+struct PaiementClientGraphView: View {
     @Binding var temporalite : TempoChart
     let paiements : Array<Paiement>
     
@@ -81,5 +81,5 @@ func paymentsByPeriod(payments: [Paiement], temporalite : TempoChart) -> [Paymen
 }
 
 #Preview {
-    PaiementGraphView(temporalite: .constant(.mois), paiements: [])
+    PaiementClientGraphView(temporalite: .constant(.mois), paiements: [])
 }

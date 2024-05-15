@@ -17,23 +17,26 @@ struct BarData: Identifiable {
 struct StatistiquePaticientView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    private var data: [BarData] = [
-        BarData(payer: true, facture: true),
-        BarData(payer: false, facture: true),
-        BarData(payer: false, facture: true),
-    ]
-    
     var body: some View {
-        VStack {
-            HStack(alignment: .bottom) {
-                Text("Montant perdu : ") + Text("0,00 $")
+        NavigationLink {
+            PraticienDataView()
+        } label: {
+            TitleWithIconColorComponentView(titre : "Voir les statistiques") {
+                Image(systemName: "chart.dots.scatter")
+                    .foregroundStyle(.green, .gray)
             }
+            .background(backgroundColor)
+            .cornerRadius(8)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .buttonStyle(.plain)
     }
     
     var backgroundColor : Color {
-        colorScheme == .dark ? .black : .white
+        if colorScheme == .dark {
+            Color(UIColor.systemGray6)
+        } else {
+            .white
+        }
     }
 }
 

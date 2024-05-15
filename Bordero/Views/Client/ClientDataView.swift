@@ -37,7 +37,7 @@ struct ClientDataView: View {
             Form {
                 Section("Paiement(s)") {
                     let listTrier = client.listPaiements.sorted { $0.date < $1.date }
-                    PaiementGraphView(
+                    PaiementClientGraphView(
                         temporalite: $temporalite, paiements: Array(listTrier)
                     )
                     
