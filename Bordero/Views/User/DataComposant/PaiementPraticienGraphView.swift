@@ -16,24 +16,28 @@ struct PaiementPraticienGraphView: View {
     
     @State private var selectedDateInterval: DateInterval = {
         let calendar = Calendar.current
-        let start = calendar.date(byAdding: .month, value: -6, to: Date())!
+        let start = calendar.date(byAdding: .day, value: -30, to: Date())!
         let end = Date()
         return DateInterval(start: start, end: end)
     }()
     
+    @State private var showSelectionBar = false
+    
     var body: some View {
         let cumulativePayments = getCumulativePaiements(paiments: Array(payments), for: selectedDateInterval)
-
+        
         VStack {
             Chart(cumulativePayments) { data in
                 LineMark(
                     x: .value("Date", data.date),
                     y: .value("Cumulative Amount", data.cumulativeAmount)
                 )
+                .symbol(by: .value("Date", data.date))
             }
             .chartXScale(domain: selectedDateInterval.start...selectedDateInterval.end)
+            .aspectRatio(1, contentMode: .fit)
             .frame(height: 300)
-
+            
             // Optionnel : Sélecteur de période
             DatePicker("Début", selection: Binding(get: {
                 self.selectedDateInterval.start
@@ -62,7 +66,7 @@ struct PaiementPraticienGraphView: View {
             cumulativeAmount += payment.montant
             cumulativePaiements.append(CumulativePaiementData(cumulativeAmount: cumulativeAmount, date: payment.date))
         }
-
+        
         return cumulativePaiements
     }
 }

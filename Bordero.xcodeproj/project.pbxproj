@@ -12,7 +12,7 @@
 		F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */; };
 		F71364542B8CDB3100C68853 /* ProfilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71364532B8CDB3100C68853 /* ProfilView.swift */; };
 		F71F49142BCC5FE6007AD6E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F49132BCC5FE6007AD6E5 /* ContentView.swift */; };
-		F72B0FDE2BF3EDE700740770 /* PaiementStatistiquePraticienView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72B0FDD2BF3EDE700740770 /* PaiementStatistiquePraticienView.swift */; };
+		F72B0FDE2BF3EDE700740770 /* PaiementPraticienGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */; };
 		F72BA1EF2BE15AB700E459B2 /* GroupBoxStyleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72BA1EE2BE15AB700E459B2 /* GroupBoxStyleData.swift */; };
 		F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72BA1F02BE15B3100E459B2 /* DataValueView.swift */; };
 		F73B98E72B73C94600FCEC53 /* ListClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73B98E62B73C94600FCEC53 /* ListClients.swift */; };
@@ -96,7 +96,7 @@
 		F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxStyleRememberiCloud.swift; sourceTree = "<group>"; };
 		F71364532B8CDB3100C68853 /* ProfilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilView.swift; sourceTree = "<group>"; };
 		F71F49132BCC5FE6007AD6E5 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F72B0FDD2BF3EDE700740770 /* PaiementStatistiquePraticienView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementStatistiquePraticienView.swift; sourceTree = "<group>"; };
+		F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementPraticienGraphView.swift; sourceTree = "<group>"; };
 		F72BA1EE2BE15AB700E459B2 /* GroupBoxStyleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxStyleData.swift; sourceTree = "<group>"; };
 		F72BA1F02BE15B3100E459B2 /* DataValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataValueView.swift; sourceTree = "<group>"; };
 		F73B98E62B73C94600FCEC53 /* ListClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListClients.swift; sourceTree = "<group>"; };
@@ -346,7 +346,7 @@
 		F7985E112BF5490C005362A4 /* DataComposant */ = {
 			isa = PBXGroup;
 			children = (
-				F72B0FDD2BF3EDE700740770 /* PaiementStatistiquePraticienView.swift */,
+				F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */,
 				F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */,
 			);
 			path = DataComposant;
@@ -542,7 +542,7 @@
 				F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */,
 				F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */,
 				F78737282BDD60A6002E6C85 /* NSPredicate+helper.swift in Sources */,
-				F72B0FDE2BF3EDE700740770 /* PaiementStatistiquePraticienView.swift in Sources */,
+				F72B0FDE2BF3EDE700740770 /* PaiementPraticienGraphView.swift in Sources */,
 				F7E88C812B895BAE00AAF73C /* BandeauCreateDocument.swift in Sources */,
 				F792B7592B70EF6200FA5569 /* FormTypeActeSheet.swift in Sources */,
 				F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */,

@@ -58,7 +58,7 @@ struct ClientDataView: View {
                 DataBrutView(client: client, temporalite: $temporalite)
                     .listRowInsets(EdgeInsets())
             }
-            .navigationTitle("Données du client")
+            .navigationTitle("Données de \(client.firstname) \(client.lastname)")
             .navigationBarTitleDisplayMode(.inline)
             .headerProminence(.increased)
             .sheet(isPresented: $showHistoriquePaiement) {

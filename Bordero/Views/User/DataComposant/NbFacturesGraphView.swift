@@ -19,10 +19,10 @@ struct NbFacturesGraphView: View {
     var body: some View {
         VStack {
             Picker("Select Period", selection: $selectedPeriod) {
-                Text("Day").tag("Day")
-                Text("Week").tag("Week")
-                Text("Month").tag("Month")
-                Text("Year").tag("Year")
+                Text("Jour").tag("Day")
+                Text("Semaine").tag("Week")
+                Text("Mois").tag("Month")
+                Text("Année").tag("Year")
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
@@ -39,37 +39,47 @@ struct NbFacturesGraphView: View {
     }
     
     func chartData(for period: String) -> [DocumentChartData] {
-        var groupedData: [String: [Document]] = [:]
-        
-        // Grouper les documents par période
-        for document in documents {
-            let periodKey = getPeriodKey(for: document.dateEmission, period: period)
-            if groupedData[periodKey] == nil {
-                groupedData[periodKey] = []
-            }
-            groupedData[periodKey]?.append(document)
-        }
-        
-        // Créer les données pour les graphiques
-        var chartData: [DocumentChartData] = []
-        for (period, docs) in groupedData {
-            let payeCount = docs.filter { $0.status == .payed }.count
-            let envoyerCount = docs.filter { $0.status == .send && $0.dateEcheance <= Date() }.count
-            let enRetardCount = docs.filter { $0.status == .send && $0.dateEcheance <= Date() }.count
+            var groupedData: [String: [Document]] = [:]
             
-            if payeCount > 0 {
-                chartData.append(DocumentChartData(period: period, status: DocumentStatus.paye, count: payeCount))
+            // Grouper les documents par période
+            for document in documents {
+                let periodKey = getPeriodKey(for: document.dateEmission, period: period)
+                
+                // Filtrer les factures pour ne garder que celles du mois actuel en vue "Day"
+                if period == "Day" {
+                    let currentMonth = Calendar.current.component(.month, from: Date())
+                    let documentMonth = Calendar.current.component(.month, from: document.dateEmission)
+                    if currentMonth != documentMonth {
+                        continue
+                    }
+                }
+                
+                if groupedData[periodKey] == nil {
+                    groupedData[periodKey] = []
+                }
+                groupedData[periodKey]?.append(document)
             }
-            if envoyerCount > 0 {
-                chartData.append(DocumentChartData(period: period, status: DocumentStatus.enRetard, count: envoyerCount))
+            
+            // Créer les données pour les graphiques
+            var chartData: [DocumentChartData] = []
+            for (period, docs) in groupedData.sorted(by: { $0.key < $1.key }) {
+                let payeCount = docs.filter { $0.status == .payed }.count
+                let enAttenteCount = docs.filter { $0.status == .send && $0.dateEcheance >= Date() }.count
+                let enRetardCount = docs.filter { $0.status == .send && $0.dateEcheance <= Date() }.count
+                
+                if enAttenteCount > 0 {
+                    chartData.append(DocumentChartData(period: period, status: .envoyer, count: enAttenteCount))
+                }
+                if payeCount > 0 {
+                    chartData.append(DocumentChartData(period: period, status: .paye, count: payeCount))
+                }
+                if enRetardCount > 0 {
+                    chartData.append(DocumentChartData(period: period, status: .enRetard, count: enRetardCount))
+                }
             }
-            if enRetardCount > 0 {
-                chartData.append(DocumentChartData(period: period, status: DocumentStatus.enRetard, count: enRetardCount))
-            }
+            
+            return chartData
         }
-        
-        return chartData
-    }
     
     func getPeriodKey(for date: Date, period: String) -> String {
             let dateFormatter = DateFormatter()
@@ -79,7 +89,7 @@ struct NbFacturesGraphView: View {
             case "Week":
                 let weekOfYear = Calendar.current.component(.weekOfYear, from: date)
                 let year = Calendar.current.component(.year, from: date)
-                return "Week \(weekOfYear), \(year)"
+                return "Semaine \(weekOfYear), \(year)"
             case "Month":
                 dateFormatter.dateFormat = "MMM yyyy"
             case "Year":
