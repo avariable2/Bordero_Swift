@@ -19,7 +19,7 @@ struct ListHistoriquesPaiements: View {
         if payments.isEmpty {
             ContentUnavailableView("Pas de paiements", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera afficher la liste des paiements de vos clients."))
         } else {
-            ForEach(payments.prefix(10), id: \.id) { payment in
+            ForEach(payments.prefix(5), id: \.id) { payment in
                 RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
                 
             }
