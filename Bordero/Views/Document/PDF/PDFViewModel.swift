@@ -301,6 +301,13 @@ class PDFViewModel {
         
         document.montantPayer = self.pdfModel.optionsDocument.payementFinish ? self.pdfModel.calcTotalTTC() : 0
         
+        if self.pdfModel.optionsDocument.payementFinish {
+            let paiement = Paiement(montant: document.totalTTC, date: Date(), context: context)
+            paiement.document = document
+            paiement.client = document.client_
+            document.paiements?.adding(paiement)
+        }
+        
         // MARK: Sauvegarde du rendu du pdf pour etre affiché
         // Déclaration d'une propriété pour stocker le document PDF
         if let pdf = pdfDocument {
