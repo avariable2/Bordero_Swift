@@ -72,7 +72,6 @@ struct PayementSheet: View {
     
     func addPayement() {
         let paiement = Paiement(context: moc)
-        paiement.id = UUID()
         paiement.date = date
         paiement.montant = amount
         paiement.client = document.client_
@@ -101,6 +100,14 @@ struct DisplayPayementSheet : View {
     @Environment(\.dismiss) var dismiss
     
     let paiement: Paiement
+    private var nomClient = ""
+    
+    init(paiement: Paiement) {
+        self.paiement = paiement
+        if let client = paiement.client {
+            nomClient = "\(client.firstname) \(client.lastname)"
+        }
+    }
     
     var body: some View {
         VStack {
@@ -121,7 +128,7 @@ struct DisplayPayementSheet : View {
                     Text(paiement.note ?? "")
                 }
             }
-            .navigationTitle("Paiement")
+            .navigationTitle(nomClient.isEmpty ? "Paiement" : "Paiement de \(nomClient)")
             .safeAreaInset(edge: .bottom) {
                 Button(role: .destructive) {
                     delete()

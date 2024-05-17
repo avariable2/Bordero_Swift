@@ -32,7 +32,7 @@ struct NbFacturesGraphView: View {
                 ContentUnavailableView(
                     "Aucun facture",
                     systemImage: "chart.bar.xaxis",
-                    description: Text("Il n'y a aucune facture créer. La répartition des factures sera afficher ici.")
+                    description: Text(selectedPeriod == "Day" ? "Aucun facture dont la date d'emission est du mois en cours" : "Il n'a aucun documents avec le status payer ou envoyer.")
                 )
             } else {
                 Chart(chartData) { element in

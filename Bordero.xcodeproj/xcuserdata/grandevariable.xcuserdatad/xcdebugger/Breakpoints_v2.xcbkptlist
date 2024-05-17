@@ -14,6 +14,15 @@
             symbolName = "CGPostError"
             moduleName = "">
             <Locations>
+               <Location
+                  uuid = "77794C81-A962-4C14-9EAC-1726E9B902C6 - 6b2a6ff60c6dfa83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CGPostError"
+                  moduleName = "CoreGraphics"
+                  usesParentBreakpointCondition = "Yes">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -40,6 +49,15 @@
             symbolName = "print_cycle"
             moduleName = "">
             <Locations>
+               <Location
+                  uuid = "8C37DF89-6C52-4BC9-B75E-1AF2B9A73C63 - cc86abe8c9557793"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AG::Graph::print_cycle(AG::data::ptr&lt;AG::Node&gt;) const"
+                  moduleName = "AttributeGraph"
+                  usesParentBreakpointCondition = "Yes">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -108,7 +126,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "2BBADEE5-51A0-4E80-9376-235944C59EBA"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bordero/Views/User/DataComposant/PaiementPraticienGraphView.swift"
@@ -118,6 +136,22 @@
             endingLineNumber = "58"
             landmarkName = "getCumulativePaiements(paiments:for:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "299FBD9F-EB55-47BE-87D3-373527C1B26D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Bordero/Views/User/DataComposant/ListHistoriquesPaiements.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "RowHistoriquePaiements"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

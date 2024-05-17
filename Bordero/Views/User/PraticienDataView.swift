@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct PraticienDataView: View {
+    
+    
     var body: some View {
         VStack {
             List {
-                
                 Section("Revenu sur période") {
                     PaiementPraticienGraphView()
                 }
@@ -22,6 +23,10 @@ struct PraticienDataView: View {
                 
                 Section("Répartition factures") {
                     NbFacturesGraphView()
+                }
+                
+                Section("Historique paiements") {
+                    ListHistoriquesPaiements()
                 }
             }
             .navigationTitle("Tableau de bord")

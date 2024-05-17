@@ -21,6 +21,10 @@ extension Paiement {
         self.date = date
     }
     
+    public override func awakeFromInsert() {
+        self.id = UUID()
+    }
+    
     static var example : Paiement {
         return Paiement(montant: 50, date: Date(), context: DataController.shared.container.viewContext)
     }
