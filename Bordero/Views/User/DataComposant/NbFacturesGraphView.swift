@@ -27,14 +27,24 @@ struct NbFacturesGraphView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding()
             
-            Chart(chartData(for: selectedPeriod)) { element in
-                BarMark(
-                    x: .value("Period", element.period),
-                    y: .value("Count", element.count)
+            let chartData = chartData(for: selectedPeriod)
+            if chartData.isEmpty {
+                ContentUnavailableView(
+                    "Aucun facture",
+                    systemImage: "chart.bar.xaxis",
+                    description: Text("Il n'y a aucune facture créer. La répartition des factures sera afficher ici.")
                 )
-                .foregroundStyle(by: .value("Status", element.status.rawValue))
+            } else {
+                Chart(chartData) { element in
+                    BarMark(
+                        x: .value("Period", element.period),
+                        y: .value("Count", element.count)
+                    )
+                    .foregroundStyle(by: .value("Status", element.status.rawValue))
+                }
+                .padding()
             }
-            .padding()
+            
         }
     }
     

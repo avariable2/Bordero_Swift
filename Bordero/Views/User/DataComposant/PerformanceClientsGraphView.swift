@@ -10,37 +10,43 @@ import Charts
 
 struct PerformanceClientsGraphView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(
-        entity: Document.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Document.totalTTC_, ascending: false)]
-    ) var documents: FetchedResults<Document>
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+    ]) var payments : FetchedResults<Paiement>
     
     @State var clientRevenues: [ClientRevenue] = []
     
     var body: some View {
         VStack {
-            
-            Chart(clientRevenues.prefix(10)) { clientRevenue in
-                BarMark(
-                    x: .value("Client", clientRevenue.clientName),
-                    y: .value("Revenu", clientRevenue.revenue)
+            if clientRevenues.isEmpty {
+                ContentUnavailableView(
+                    "Aucun Top Client",
+                    systemImage: "trophy.fill",
+                    description: Text("Aucun paiement n'a été enregistré pour un client")
                 )
-                .foregroundStyle(.yellow)
+            } else {
+                Chart(clientRevenues.prefix(10)) { clientRevenue in
+                    BarMark(
+                        x: .value("Client", clientRevenue.clientName),
+                        y: .value("Revenu", clientRevenue.revenue)
+                    )
+                    .foregroundStyle(.yellow)
+                }
+                .frame(height: 300)
+                .padding()
             }
-            .frame(height: 300)
-            .padding()
         }
         .onAppear {
-            clientRevenues = calculateClientRevenues(documents: Array(documents))
+            clientRevenues = calculateClientRevenues(payments: Array(payments))
         }
     }
     
-    func calculateClientRevenues(documents: [Document]) -> [ClientRevenue] {
+    func calculateClientRevenues(payments: [Paiement]) -> [ClientRevenue] {
         var revenueByClient: [String: Double] = [:]
         
-        for document in documents {
-            let clientName = "\(document.client_?.firstname ?? "Inconnu") \(document.client_?.lastname ?? "")"
-            let revenue = document.totalTTC
+        for payement in payments {
+            let clientName = "\(payement.client?.firstname ?? "Inconnu") \(payement.client?.lastname ?? "")"
+            let revenue = payement.montant
             
             if revenueByClient[clientName] == nil {
                 revenueByClient[clientName] = 0
