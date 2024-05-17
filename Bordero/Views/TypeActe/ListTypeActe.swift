@@ -53,7 +53,6 @@ struct ListTypeActe: View {
                     } footer: {
                         if !filteredTypeActe.isEmpty {
                             Text("Déplacé l'élément à gauche pour le supprimer.")
-//                                .foregroundStyle(.secondary)
                         }
                     }
                 }
@@ -68,7 +67,6 @@ struct ListTypeActe: View {
         }
         .navigationTitle("Type d'actes")
         .tint(.purple)
-//        .listStyle(.plain)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
@@ -82,24 +80,23 @@ struct ListTypeActe: View {
             switch item {
             case .createTypeActe:
                 FormTypeActeSheet(
-                    applyTVA: applyTvaOnTypeActe,
+                    onCancel: {
+                        activeSheet = nil
+                    }, 
                     onSave: {
                         activeSheet = nil
                     }, 
-                    onCancel: {
-                        activeSheet = nil
-                    }
+                    applyTVA: applyTvaOnTypeActe
                 )
             case .editTypeActe(let type):
                 FormTypeActeSheet(
-                    applyTVA: applyTvaOnTypeActe,
                     typeActeToModify: type,
-                    onSave: {
-                        activeSheet = nil
-                    }, 
                     onCancel: {
                         activeSheet = nil
-                    }
+                    }, onSave: {
+                        activeSheet = nil
+                    },
+                    applyTVA: applyTvaOnTypeActe
                 )
             default :
                 EmptyView() // IMPOSSIBLE

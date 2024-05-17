@@ -85,9 +85,9 @@ struct ExploreView: View {
             
             switch item {
             case .createTypeActe:
-                FormTypeActeSheet(applyTVA: praticien.first?.applyTVA ?? false, onCancel: {
+                FormTypeActeSheet(onCancel: {
                     activeSheet = nil
-                })
+                }, applyTVA: praticien.first?.applyTVA ?? false)
                 .presentationDetents([.large])
             case .createClient:
                 FormClientSheet(onCancel: {

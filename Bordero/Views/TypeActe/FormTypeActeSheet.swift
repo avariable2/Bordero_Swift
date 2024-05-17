@@ -26,20 +26,13 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     @State private var quantity: Double = 1
     @State private var unit : String = ""
     
-    @State var applyTVA : Bool
+    @State var applyTVA : Bool = false
     @State private var tauxTVA : Double = 0.20
     @State private var tot : Double = 0
     @State private var addFavoris = false
     
     private var disableForm: Bool {
         nom.isEmpty
-    }
-    
-    init(applyTVA : Bool = false, typeActeToModify : TypeActe? = nil, onSave: (() -> Void)? = nil, onCancel: (() -> Void)? = nil) {
-        self.applyTVA = applyTVA
-        self.onSave = onSave
-        self.typeActeToModify = typeActeToModify
-        self.onCancel = onCancel
     }
     
     var body: some View {
@@ -70,6 +63,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                         .lineSpacing(3)
                         .keyboardType(.default)
                         .multilineTextAlignment(.leading)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 10))
                 }
                 
                 Section {
