@@ -13,6 +13,13 @@ struct PraticienDataView: View {
     var body: some View {
         VStack {
             List {
+                Section {
+                    ClientPaymentEstimateGraphView()
+                } header: {
+                    Text("Temps moyen de paiement des clients")
+                        .fixedSize()
+                }
+                
                 Section("Revenu sur période") {
                     PaiementPraticienGraphView()
                 }

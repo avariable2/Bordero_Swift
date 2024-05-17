@@ -78,6 +78,7 @@
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
 		F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */; };
+		F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */; };
 		F7D8E0162B8BA15600D4F28B /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */; };
 		F7DFAD9B2B66839C00C905A7 /* BorderoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DFAD9A2B66839C00C905A7 /* BorderoApp.swift */; };
 		F7DFAD9D2B66839C00C905A7 /* ConnexionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DFAD9C2B66839C00C905A7 /* ConnexionView.swift */; };
@@ -163,6 +164,7 @@
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHistoriquesPaiements.swift; sourceTree = "<group>"; };
+		F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPaymentEstimateGraphView.swift; sourceTree = "<group>"; };
 		F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		F7DFAD972B66839C00C905A7 /* Bordero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bordero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7DFAD9A2B66839C00C905A7 /* BorderoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderoApp.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */,
 				F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */,
 				F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */,
+				F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */,
 			);
 			path = DataComposant;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				F786F7572BEE9C8B00382B21 /* PDFPayementAndSignature.swift in Sources */,
 				F781153B2BB1A54900F2026E /* PDFDisplayView.swift in Sources */,
 				F76E6BF82BF5487800BC9D68 /* PraticienDataView.swift in Sources */,
+				F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */,
 				F7DFADB02B66926F00C905A7 /* HomeView.swift in Sources */,
 				F78227962BB33FAF0033429F /* FormClientView.swift in Sources */,
 				F76063892BC6BCC600776C8E /* TypeActe+helper.swift in Sources */,
