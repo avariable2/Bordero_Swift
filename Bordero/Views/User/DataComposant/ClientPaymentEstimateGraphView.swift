@@ -87,7 +87,6 @@ func calculateClientPaymentData(clients: [Client]) -> [ClientPaymentData] {
     return clientData
 }
 
-
 #Preview {
     ClientPaymentEstimateGraphView()
 }

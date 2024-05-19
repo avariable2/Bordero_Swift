@@ -22,7 +22,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @Environment(\.dismiss) var dismiss
     
     // MARK: Textfield pour les coordoonées du praticien
-    @State private var image : UIImage? = nil
+    @State private var profilPicture : UIImage? = nil
     
     @State private var signature: UIImage? = nil
     @State private var showSheetForSignature = false
@@ -35,8 +35,8 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var codePostal = ""
     @State private var ville = ""
     
-    @State private var selectedPhotoSociete: PhotosPickerItem?
-    @State private var selectedImage: UIImage?
+    @State private var selectedPhotoPicker: PhotosPickerItem?
+    @State private var selectedPhotoSocieteUIImage: UIImage?
     @State private var nomSociete = ""
     @State private var applyTVA : Bool = true
     @State private var siret = ""
@@ -61,7 +61,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         Form {
             VStack(alignment: .center, spacing: 20) {
                 
-                ProfilImageView(imageData: image?.jpegData(compressionQuality: 1.0))
+                ProfilImageView(imageData: profilPicture?.jpegData(compressionQuality: 1.0))
                     .frame(height: 80)
                     .font(.system(size: 60))
                 
@@ -94,11 +94,11 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                         return
                     }
                     
-                    image = nil
+                    profilPicture = nil
                     if contact.imageDataAvailable {
                         if let imageData = contact.thumbnailImageData, let uiImage = UIImage(data: imageData) {
-                            image = uiImage
-                            image!.jpegData(compressionQuality: 1.0)
+                            profilPicture = uiImage
+                            profilPicture!.jpegData(compressionQuality: 1.0)
                         }
                         
                     }
@@ -250,19 +250,19 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             }
             
             Section {
-                PhotosPicker(selection: $selectedPhotoSociete, matching: .images, photoLibrary: .shared()) {
-                    Label(selectedImage != nil ? "Modifier le logo de société" : "Ajouter un logo de société", systemImage: "photo")
+                PhotosPicker(selection: $selectedPhotoPicker, matching: .images, photoLibrary: .shared()) {
+                    Label(selectedPhotoSocieteUIImage != nil ? "Modifier le logo de société" : "Ajouter un logo de société", systemImage: "photo")
                 }
-                .onChange(of: selectedPhotoSociete) { oldItem, newItem in
+                .onChange(of: selectedPhotoPicker) { oldItem, newItem in
                     Task {
                         // Retrive selected asset in the form of Data
                         if let loaded = try? await newItem?.loadTransferable(type: Data.self) {
-                            selectedImage = UIImage(data: loaded)
+                            selectedPhotoSocieteUIImage = UIImage(data: loaded)
                         }
                     }
                 }
                 
-                if let selectedImage = selectedImage {
+                if let selectedImage = selectedPhotoSocieteUIImage {
                     Image(uiImage: selectedImage)
                         .resizable()
                         .scaledToFit()
@@ -346,7 +346,8 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         praticien.id = FormPraticienView.uuidPraticien!
         praticien.version = FormPraticienView.getVersion()
         
-        praticien.profilPicture = image?.jpegData(compressionQuality: 1.0)
+        praticien.profilPicture = profilPicture?.jpegData(compressionQuality: 1.0)
+        praticien.logoSociete = selectedPhotoSocieteUIImage?.jpegData(compressionQuality: 1.0)
         
         praticien.nom_proffession = nomSociete
         praticien.adeli = adeli
@@ -379,7 +380,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     func retrieveInfoFormPraticienNotNull(_ user : Praticien) {
         if let data = user.profilPicture {
-            image = UIImage(data: data) ?? nil
+            profilPicture = UIImage(data: data) ?? nil
         }
         
         nomSociete = user.nom_proffession ?? ""
@@ -398,7 +399,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         }
         
         if let dataLogoSociete = user.logoSociete, let uiImage = UIImage(data: dataLogoSociete) {
-            selectedImage = uiImage
+            selectedPhotoSocieteUIImage = uiImage
         }
         
         if let adresse = user.adresse1 {

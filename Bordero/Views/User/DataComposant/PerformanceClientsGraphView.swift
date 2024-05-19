@@ -32,7 +32,7 @@ struct PerformanceClientsGraphView: View {
                     )
                     .foregroundStyle(.yellow)
                 }
-                .frame(height: 300)
+                .frame(height: 250)
                 .padding()
             }
         }

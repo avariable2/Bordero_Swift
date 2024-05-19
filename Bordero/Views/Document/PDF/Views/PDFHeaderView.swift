@@ -13,12 +13,16 @@ struct HeaderPDFView : View {
     
     var body: some View {
         HStack(alignment: .top) {
-            VStack(alignment: .leading) {
-                Image(systemName: "apple.logo")
-                    .font(.largeTitle)
-                    .padding(.bottom)
-                
-                if let praticien = data.praticien {
+            if let praticien = data.praticien {
+                HStack {
+                    if let data = praticien.logoSociete, let uiImage = UIImage(data: data) {
+                        
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 150, maxHeight: 140)
+                    }
+                    
                     VStack(alignment: .leading) {
                         Text(praticien.lastname.uppercased()).bold()
                             + Text(" ")
@@ -47,6 +51,6 @@ struct HeaderPDFView : View {
     }
 }
 
-//#Preview {
-//    PDFHeaderView()
-//}
+#Preview {
+    HeaderPDFView(data: PDFModel())
+}
