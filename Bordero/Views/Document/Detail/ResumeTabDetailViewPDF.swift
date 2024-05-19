@@ -14,6 +14,10 @@ struct ResumeTabDetailViewPDF: View {
     
     @State var showSheetPayement = false
     
+    @State var showSelectTypeSend = false
+    @State var showSendByMail = false
+    @State var showSendByMessage = false
+    
     var body: some View {
         VStack {
             Form {
@@ -130,15 +134,41 @@ struct ResumeTabDetailViewPDF: View {
                 }
                 .presentationDetents([.medium])
             }
+            .sheet(isPresented: $showSendByMessage) {
+                MessageComposeView(
+                    recipients: [
+                        document.client_?.phone ?? ""
+                    ],
+                    body: "Message go here",
+                    pdfToSend: document.contenuPdf,
+                    namePdfToSend: document.getNameOfDocument()
+                ) { messageSent in
+                    
+                }
+            }
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     Button {
-                        
+                        showSelectTypeSend = true
                     } label: {
                         Label("Envoyer", systemImage: "paperplane.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
+                    .confirmationDialog(Text("Séléctionner la méthode d'envoie"), isPresented: $showSelectTypeSend, titleVisibility: .visible) {
+                        
+                        Button {
+                            showSendByMail = true
+                        } label: {
+                            Label("Mail", systemImage: "envelope")
+                        }
+                        
+                        Button {
+                            showSendByMessage = true
+                        } label: {
+                            Label("Message", systemImage: "message")
+                        }
+                    }
                     
                     if document.estDeTypeFacture {
                         Button {

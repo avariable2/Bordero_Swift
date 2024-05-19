@@ -91,6 +91,7 @@
 		F7E88C862B8A335F00AAF73C /* SectionHomeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */; };
 		F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */; };
 		F7E88C8A2B8A432700AAF73C /* TitleWithIconColorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */; };
+		F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -179,6 +180,7 @@
 		F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHomeComponentView.swift; sourceTree = "<group>"; };
 		F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponentView.swift; sourceTree = "<group>"; };
 		F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithIconColorComponentView.swift; sourceTree = "<group>"; };
+		F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +304,7 @@
 				F780966B2BAC803C00B3AF4A /* PencilUIView.swift */,
 				F781153C2BB1A59700F2026E /* PDFUIView.swift */,
 				F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */,
+				F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */,
 			);
 			path = PackageSwift;
 			sourceTree = "<group>";
@@ -581,6 +584,7 @@
 				F7878F3B2BD7ED7000EC53E0 /* ApercusTabDetailView.swift in Sources */,
 				F76ECAC52BD283730089C739 /* Document+helper.swift in Sources */,
 				F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */,
+				F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */,
 				F792B75B2B715DE700FA5569 /* FormClientSheet.swift in Sources */,
 				F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */,
 				F78096672BAC6BF600B3AF4A /* MailView.swift in Sources */,
