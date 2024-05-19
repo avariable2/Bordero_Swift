@@ -21,7 +21,7 @@ struct PDFUtils {
     static func getTableauInfoAdresse(_ rue : String?, _ codePostal: String?, _ etageAppt : String?, _ ville : String?) -> [String] {
         var tab : [String] = []
         if let rue = rue, !rue.isEmpty {
-            tab.append(rue)
+            tab.append(rue.trimmingCharacters(in: .whitespacesAndNewlines))
         }
         if let codepostal = codePostal, !codepostal.isEmpty {
             tab.append(codepostal)
@@ -30,7 +30,7 @@ struct PDFUtils {
             tab.append(etageAppt)
         }
         if let ville = ville, !ville.isEmpty {
-            tab.append(ville)
+            tab.append(ville.trimmingCharacters(in: .whitespacesAndNewlines))
         }
         
         return tab
