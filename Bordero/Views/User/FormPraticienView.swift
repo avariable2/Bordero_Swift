@@ -262,6 +262,17 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                     }
                 }
                 
+                if selectedPhotoSocieteUIImage != nil {
+                    Button {
+                        withAnimation {
+                            selectedPhotoSocieteUIImage = nil
+                        }
+                    } label: {
+                        Label("Supprimer le logo", systemImage: "x.circle")
+                            .foregroundStyle(.red)
+                    }
+                }
+                
                 if let selectedImage = selectedPhotoSocieteUIImage {
                     Image(uiImage: selectedImage)
                         .resizable()
