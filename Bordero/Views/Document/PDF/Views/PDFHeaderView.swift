@@ -36,8 +36,13 @@ struct HeaderPDFView : View {
                             .foregroundStyle(.blue)
                         Text(verbatim: praticien.website)
                             .foregroundStyle(.blue)
+                        
+                        Spacer()
                     }
                     .font(.caption)
+                    .frame(maxHeight: 140)
+                    
+                    Spacer()
                 }
                 .frame(maxWidth: 350)
             }
