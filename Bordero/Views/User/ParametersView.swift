@@ -139,7 +139,7 @@ struct ParametersView: View {
                         }
                         .disabled(!MFMailComposeViewController.canSendMail())
                         .sheet(isPresented: $isShowingMailView) {
-                            MailView(result: self.$result)
+                            DevelopperMailView(result: self.$result)
                                 .edgesIgnoringSafeArea(.bottom)
                         }
                         

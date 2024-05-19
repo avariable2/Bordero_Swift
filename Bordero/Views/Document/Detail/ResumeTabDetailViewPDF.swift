@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SafariServices
+import MessageUI
 
 struct ResumeTabDetailViewPDF: View {
     @State var presentURL: URL? = nil
@@ -15,7 +16,10 @@ struct ResumeTabDetailViewPDF: View {
     @State var showSheetPayement = false
     
     @State var showSelectTypeSend = false
+    
     @State var showSendByMail = false
+    @State var resultOrErrorMail: Result<MFMailComposeResult, Error>? = nil
+    
     @State var showSendByMessage = false
     
     var body: some View {
@@ -145,6 +149,16 @@ struct ResumeTabDetailViewPDF: View {
                 ) { messageSent in
                     
                 }
+            }
+            .sheet(isPresented: $showSendByMail) {
+                MailUIView(
+                    recipients: [
+                        document.client_?.email ?? ""
+                    ],
+                    body: "Message go here",
+                    pdfToSend: document.contenuPdf,
+                    namePdfToSend: document.getNameOfDocument(),
+                    result: $resultOrErrorMail)
             }
             .safeAreaInset(edge: .bottom) {
                 VStack {

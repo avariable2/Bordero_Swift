@@ -129,49 +129,57 @@ struct OnBoardingView : View {
 					<key>type</key>
 					<string>bookmark</string>
 				</dict>
-				<dict>
-					<key>destination</key>
-					<dict>
-						<key>rebasable-url</key>
-						<dict>
-							<key>base</key>
-							<string>workspace</string>
-							<key>payload</key>
-							<dict>
-								<key>relative-path</key>
-								<string>Bordero/Views/Client/ListClients.swift</string>
-							</dict>
-						</dict>
-						<key>type</key>
-						<string>DVTDocumentLocation</string>
-					</dict>
-					<key>type</key>
-					<string>bookmark</string>
-				</dict>
-				<dict>
-					<key>destination</key>
-					<dict>
-						<key>rebasable-url</key>
-						<dict>
-							<key>base</key>
-							<string>workspace</string>
-							<key>payload</key>
-							<dict>
-								<key>relative-path</key>
-								<string>Bordero/Views/Client/ListClients.swift</string>
-							</dict>
-						</dict>
-						<key>type</key>
-						<string>DVTDocumentLocation</string>
-					</dict>
-					<key>type</key>
-					<string>bookmark</string>
-				</dict>
 			</array>
 			<key>title</key>
 			<string>TODO</string>
 			<key>type</key>
 			<string>group</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>50</string>
+					<key>EndingLineNumber</key>
+					<string>13</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>13</string>
+					<key>Timestamp</key>
+					<string>737843863.96418</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Bordero/Views/PackageSwift/MailUIView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>struct MailUIView: UIViewControllerRepresentable {</string>
+				<key>leading</key>
+				<string>import UIKit
+
+</string>
+				<key>trailing</key>
+				<string>
+    
+    @Environment(\.presentationMode) var presentation
+</string>
+			</dict>
+			<key>title</key>
+			<string>A mutualiser avec DevelopperMailView</string>
+			<key>type</key>
+			<string>bookmark</string>
 		</dict>
 	</array>
 </dict>

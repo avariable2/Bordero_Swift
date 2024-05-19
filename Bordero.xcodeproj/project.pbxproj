@@ -51,7 +51,7 @@
 		F77F531A2B7BA121004329B9 /* DocumentOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77F53192B7BA121004329B9 /* DocumentOptionsView.swift */; };
 		F78096632BAC651A00B3AF4A /* TVAParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096622BAC651A00B3AF4A /* TVAParametersView.swift */; };
 		F78096652BAC66DF00B3AF4A /* ModeleDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096642BAC66DF00B3AF4A /* ModeleDocumentView.swift */; };
-		F78096672BAC6BF600B3AF4A /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096662BAC6BF600B3AF4A /* MailView.swift */; };
+		F78096672BAC6BF600B3AF4A /* DevelopperMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096662BAC6BF600B3AF4A /* DevelopperMailView.swift */; };
 		F780966A2BAC801400B3AF4A /* PhotosUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096692BAC801400B3AF4A /* PhotosUIView.swift */; };
 		F780966C2BAC803C00B3AF4A /* PencilUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780966B2BAC803C00B3AF4A /* PencilUIView.swift */; };
 		F780966F2BAC855F00B3AF4A /* RowIconColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780966E2BAC855F00B3AF4A /* RowIconColor.swift */; };
@@ -92,6 +92,7 @@
 		F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */; };
 		F7E88C8A2B8A432700AAF73C /* TitleWithIconColorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */; };
 		F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */; };
+		F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E42BFA985800A2CB01 /* MailUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,7 +140,7 @@
 		F77F53192B7BA121004329B9 /* DocumentOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentOptionsView.swift; sourceTree = "<group>"; };
 		F78096622BAC651A00B3AF4A /* TVAParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVAParametersView.swift; sourceTree = "<group>"; };
 		F78096642BAC66DF00B3AF4A /* ModeleDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeleDocumentView.swift; sourceTree = "<group>"; };
-		F78096662BAC6BF600B3AF4A /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
+		F78096662BAC6BF600B3AF4A /* DevelopperMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopperMailView.swift; sourceTree = "<group>"; };
 		F78096692BAC801400B3AF4A /* PhotosUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosUIView.swift; sourceTree = "<group>"; };
 		F780966B2BAC803C00B3AF4A /* PencilUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilUIView.swift; sourceTree = "<group>"; };
 		F780966E2BAC855F00B3AF4A /* RowIconColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowIconColor.swift; sourceTree = "<group>"; };
@@ -181,6 +182,7 @@
 		F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponentView.swift; sourceTree = "<group>"; };
 		F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithIconColorComponentView.swift; sourceTree = "<group>"; };
 		F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageUIView.swift; sourceTree = "<group>"; };
+		F7EA15E42BFA985800A2CB01 /* MailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,7 +294,6 @@
 				F78096622BAC651A00B3AF4A /* TVAParametersView.swift */,
 				F762642F2B7AC1D8009C15F4 /* FormPraticienView.swift */,
 				F78096642BAC66DF00B3AF4A /* ModeleDocumentView.swift */,
-				F78096662BAC6BF600B3AF4A /* MailView.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -303,8 +304,10 @@
 				F78096692BAC801400B3AF4A /* PhotosUIView.swift */,
 				F780966B2BAC803C00B3AF4A /* PencilUIView.swift */,
 				F781153C2BB1A59700F2026E /* PDFUIView.swift */,
+				F78096662BAC6BF600B3AF4A /* DevelopperMailView.swift */,
 				F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */,
 				F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */,
+				F7EA15E42BFA985800A2CB01 /* MailUIView.swift */,
 			);
 			path = PackageSwift;
 			sourceTree = "<group>";
@@ -587,7 +590,7 @@
 				F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */,
 				F792B75B2B715DE700FA5569 /* FormClientSheet.swift in Sources */,
 				F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */,
-				F78096672BAC6BF600B3AF4A /* MailView.swift in Sources */,
+				F78096672BAC6BF600B3AF4A /* DevelopperMailView.swift in Sources */,
 				F7DFAD9D2B66839C00C905A7 /* ConnexionView.swift in Sources */,
 				F761B5C22BC811B3003AA878 /* PDFViewModel.swift in Sources */,
 				F76CE5A32BF381FB00C6502C /* HistoriquePaiementView.swift in Sources */,
@@ -598,6 +601,7 @@
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,
 				F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */,
 				F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */,
+				F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */,
 				F762642E2B7AAA74009C15F4 /* DocumentFormView.swift in Sources */,
 				F71364542B8CDB3100C68853 /* ProfilView.swift in Sources */,
 				F76060832BCAE44500F9552E /* DocumentDetailView.swift in Sources */,
