@@ -20,7 +20,7 @@ struct HeaderPDFView : View {
                         Image(uiImage: uiImage)
                             .resizable()
                             .scaledToFit()
-                            .frame(maxWidth: 150, maxHeight: 140)
+                            .frame(maxHeight: 140, alignment: .leading)
                     }
                     
                     VStack(alignment: .leading) {
@@ -39,6 +39,7 @@ struct HeaderPDFView : View {
                     }
                     .font(.caption)
                 }
+                .frame(maxWidth: 350)
             }
             
             Spacer()
