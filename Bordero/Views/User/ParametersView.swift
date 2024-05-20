@@ -48,36 +48,6 @@ struct ParametersView: View {
                     }
                 }
                 
-                Section {
-                    NavigationLink {
-                        TVAParametersView()
-                    } label: {
-                        RowIconColor(
-                            text: "Paramètres TVA",
-                            systemName: "tag.square.fill",
-                            color: .orange,
-                            accessibility: "Bouton pour changer les paramètres de T.V.A"
-                        )
-                    }
-                    .disabled(true)
-                    
-                    NavigationLink {
-                        
-                    } label: {
-                        RowIconColor(
-                            text: "Options de paiement",
-                            systemName: "eurosign.square.fill",
-                            color: .black,
-                            accessibility: "Bouton pour definir vos options de paiement"
-                        )
-                    }
-                    .disabled(true)
-                } header: {
-                    Text("Paramètres de facturation")
-                } footer: {
-                    Text("🏗️ En construction. Disponible dans une future mise à jour.")
-                }
-                
                 Section("Documents") {
                     NavigationLink {
                         if let praticien = praticien {
@@ -115,6 +85,36 @@ struct ParametersView: View {
                             accessibility: "Bouton pour configurer les rappels de factures impayées"
                         )
                     }
+                }
+                
+                Section {
+                    NavigationLink {
+                        TVAParametersView()
+                    } label: {
+                        RowIconColor(
+                            text: "Paramètres TVA",
+                            systemName: "tag.square.fill",
+                            color: .orange,
+                            accessibility: "Bouton pour changer les paramètres de T.V.A"
+                        )
+                    }
+                    .disabled(true)
+                    
+                    NavigationLink {
+                        
+                    } label: {
+                        RowIconColor(
+                            text: "Options de paiement",
+                            systemName: "eurosign.square.fill",
+                            color: .black,
+                            accessibility: "Bouton pour definir vos options de paiement"
+                        )
+                    }
+                    .disabled(true)
+                } header: {
+                    Text("Paramètres de facturation")
+                } footer: {
+                    Text("🏗️ En construction. Disponible dans une future mise à jour.")
                 }
                 
                 if ProcessInfo.processInfo.isiOSAppOnMac {
