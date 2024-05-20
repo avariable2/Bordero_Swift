@@ -15,6 +15,7 @@ struct MailUIView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentation
     
     let recipients: [String]?
+    let title : String?
     let body: String?
     
     let pdfToSend : Data?
@@ -57,6 +58,7 @@ struct MailUIView: UIViewControllerRepresentable {
         
         vc.setToRecipients(recipients)
         vc.setMessageBody(body ?? "", isHTML: false)
+        vc.setSubject(title ?? "")
         if let data = pdfToSend {
             vc.addAttachmentData(data, mimeType: "application/pdf", fileName: namePdfToSend ?? "Document")
         }

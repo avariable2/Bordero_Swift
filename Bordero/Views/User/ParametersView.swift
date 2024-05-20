@@ -64,8 +64,10 @@ struct ParametersView: View {
                     .disabled(praticien == nil)
                     
                     NavigationLink {
-                        TextSettingsSendClientView()
-                            .navigationTitle("Gérer les messages")
+                        if let praticien = praticien {
+                            TextSettingsSendClientView(praticien: praticien)
+                                .navigationTitle("Gérer les messages")
+                        }
                     } label: {
                         RowIconColor(
                             text: "Contact avec le client",

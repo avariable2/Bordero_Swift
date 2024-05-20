@@ -10,6 +10,8 @@ import SafariServices
 import MessageUI
 
 struct ResumeTabDetailViewPDF: View {
+    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    
     @State var presentURL: URL? = nil
     @ObservedObject var document : Document
     
@@ -143,7 +145,7 @@ struct ResumeTabDetailViewPDF: View {
                     recipients: [
                         document.client_?.phone ?? ""
                     ],
-                    body: "Message go here",
+                    body: retrieveBody(),
                     pdfToSend: document.contenuPdf,
                     namePdfToSend: document.getNameOfDocument()
                 ) { messageSent in
@@ -155,7 +157,8 @@ struct ResumeTabDetailViewPDF: View {
                     recipients: [
                         document.client_?.email ?? ""
                     ],
-                    body: "Message go here",
+                    title: retrieveTitle(),
+                    body: retrieveBody(),
                     pdfToSend: document.contenuPdf,
                     namePdfToSend: document.getNameOfDocument(),
                     result: $resultOrErrorMail)
@@ -199,6 +202,43 @@ struct ResumeTabDetailViewPDF: View {
                 .background(.regularMaterial)
             }
         }
+    }
+    
+    func retrieveBody() -> String {
+        if let praticien = praticien.first {
+            return document.estDeTypeFacture ? praticien.structMessageFacture.corps : praticien.structMessageDevis.corps
+        }
+        return ""
+    }
+    
+    func retrieveTitle() -> String {
+        if let praticien = praticien.first {
+            return document.estDeTypeFacture ? praticien.structMessageFacture.titre : praticien.structMessageDevis.titre
+        }
+        return "\(document.estDeTypeFacture ? "Facture" : "Devis") \(document.numero)"
+    }
+    
+    func replaceHashtags(in text: String, with values: [String: String]) -> String {
+        var newText = text
+        let pattern = "#(.*?)#"
+
+        if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
+            let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
+            let matches = regex.matches(in: text, options: [], range: nsRange)
+
+            for match in matches.reversed() {
+                if let range = Range(match.range, in: text) {
+                    let hashtag = String(text[range])
+                    let key = String(hashtag.dropFirst().dropLast()) // Remove leading and trailing #
+                    
+                    if let replacement = values[key] {
+                        newText.replaceSubrange(range, with: replacement)
+                    }
+                }
+            }
+        }
+        
+        return newText
     }
 }
 

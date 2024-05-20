@@ -9,6 +9,11 @@ import Foundation
 import CoreData
 
 extension Praticien {
+    struct MessageBody {
+        var titre : String
+        var corps : String
+    }
+    
     struct ParametersModele {
         var showDateEcheance : Bool
         var showModePaiement : Bool
@@ -60,6 +65,36 @@ extension Praticien {
             parametersDocument_ = [
                 "showDateEcheance" : newValue.showDateEcheance,
                 "showModePaiement" : newValue.showModePaiement
+            ]
+        }
+    }
+    
+    var structMessageFacture : MessageBody {
+        get {
+            MessageBody(
+                titre: structureMessageFacture?["titre"] as? String ?? "",
+                corps: structureMessageFacture?["corps"] as? String ?? ""
+            )
+        }
+        set {
+            structureMessageFacture = [
+                "titre" : newValue.titre,
+                "corps" : newValue.corps
+            ]
+        }
+    }
+    
+    var structMessageDevis : MessageBody {
+        get {
+            MessageBody(
+                titre: structureMessageDevis?["titre"] as? String ?? "",
+                corps: structureMessageDevis?["corps"] as? String ?? ""
+            )
+        }
+        set {
+            structureMessageDevis = [
+                "titre" : newValue.titre,
+                "corps" : newValue.corps
             ]
         }
     }
