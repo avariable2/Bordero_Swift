@@ -99,9 +99,20 @@ struct ParametersView: View {
                     } label: {
                         RowIconColor(
                             text: "Contact avec le client",
+                            systemName: "square.text.square.fill",
+                            color: .brown,
+                            accessibility: "Bouton pour automatiser vos envoies de document"
+                        )
+                    }
+                    
+                    NavigationLink {
+                        
+                    } label: {
+                        RowIconColor(
+                            text: "Notifications",
                             systemName: "bell.square.fill",
                             color: .red,
-                            accessibility: "Bouton pour automatiser vos envoies de document"
+                            accessibility: "Bouton pour configurer les rappels de factures impayées"
                         )
                     }
                 }
