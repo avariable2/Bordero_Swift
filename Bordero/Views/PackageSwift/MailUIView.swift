@@ -9,7 +9,6 @@ import AVFoundation
 import Foundation
 import SwiftUI
 import MessageUI
-import UIKit
 
 struct MailUIView: UIViewControllerRepresentable {
     

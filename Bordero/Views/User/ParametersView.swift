@@ -94,16 +94,16 @@ struct ParametersView: View {
                     .disabled(praticien == nil)
                     
                     NavigationLink {
-                        
+                        TextSettingsSendClientView()
+                            .navigationTitle("Gérer les messages")
                     } label: {
                         RowIconColor(
-                            text: "Rappel et Email avec le client",
+                            text: "Contact avec le client",
                             systemName: "bell.square.fill",
                             color: .red,
-                            accessibility: "Bouton pour automatiser vos envoies et rappels de document"
+                            accessibility: "Bouton pour automatiser vos envoies de document"
                         )
                     }
-                    .disabled(true)
                 }
                 
                 if ProcessInfo.processInfo.isiOSAppOnMac {

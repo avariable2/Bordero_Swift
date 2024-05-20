@@ -76,6 +76,7 @@
 		F7985E132BF54997005362A4 /* NbFacturesGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */; };
 		F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
+		F7B6678B2BFBD39E00061908 /*  TextSettingsendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /*  TextSettingsendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
 		F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */; };
 		F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */; };
@@ -164,6 +165,7 @@
 		F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NbFacturesGraphView.swift; sourceTree = "<group>"; };
 		F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceClientsGraphView.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
+		F7B6678A2BFBD39E00061908 /*  TextSettingsendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " TextSettingsendClientView.swift"; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHistoriquesPaiements.swift; sourceTree = "<group>"; };
 		F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPaymentEstimateGraphView.swift; sourceTree = "<group>"; };
@@ -288,12 +290,10 @@
 		F777A2E82B8DEF2E001E0169 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F7B6678C2BFBD3A200061908 /* Parameters */,
 				F7985E112BF5490C005362A4 /* DataComposant */,
 				F76E6BF72BF5487800BC9D68 /* PraticienDataView.swift */,
 				F777A2E92B8DEF46001E0169 /* ParametersView.swift */,
-				F78096622BAC651A00B3AF4A /* TVAParametersView.swift */,
-				F762642F2B7AC1D8009C15F4 /* FormPraticienView.swift */,
-				F78096642BAC66DF00B3AF4A /* ModeleDocumentView.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -365,6 +365,17 @@
 				F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */,
 			);
 			path = DataComposant;
+			sourceTree = "<group>";
+		};
+		F7B6678C2BFBD3A200061908 /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				F762642F2B7AC1D8009C15F4 /* FormPraticienView.swift */,
+				F78096642BAC66DF00B3AF4A /* ModeleDocumentView.swift */,
+				F7B6678A2BFBD39E00061908 /*  TextSettingsendClientView.swift */,
+				F78096622BAC651A00B3AF4A /* TVAParametersView.swift */,
+			);
+			path = Parameters;
 			sourceTree = "<group>";
 		};
 		F7D8E0142B8BA14400D4F28B /* OnBoarding */ = {
@@ -599,6 +610,7 @@
 				F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */,
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,
+				F7B6678B2BFBD39E00061908 /*  TextSettingsendClientView.swift in Sources */,
 				F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */,
 				F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */,
 				F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */,

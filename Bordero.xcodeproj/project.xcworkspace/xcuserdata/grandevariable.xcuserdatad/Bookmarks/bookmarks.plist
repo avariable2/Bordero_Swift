@@ -21,7 +21,7 @@
 							<key>StartingLineNumber</key>
 							<string>108</string>
 							<key>Timestamp</key>
-							<string>737388459.682133</string>
+							<string>737929613.15018</string>
 						</dict>
 						<key>rebasable-url</key>
 						<dict>
@@ -141,15 +141,15 @@ struct OnBoardingView : View {
 				<key>location-parameters</key>
 				<dict>
 					<key>EndingColumnNumber</key>
-					<string>50</string>
+					<string>0</string>
 					<key>EndingLineNumber</key>
 					<string>13</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>13</string>
+					<string>12</string>
 					<key>Timestamp</key>
-					<string>737843863.96418</string>
+					<string>737932921.481162</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -165,15 +165,16 @@ struct OnBoardingView : View {
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>struct MailUIView: UIViewControllerRepresentable {</string>
+				<string>struct MailUIView: UIViewControllerRepresentable {
+</string>
 				<key>leading</key>
-				<string>import UIKit
+				<string>import MessageUI
 
 </string>
 				<key>trailing</key>
-				<string>
-    
+				<string>    
     @Environment(\.presentationMode) var presentation
+    
 </string>
 			</dict>
 			<key>title</key>
