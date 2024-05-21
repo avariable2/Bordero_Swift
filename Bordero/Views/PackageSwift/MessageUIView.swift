@@ -61,7 +61,20 @@ struct MessageComposeView: UIViewControllerRepresentable {
 }
 
 struct MessagesUnavailableView: View {
+    @Environment(\.dismiss) var dismiss
     var body: some View {
-        ContentUnavailableView("Messages is unavailable", image: "xmark.octagon")
+        VStack {
+            ContentUnavailableView("Messages n'est pas disponible avec votre appareil", systemImage: "xmark.circle")
+                
+        }.toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Annuler")
+                }
+            }
+        }
+        
     }
 }

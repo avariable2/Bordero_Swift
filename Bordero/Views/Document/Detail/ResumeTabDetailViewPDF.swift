@@ -157,6 +157,7 @@ struct ResumeTabDetailViewPDF: View {
                 }
             }
             .sheet(isPresented: $showSendByMail) {
+                
                 MailUIView(
                     recipients: [
                         document.client_?.email ?? ""
@@ -165,7 +166,8 @@ struct ResumeTabDetailViewPDF: View {
                     body: retrieveMessageBody(),
                     pdfToSend: document.contenuPdf,
                     namePdfToSend: document.getNameOfDocument(),
-                    result: $resultOrErrorMail)
+                    result: $resultOrErrorMail
+                )
             }
             .sheet(item: $errorChangement) { error in
                 switch errorChangement {
@@ -196,6 +198,7 @@ struct ResumeTabDetailViewPDF: View {
                         } label: {
                             Label("Mail", systemImage: "envelope")
                         }
+                        .disabled(!MFMailComposeViewController.canSendMail())
                         
                         Button {
                             showSendByMessage = true
