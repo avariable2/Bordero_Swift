@@ -18,4 +18,8 @@ extension HistoriqueEvenement {
         get { date_ ?? Date() }
         set { date_ = newValue }
     }
+    
+    public override func awakeFromInsert() {
+        self.id = UUID()
+    }
 }

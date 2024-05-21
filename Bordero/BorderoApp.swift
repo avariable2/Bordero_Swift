@@ -19,13 +19,13 @@ struct BorderoApp: App {
             case .isLoading:
                 HomeView(showNeediCloud: true)
                     .redacted(reason: .placeholder)
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
                     .onChange(of: userController.accountAvailable) { oldValue, newValue in
                         DataController.shared.updateICloudSettings()
                     }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
-                    
             }
         }
     }

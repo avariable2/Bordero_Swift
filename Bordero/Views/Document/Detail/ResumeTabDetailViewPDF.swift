@@ -16,6 +16,7 @@ enum ErrorDocument : Identifiable {
 }
 
 struct ResumeTabDetailViewPDF: View {
+    @Environment(\.managedObjectContext) var context
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
     // MARK: Attribut pour changer la facture en devis
@@ -191,12 +192,14 @@ struct ResumeTabDetailViewPDF: View {
                         
                         Button {
                             showSendByMail = true
+                            addEvenementWhenSend()
                         } label: {
                             Label("Mail", systemImage: "envelope")
                         }
                         
                         Button {
                             showSendByMessage = true
+                            addEvenementWhenSend()
                         } label: {
                             Label("Message", systemImage: "message")
                         }
@@ -300,6 +303,22 @@ struct ResumeTabDetailViewPDF: View {
             "NOM_CLIENT" : document.client_?.getFullName() ?? " ",
             "NOM_SOCIETE" : praticien.first?.nom_proffession ?? ""
         ]
+    }
+    
+    func addEvenementWhenSend() {
+        let evenementSend = HistoriqueEvenement(context: context)
+        
+        if document.status == .send {
+            evenementSend.nom = Evenement.TypeEvenement.renvoie.rawValue
+        } else {
+            evenementSend.nom = Evenement.TypeEvenement.envoie.rawValue
+            document.status = .send
+        }
+        evenementSend.date = Date()
+        evenementSend.correspond = document
+        document.historique?.adding(evenementSend)
+        
+        DataController.saveContext()
     }
 }
 

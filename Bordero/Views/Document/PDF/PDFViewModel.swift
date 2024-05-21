@@ -210,32 +210,27 @@ class PDFViewModel {
     
     
     func attributeViewModelToDocument(context : NSManagedObjectContext, pdfDocument : PDFDocument?) -> Document {
+        
+        // CREATE HistoriqueEvenement
+        let historiqueEvenement = HistoriqueEvenement(context: context)
+        
         let document : Document
+        let objEvenement : Evenement
+        
         if let doc = documentObject {
             document = doc
-            
-            // MARK: Creation de l'historique
-            let objEvenement = Evenement(nom: .modification, date: Date())
-            let evenementCreation = HistoriqueEvenement(context: context)
-            evenementCreation.id = UUID()
-            evenementCreation.correspond = document
-            evenementCreation.date = objEvenement.date
-            evenementCreation.nom = objEvenement.nom.rawValue
-            document.historique?.adding(evenementCreation)
-            
+            objEvenement = Evenement(nom: .modification, date: Date())
         } else {
             document = Document(context: context)
-            
-            // MARK: Creation de l'historique
-            let objEvenement = Evenement(nom: .création, date: Date())
-            let evenementCreation = HistoriqueEvenement(context: context)
-            evenementCreation.id = UUID()
-            evenementCreation.correspond = document
-            evenementCreation.date = objEvenement.date
-            evenementCreation.nom = objEvenement.nom.rawValue
-            document.historique?.adding(evenementCreation)
+            objEvenement = Evenement(nom: .création, date: Date())
         }
         
+        historiqueEvenement.correspond = document
+        historiqueEvenement.date = objEvenement.date
+        historiqueEvenement.nom = objEvenement.nom.rawValue
+        document.historique?.adding(historiqueEvenement)
+        
+        // Autre données
         document.estDeTypeFacture = self.pdfModel.optionsDocument.estFacture
         document.numero = self.pdfModel.optionsDocument.numeroDocument
         document.status = self.pdfModel.optionsDocument.payementFinish ? .payed : .created
