@@ -42,6 +42,12 @@ struct DocumentOptionsView: View, Saveable {
                     DatePickerViewCustom(text: "Date d'émission", selection: $viewModel.pdfModel.optionsDocument.dateEmission)
                     
                     DatePickerViewCustom(text: "Date d'échéance", selection: $viewModel.pdfModel.optionsDocument.dateEcheance)
+                        .onAppear {
+                            if let praticien = praticien.first {
+                                viewModel.pdfModel.optionsDocument.dateEcheance =
+                                Calendar.current.date(byAdding: .day, value: Int(praticien.defaultRangeDateEcheance_), to: Date()) ?? Date()
+                            }
+                        }
                 }
                 
                 Section("Remise sur votre \(viewModel.pdfModel.optionsDocument.estFacture ? "facture" : "devis")") {

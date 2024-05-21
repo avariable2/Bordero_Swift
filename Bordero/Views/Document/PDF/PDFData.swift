@@ -41,7 +41,7 @@ struct PDFModel {
             payementFinish: false,
             payementUse: .carte,
             dateEmission: Date(),
-            dateEcheance: Calendar.current.date(byAdding: .day, value: 30, to: Date())!, // Ajoute par defaut 30 jours
+            dateEcheance: Calendar.current.date(byAdding: .day, value: 30, to: Date()) ?? Date(), // Ajoute par defaut 30 jours
             remise: Remise(type: .pourcentage, montant: 0),
             note: ""
         )

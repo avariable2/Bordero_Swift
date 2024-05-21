@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="Client" representedClassName="Client" syncable="YES" codeGenerationType="class">
         <attribute name="adresse1" optional="YES" attributeType="Composite" composite="Adresse"/>
         <attribute name="adresse2" optional="YES" attributeType="Composite" composite="Adresse"/>
@@ -61,6 +61,7 @@
         <attribute name="applyTVA" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="carte" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="cheque" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="defaultRangeDateEcheance_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="email_" optional="YES" attributeType="String"/>
         <attribute name="espece" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="firstname_" optional="YES" attributeType="String"/>
@@ -109,12 +110,6 @@
         <attribute name="ville" optional="YES" attributeType="String"/>
         <attribute name="province_etat" optional="YES" attributeType="String"/>
         <attribute name="pays" optional="YES" attributeType="String"/>
-    </composite>
-    <composite name="DocumentPayementAllow">
-        <attribute name="carte" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="especes" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="virement" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="cheque" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </composite>
     <composite name="MessageBody">
         <attribute name="titre" optional="YES" attributeType="String"/>
