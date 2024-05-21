@@ -90,6 +90,14 @@ import Observation
             }
         }
     }
+    
+    static func rollback() {
+        let context = shared.container.viewContext
+        
+        if context.hasChanges {
+            context.rollback()
+        }
+    }
 }
 
 public extension URL {

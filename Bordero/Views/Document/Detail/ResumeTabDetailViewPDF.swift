@@ -8,9 +8,19 @@
 import SwiftUI
 import SafariServices
 import MessageUI
+import PDFKit
+
+enum ErrorDocument : Identifiable {
+    case failToConvertIntoFacture
+    var id: Self { self }
+}
 
 struct ResumeTabDetailViewPDF: View {
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    
+    // MARK: Attribut pour changer la facture en devis
+    @State var showModalLoading = false
+    @State var errorChangement : ErrorDocument? = nil
     
     @State var presentURL: URL? = nil
     @ObservedObject var document : Document
@@ -84,13 +94,10 @@ struct ResumeTabDetailViewPDF: View {
                 Section {
                     HStack {
                         Text("Status")
-                        
                         Spacer()
-                        
                         HStack(spacing: nil) {
                             Image(systemName: "circle.circle.fill")
                                 .foregroundStyle(.black, document.determineColor())
-                            
                             Text(document.determineStatut())
                                 .foregroundStyle(.primary)
                                 .fontWeight(.light)
@@ -99,26 +106,22 @@ struct ResumeTabDetailViewPDF: View {
                     
                     HStack {
                         Text("Reste à payé")
-                        
                         Spacer()
-                        
                         Text(document.resteAPayer, format: .currency(code: "EUR"))
                             .fontWeight(.semibold)
                     }
                     
-                    RowInformationDate(
-                        logo: "calendar.circle.fill",
-                        titre: "Date d'émission",
-                        date: document.dateEmission,
-                        color: .cyan
-                    )
+                    LabeledContent("Date d'émission") {
+                        Text(document.dateEmission.formatted(.dateTime.day().month().year()))
+                            .foregroundStyle(.primary)
+                            .fontWeight(.light)
+                    }
                     
-                    RowInformationDate(
-                        logo: "calendar.circle.fill",
-                        titre: "Date d'échéance",
-                        date: document.dateEcheance,
-                        color: .purple
-                    )
+                    LabeledContent("Date d'échéance") {
+                        Text(document.dateEcheance.formatted(.dateTime.day().month().year()))
+                            .foregroundStyle(.primary)
+                            .fontWeight(.light)
+                    }
                 } header: {
                     Text("Informations")
                 }
@@ -145,7 +148,7 @@ struct ResumeTabDetailViewPDF: View {
                     recipients: [
                         document.client_?.phone ?? ""
                     ],
-                    body: retrieveBody(),
+                    body: retrieveMessageBody(),
                     pdfToSend: document.contenuPdf,
                     namePdfToSend: document.getNameOfDocument()
                 ) { messageSent in
@@ -157,11 +160,23 @@ struct ResumeTabDetailViewPDF: View {
                     recipients: [
                         document.client_?.email ?? ""
                     ],
-                    title: retrieveTitle(),
-                    body: retrieveBody(),
+                    title: retrieveMessageTitle(),
+                    body: retrieveMessageBody(),
                     pdfToSend: document.contenuPdf,
                     namePdfToSend: document.getNameOfDocument(),
                     result: $resultOrErrorMail)
+            }
+            .sheet(item: $errorChangement) { error in
+                switch errorChangement {
+                case .failToConvertIntoFacture:
+                    ContentUnavailableView(
+                        "Impossible de transformer votre devis",
+                        image: "xmark.circle"
+                    )
+                default:
+                    EmptyView()
+                }
+                
             }
             .safeAreaInset(edge: .bottom) {
                 VStack {
@@ -195,6 +210,18 @@ struct ResumeTabDetailViewPDF: View {
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
+                    } else {
+                        Button {
+                            convertDevisToFacture()
+                        } label: {
+                            Text("Convertir en Facture")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .popover(isPresented: $showModalLoading) {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                        }
                     }
                 }
                 .padding()
@@ -204,7 +231,26 @@ struct ResumeTabDetailViewPDF: View {
         }
     }
     
-    func retrieveBody() -> String {
+    func convertDevisToFacture() {
+        showModalLoading = true
+        
+        document.estDeTypeFacture = true
+        let pdfViewModel = PDFViewModel(document: document)
+        pdfViewModel.pdfModel.praticien = praticien.first
+        let url = pdfViewModel.renderView()
+        
+        if let url = url, let pdfDocument = PDFDocument(url: url) {
+            document.contenuPdf = pdfDocument.dataRepresentation()
+            DataController.saveContext()
+        } else {
+            errorChangement = .failToConvertIntoFacture
+            DataController.rollback()
+        }
+        
+        showModalLoading = false
+    }
+    
+    func retrieveMessageBody() -> String {
         if let praticien = praticien.first {
             return document.estDeTypeFacture ? 
             replaceHashtags(in: praticien.structMessageFacture.corps, with: getValue()) :
@@ -213,7 +259,7 @@ struct ResumeTabDetailViewPDF: View {
         return ""
     }
     
-    func retrieveTitle() -> String {
+    func retrieveMessageTitle() -> String {
         if let praticien = praticien.first {
             return document.estDeTypeFacture ? 
             replaceHashtags(in: praticien.structMessageFacture.titre, with: getValue()) :
@@ -271,28 +317,6 @@ struct RowMontantDetail: View {
             
             Text(price, format: .currency(code: "EUR"))
                 .fontWeight(.light)
-        }
-    }
-}
-
-struct RowInformationDate: View {
-    
-    let logo : String
-    let titre : String
-    let date: Date
-    let color: Color
-    
-    var body: some View {
-        HStack {
-            
-            HStack() {
-                Text(titre)
-                
-                Spacer()
-                
-                Text(date, format: .dateTime.day().month().year())
-                    .fontWeight(.light)
-            }
         }
     }
 }
