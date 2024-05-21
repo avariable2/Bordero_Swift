@@ -65,7 +65,7 @@ extension Document {
     
     enum Status : String, Identifiable, CaseIterable {
         case all = "Tous"
-        case created = "Crée"
+        case created = "Ouvert"
         case payed = "Payée"
         case send = "Envoyée"
         
@@ -303,12 +303,7 @@ extension Document {
     }
     
     func determineStatut() -> String {
-        return switch self.status {
-        case .created: "Ouvert"
-        case .payed: "Payer"
-        case .send: "Envoyée"
-        default: "Inconnu"
-        }
+        return self.status.rawValue
     }
     
     func determineColor() -> Color {
