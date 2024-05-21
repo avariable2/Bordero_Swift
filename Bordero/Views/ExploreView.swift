@@ -76,11 +76,13 @@ struct ExploreView: View {
             }
         }
         .navigationTitle("Parcourir")
+        .listStyle(.sidebar)
+        
+        .headerProminence(.increased)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
             }
         }
-        .headerProminence(.increased)
         .sheet(item: $activeSheet) { item in
             
             switch item {

@@ -316,7 +316,6 @@ extension Document {
     }
     
     func getNameOfDocument() -> String {
-//        return "\(self.snapshotClient.firstname) \(self.snapshotClient.lastname) \(self.estDeTypeFacture ? "Facture" : "Devis")"
         return "\(client_?.firstname ?? "Inconnu") \(client_?.lastname ?? "") \(self.estDeTypeFacture ? "Facture" : "Devis")"
     }
     

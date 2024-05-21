@@ -87,7 +87,7 @@ struct ModifierDocumentView: View, Versionnable {
     
     var body: some View {
         NavigationStack {
-            Form {
+            List {
                 Section {
                     Picker("Type de document", selection: $typeSelected.animation()) {
                         ForEach(TypeDoc.allCases) { type in
@@ -231,6 +231,8 @@ struct ModifierDocumentView: View, Versionnable {
             }
         }
         .navigationTitle("Document")
+        .listStyle(.plain)
+        
         .contentMargins(.top, 2)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
