@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TextSettingsSendClientView : View {
+    @Environment(\.dismiss) var dismiss
     @State var praticien : Praticien
     
     @State private var showCommande = true
@@ -44,7 +45,7 @@ Cordialement,
                     RowCommandeView(titre: "Numéro du document", commande: "#NUMERO#")
                     RowCommandeView(titre: "Nom du client", commande: "#NOM_CLIENT#")
                     RowCommandeView(titre: "Nom de l'entreprise", commande: "#NOM_SOCIETE#")
-                    RowCommandeView(titre: "Personne à contacter", commande: "#CONTACT_SOCIETE#")
+//                    RowCommandeView(titre: "Personne à contacter", commande: "#CONTACT_SOCIETE#")
                     
                 }
                 
@@ -89,6 +90,7 @@ Cordialement,
         praticien.structMessageDevis = Praticien.MessageBody(titre: titreDevis, corps: bodyMessageDevis)
         
         DataController.saveContext()
+        dismiss()
     }
     
     func retrieveData() {

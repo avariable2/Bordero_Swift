@@ -48,6 +48,10 @@ extension Client {
         return ""
     }
     
+    func getFullName() -> String {
+        return "\(self.firstname) \(self.lastname)"
+    }
+    
     convenience init(
         firstname : String,
         lastname : String,
@@ -60,6 +64,7 @@ extension Client {
             self.phone  = phone
             self.email = email
     }
+    
     public override func awakeFromInsert() {
         self.id = UUID()
     }

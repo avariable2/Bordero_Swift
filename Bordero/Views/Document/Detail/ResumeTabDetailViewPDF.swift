@@ -206,14 +206,18 @@ struct ResumeTabDetailViewPDF: View {
     
     func retrieveBody() -> String {
         if let praticien = praticien.first {
-            return document.estDeTypeFacture ? praticien.structMessageFacture.corps : praticien.structMessageDevis.corps
+            return document.estDeTypeFacture ? 
+            replaceHashtags(in: praticien.structMessageFacture.corps, with: getValue()) :
+            replaceHashtags(in: praticien.structMessageDevis.corps, with: getValue())
         }
         return ""
     }
     
     func retrieveTitle() -> String {
         if let praticien = praticien.first {
-            return document.estDeTypeFacture ? praticien.structMessageFacture.titre : praticien.structMessageDevis.titre
+            return document.estDeTypeFacture ? 
+            replaceHashtags(in: praticien.structMessageFacture.titre, with: getValue()) :
+            replaceHashtags(in: praticien.structMessageDevis.titre, with: getValue())
         }
         return "\(document.estDeTypeFacture ? "Facture" : "Devis") \(document.numero)"
     }
@@ -239,6 +243,17 @@ struct ResumeTabDetailViewPDF: View {
         }
         
         return newText
+    }
+    
+    func getValue() -> [String : String] {
+        return [
+            "TOTAL" : document.totalTTC.formatted(.currency(code: "EUR")),
+            "DATE_DOCUMENT" : document.dateEmission.formatted(.dateTime.day().month().year()),
+            "NOM_DOCUMENT" : document.getNameOfDocument(),
+            "NUMERO" : document.numero,
+            "NOM_CLIENT" : document.client_?.getFullName() ?? " ",
+            "NOM_SOCIETE" : praticien.first?.nom_proffession ?? ""
+        ]
     }
 }
 
