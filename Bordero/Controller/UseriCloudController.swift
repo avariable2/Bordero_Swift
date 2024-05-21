@@ -19,6 +19,7 @@ import Observation
     var accountAvailable : StateCheckiCloud = .isLoading
     
     init() {
+        accountAvailable = .isLoading
         checkAccountStatus()
     }
     

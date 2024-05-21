@@ -17,7 +17,8 @@ struct BorderoApp: App {
         WindowGroup {
             switch userController.accountAvailable {
             case .isLoading:
-                ProgressView()
+                HomeView(showNeediCloud: true)
+                    .redacted(reason: .placeholder)
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
                     .onChange(of: userController.accountAvailable) { oldValue, newValue in
