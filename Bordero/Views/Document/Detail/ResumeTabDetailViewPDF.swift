@@ -328,6 +328,7 @@ struct ResumeTabDetailViewPDF: View {
     }
     
     func checkNotificationAndAddIfNeeded() {
+        if document.estDeTypeFacture == false { return }
         guard let documentID = document.id_?.uuidString else { return }
             
         addNotification(withIdentifier: documentID)
