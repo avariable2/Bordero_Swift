@@ -9,6 +9,7 @@ import SwiftUI
 import SafariServices
 import MessageUI
 import PDFKit
+import UserNotifications
 
 enum ErrorDocument : Identifiable {
     case failToConvertIntoFacture
@@ -258,7 +259,7 @@ struct ResumeTabDetailViewPDF: View {
     
     func retrieveMessageBody() -> String {
         if let praticien = praticien.first {
-            return document.estDeTypeFacture ? 
+            return document.estDeTypeFacture ?
             replaceHashtags(in: praticien.structMessageFacture.corps, with: getValue()) :
             replaceHashtags(in: praticien.structMessageDevis.corps, with: getValue())
         }
@@ -267,7 +268,7 @@ struct ResumeTabDetailViewPDF: View {
     
     func retrieveMessageTitle() -> String {
         if let praticien = praticien.first {
-            return document.estDeTypeFacture ? 
+            return document.estDeTypeFacture ?
             replaceHashtags(in: praticien.structMessageFacture.titre, with: getValue()) :
             replaceHashtags(in: praticien.structMessageDevis.titre, with: getValue())
         }
@@ -277,11 +278,11 @@ struct ResumeTabDetailViewPDF: View {
     func replaceHashtags(in text: String, with values: [String: String]) -> String {
         var newText = text
         let pattern = "#(.*?)#"
-
+        
         if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
             let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
             let matches = regex.matches(in: text, options: [], range: nsRange)
-
+            
             for match in matches.reversed() {
                 if let range = Range(match.range, in: text) {
                     let hashtag = String(text[range])
@@ -321,7 +322,51 @@ struct ResumeTabDetailViewPDF: View {
         evenementSend.correspond = document
         document.historique?.adding(evenementSend)
         
+        checkNotificationAndAddIfNeeded()
+        
         DataController.saveContext()
+    }
+    
+    func checkNotificationAndAddIfNeeded() {
+            guard let documentID = document.id_?.uuidString else { return }
+            
+            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                let existingNotification = requests.contains { $0.identifier == documentID }
+                
+                if existingNotification {
+                    print("Notification already exists for this document.")
+                } else {
+                    UNUserNotificationCenter.current().getDeliveredNotifications { deliveredNotifications in
+                        let deliveredNotification = deliveredNotifications.contains { $0.request.identifier == documentID }
+                        
+                        if deliveredNotification {
+                            print("Notification already exists for this document.")
+                        } else {
+                            addNotification(withIdentifier: documentID)
+                        }
+                    }
+                }
+            }
+        }
+    
+    func addNotification(withIdentifier identifier: String) {
+        guard let dateEcheance = document.dateEcheance_ else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Date d'échéance dépassée"
+        content.subtitle = "\(document.getNameOfDocument()) est en retard"
+        content.body = "La date d'échéance pour \(document.getNameOfDocument()) était le \(document.dateEcheance.formatted(.dateTime.day().month().year())). Penser à contacter le client dès que possible."
+        content.sound = .default
+        
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: dateEcheance)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if let error = error {
+                print("Erreur lors de l'ajout de la notification: \(error.localizedDescription)")
+            }
+        }
     }
 }
 

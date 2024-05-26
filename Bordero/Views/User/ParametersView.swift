@@ -78,7 +78,9 @@ struct ParametersView: View {
                     }
                     
                     NavigationLink {
-                        
+                        if let praticien = praticien {
+                            NotificationSettingsView(praticien: praticien, activeNotifications: praticien.hasAcceptNotification)
+                        }
                     } label: {
                         RowIconColor(
                             text: "Notifications",

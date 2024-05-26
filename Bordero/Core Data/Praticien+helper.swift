@@ -99,6 +99,17 @@ extension Praticien {
         }
     }
     
+    var hasAcceptNotification : Bool {
+        get {
+            parametersNotifications_?["acceptNotification"] as? Bool ?? false
+        }
+        set {
+            parametersNotifications_ = [
+                "acceptNotification" : newValue
+            ]
+        }
+    }
+    
     func getAdresseSurUneLigne() -> String {
         if let coordonne = self.adresse1 {
             return PDFUtils.getTableauInfoAdresse(

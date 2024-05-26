@@ -24,7 +24,7 @@
         <attribute name="nomFichierPdf" optional="YES" attributeType="String"/>
         <attribute name="note_" optional="YES" attributeType="String"/>
         <attribute name="numeroDocument_" optional="YES" attributeType="String"/>
-        <attribute name="payementAllow_" optional="YES" attributeType="Composite" composite="DocumentPayementAllow"/>
+        <attribute name="payementAllow_" optional="YES" attributeType="Composite"/>
         <attribute name="payementFinish_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="payementUse_" optional="YES" attributeType="String"/>
         <attribute name="remise_" optional="YES" attributeType="Composite" composite="Remise"/>
@@ -70,6 +70,7 @@
         <attribute name="logoSociete" optional="YES" attributeType="Binary"/>
         <attribute name="nom_proffession" optional="YES" attributeType="String"/>
         <attribute name="parametersDocument_" optional="YES" attributeType="Composite" composite="ParametersModeleDocument"/>
+        <attribute name="parametersNotifications_" optional="YES" attributeType="Composite" composite="Notification"/>
         <attribute name="phone_" optional="YES" attributeType="String"/>
         <attribute name="profilPicture" optional="YES" attributeType="Binary"/>
         <attribute name="signature" optional="YES" attributeType="Binary"/>
@@ -114,6 +115,9 @@
     <composite name="MessageBody">
         <attribute name="titre" optional="YES" attributeType="String"/>
         <attribute name="corps" optional="YES" attributeType="String"/>
+    </composite>
+    <composite name="Notification">
+        <attribute name="acceptNotification" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </composite>
     <composite name="ParametersModeleDocument">
         <attribute name="showDateEcheance" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

@@ -319,6 +319,10 @@ extension Document {
         return "\(client_?.firstname ?? "Inconnu") \(client_?.lastname ?? "") \(self.estDeTypeFacture ? "Facture" : "Devis")"
     }
     
+    public override func awakeFromInsert() {
+        self.id_ = UUID()
+    }
+    
     static func delete(document: Document) {
         guard let context = document.managedObjectContext else { return }
         

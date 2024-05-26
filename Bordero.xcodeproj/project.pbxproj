@@ -75,8 +75,9 @@
 		F792B75E2B71630C00FA5569 /* ActiveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F792B75D2B71630C00FA5569 /* ActiveSheet.swift */; };
 		F7985E132BF54997005362A4 /* NbFacturesGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */; };
 		F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */; };
+		F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
-		F7B6678B2BFBD39E00061908 /* TextSettingsendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsendClientView.swift */; };
+		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
 		F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */; };
 		F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */; };
@@ -164,8 +165,9 @@
 		F792B75D2B71630C00FA5569 /* ActiveSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSheet.swift; sourceTree = "<group>"; };
 		F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NbFacturesGraphView.swift; sourceTree = "<group>"; };
 		F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceClientsGraphView.swift; sourceTree = "<group>"; };
+		F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
-		F7B6678A2BFBD39E00061908 /* TextSettingsendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsendClientView.swift; sourceTree = "<group>"; };
+		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHistoriquesPaiements.swift; sourceTree = "<group>"; };
 		F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPaymentEstimateGraphView.swift; sourceTree = "<group>"; };
@@ -372,8 +374,9 @@
 			children = (
 				F762642F2B7AC1D8009C15F4 /* FormPraticienView.swift */,
 				F78096642BAC66DF00B3AF4A /* ModeleDocumentView.swift */,
-				F7B6678A2BFBD39E00061908 /* TextSettingsendClientView.swift */,
+				F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */,
 				F78096622BAC651A00B3AF4A /* TVAParametersView.swift */,
+				F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */,
 			);
 			path = Parameters;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */,
 				F792B75B2B715DE700FA5569 /* FormClientSheet.swift in Sources */,
 				F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */,
+				F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */,
 				F78096672BAC6BF600B3AF4A /* DevelopperMailView.swift in Sources */,
 				F7DFAD9D2B66839C00C905A7 /* ConnexionView.swift in Sources */,
 				F761B5C22BC811B3003AA878 /* PDFViewModel.swift in Sources */,
@@ -610,7 +614,7 @@
 				F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */,
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,
-				F7B6678B2BFBD39E00061908 /* TextSettingsendClientView.swift in Sources */,
+				F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */,
 				F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */,
 				F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */,
 				F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */,

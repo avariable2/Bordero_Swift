@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct BorderoApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     private var dataController = DataController.shared
     private var userController = UseriCloudController()
+    
+    init() {
+        // Définir le délégué
+        UNUserNotificationCenter.current().delegate = appDelegate
+    }
+    
     
     var body: some Scene {
         WindowGroup {
@@ -31,3 +38,8 @@ struct BorderoApp: App {
     }
 }
 
+class AppDelegate : NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
+}
