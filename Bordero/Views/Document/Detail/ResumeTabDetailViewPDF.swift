@@ -328,26 +328,10 @@ struct ResumeTabDetailViewPDF: View {
     }
     
     func checkNotificationAndAddIfNeeded() {
-            guard let documentID = document.id_?.uuidString else { return }
+        guard let documentID = document.id_?.uuidString else { return }
             
-            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-                let existingNotification = requests.contains { $0.identifier == documentID }
-                
-                if existingNotification {
-                    print("Notification already exists for this document.")
-                } else {
-                    UNUserNotificationCenter.current().getDeliveredNotifications { deliveredNotifications in
-                        let deliveredNotification = deliveredNotifications.contains { $0.request.identifier == documentID }
-                        
-                        if deliveredNotification {
-                            print("Notification already exists for this document.")
-                        } else {
-                            addNotification(withIdentifier: documentID)
-                        }
-                    }
-                }
-            }
-        }
+        addNotification(withIdentifier: documentID)
+    }
     
     func addNotification(withIdentifier identifier: String) {
         guard let dateEcheance = document.dateEcheance_ else { return }

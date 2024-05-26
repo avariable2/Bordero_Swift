@@ -74,5 +74,51 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C7B64B97-3A09-44A7-B097-E2997C9BDC12"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Bordero/Views/Document/Detail/PayementSheet.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "removeNotification()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C7B64B97-3A09-44A7-B097-E2997C9BDC12 - 9caaa39c99b77839"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Bordero.DisplayPayementSheet.init(paiement: Bordero.Paiement) -&gt; Bordero.DisplayPayementSheet"
+                  moduleName = "Bordero"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/grandevariable/Desktop/Bordero/Bordero/Views/Document/Detail/PayementSheet.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108">
+               </Location>
+               <Location
+                  uuid = "C7B64B97-3A09-44A7-B097-E2997C9BDC12 - 208257a8693e165e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Bordero.PayementSheet.removeNotification() -&gt; ()"
+                  moduleName = "Bordero"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/grandevariable/Desktop/Bordero/Bordero/Views/Document/Detail/PayementSheet.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

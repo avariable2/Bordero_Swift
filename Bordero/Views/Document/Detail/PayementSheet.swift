@@ -64,7 +64,7 @@ struct PayementSheet: View {
                     } label: {
                         Text("Ajouter")
                     }
-
+                    
                 }
             }
         }
@@ -91,7 +91,21 @@ struct PayementSheet: View {
         
         document.historique?.adding(historiquePaiement)
         
+        removeNotification()
+        
         DataController.saveContext()
+    }
+    
+    func removeNotification() {
+        guard let documentID = document.id_?.uuidString else { return }
+        
+        // Supprimer les notifications en attente
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [documentID])
+        
+        // Supprimer les notifications livrées
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [documentID])
+        
+        print("Notification for document \(documentID) has been removed.")
     }
 }
 
@@ -140,7 +154,7 @@ struct DisplayPayementSheet : View {
                 .background(Color.red)
             }
         }
-       
+        
     }
     
     func delete() {
