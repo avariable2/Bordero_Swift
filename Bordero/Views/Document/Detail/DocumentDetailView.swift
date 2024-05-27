@@ -24,6 +24,8 @@ struct DocumentDetailView: View {
     @State private var showingShareSheet = false
     @State private var showAlertForDelete = false
     
+    @State private var modifyDocument = false
+    
     enum TroubleShotCreationFichier {
         case success, failure
     }
@@ -71,10 +73,15 @@ struct DocumentDetailView: View {
             }
             
             ToolbarItemGroup(placement: .secondaryAction) {
-                NavigationLink {
-                    DocumentFormView(document: document)
+                Button {
+                    modifyDocument = true
                 } label : {
                     Label("Modifier", systemImage: "rectangle.and.pencil.and.ellipsis")
+                }
+                .sheet(isPresented: $modifyDocument) {
+                    NavigationStack {
+                        DocumentFormView(document: document)
+                    }
                 }
                 
                 if let _ = pdfDocument, let _ = urlSharing {
