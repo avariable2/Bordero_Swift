@@ -341,6 +341,8 @@ extension Document {
         let context = DataController.shared.container.viewContext
         let document = Document(context: context)
         
+        document.estDeTypeFacture = true
+        
         return document
     }
 

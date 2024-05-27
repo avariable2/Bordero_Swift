@@ -11,7 +11,9 @@ import CoreData
 
 struct DocumentDetailView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
     @ObservedObject var document : Document
     
@@ -56,7 +58,18 @@ struct DocumentDetailView: View {
             ShareLinkCustom(activityItems: [urlSharing!], applicationActivities: nil) // normalement le boutton pour partager n'existe pas si l'url n'existe pas donc aucune raison que ça soit null
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
+        .safeAreaInset(edge: .bottom) {
+            if horizontalSizeClass == .compact {
+                ToolBarView(document: document, praticien: praticien.first)
+            }
+        }
         .toolbar {
+            if horizontalSizeClass == .regular {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    ToolBarView(document: document, praticien: praticien.first)
+                }
+            }
+            
             ToolbarItemGroup(placement: .secondaryAction) {
                 NavigationLink {
                     DocumentFormView(document: document)
@@ -209,4 +222,3 @@ struct ShareLinkCustom: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
-

@@ -33,6 +33,7 @@
 		F76264302B7AC1D8009C15F4 /* FormPraticienView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F762642F2B7AC1D8009C15F4 /* FormPraticienView.swift */; };
 		F7669F282B8E69400007B3C1 /* Praticien+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7669F272B8E69400007B3C1 /* Praticien+helper.swift */; };
 		F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76704252BC840EE00257315 /* PDFGridInfoInvoiceView.swift */; };
+		F767E0E32C04C25000701BFE /* ToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F767E0E22C04C25000701BFE /* ToolBarView.swift */; };
 		F7681EC72BD045FD0058150A /* PDFUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7681EC62BD045FD0058150A /* PDFUtils.swift */; };
 		F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F768CE8C2B738B07006E587E /* ImportContactView.swift */; };
 		F76CE5A32BF381FB00C6502C /* HistoriquePaiementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */; };
@@ -123,6 +124,7 @@
 		F762642F2B7AC1D8009C15F4 /* FormPraticienView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPraticienView.swift; sourceTree = "<group>"; };
 		F7669F272B8E69400007B3C1 /* Praticien+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Praticien+helper.swift"; sourceTree = "<group>"; };
 		F76704252BC840EE00257315 /* PDFGridInfoInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFGridInfoInvoiceView.swift; sourceTree = "<group>"; };
+		F767E0E22C04C25000701BFE /* ToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarView.swift; sourceTree = "<group>"; };
 		F7681EC62BD045FD0058150A /* PDFUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUtils.swift; sourceTree = "<group>"; };
 		F768CE8C2B738B07006E587E /* ImportContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactView.swift; sourceTree = "<group>"; };
 		F76CE5A22BF381FB00C6502C /* HistoriquePaiementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoriquePaiementView.swift; sourceTree = "<group>"; };
@@ -229,10 +231,10 @@
 		F75FC8072BCB1FB3007DA47A /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				F75FC8082BCB1FC8007DA47A /* ResumeTabDetailViewPDF.swift */,
-				F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */,
-				F7878F3A2BD7ED7000EC53E0 /* ApercusTabDetailView.swift */,
+				F76060822BCAE44500F9552E /* DocumentDetailView.swift */,
 				F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */,
+				F767E0E22C04C25000701BFE /* ToolBarView.swift */,
+				F767E0E12C04C21000701BFE /* Tab */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -264,11 +266,8 @@
 		F762642C2B7AA9AE009C15F4 /* Document */ = {
 			isa = PBXGroup;
 			children = (
+				F767E0E42C04C26600701BFE /* Form */,
 				F75FC8072BCB1FB3007DA47A /* Detail */,
-				F7572AAA2BC8334200606E5F /* PDF */,
-				F762642D2B7AAA74009C15F4 /* DocumentFormView.swift */,
-				F77F53192B7BA121004329B9 /* DocumentOptionsView.swift */,
-				F76060822BCAE44500F9552E /* DocumentDetailView.swift */,
 				F75F36AB2BD52938003FF0D0 /* ListDocument.swift */,
 			);
 			path = Document;
@@ -287,6 +286,26 @@
 				F7710D302BF132A7009D43C0 /* Paiement+helper.swift */,
 			);
 			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		F767E0E12C04C21000701BFE /* Tab */ = {
+			isa = PBXGroup;
+			children = (
+				F75FC8082BCB1FC8007DA47A /* ResumeTabDetailViewPDF.swift */,
+				F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */,
+				F7878F3A2BD7ED7000EC53E0 /* ApercusTabDetailView.swift */,
+			);
+			path = Tab;
+			sourceTree = "<group>";
+		};
+		F767E0E42C04C26600701BFE /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				F7572AAA2BC8334200606E5F /* PDF */,
+				F77F53192B7BA121004329B9 /* DocumentOptionsView.swift */,
+				F762642D2B7AAA74009C15F4 /* DocumentFormView.swift */,
+			);
+			path = Form;
 			sourceTree = "<group>";
 		};
 		F777A2E82B8DEF2E001E0169 /* User */ = {
@@ -626,6 +645,7 @@
 				F7587B492BCB33A0007007B8 /* HistoriqueTabDetailView.swift in Sources */,
 				F78748622BE9221800EAE35F /* ClientDataView.swift in Sources */,
 				F748ADD42B669B3600B82C5D /* ListTypeActe.swift in Sources */,
+				F767E0E32C04C25000701BFE /* ToolBarView.swift in Sources */,
 				F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */,
 				F78227982BB3428D0033429F /* FormTypeActeView.swift in Sources */,
 			);
