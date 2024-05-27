@@ -35,7 +35,7 @@ struct PaiementPraticienGraphView: View {
                 .symbol(by: .value("Date", data.date))
             }
             .chartXScale(domain: selectedDateInterval.start...selectedDateInterval.end)
-            .aspectRatio(1, contentMode: .fit)
+//            .aspectRatio(1, contentMode: .fit)
             .frame(height: 300)
             
             // Optionnel : Sélecteur de période
@@ -51,6 +51,7 @@ struct PaiementPraticienGraphView: View {
                 self.selectedDateInterval = DateInterval(start: self.selectedDateInterval.start, end: newEnd)
             }), displayedComponents: .date)
         }
+        
         .padding()
     }
     
