@@ -25,17 +25,24 @@ struct HeaderPDFView : View {
                     
                     VStack(alignment: .leading) {
                         Text(praticien.lastname.uppercased()).bold()
-                            + Text(" ")
-                            + Text(praticien.firstname)
+                        + Text(" ")
+                        + Text(praticien.firstname)
                         
-                        if let coordonne = praticien.adresse1 {
+                        if let coordonne = praticien.adresse1, !coordonne.isEmpty {
                             Text(PDFUtils.getRowAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                         }
-                        Text(praticien.phone)
-                        Text(verbatim: praticien.email)
-                            .foregroundStyle(.blue)
-                        Text(verbatim: praticien.website)
-                            .foregroundStyle(.blue)
+                        
+                        if !praticien.phone.isEmpty {
+                            Text(praticien.phone)
+                        }
+                        
+                        if !praticien.email.isEmpty {
+                            Text(verbatim: praticien.email)
+                        }
+                        
+                        if !praticien.website.isEmpty {
+                            Text(verbatim: praticien.website)
+                        }
                         
                         Spacer()
                     }
