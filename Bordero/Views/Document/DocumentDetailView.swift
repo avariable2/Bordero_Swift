@@ -20,6 +20,7 @@ struct DocumentDetailView: View {
     @State private var urlSharing : URL? = nil
     
     @State private var showingShareSheet = false
+    @State private var showAlertForDelete = false
     
     enum TroubleShotCreationFichier {
         case success, failure
@@ -56,31 +57,40 @@ struct DocumentDetailView: View {
         }
         .navigationTitle("\(document.estDeTypeFacture ? "Facture" : "Devis") # \(document.numero)")
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    NavigationLink("Modifier") {
-                        DocumentFormView(document: document)
-                    }
-                    Divider()
-                    if let _ = pdfDocument, let _ = urlSharing {
-                        Button {
-                            prepareForSharing()
-                            showingShareSheet = true
-                        } label: {
-                            Text("Exporter")
-                        }
-                        
-                    }
-                    Divider()
-                    Button("Supprimer", role: .destructive) {
-                        delete()
-                    }
-                    
-                } label: {
-                    Image(systemName: "ellipsis.circle")
+            ToolbarItemGroup(placement: .secondaryAction) {
+                NavigationLink {
+                    DocumentFormView(document: document)
+                } label : {
+                    Label("Modifier", systemImage: "rectangle.and.pencil.and.ellipsis")
                 }
+                
+                if let _ = pdfDocument, let _ = urlSharing {
+                    Button {
+                        prepareForSharing()
+                        showingShareSheet = true
+                    } label: {
+                        Label("Exporter", systemImage: "square.and.arrow.up")
+                    }
+                }
+                
+                Button(role: .destructive) {
+                    showAlertForDelete = true
+                } label: {
+                    Label("Supprimer", systemImage: "trash")
+                }.alert(
+                    Text("Supprimer ce document ?"),
+                    isPresented: $showAlertForDelete,
+                    actions: {
+                        Button("Supprimer", role: .destructive) {
+                            delete()
+                        }
+                        Button("Annuler", role: .cancel) { }
+                    }, message : {
+                        Text("Cette action est irréversible.")
+                    })
             }
         }
+        .toolbarRole(.editor)
     }
     
     func prepareForSharing() {
