@@ -17,9 +17,29 @@ struct HomeView: View {
     @State private var activeSheet: ActiveSheet?
     
     var showNeediCloud : Bool
-
+    
     var body: some View {
         HomeScrollableGradientBackgroundCustomView(
+            contentTitle: {
+                VStack {
+                    if horizontalSizeClass == .compact {
+                        TitleSectionCompact(
+                            activeSheet: $activeSheet,
+                            profilPictureData: praticien.first?.profilPicture,
+                            showNeediCloud: showNeediCloud
+                        )
+                    } else {
+                        TitleSectionIpad(
+                            activeSheet: $activeSheet,
+                            name: praticien.first?.firstname ?? "",
+                            profilPictureData: praticien.first?.profilPicture,
+                            showNeediCloud: showNeediCloud
+                        )
+                        .contentMargins(.top, 0)
+                    }
+                }
+                
+            },
             heightPercentage: 0.35,
             maxHeight: 200,
             minHeight: 0,
@@ -27,21 +47,6 @@ struct HomeView: View {
             endColor: colorScheme == .dark ? Color(uiColor: .systemBackground) : Color(uiColor: .secondarySystemBackground),
             navigationTitle: horizontalSizeClass == .compact ? "Résumé" : "",
             content: {
-                if horizontalSizeClass == .compact {
-                    TitleSectionCompact(
-                        activeSheet: $activeSheet,
-                        profilPictureData: praticien.first?.profilPicture,
-                        showNeediCloud: showNeediCloud
-                    )
-                } else {
-                    TitleSectionIpad(
-                        activeSheet: $activeSheet,
-                        name: praticien.first?.firstname ?? "",
-                        profilPictureData: praticien.first?.profilPicture,
-                        showNeediCloud: showNeediCloud
-                    )
-                    .contentMargins(.top, 0)
-                }
                 
                 SectionHomeComponentView(title: "Action rapide") {
                     BandeauCreateDocument()
@@ -64,8 +69,7 @@ struct HomeView: View {
                     }
                     
                 }
-            }
-        )
+            })
         .sheet(item: $activeSheet) { type in
             switch(type) {
             case .parameters:
@@ -86,9 +90,9 @@ private struct TitleSectionCompact : View {
         HStack {
             Text("Résumé")
                 .bold()
-
+            
             Spacer()
-
+            
             ProfilButton(activeSheet: $activeSheet, userImage: profilPictureData)
                 .frame(height: 40)
         }

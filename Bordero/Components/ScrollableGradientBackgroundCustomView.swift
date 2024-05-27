@@ -7,9 +7,13 @@
 
 import SwiftUI
 
-public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
+public struct HomeScrollableGradientBackgroundCustomView<ContentTitle : View, Content: View>: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var gradientEndPoint: Double = 0
+    
+    // MARK: Custom
+    @State private var shouldShowTitle = false
+    var contentTitle : () -> ContentTitle
     
     var content: () -> Content
     var heightPercentage: Double
@@ -37,10 +41,16 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
             scrollPosition: scrollPosition
         )
     }
+    
+    private func checkPosition( _ geometry : GeometryProxy) {
+        shouldShowTitle = geometry.frame(in: .global).minY < 0
+    }
 
-    public init(heightPercentage: Double, maxHeight: Double, minHeight: Double, startColor: Color, endColor: Color,
+    init(@ViewBuilder contentTitle : @escaping () -> ContentTitle,
+        heightPercentage: Double, maxHeight: Double, minHeight: Double, startColor: Color, endColor: Color,
                 navigationTitle: String, @ViewBuilder content: @escaping () -> Content)
     {
+        self.contentTitle = contentTitle
         self.heightPercentage = heightPercentage
         self.maxHeight = maxHeight
         self.minHeight = minHeight
@@ -53,6 +63,10 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
     public var body: some View {
         NavigationStack {
             ScrollView {
+                
+                contentTitle()
+                    .padding()
+                
                 LazyVStack {
                     content()
                         .padding(horizontalSizeClass == .compact ? [] : [.leading, .trailing, .bottom])
@@ -68,13 +82,34 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
                                 in: .named("scroll")
                             ).origin
                         )
+                        .onAppear {
+                            checkPosition(geometry)
+                        }
+
                     })
                 .onPreferenceChange(ScrollOffsetPreferenceKey.self) {
                     value in
                     onScrollPositionChange(scrollPosition: value.y)
                     
+                    // MARK: Add custom animation
+                    withAnimation(.easeInOut) {
+                        shouldShowTitle = value.y < 123.1
+                    }
+
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(navigationTitle)
+                        .opacity(shouldShowTitle ? 1 : 0)
+                        .transition(.asymmetric(insertion: .scale, removal: .opacity))
+                        
+                }
+                
+            }
+            .toolbarBackground(Color.clear, for: .navigationBar)
+            .toolbarBackground(shouldShowTitle ? .visible : .hidden, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
             .background(
                 LinearGradient(
                     gradient:
@@ -129,6 +164,6 @@ extension Comparable {
     }
 }
 
-#Preview {
-    HomeScrollableGradientBackgroundCustomView(heightPercentage: 0.4, maxHeight: 200, minHeight: 0, startColor: Color.red, endColor: Color.clear, navigationTitle: "Test", content: { ForEach(0 ..< 120) { value in Text("Test \(value)") } })
-}
+//#Preview {
+//    HomeScrollableGradientBackgroundCustomView(heightPercentage: 0.4, maxHeight: 200, minHeight: 0, startColor: Color.red, endColor: Color.clear, navigationTitle: "Test", content: { ForEach(0 ..< 120) { value in Text("Test \(value)") } })
+//}
