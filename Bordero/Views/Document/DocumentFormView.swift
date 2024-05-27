@@ -40,7 +40,6 @@ struct DocumentFormView: View {
                             }
                         }
                     }
-                    
                 }
             }
             .onAppear() {
@@ -273,7 +272,6 @@ struct ModifierDocumentView: View, Versionnable {
                             } label: {
                                 Text("Retour")
                             }
-                            
                         }
                     }
                 default:

@@ -55,7 +55,7 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
             ScrollView {
                 LazyVStack {
                     content()
-                        .padding(horizontalSizeClass == .compact ? [] : [.leading, .trailing])
+                        .padding(horizontalSizeClass == .compact ? [] : [.leading, .trailing, .bottom])
                 }
                 .padding()
                 .coordinateSpace(name: "scroll")

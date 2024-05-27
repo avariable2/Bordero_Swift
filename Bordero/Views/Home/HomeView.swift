@@ -41,7 +41,6 @@ struct HomeView: View {
                         showNeediCloud: showNeediCloud
                     )
                     .contentMargins(.top, 0)
-//                    .border(Color.black)
                 }
                 
                 SectionHomeComponentView(title: "Action rapide") {
@@ -95,6 +94,63 @@ private struct TitleSectionCompact : View {
         }
         .font(.largeTitle)
         
+        BandeauiCloud(showNeediCloud: showNeediCloud)
+    }
+}
+
+private struct TitleSectionIpad : View {
+    @Binding var activeSheet: ActiveSheet?
+    var name : String
+    var profilPictureData : Data?
+    var showNeediCloud : Bool
+    
+    var body: some View {
+        HStack {
+            ProfilImageView(imageData: profilPictureData)
+                .font(.system(size: 70))
+                .shadow(radius: 5)
+                .frame(maxHeight: 120)
+            
+            VStack(alignment: .leading) {
+                Text(name)
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Button {
+                    activeSheet = .parameters
+                } label: {
+                    HStack {
+                        Text("Profil")
+                            .font(.headline)
+                        
+                        Image(systemName: "chevron.right")
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundStyle(.secondary)
+                }
+                .tint(.primary)
+                
+                if showNeediCloud == false {
+                    Text("Synchronisé")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .fontWeight(.medium)
+                }
+            }
+            .padding([.leading, .trailing])
+            
+            Spacer()
+            
+            BandeauiCloud(showNeediCloud: showNeediCloud)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct BandeauiCloud : View {
+    var showNeediCloud : Bool
+    
+    var body: some View {
         if showNeediCloud {
             GroupBox {
                 VStack(alignment: .leading, spacing: 10) {
@@ -119,83 +175,9 @@ private struct TitleSectionCompact : View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            .frame(maxWidth: 500)
             .groupBoxStyle(GroupBoxStyleRememberiCloud())
-            .padding(.bottom)
         }
-    }
-}
-
-private struct TitleSectionIpad : View {
-    @Binding var activeSheet: ActiveSheet?
-    var name : String
-    var profilPictureData : Data?
-    var showNeediCloud : Bool
-    
-    var body: some View {
-        HStack {
-            ProfilImageView(imageData: profilPictureData)
-                .font(.system(size: 70))
-                .shadow(radius: 5)
-                .frame(maxHeight: 150)
-            
-            VStack(alignment: .leading) {
-                Text(name)
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                Button {
-                    activeSheet = .parameters
-                } label: {
-                    HStack {
-                        Text("Profil")
-                            .font(.headline)
-                        
-                        Image(systemName: "chevron.right")
-                            .fontWeight(.semibold)
-                    }
-                    .foregroundStyle(.secondary)
-                }
-                .tint(.primary)
-                
-                Text("Synchronisation")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .fontWeight(.medium)
-            }
-            .padding([.leading, .trailing])
-            
-            Spacer()
-            
-            if showNeediCloud {
-                GroupBox {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Données Bordero non synchronisées")
-                            .bold()
-                        
-                        Text("Vos données et vos documents ne sont pas synchronisées. En tant que praticien, il est important d'avoir un point de sauvegarde de vos données.")
-                            .foregroundStyle(.secondary)
-                        
-                        Button {
-                            if let url = URL(string: UIApplication.openSettingsURLString),
-                               UIApplication.shared.canOpenURL(url) {
-                                UIApplication.shared.open(url)
-                            }
-                        } label: {
-                            Text("Ouvrir Réglages")
-                        }
-                    }
-                } label: {
-                    Text("état de la sauvegarde".uppercased())
-                        .bold()
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: 500)
-                .groupBoxStyle(GroupBoxStyleRememberiCloud())
-            }
-        }
-        .padding(.bottom)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
