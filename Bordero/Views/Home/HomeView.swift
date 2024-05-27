@@ -35,6 +35,7 @@ struct HomeView: View {
                             profilPictureData: praticien.first?.profilPicture,
                             showNeediCloud: showNeediCloud
                         )
+                        .padding(.leading)
                         .contentMargins(.top, 0)
                     }
                 }

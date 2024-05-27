@@ -273,6 +273,8 @@ class PDFViewModel {
                 signature: praticien.signature,
                 logo : praticien.logoSociete
             )
+            
+            praticien.lastDocumentNumber = self.pdfModel.optionsDocument.numeroDocument
         }
         
         // Params

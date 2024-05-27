@@ -50,6 +50,7 @@ struct DocumentFormView: View {
                 }
                 
                 viewModel.pdfModel.praticien = praticien.first
+                viewModel.pdfModel.optionsDocument.numeroDocument = praticien.first?.lastDocumentNumber ?? ""
                 
                 if viewModel.pdfModel.optionsDocument.payementAllow.isEmpty {
                     viewModel.modifyPayementAllow(.cheque, value: praticien.first?.cheque ?? false)

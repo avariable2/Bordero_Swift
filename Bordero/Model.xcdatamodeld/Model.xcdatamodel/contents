@@ -66,6 +66,7 @@
         <attribute name="espece" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastDocumentNumber" optional="YES" attributeType="String"/>
         <attribute name="lastname_" optional="YES" attributeType="String"/>
         <attribute name="logoSociete" optional="YES" attributeType="Binary"/>
         <attribute name="nom_proffession" optional="YES" attributeType="String"/>
