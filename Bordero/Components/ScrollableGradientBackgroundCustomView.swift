@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
-   
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var gradientEndPoint: Double = 0
     
     var content: () -> Content
@@ -18,12 +18,6 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
     var startColor: Color
     var endColor: Color
     var navigationTitle: String
-    
-    // MARK: Custom
-    @State private var shouldShowTitle = false
-    @State private var activeSheet: ActiveSheet?
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
 
     private func calculateEndPointForScrollPosition(scrollPosition: Double) -> Double {
         let absoluteScrollPosition = abs(scrollPosition)
@@ -43,10 +37,6 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
             scrollPosition: scrollPosition
         )
     }
-    
-    private func checkPosition( _ geometry : GeometryProxy) {
-        shouldShowTitle = geometry.frame(in: .global).minY < 0
-    }
 
     public init(heightPercentage: Double, maxHeight: Double, minHeight: Double, startColor: Color, endColor: Color,
                 navigationTitle: String, @ViewBuilder content: @escaping () -> Content)
@@ -63,22 +53,9 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
     public var body: some View {
         NavigationStack {
             ScrollView {
-                
-                HStack {
-                    Text(navigationTitle)
-                        .bold()
-
-                    Spacer()
-
-                    ProfilButton(activeSheet: $activeSheet, userImage: praticien.first?.profilPicture)
-                        .frame(height: 40)
-                }
-                
-                .font(.largeTitle)
-                .padding()
-                
                 LazyVStack {
                     content()
+                        .padding(horizontalSizeClass == .compact ? [] : [.leading, .trailing])
                 }
                 .padding()
                 .coordinateSpace(name: "scroll")
@@ -91,41 +68,13 @@ public struct HomeScrollableGradientBackgroundCustomView<Content: View>: View {
                                 in: .named("scroll")
                             ).origin
                         )
-                        .onAppear {
-                            checkPosition(geometry)
-                        }
                     })
                 .onPreferenceChange(ScrollOffsetPreferenceKey.self) {
                     value in
                     onScrollPositionChange(scrollPosition: value.y)
                     
-                    // MARK: Add custom animation
-                    withAnimation(.easeInOut) {
-                        shouldShowTitle = value.y < 123.1
-                    }
-                    
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(navigationTitle)
-                        .opacity(shouldShowTitle ? 1 : 0)
-                        .transition(.asymmetric(insertion: .scale, removal: .opacity))
-                        
-                }
-                
-            }
-            .sheet(item: $activeSheet) { type in
-                switch(type) {
-                case .parameters:
-                    ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
-                default:
-                    EmptyView()
-                }
-            }
-            .toolbarBackground(Color.clear, for: .navigationBar)
-            .toolbarBackground(shouldShowTitle ? .visible : .hidden, for: .navigationBar)
-            .navigationBarTitleDisplayMode(.inline)
             .background(
                 LinearGradient(
                     gradient:

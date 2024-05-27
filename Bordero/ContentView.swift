@@ -129,7 +129,7 @@ struct NavigationIpad: View {
 class NavModel {
     var navigation: [NavItem] = [
         NavItem(id: 5, name: "Ajouter un client", icon: "person.badge.plus"),
-        NavItem(id: 2, name: "Clients", icon: "person.2"),
+        NavItem(id: 2, name: "Liste des clients", icon: "person.2"),
         NavItem(id: 3, name: "Ajouter un acte", icon: "stethoscope"),
         NavItem(id: 4, name: "Liste des actes", icon: "cross.case"),
         NavItem(id: 7, name: "Créer document", icon: "pencil.and.list.clipboard"),
