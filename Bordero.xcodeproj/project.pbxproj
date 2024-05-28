@@ -20,6 +20,8 @@
 		F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */; };
 		F75369CF2B8944A6000F4CB3 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75369CE2B8944A6000F4CB3 /* ExploreView.swift */; };
 		F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */ = {isa = PBXBuildFile; productRef = F75369D12B8944F2000F4CB3 /* ScrollableGradientBackground */; };
+		F75575D92C06139D00483A47 /* MijickGridView in Frameworks */ = {isa = PBXBuildFile; productRef = F75575D82C06139D00483A47 /* MijickGridView */; };
+		F75575DC2C06394C00483A47 /* GridViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75575DB2C06394C00483A47 /* GridViewWrapper.swift */; };
 		F7587B492BCB33A0007007B8 /* HistoriqueTabDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */; };
 		F75F36AC2BD52938003FF0D0 /* ListDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75F36AB2BD52938003FF0D0 /* ListDocument.swift */; };
 		F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75F3C9B2BB077E100514246 /* ClientDetailView.swift */; };
@@ -111,6 +113,7 @@
 		F748ADD32B669B3600B82C5D /* ListTypeActe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTypeActe.swift; sourceTree = "<group>"; };
 		F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseriCloudController.swift; sourceTree = "<group>"; };
 		F75369CE2B8944A6000F4CB3 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
+		F75575DB2C06394C00483A47 /* GridViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewWrapper.swift; sourceTree = "<group>"; };
 		F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoriqueTabDetailView.swift; sourceTree = "<group>"; };
 		F75F36AB2BD52938003FF0D0 /* ListDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDocument.swift; sourceTree = "<group>"; };
 		F75F3C9B2BB077E100514246 /* ClientDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDetailView.swift; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F78096722BAC8CE600B3AF4A /* SwiftUIDigitalSignature in Frameworks */,
+				F75575D92C06139D00483A47 /* MijickGridView in Frameworks */,
 				F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,6 +217,14 @@
 				F77312862B8CC2F500413820 /* Protocol.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		F75575DA2C06392D00483A47 /* Composant */ = {
+			isa = PBXGroup;
+			children = (
+				F75575DB2C06394C00483A47 /* GridViewWrapper.swift */,
+			);
+			path = Composant;
 			sourceTree = "<group>";
 		};
 		F7572AAA2BC8334200606E5F /* PDF */ = {
@@ -478,6 +490,7 @@
 		F7E88C7F2B895B9800AAF73C /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				F75575DA2C06392D00483A47 /* Composant */,
 				F7DFADAF2B66926F00C905A7 /* HomeView.swift */,
 				F7E88C802B895BAE00AAF73C /* BandeauCreateDocument.swift */,
 			);
@@ -503,6 +516,7 @@
 			packageProductDependencies = (
 				F75369D12B8944F2000F4CB3 /* ScrollableGradientBackground */,
 				F78096712BAC8CE600B3AF4A /* SwiftUIDigitalSignature */,
+				F75575D82C06139D00483A47 /* MijickGridView */,
 			);
 			productName = Bordero;
 			productReference = F7DFAD972B66839C00C905A7 /* Bordero.app */;
@@ -536,6 +550,7 @@
 			packageReferences = (
 				F75369D02B8944F2000F4CB3 /* XCRemoteSwiftPackageReference "ScrollableGradientBackground" */,
 				F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */,
+				F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */,
 			);
 			productRefGroup = F7DFAD982B66839C00C905A7 /* Products */;
 			projectDirPath = "";
@@ -611,6 +626,7 @@
 				F72BA1EF2BE15AB700E459B2 /* GroupBoxStyleData.swift in Sources */,
 				F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */,
 				F75FC8092BCB1FC8007DA47A /* ResumeTabDetailViewPDF.swift in Sources */,
+				F75575DC2C06394C00483A47 /* GridViewWrapper.swift in Sources */,
 				F78096742BAC8F3500B3AF4A /* DigitalSignature.swift in Sources */,
 				F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */,
 				F78096632BAC651A00B3AF4A /* TVAParametersView.swift in Sources */,
@@ -888,6 +904,14 @@
 				kind = branch;
 			};
 		};
+		F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mijick/GridView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/globulus/swiftui-digital-signature";
@@ -903,6 +927,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F75369D02B8944F2000F4CB3 /* XCRemoteSwiftPackageReference "ScrollableGradientBackground" */;
 			productName = ScrollableGradientBackground;
+		};
+		F75575D82C06139D00483A47 /* MijickGridView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */;
+			productName = MijickGridView;
 		};
 		F78096712BAC8CE600B3AF4A /* SwiftUIDigitalSignature */ = {
 			isa = XCSwiftPackageProductDependency;

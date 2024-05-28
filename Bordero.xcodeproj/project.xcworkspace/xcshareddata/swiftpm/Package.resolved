@@ -1,6 +1,15 @@
 {
-  "originHash" : "d04745653b8edc2d7e2aee25edae8e1d8d5dd13e47c5ca89b5f3b526a419ac0b",
+  "originHash" : "aacd796b708fb6c4e9aa7a79449b7405cc71ea00abe84c55b8bed37abb5cac23",
   "pins" : [
+    {
+      "identity" : "gridview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Mijick/GridView",
+      "state" : {
+        "revision" : "65d279df121b3d3f8d1065a21e9c96dc5e9e1eac",
+        "version" : "0.3.0"
+      }
+    },
     {
       "identity" : "scrollablegradientbackground",
       "kind" : "remoteSourceControl",

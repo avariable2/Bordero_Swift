@@ -7,14 +7,35 @@
 
 import SwiftUI
 import ScrollableGradientBackground
+import MijickGridView
+
+struct ArticleData : Identifiable {
+    let title : String
+    let corps : String
+    let image : String
+    
+    var id : UUID { UUID() }
+}
 
 struct HomeView: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.colorScheme) var colorScheme
+    
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State private var gridViewConfig = GridView.Config()
+    @State private var numberOfColumns = 1
+    
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
     @State private var userHasSeenAllOnBoarding = false
     @State private var activeSheet: ActiveSheet?
+    
+    let articles : Array<ArticleData> = [
+        ArticleData(
+            title: "Les bonnes pratiques pour les factures de psychologie",
+            corps: "Cette article couvre l'ensemble des bases et répond aux question de l'importance des factures.",
+            image: "ArticleImageFacture"
+        ),
+    ]
     
     var showNeediCloud : Bool
     
@@ -58,19 +79,18 @@ struct HomeView: View {
                 }
                 
                 SectionHomeComponentView(title: "Articles") {
-                    Grid() {
-                        GridRow {
-                            ArticleComponentView(
-                                titre: "Les bonnes pratiques pour les factures de psychologie",
-                                sousTitre: "Cette article couvre l'ensemble des bases et répond aux question de l'importance des factures.",
-                                image: "ArticleImageFacture"
-                            )
-                            
-                        }
+                    GridViewWrapper(articles: articles, config: $gridViewConfig, numberOfColumns: $numberOfColumns) { article in
+                        ArticleComponentView(
+                            titre: article.title,
+                            sousTitre: article.corps,
+                            image: article.image
+                        )
                     }
-                    
+                    .frame(height: calculateGridHeight(for: articles.count, columns: numberOfColumns))
                 }
-            })
+            }
+            
+        )
         .sheet(item: $activeSheet) { type in
             switch(type) {
             case .parameters:
@@ -79,6 +99,11 @@ struct HomeView: View {
                 EmptyView()
             }
         }
+    }
+    
+    private func calculateGridHeight(for itemsCount: Int, columns: Int, itemHeight: CGFloat = 380) -> CGFloat {
+        let rows = (itemsCount + columns - 1) / columns // Calculate the number of rows needed
+        return CGFloat(rows) * itemHeight // Calculate the total height
     }
 }
 

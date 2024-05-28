@@ -16,22 +16,23 @@ struct ArticleComponentView: View {
     
     var body: some View {
         VStack {
-            Image(image) // Remplacez par l'image appropriée
+            Image(image)
                 .resizable()
-                .frame(height: 120)
-                .padding(.bottom, 10)
+                .frame(height: 180)
                 .cornerRadius(10)
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(titre)
                     .font(.title2)
                     .fontWeight(.bold)
                 
                 Text(sousTitre)
-                    .font(.body)
+                    .font(.headline)
+                    .fontWeight(.regular)
             }
+            .frame(minHeight: 140, alignment: .top)
             .foregroundColor(.primary)
-            .padding()
+            .padding([.leading, .trailing, .bottom])
             
         }
         .frame(maxWidth: .infinity)
@@ -51,5 +52,17 @@ struct ArticleComponentView: View {
 }
 
 #Preview {
-    ArticleComponentView(titre: "Suivi de vos traitements", sousTitre: "Découvrez en quoi il est important de suivre les traitements que vous prenez.", image: "ArticleImageFacture")
+    ZStack {
+        Color.gray
+        
+        HStack(spacing: 30) {
+            ArticleComponentView(titre: "Suivi de vos traitements", sousTitre: "Découvrez en quoi il est important de suivre les traitements que vous prenez.", image: "ArticleImageFacture")
+            
+            ArticleComponentView(titre: "Pourquoi la santé\nauditive est-elle importante?", sousTitre: "Obtenez des statistiques sur votre audition et découvrez comment la préserver.", image: "ArticleImageFacture")
+            
+            ArticleComponentView(titre: "Ce que signifie un niveau de santé cardoiovasculaire faible", sousTitre: "Et ce que vous pouvez faire pour l'améliorer.", image: "ArticleImageFacture")
+        }
+        
+    }
+    
 }
