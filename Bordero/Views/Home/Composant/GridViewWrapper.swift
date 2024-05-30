@@ -9,6 +9,7 @@ import SwiftUI
 import MijickGridView
 
 struct GridViewWrapper<Content: View>: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Binding var config: GridView.Config
     @Binding var numberOfColumns : Int
     var articles: [ArticleData]
@@ -40,13 +41,18 @@ struct GridViewWrapper<Content: View>: View {
     }
     
     private func getNumberOfColumns(for width: CGFloat) -> Int {
-        if width >= 800 {
-            return 3
-        } else if width > 400 {
-            return 2
-        } else {
+        if horizontalSizeClass == .compact {
             return 1
+        } else {
+            if width >= 800 {
+                return 3
+            } else if width > 400 {
+                return 2
+            } else {
+                return 1
+            }
         }
+        
     }
 
     private func updateConfig(for width: CGFloat) {

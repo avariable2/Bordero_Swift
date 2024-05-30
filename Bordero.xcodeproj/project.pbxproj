@@ -388,6 +388,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		F78FE4A22C08884A002F1F34 /* Articles */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Articles;
+			sourceTree = "<group>";
+		};
 		F7985E112BF5490C005362A4 /* DataComposant */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,6 +446,7 @@
 		F7DFAD992B66839C00C905A7 /* Bordero */ = {
 			isa = PBXGroup;
 			children = (
+				F78FE4A22C08884A002F1F34 /* Articles */,
 				F780966D2BAC853E00B3AF4A /* Components */,
 				F7669F262B8E691C0007B3C1 /* Core Data */,
 				F75369CB2B893F55000F4CB3 /* Controller */,
