@@ -24,6 +24,7 @@ struct DocumentDetailView: View {
     @State private var showingShareSheet = false
     @State private var showAlertForDelete = false
     
+    @State private var showAlertImpossibleModifierOuSupprimer = false
     @State private var modifyDocument = false
     
     enum TroubleShotCreationFichier {
@@ -74,10 +75,19 @@ struct DocumentDetailView: View {
             
             ToolbarItemGroup(placement: .secondaryAction) {
                 Button {
-                    modifyDocument = true
+                    if document.estDeTypeFacture && document.status != .created {
+                        showAlertImpossibleModifierOuSupprimer = true
+                    } else {
+                        modifyDocument = true
+                    }
                 } label : {
                     Label("Modifier", systemImage: "rectangle.and.pencil.and.ellipsis")
                 }
+                .alert("Attention", isPresented: $showAlertImpossibleModifierOuSupprimer, actions: {
+                    Button("OK", role: .cancel) {}
+                }, message: {
+                    Text("La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
+                })
                 .sheet(isPresented: $modifyDocument) {
                     NavigationStack {
                         DocumentFormView(document: document)
@@ -94,7 +104,11 @@ struct DocumentDetailView: View {
                 }
                 
                 Button(role: .destructive) {
-                    showAlertForDelete = true
+                    if document.estDeTypeFacture && document.status != .created {
+                        showAlertImpossibleModifierOuSupprimer = true
+                    } else {
+                        showAlertForDelete = true
+                    }
                 } label: {
                     Label("Supprimer", systemImage: "trash")
                 }.alert(
