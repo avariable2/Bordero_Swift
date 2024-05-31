@@ -25,7 +25,7 @@ struct ArticleComponentView: View {
                     .resizable()
                     .frame(height: 200)
                     .scaledToFit()
-                    .cornerRadius(10)
+                    .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
                 
                 VStack(alignment: .leading, spacing: 5) {
                     Text(titre)
