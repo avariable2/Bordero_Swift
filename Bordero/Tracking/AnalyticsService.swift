@@ -14,12 +14,6 @@ class AnalyticsService {
     private init() {}
     
     func track(event: EventName, category: EventCategory, parameters: [String: Any]? = nil) {
-        print("Tracking")
-        
-        var allParameters = parameters ?? [:]
-        allParameters["category"] = category.rawValue
-        Analytics.logEvent(event.rawValue, parameters: allParameters)
-       
         #if !DEBUG
         var allParameters = parameters ?? [:]
         allParameters["category"] = category.rawValue
