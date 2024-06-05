@@ -72,6 +72,7 @@ struct PayementSheet: View {
     
     func addPayement() {
         let paiement = Paiement(context: moc)
+        paiement.id = UUID()
         paiement.date = date
         paiement.montant = amount
         paiement.client = document.client_
@@ -92,6 +93,11 @@ struct PayementSheet: View {
         document.historique?.adding(historiquePaiement)
         
         removeNotification()
+        
+        AnalyticsService.shared.track(event: .paymentAdd, category: .paymentManagement, parameters: [
+            "payment_id": paiement.id?.uuidString ?? "unknown",
+            "amount": paiement.montant
+        ])
         
         DataController.saveContext()
     }

@@ -39,6 +39,7 @@ struct PraticienDataView: View {
             .navigationTitle("Tableau de bord")
             .headerProminence(.increased)
         }
+        .trackEventOnAppear(event: .praticienDashboardShowed, category: .praticienManagement)
     }
 }
 

@@ -75,6 +75,12 @@ struct DocumentDetailView: View {
             
             ToolbarItemGroup(placement: .secondaryAction) {
                 Button {
+                    // Tracking envoyer uniquement si on à reussi à récupérer l'id du document
+                    if let documentID = document.id_?.uuidString {
+                        AnalyticsService.shared.track(event: .documentEdited, category: .documentManagement, parameters: ["document_id" : documentID])
+                    }
+                    
+                    // Empeche la modification si le document est envoyé relativement au loi française
                     if document.estDeTypeFacture && document.status != .created {
                         showAlertImpossibleModifierOuSupprimer = true
                     } else {
@@ -98,6 +104,9 @@ struct DocumentDetailView: View {
                     Button {
                         prepareForSharing()
                         showingShareSheet = true
+                        AnalyticsService.shared.track(event: .documentExported, category: .documentManagement, parameters: [
+                            "document_id": document.id_?.uuidString ?? "unknown"
+                        ])
                     } label: {
                         Label("Exporter", systemImage: "square.and.arrow.up")
                     }

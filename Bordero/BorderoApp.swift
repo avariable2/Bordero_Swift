@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import FirebaseCore
 
 @main
 struct BorderoApp: App {
@@ -56,6 +57,12 @@ struct BorderoApp: App {
 }
 
 class AppDelegate : NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }

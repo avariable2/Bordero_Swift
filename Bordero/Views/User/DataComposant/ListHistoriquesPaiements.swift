@@ -99,6 +99,7 @@ struct ListAllClientPaiements: View {
                 TextPaiementView(payment: payment)
             }
         }
+        .trackEventOnAppear(event: .paymentListBrowsed, category: .paymentManagement)
         .navigationTitle("Historique paiements")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {

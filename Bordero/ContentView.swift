@@ -107,6 +107,7 @@ struct NavigationIpad: View {
             HomeView(showNeediCloud: userNeediCloud == .notConnected)
         case 2:
             ListClients()
+                .trackEventOnAppear(event: .clientListBrowsed, category: .clientManagement)
         case 3:
             FormTypeActeView()
         case 4:
@@ -119,6 +120,7 @@ struct NavigationIpad: View {
             DocumentFormView()
         case 8:
             ListDocument()
+                .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
         default:
             EmptyView()
         }

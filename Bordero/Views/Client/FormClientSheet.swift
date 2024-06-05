@@ -96,6 +96,8 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                             let nouvelleAdresse = TTLAdresse(rue: rue, ville : ville, codePostal: codepostal)
                             adresses.append(nouvelleAdresse)
                         }
+                        
+                        AnalyticsService.shared.track(event: .clientImported, category: .clientManagement)
                     }
                 }
                 
@@ -290,6 +292,10 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         
         self.clientToModify = client
         
+        AnalyticsService.shared.track(event: .clientCreated, category: .clientManagement, parameters: [
+            "client_id": client.id?.uuidString ?? "unknown"
+        ])
+
         save()
     }
     

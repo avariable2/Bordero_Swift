@@ -17,6 +17,16 @@
 		F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72BA1F02BE15B3100E459B2 /* DataValueView.swift */; };
 		F73B98E72B73C94600FCEC53 /* ListClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73B98E62B73C94600FCEC53 /* ListClients.swift */; };
 		F748ADD42B669B3600B82C5D /* ListTypeActe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748ADD32B669B3600B82C5D /* ListTypeActe.swift */; };
+		F75083A12C10971C00B32E1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F75083A02C10971C00B32E1F /* GoogleService-Info.plist */; };
+		F75083A42C10978000B32E1F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F75083A32C10978000B32E1F /* FirebaseAnalytics */; };
+		F75083A62C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = F75083A52C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion */; };
+		F75083A82C10978000B32E1F /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F75083A72C10978000B32E1F /* FirebaseAnalyticsSwift */; };
+		F75083AA2C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		F75083AC2C10978000B32E1F /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = F75083AB2C10978000B32E1F /* FirebaseAppCheck */; };
+		F75083AF2C109A2C00B32E1F /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083AE2C109A2C00B32E1F /* AnalyticsService.swift */; };
+		F75083B12C109CF800B32E1F /* AnalytisEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083B02C109CF800B32E1F /* AnalytisEvent.swift */; };
+		F75083B32C109E7800B32E1F /* AnalyticsEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083B22C109E7800B32E1F /* AnalyticsEnvironmentKey.swift */; };
+		F75083B52C109EB400B32E1F /* AnalyticsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083B42C109EB400B32E1F /* AnalyticsModifier.swift */; };
 		F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */; };
 		F75369CF2B8944A6000F4CB3 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75369CE2B8944A6000F4CB3 /* ExploreView.swift */; };
 		F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */ = {isa = PBXBuildFile; productRef = F75369D12B8944F2000F4CB3 /* ScrollableGradientBackground */; };
@@ -111,6 +121,11 @@
 		F72BA1F02BE15B3100E459B2 /* DataValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataValueView.swift; sourceTree = "<group>"; };
 		F73B98E62B73C94600FCEC53 /* ListClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListClients.swift; sourceTree = "<group>"; };
 		F748ADD32B669B3600B82C5D /* ListTypeActe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTypeActe.swift; sourceTree = "<group>"; };
+		F75083A02C10971C00B32E1F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F75083AE2C109A2C00B32E1F /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		F75083B02C109CF800B32E1F /* AnalytisEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalytisEvent.swift; sourceTree = "<group>"; };
+		F75083B22C109E7800B32E1F /* AnalyticsEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEnvironmentKey.swift; sourceTree = "<group>"; };
+		F75083B42C109EB400B32E1F /* AnalyticsModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsModifier.swift; sourceTree = "<group>"; };
 		F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseriCloudController.swift; sourceTree = "<group>"; };
 		F75369CE2B8944A6000F4CB3 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
 		F75575DB2C06394C00483A47 /* GridViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewWrapper.swift; sourceTree = "<group>"; };
@@ -199,8 +214,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F75083AC2C10978000B32E1F /* FirebaseAppCheck in Frameworks */,
+				F75083A82C10978000B32E1F /* FirebaseAnalyticsSwift in Frameworks */,
 				F78096722BAC8CE600B3AF4A /* SwiftUIDigitalSignature in Frameworks */,
 				F75575D92C06139D00483A47 /* MijickGridView in Frameworks */,
+				F75083A62C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				F75083AA2C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				F75083A42C10978000B32E1F /* FirebaseAnalytics in Frameworks */,
 				F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +228,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F75083AD2C10991800B32E1F /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				F75083AE2C109A2C00B32E1F /* AnalyticsService.swift */,
+				F75083B02C109CF800B32E1F /* AnalytisEvent.swift */,
+				F75083B22C109E7800B32E1F /* AnalyticsEnvironmentKey.swift */,
+				F75083B42C109EB400B32E1F /* AnalyticsModifier.swift */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
 		F75369CB2B893F55000F4CB3 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -388,13 +419,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		F78FE4A22C08884A002F1F34 /* Articles */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Articles;
-			sourceTree = "<group>";
-		};
 		F7985E112BF5490C005362A4 /* DataComposant */ = {
 			isa = PBXGroup;
 			children = (
@@ -446,7 +470,8 @@
 		F7DFAD992B66839C00C905A7 /* Bordero */ = {
 			isa = PBXGroup;
 			children = (
-				F78FE4A22C08884A002F1F34 /* Articles */,
+				F75083AD2C10991800B32E1F /* Tracking */,
+				F75083A02C10971C00B32E1F /* GoogleService-Info.plist */,
 				F780966D2BAC853E00B3AF4A /* Components */,
 				F7669F262B8E691C0007B3C1 /* Core Data */,
 				F75369CB2B893F55000F4CB3 /* Controller */,
@@ -525,6 +550,11 @@
 				F75369D12B8944F2000F4CB3 /* ScrollableGradientBackground */,
 				F78096712BAC8CE600B3AF4A /* SwiftUIDigitalSignature */,
 				F75575D82C06139D00483A47 /* MijickGridView */,
+				F75083A32C10978000B32E1F /* FirebaseAnalytics */,
+				F75083A52C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion */,
+				F75083A72C10978000B32E1F /* FirebaseAnalyticsSwift */,
+				F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */,
+				F75083AB2C10978000B32E1F /* FirebaseAppCheck */,
 			);
 			productName = Bordero;
 			productReference = F7DFAD972B66839C00C905A7 /* Bordero.app */;
@@ -559,6 +589,7 @@
 				F75369D02B8944F2000F4CB3 /* XCRemoteSwiftPackageReference "ScrollableGradientBackground" */,
 				F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */,
 				F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */,
+				F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = F7DFAD982B66839C00C905A7 /* Products */;
 			projectDirPath = "";
@@ -576,6 +607,7 @@
 			files = (
 				F7DFADA32B66839D00C905A7 /* Preview Assets.xcassets in Resources */,
 				F7DFAD9F2B66839D00C905A7 /* Assets.xcassets in Resources */,
+				F75083A12C10971C00B32E1F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +625,7 @@
 				F76E6BF82BF5487800BC9D68 /* PraticienDataView.swift in Sources */,
 				F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */,
 				F7DFADB02B66926F00C905A7 /* HomeView.swift in Sources */,
+				F75083B52C109EB400B32E1F /* AnalyticsModifier.swift in Sources */,
 				F78227962BB33FAF0033429F /* FormClientView.swift in Sources */,
 				F76063892BC6BCC600776C8E /* TypeActe+helper.swift in Sources */,
 				F7878F3D2BD86DD500EC53E0 /* PDFHeaderView.swift in Sources */,
@@ -631,6 +664,7 @@
 				F71F49142BCC5FE6007AD6E5 /* ContentView.swift in Sources */,
 				F7681EC72BD045FD0058150A /* PDFUtils.swift in Sources */,
 				F777A2EA2B8DEF46001E0169 /* ParametersView.swift in Sources */,
+				F75083B32C109E7800B32E1F /* AnalyticsEnvironmentKey.swift in Sources */,
 				F72BA1EF2BE15AB700E459B2 /* GroupBoxStyleData.swift in Sources */,
 				F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */,
 				F75FC8092BCB1FC8007DA47A /* ResumeTabDetailViewPDF.swift in Sources */,
@@ -639,6 +673,7 @@
 				F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */,
 				F78096632BAC651A00B3AF4A /* TVAParametersView.swift in Sources */,
 				F780966F2BAC855F00B3AF4A /* RowIconColor.swift in Sources */,
+				F75083AF2C109A2C00B32E1F /* AnalyticsService.swift in Sources */,
 				F70CFEA22B7EA9A500F777AA /* DataController.swift in Sources */,
 				F76063872BC6BB6400776C8E /* Client+helper.swift in Sources */,
 				F7878F3B2BD7ED7000EC53E0 /* ApercusTabDetailView.swift in Sources */,
@@ -662,6 +697,7 @@
 				F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */,
 				F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */,
 				F762642E2B7AAA74009C15F4 /* DocumentFormView.swift in Sources */,
+				F75083B12C109CF800B32E1F /* AnalytisEvent.swift in Sources */,
 				F71364542B8CDB3100C68853 /* ProfilView.swift in Sources */,
 				F76060832BCAE44500F9552E /* DocumentDetailView.swift in Sources */,
 				F779E0EE2BC421AA00956BC9 /* PDFBodyView.swift in Sources */,
@@ -904,6 +940,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.27.0;
+			};
+		};
 		F75369D02B8944F2000F4CB3 /* XCRemoteSwiftPackageReference "ScrollableGradientBackground" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Lospi/ScrollableGradientBackground";
@@ -931,6 +975,31 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F75083A32C10978000B32E1F /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F75083A52C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		F75083A72C10978000B32E1F /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
+		F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		F75083AB2C10978000B32E1F /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
 		F75369D12B8944F2000F4CB3 /* ScrollableGradientBackground */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F75369D02B8944F2000F4CB3 /* XCRemoteSwiftPackageReference "ScrollableGradientBackground" */;

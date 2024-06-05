@@ -125,6 +125,10 @@ private struct Article1 : View {
                 Text("Les impayés peuvent survenir malgré toutes les précautions. Environ 30% des psychologues ont signalé des difficultés avec des paiements en retard ou non effectués.")
                 Text("Pour gérer ces situations, envoyez des rappels polis et, si nécessaire, proposez des plans de paiement. En dernier recours, envisagez de faire appel à un service de recouvrement, en veillant à ce que cela soit fait de manière éthique.")
             }
+            .trackEventOnAppear(event: .articleRead, category: .userEngagement, parameters: [
+                "article_id": 1,
+                "article_title": "Les bonnes pratiques pour les factures de psychologie"
+            ])
             .padding()
         }
         .toolbar {

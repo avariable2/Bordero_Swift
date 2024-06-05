@@ -411,6 +411,7 @@ struct FormButtonsPrimaryActionView: View {
             HStack {
                 Button {
                     launchSauvegarde.toggle()
+                    AnalyticsService.shared.track(event: .documentCreated, category: .documentManagement)
                 } label: {
                     Label {
                         Text("Sauvegarder")
@@ -436,6 +437,7 @@ struct FormButtonsPrimaryActionView: View {
             VStack {
                 Button {
                     launchSauvegarde.toggle()
+                    AnalyticsService.shared.track(event: .documentCreated, category: .documentManagement)
                 } label: {
                     Label {
                         Text("Sauvegarder")

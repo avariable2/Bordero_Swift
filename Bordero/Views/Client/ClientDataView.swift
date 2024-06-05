@@ -58,6 +58,7 @@ struct ClientDataView: View {
                 DataBrutView(client: client, temporalite: $temporalite)
                     .listRowInsets(EdgeInsets())
             }
+            .trackEventOnAppear(event: .clientStatsBrowsed, category: .clientManagement)
             .navigationTitle("Données de \(client.firstname) \(client.lastname)")
             .navigationBarTitleDisplayMode(.inline)
             .headerProminence(.increased)

@@ -62,6 +62,7 @@ struct ClientDetailView: View {
         .headerProminence(.increased)
         .onAppear() {
             getDataFormClient()
+            AnalyticsService.shared.track(event: .clientDetailBrowsed, category: .clientManagement)
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

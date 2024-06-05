@@ -101,6 +101,7 @@ struct ListDocument: View {
             }
         }
         .navigationTitle("Documents")
+        .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
     }
 }
 

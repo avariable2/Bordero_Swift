@@ -107,6 +107,7 @@ struct ListClients: View {
                 }
             }
         }
+        .trackEventOnAppear(event: .clientListBrowsed, category: .clientManagement)
         .navigationTitle("Clients")
         .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
         .toolbar {
