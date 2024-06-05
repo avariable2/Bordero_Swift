@@ -27,7 +27,9 @@ struct DocumentOptionsView: View, Saveable {
             Form {
                 Section {
                     NavigationLink {
-                        FormPraticienView(isOnBoarding: false, praticien: praticien.first)
+                        if let praticien = praticien.first {
+                            FormPraticienView(isOnBoarding: false, praticien: praticien)
+                        }
                     } label: {
                         RowIconColor(
                             text: "Vos informations",

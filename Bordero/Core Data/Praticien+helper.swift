@@ -54,6 +54,11 @@ extension Praticien {
         set { adeli_ = newValue }
     }
     
+    var nomEntreprise : String {
+        get { nom_proffession ?? "" }
+        set { nom_proffession = newValue }
+    }
+    
     var paramsDocument : ParametersModele {
         get {
             ParametersModele(

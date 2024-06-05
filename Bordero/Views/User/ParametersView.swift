@@ -37,7 +37,9 @@ struct ParametersView: View {
                 
                 Section {
                     NavigationLink {
-                        FormPraticienView(isOnBoarding: false, praticien : praticien)
+                        if let praticien = praticien {
+                            FormPraticienView(isOnBoarding: false, praticien : praticien)
+                        }
                     } label: {
                         RowIconColor(
                             text: "Vos coordoonées",

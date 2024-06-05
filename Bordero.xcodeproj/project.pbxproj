@@ -100,7 +100,7 @@
 		F7DFAD9F2B66839D00C905A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7DFAD9E2B66839D00C905A7 /* Assets.xcassets */; };
 		F7DFADA32B66839D00C905A7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7DFADA22B66839D00C905A7 /* Preview Assets.xcassets */; };
 		F7DFADB02B66926F00C905A7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DFADAF2B66926F00C905A7 /* HomeView.swift */; };
-		F7E88C7E2B89591900AAF73C /* StatistiquePaticientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C7D2B89591900AAF73C /* StatistiquePaticientView.swift */; };
+		F7E88C7E2B89591900AAF73C /* ButtonShowStatistiquesPraticienView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C7D2B89591900AAF73C /* ButtonShowStatistiquesPraticienView.swift */; };
 		F7E88C812B895BAE00AAF73C /* BandeauCreateDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C802B895BAE00AAF73C /* BandeauCreateDocument.swift */; };
 		F7E88C832B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C822B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift */; };
 		F7E88C862B8A335F00AAF73C /* SectionHomeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */; };
@@ -199,7 +199,7 @@
 		F7DFADA02B66839D00C905A7 /* Bordero.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bordero.entitlements; sourceTree = "<group>"; };
 		F7DFADA22B66839D00C905A7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F7DFADAF2B66926F00C905A7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		F7E88C7D2B89591900AAF73C /* StatistiquePaticientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatistiquePaticientView.swift; sourceTree = "<group>"; };
+		F7E88C7D2B89591900AAF73C /* ButtonShowStatistiquesPraticienView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonShowStatistiquesPraticienView.swift; sourceTree = "<group>"; };
 		F7E88C802B895BAE00AAF73C /* BandeauCreateDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandeauCreateDocument.swift; sourceTree = "<group>"; };
 		F7E88C822B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableGradientBackgroundCustomView.swift; sourceTree = "<group>"; };
 		F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHomeComponentView.swift; sourceTree = "<group>"; };
@@ -515,7 +515,7 @@
 		F7E88C7C2B8958FA00AAF73C /* Stats */ = {
 			isa = PBXGroup;
 			children = (
-				F7E88C7D2B89591900AAF73C /* StatistiquePaticientView.swift */,
+				F7E88C7D2B89591900AAF73C /* ButtonShowStatistiquesPraticienView.swift */,
 			);
 			path = Stats;
 			sourceTree = "<group>";
@@ -640,7 +640,7 @@
 				F7669F282B8E69400007B3C1 /* Praticien+helper.swift in Sources */,
 				F7E88C862B8A335F00AAF73C /* SectionHomeComponentView.swift in Sources */,
 				F7985E132BF54997005362A4 /* NbFacturesGraphView.swift in Sources */,
-				F7E88C7E2B89591900AAF73C /* StatistiquePaticientView.swift in Sources */,
+				F7E88C7E2B89591900AAF73C /* ButtonShowStatistiquesPraticienView.swift in Sources */,
 				F7E88C832B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift in Sources */,
 				F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */,
 				F7710D2F2BF11C13009D43C0 /* PayementSheet.swift in Sources */,

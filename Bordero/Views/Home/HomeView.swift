@@ -75,7 +75,7 @@ struct HomeView: View {
                 }
                 
                 SectionHomeComponentView(title: "Statistiques") {
-                    StatistiquePaticientView()
+                    ButtonShowStatistiquesPraticienView()
                 }
                 
                 SectionHomeComponentView(title: "Articles") {
