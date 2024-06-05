@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 @main
 struct BorderoApp: App {
@@ -29,11 +30,27 @@ struct BorderoApp: App {
                     .environment(\.managedObjectContext, dataController.container.viewContext)
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
+                    .onAppear(perform: checkAndCreatePraticien) // Instanciate in firts launch an praticien for use the app everywhere
                     .onChange(of: userController.accountAvailable) { oldValue, newValue in
                         DataController.shared.updateICloudSettings()
                     }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
             }
+        }
+    }
+    
+    func checkAndCreatePraticien() {
+        let context = dataController.container.viewContext
+        let fetchRequest : NSFetchRequest<Praticien> = Praticien.fetchRequest()
+        
+        do {
+            let praticien = try context.fetch(fetchRequest)
+            if praticien.isEmpty {
+                _ = Praticien(context: context)
+                try context.save()
+            }
+        } catch {
+            print("Erreur lors de la vérification de l'entité Praticien : \(error)")
         }
     }
 }

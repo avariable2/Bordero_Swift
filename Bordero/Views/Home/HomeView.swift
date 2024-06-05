@@ -142,9 +142,11 @@ private struct TitleSectionIpad : View {
                 .frame(maxHeight: 120)
             
             VStack(alignment: .leading) {
-                Text(name)
-                    .font(.title)
-                    .fontWeight(.bold)
+                if !name.isEmpty {
+                    Text(name)
+                        .font(.title)
+                        .fontWeight(.bold)
+                }
                 
                 Button {
                     activeSheet = .parameters
