@@ -6,13 +6,23 @@
 //
 
 import SwiftUI
-import TokenTextField
+
+private struct TokenPaiementModel: Identifiable, Hashable, Equatable {
+    enum TokenPaiementType {
+        case client
+        case date
+    }
+    
+    var id = UUID()
+    var value : String
+    var type : TokenPaiementType
+}
 
 struct ListAllClientPaiements: View {
     @Environment(\.dismiss) var dismiss
     @State var payments : FetchedResults<Paiement>
     @State private var searchText = ""
-    @State private var tags: [TokenModel] = []
+    @State private var tags: [TokenPaiementModel] = []
     
     var filteredPayments: [Paiement] {
         let tokens = tags.map { $0.value }.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
@@ -40,10 +50,16 @@ struct ListAllClientPaiements: View {
             }
             .searchable(
                 text: $searchText,
-                tokens: $tags,
+                tokens: $tags, 
+                placement: .navigationBarDrawer(displayMode: .always),
                 prompt: "Recherche",
                 token: { token in
-                    Text(token.value)
+                    switch token.type {
+                    case .client:
+                        Label(token.value, systemImage: "person.crop.circle")
+                    case .date:
+                        Label(token.value, systemImage: "calendar")
+                    }
                 }
             )
             .searchSuggestions({
@@ -57,7 +73,7 @@ struct ListAllClientPaiements: View {
                                     .foregroundStyle(.blue)
                                     .imageScale(.large)
                             }
-                            .searchCompletion(TokenModel(value: suggestion))
+                            .searchCompletion(TokenPaiementModel(value: suggestion, type: .client))
                         }
                         
                         ForEach(suggestedDates, id: \.self) { suggestion in
@@ -68,7 +84,7 @@ struct ListAllClientPaiements: View {
                                     .foregroundStyle(.blue)
                                     .imageScale(.large)
                             }
-                            .searchCompletion(TokenModel(value: suggestion))
+                            .searchCompletion(TokenPaiementModel(value: suggestion, type: .date))
                         }
                     }
                 }

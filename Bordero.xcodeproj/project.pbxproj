@@ -88,7 +88,6 @@
 		F792B75E2B71630C00FA5569 /* ActiveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F792B75D2B71630C00FA5569 /* ActiveSheet.swift */; };
 		F7985E132BF54997005362A4 /* NbFacturesGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */; };
 		F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */; };
-		F79D41AB2C11F667001D5C27 /* TokenTextField in Frameworks */ = {isa = PBXBuildFile; productRef = F79D41AA2C11F667001D5C27 /* TokenTextField */; };
 		F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */; };
 		F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
@@ -221,7 +220,6 @@
 				F75575D92C06139D00483A47 /* MijickGridView in Frameworks */,
 				F75083A62C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				F75083AA2C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
-				F79D41AB2C11F667001D5C27 /* TokenTextField in Frameworks */,
 				F75083A42C10978000B32E1F /* FirebaseAnalytics in Frameworks */,
 				F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */,
 			);
@@ -565,7 +563,6 @@
 				F75083A72C10978000B32E1F /* FirebaseAnalyticsSwift */,
 				F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				F75083AB2C10978000B32E1F /* FirebaseAppCheck */,
-				F79D41AA2C11F667001D5C27 /* TokenTextField */,
 			);
 			productName = Bordero;
 			productReference = F7DFAD972B66839C00C905A7 /* Bordero.app */;
@@ -601,7 +598,6 @@
 				F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */,
 				F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */,
 				F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				F79D41A92C11F667001D5C27 /* XCRemoteSwiftPackageReference "TokenTextField" */,
 			);
 			productRefGroup = F7DFAD982B66839C00C905A7 /* Products */;
 			projectDirPath = "";
@@ -988,14 +984,6 @@
 				minimumVersion = 0.1.2;
 			};
 		};
-		F79D41A92C11F667001D5C27 /* XCRemoteSwiftPackageReference "TokenTextField" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/avariable2/TokenTextField.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1038,11 +1026,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */;
 			productName = SwiftUIDigitalSignature;
-		};
-		F79D41AA2C11F667001D5C27 /* TokenTextField */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F79D41A92C11F667001D5C27 /* XCRemoteSwiftPackageReference "TokenTextField" */;
-			productName = TokenTextField;
 		};
 /* End XCSwiftPackageProductDependency section */
 

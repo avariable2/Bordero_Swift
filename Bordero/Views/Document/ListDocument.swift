@@ -34,32 +34,32 @@ struct ListDocument: View {
     ]
     
     // Filtered and grouped documents
-        var filteredListDocuments: Dictionary<String, [Document]> {
-            // Determine the filtered documents based on scope
-            let filteredDocuments: [Document]
-            switch documentScope {
-            case .created:
-                filteredDocuments = documents.filter { $0.status == .created }
-            case .payed:
-                filteredDocuments = documents.filter { $0.status == .payed }
-            case .send:
-                filteredDocuments = documents.filter { $0.status == .send }
-            case .all, .unknow:
-                filteredDocuments = Array(documents)
-            }
-
-            // Filter based on search text if necessary
-            let documentsToGroup = searchText.isEmpty
-                ? filteredDocuments
-                : filteredDocuments.filter {
-                    $0.getNameOfDocument().lowercased().contains(searchText.lowercased())
-                }
-
-            // Group documents by section title by date
-            return Dictionary(grouping: documentsToGroup) { document in
-                document.sectionTitleByDate
-            }
+    var filteredListDocuments: Dictionary<String, [Document]> {
+        // Determine the filtered documents based on scope
+        let filteredDocuments: [Document]
+        switch documentScope {
+        case .created:
+            filteredDocuments = documents.filter { $0.status == .created }
+        case .payed:
+            filteredDocuments = documents.filter { $0.status == .payed }
+        case .send:
+            filteredDocuments = documents.filter { $0.status == .send }
+        case .all, .unknow:
+            filteredDocuments = Array(documents)
         }
+        
+        // Filter based on search text if necessary
+        let documentsToGroup = searchText.isEmpty
+        ? filteredDocuments
+        : filteredDocuments.filter {
+            $0.getNameOfDocument().lowercased().contains(searchText.lowercased())
+        }
+        
+        // Group documents by section title by date
+        return Dictionary(grouping: documentsToGroup) { document in
+            document.sectionTitleByDate
+        }
+    }
     
     var body: some View {
         VStack {
@@ -86,15 +86,15 @@ struct ListDocument: View {
                         ContentUnavailableView.search(text: searchText)
                     } else {
                         ForEach(sectionOrder, id: \.self) { key in
-                                                   if let documentsForSection = filteredListDocuments[key] {
-                                                       Section(header: Text(key)) {
-                                                           ForEach(documentsForSection, id: \.self) { document in
-                                                               RowDocumentView(document: document)
-                                                                   .tag(document.status)
-                                                           }
-                                                       }
-                                                   }
-                                               }
+                            if let documentsForSection = filteredListDocuments[key] {
+                                Section(header: Text(key)) {
+                                    ForEach(documentsForSection, id: \.self) { document in
+                                        RowDocumentView(document: document)
+                                            .tag(document.status)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
@@ -123,7 +123,7 @@ struct RowDocumentView :View {
                     Spacer()
                     
                     Text(document.totalTTC, format: .currency(code: "EUR"))
-                        
+                    
                 }
                 .fontWeight(.medium)
                 
@@ -134,7 +134,7 @@ struct RowDocumentView :View {
                     +
                     Text(document.dateEmission, format: .dateTime.day().month().year())
                         .foregroundStyle(.secondary)
-                        
+                    
                     
                     Spacer()
                     
