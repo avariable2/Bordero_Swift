@@ -8,11 +8,24 @@
 import SwiftUI
 import CoreData
 
+private struct TokenDocumentModel: Identifiable, Hashable, Equatable {
+    enum TokenDocumentType {
+        case client
+        case date
+        case typeDoc
+    }
+    
+    var id = UUID()
+    var value : String
+    var type : TokenDocumentType
+}
+
 struct ListDocument: View {
     
     @Environment(\.managedObjectContext) var moc
     @FetchRequest var documents: FetchedResults<Document>
     @State private var searchText = ""
+    @State private var tags: [TokenDocumentModel] = []
     @State private var documentScope : Document.Status = .all
     
     init() {
@@ -48,17 +61,66 @@ struct ListDocument: View {
             filteredDocuments = Array(documents)
         }
         
-        // Filter based on search text if necessary
-        let documentsToGroup = searchText.isEmpty
-        ? filteredDocuments
-        : filteredDocuments.filter {
-            $0.getNameOfDocument().lowercased().contains(searchText.lowercased())
+        // Filter based on tokens
+        let tokens = tags.map { $0.value }.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        let documentsToGroup: [Document]
+        if tokens.isEmpty {
+            documentsToGroup = filteredDocuments
+        } else {
+            documentsToGroup = filteredDocuments.filter { document in
+                tokens.allSatisfy { term in
+                    let matchesClient = document.client_?.fullname.lowercased().contains(term.lowercased()) ?? false
+                    let matchesDate = document.dateEmission.formatted(.dateTime.month().year()).lowercased().contains(term.lowercased())
+                    let matchesType = (term == "Factures" && document.estDeTypeFacture) || (term == "Devis" && !document.estDeTypeFacture)
+                    
+                    switch term {
+                    case _ where term == "Factures" || term == "Devis":
+                        return matchesType
+                    default:
+                        return matchesClient || matchesDate
+                    }
+                }
+            }
         }
         
         // Group documents by section title by date
         return Dictionary(grouping: documentsToGroup) { document in
             document.sectionTitleByDate
         }
+    }
+    
+    var suggestedClients : [String] {
+        let clients = documents.map { $0.client_ }
+        let uniqueClients = Set(clients.map { "\($0?.firstname ?? "") \($0?.lastname ?? "Inconnu")"})
+        return uniqueClients.filter { $0.lowercased().contains(searchText.lowercased()) }
+    }
+    
+    var suggestedDates: [String] {
+        let dates = documents.map { $0.dateEmission }
+        let uniqueDates = Set(dates.map { $0.formatted(.dateTime.month().year()) })
+        return uniqueDates.filter { $0.lowercased().contains(searchText.lowercased()) }
+    }
+    
+    var suggestedTypeDocs : [String] {
+        let uniqueType = ["Factures", "Devis"]
+        return uniqueType.filter { $0.lowercased().contains(searchText.lowercased()) }
+    }
+    
+    
+    // Pré-calcul pour réduire le besoin de vérification conditionnelle de rendu
+    var filteredSuggestionsTypeDocs: [String] {
+        let uniqueType = ["Factures", "Devis"]
+        return uniqueType.filter { type in
+            !tags.contains(where: { $0.value == type && $0.type == .typeDoc }) && type.lowercased().contains(searchText.lowercased())
+        }
+    }
+
+    var filteredSuggestionsClients: [String] {
+        suggestedClients.filter { $0.lowercased().contains(searchText.lowercased()) }
+    }
+
+    var filteredSuggestionsDates: [String] {
+        suggestedDates.filter { $0.lowercased().contains(searchText.lowercased()) }
     }
     
     var body: some View {
@@ -97,7 +159,59 @@ struct ListDocument: View {
                         }
                     }
                 }
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                .searchable(
+                    text: $searchText,
+                    tokens: $tags,
+                    placement: .navigationBarDrawer(displayMode: .always),
+                    token: { token in
+                        switch token.type {
+                        case .client:
+                            Label(token.value, systemImage: "person.crop.circle")
+                        case .date:
+                            Label(token.value, systemImage: "calendar")
+                        case .typeDoc:
+                            Label(token.value, systemImage: "doc.circle")
+                        }
+                    }
+                )
+                .searchSuggestions {
+                    if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
+                        Section("Suggestions") {
+                            ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
+                                Label {
+                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                                } icon: {
+                                    Image(systemName: "doc")
+                                        .foregroundStyle(.blue)
+                                        .imageScale(.large)
+                                }
+                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
+                            }
+                            
+                            ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
+                                Label {
+                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                                } icon: {
+                                    Image(systemName: "person.crop.circle")
+                                        .foregroundStyle(.blue)
+                                        .imageScale(.large)
+                                }
+                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
+                            }
+                            
+                            ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
+                                Label {
+                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                                } icon: {
+                                    Image(systemName: "calendar")
+                                        .foregroundStyle(.blue)
+                                        .imageScale(.large)
+                                }
+                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
+                            }
+                        }
+                    }
+                }
             }
         }
         .navigationTitle("Documents")
@@ -160,4 +274,10 @@ struct RowDocumentView :View {
 
 #Preview {
     ListDocument()
+}
+
+extension Client {
+    var fullname: String {
+        "\(firstname) \(lastname)"
+    }
 }

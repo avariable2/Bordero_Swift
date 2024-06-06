@@ -64,7 +64,7 @@ extension Document {
     }
     
     enum Status : String, Identifiable, CaseIterable {
-        case all = "Tous"
+        case all = "Tout"
         case created = "Ouvert"
         case payed = "Payée"
         case send = "Envoyée"
