@@ -108,7 +108,7 @@ struct TableGridRowView : View {
                     }
                     
                     if !purchase.remarque.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                        Text("Remarque : ")
+                        Text("Remarques : ")
                             .foregroundStyle(.primary.opacity(0.8)).fontWeight(.medium)
                         +
                         Text(purchase.remarque)
@@ -142,7 +142,7 @@ struct TableGridRowView : View {
 
 #Preview {
     ScrollView {
-        TableGridRowView(purchase: PDFTableData(libelle: "Je", infoLibelle: "Une potenciel description pour illustrer notre exemple", remarque: "", quantity: 1, priceHT: 50, tva: 2, priceTTC: 50))
+        TableGridRowView(purchase: PDFTableData(libelle: "Je", infoLibelle: "Une potentielle description pour illustrer notre exemple", remarque: "", quantity: 1, priceHT: 50, tva: 2, priceTTC: 50))
             .border(Color.black)
     }
     .frame(width: 600)
@@ -164,13 +164,13 @@ struct TableHeaderView: View {
                 Text("Qté")
                     .gridCellColumns(1)
                 
-                Text("HT")
+                Text("H.T.")
                     .gridCellColumns(1)
                 
                 Text("TVA")
                     .gridCellColumns(1)
                 
-                Text("TTC")
+                Text("T.T.C.")
                     .gridCellColumns(1)
             }
             .frame(maxWidth: .infinity)

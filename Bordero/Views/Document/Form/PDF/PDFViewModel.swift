@@ -35,7 +35,7 @@ class PDFViewModel {
             try fileManager.removeItem(at: urlFile)
             print("Fichier supprimé avec succès")
         } catch {
-            print("Erreur lors de la suppression du fichier: \(error)")
+            print("Erreur lors de la suppression du fichier : \(error)")
         }
     }
     

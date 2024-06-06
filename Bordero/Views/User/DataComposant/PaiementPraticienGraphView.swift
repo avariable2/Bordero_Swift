@@ -30,7 +30,7 @@ struct PaiementPraticienGraphView: View {
             Chart(cumulativePayments) { data in
                 LineMark(
                     x: .value("Date", data.date),
-                    y: .value("Cumulative Amount", data.cumulativeAmount)
+                    y: .value("Montant Additionnel", data.cumulativeAmount)
                 )
                 .symbol(by: .value("Date", data.date))
             }

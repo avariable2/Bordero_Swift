@@ -19,7 +19,7 @@ struct ClientPaymentEstimateGraphView: View {
         if !clientData.isEmpty  {
             CombinedChartView(clientData: clientData)
         } else {
-            ContentUnavailableView("Pas de données disponibles", systemImage: "chart.line.flattrend.xyaxis")
+            ContentUnavailableView("Pas de donnée disponible", systemImage: "chart.line.flattrend.xyaxis")
         }
     }
 }

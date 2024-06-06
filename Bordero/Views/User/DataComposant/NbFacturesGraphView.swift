@@ -18,7 +18,7 @@ struct NbFacturesGraphView: View {
     
     var body: some View {
         VStack {
-            Picker("Select Period", selection: $selectedPeriod) {
+            Picker("Selectionner la période", selection: $selectedPeriod) {
                 Text("Jour").tag("Day")
                 Text("Semaine").tag("Week")
                 Text("Mois").tag("Month")
@@ -30,15 +30,15 @@ struct NbFacturesGraphView: View {
             let chartData = chartData(for: selectedPeriod)
             if chartData.isEmpty {
                 ContentUnavailableView(
-                    "Aucun facture",
+                    "Aucune facture",
                     systemImage: "chart.bar.xaxis",
-                    description: Text(selectedPeriod == "Day" ? "Aucun facture dont la date d'emission est du mois en cours" : "Il n'a aucun documents avec le status payer ou envoyer.")
+                    description: Text(selectedPeriod == "Day" ? "Aucune facture émise ce mois-ci" : "Il n'y a aucun document avec le statut payé ou envoyé.")
                 )
             } else {
                 Chart(chartData) { element in
                     BarMark(
-                        x: .value("Period", element.period),
-                        y: .value("Count", element.count)
+                        x: .value("Période", element.period),
+                        y: .value("Somme", element.count)
                     )
                     .foregroundStyle(by: .value("Status", element.status.rawValue))
                 }
@@ -114,7 +114,7 @@ struct NbFacturesGraphView: View {
 enum DocumentStatus: String, CaseIterable {
     case paye = "Payé"
     case envoyer = "En attente"
-    case enRetard = "En Retard"
+    case enRetard = "En retard"
 }
 
 struct DocumentChartData: Identifiable {

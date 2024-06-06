@@ -36,7 +36,7 @@ Cordialement,
     var body: some View {
         VStack {
             List {
-                DisclosureGroup("Vous pouvez personnaliser votre message lors de l'envoie des documents. Voici les balises que vous pouvez utilisez : ", isExpanded: $showCommande) {
+                DisclosureGroup("Vous pouvez personnaliser votre message lors de l'envoi des documents. Voici les balises que vous pouvez utiliser : ", isExpanded: $showCommande) {
                     
                     
                     RowCommandeView(titre: "Prix total", commande: "#TOTAL#")

@@ -41,7 +41,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     // MARK: Option d'affichage du formulaire
     var isOnBoarding : Bool
-    var titre = "Renseignements professionnel"
+    var titre = "Renseignements professionnels"
     var textFacultatif = "facultatif"
     
     @State var praticien : Praticien
@@ -106,7 +106,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 .multilineTextAlignment(.leading)
                 
             } footer: {
-                Text("Pour gagner du temps importer les champs principaux comme votre nom ou prénom depuis votre fiche Contacts.")
+                Text("Pour gagner du temps, importez les champs principaux comme votre nom ou prénom depuis votre fiche Contacts.")
                     .multilineTextAlignment(.leading)
             }
             
@@ -157,7 +157,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             } header: {
                 Text("Identification")
             } footer: {
-                Text("Ces champs sont important ficalement pour que vos documents soient valides.")
+                Text("Ces champs sont importants fiscalement pour que vos documents soient valides.")
                     .multilineTextAlignment(.leading)
             }
             
@@ -189,7 +189,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             } header: {
                 Text("Contact")
             } footer: {
-                Text("Tous les champs sont facultatifs mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document.")
+                Text("Tous les champs sont facultatifs, mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document.")
                     .multilineTextAlignment(.leading)
             }
             
@@ -290,7 +290,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 }
             }
         }
-        .alert("Les données ne seront pas sauvegarder", isPresented: $showAlert, actions: {
+        .alert("Les données ne seront pas sauvegardées", isPresented: $showAlert, actions: {
             Button("Quitter", role: .destructive) {
                 dismiss()
             }

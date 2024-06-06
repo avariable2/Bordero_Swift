@@ -75,7 +75,7 @@ struct DocumentOptionsView: View, Saveable {
                     }
                 }
                 
-                Section("Mode de paiement accepté") {
+                Section("Modes de paiement acceptés") {
                     Toggle("Carte", isOn: $carte)
                         .onChange(of: carte) { oldValue, newValue in
                             praticien.first?.carte = newValue

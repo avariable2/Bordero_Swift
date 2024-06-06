@@ -46,7 +46,7 @@
 						<key>trailing</key>
 						<string>                    
                     Section {
-                        Text("Si un problème survient contacter le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
+                        Text("Si un problème survient, contactez le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
 </string>
 					</dict>
 					<key>title</key>

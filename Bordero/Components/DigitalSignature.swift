@@ -53,7 +53,7 @@ public struct SignatureViewCustom: View {
                 }
                 .buttonStyle(.borderless)
                 
-                Text("Choissisez un style")
+                Text("Choisir un style")
                     .font(.headline)
                 
                 if availableTabs.count > 1 {
@@ -67,7 +67,7 @@ public struct SignatureViewCustom: View {
                 
                 signatureContent
                 
-                Button("Effacer signature", action: clear)
+                Button("Effacer la signature", action: clear)
                     .buttonStyle(.bordered)
                     
             }

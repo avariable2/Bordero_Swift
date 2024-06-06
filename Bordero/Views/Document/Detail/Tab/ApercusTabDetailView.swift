@@ -27,7 +27,7 @@ struct DocumentApercus : View {
                     ContentUnavailableView(
                         "Erreur de chargement",
                         systemImage: "doc.viewfinder",
-                        description: Text("Si cela se produit trop souvent, n'hesitez pas à contacter le développeur.").foregroundStyle(.secondary)
+                        description: Text("Si cela se produit trop souvent, n'hésitez pas à contacter le développeur.").foregroundStyle(.secondary)
                     )
                 }
                 .frame(maxWidth: .infinity)

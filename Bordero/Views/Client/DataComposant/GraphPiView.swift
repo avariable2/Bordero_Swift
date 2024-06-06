@@ -20,7 +20,7 @@ struct GraphPiView: View {
     var body: some View {
         VStack {
             if data.isEmpty {
-                ContentUnavailableView("Aucun donnée", systemImage: "chart.pie", description: Text("Seront affichées ici la répartition des montant exigible de votre part. Revenez quand vous aurez envoyé des factures"))
+                ContentUnavailableView("Aucune donnée", systemImage: "chart.pie", description: Text("Sera affichée ici la répartition des montants exigibles. Revenez quand vous aurez envoyé des factures"))
             } else {
                 Text(temporaliteText)
                     .font(.caption)
@@ -34,7 +34,7 @@ struct GraphPiView: View {
                         angularInset: 1.5
                     )
                     .cornerRadius(5)
-                    .foregroundStyle(by: .value("Product category", dataItem.name))
+                    .foregroundStyle(by: .value("Catégorie du produit", dataItem.name))
                     .annotation(position: .overlay, alignment: .center) {
                         if dataItem.value != 0 {
                             Text("\(dataItem.annotation, format: .currency(code: "EUR"))")

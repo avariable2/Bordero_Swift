@@ -16,7 +16,7 @@ struct ModeleDocumentView: View {
              trente = "30 jours",
              quanranteCinq = "45 jours",
              soixante = "60 jours",
-             quatreVingDix = "90 jours"
+             quatreVingtDix = "90 jours"
         var id : Self { self }
         
         var value : Int {
@@ -35,7 +35,7 @@ struct ModeleDocumentView: View {
                 45
             case .soixante:
                 60
-            case .quatreVingDix:
+            case .quatreVingtDix:
                 90
             }
         }
@@ -75,14 +75,14 @@ struct ModeleDocumentView: View {
                     }
                     
                     Toggle(isOn: $praticien.paramsDocument.showModePaiement) {
-                        Text("Afficher les mode de paiement")
+                        Text("Afficher les modes de paiement")
                     }
                     
                     
                 }
                 
                 Section {
-                    Picker("Date échéance", selection: $dateEcheanceDefaut) {
+                    Picker("Date d'échéance", selection: $dateEcheanceDefaut) {
                         ForEach(DateEcheanceParams.allCases) { echeance in
                             Text(echeance.rawValue).tag(echeance)
                         }
@@ -104,7 +104,7 @@ struct ModeleDocumentView: View {
                 } header: {
                    Text("Paramètres prédéfinis")
                 } footer : {
-                    Text("Sélectionnez les informations prédéfinis pour quel soit automatiquement préremplis lors de la création d'un document.")
+                    Text("Sélectionner les informations prédéfinies pour quelles soient automatiquement préremplies lors de la création d'un document.")
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .green))
             }

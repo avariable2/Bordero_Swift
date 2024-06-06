@@ -230,7 +230,7 @@ struct RowAdresse: View {
             text: adresseSurUneLigne,
             systemName: "house.circle.fill",
             color: .brown,
-            accessibility: "Adresse renseigné pour le client"
+            accessibility: "Adresse renseignée pour le client"
         )
         .contextMenu {
             Button(action: {

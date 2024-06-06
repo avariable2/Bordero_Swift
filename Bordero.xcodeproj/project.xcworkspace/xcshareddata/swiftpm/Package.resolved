@@ -1,5 +1,5 @@
 {
-  "originHash" : "3055a290c6b2e319b4e0be840a2d53377ce1ebb5f7c4a7cbab89548a5ecf0abe",
+  "originHash" : "b7f69d5b2ddaceac5615e206890598ab1e49cf8477c7497a1d2459be0207d65d",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -143,6 +143,15 @@
       "state" : {
         "revision" : "e4cc06d0f6c785dcb69ffc60cc1ffbd40eb02e18",
         "version" : "0.1.2"
+      }
+    },
+    {
+      "identity" : "tokentextfield",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/avariable2/TokenTextField.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7df57e7b37fc39cbf86f346d3db7fe630d3a1df2"
       }
     }
   ],

@@ -88,6 +88,8 @@
 		F792B75E2B71630C00FA5569 /* ActiveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F792B75D2B71630C00FA5569 /* ActiveSheet.swift */; };
 		F7985E132BF54997005362A4 /* NbFacturesGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */; };
 		F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */; };
+		F79D41AB2C11F667001D5C27 /* TokenTextField in Frameworks */ = {isa = PBXBuildFile; productRef = F79D41AA2C11F667001D5C27 /* TokenTextField */; };
+		F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */; };
 		F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
@@ -96,7 +98,6 @@
 		F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */; };
 		F7D8E0162B8BA15600D4F28B /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */; };
 		F7DFAD9B2B66839C00C905A7 /* BorderoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DFAD9A2B66839C00C905A7 /* BorderoApp.swift */; };
-		F7DFAD9D2B66839C00C905A7 /* ConnexionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DFAD9C2B66839C00C905A7 /* ConnexionView.swift */; };
 		F7DFAD9F2B66839D00C905A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7DFAD9E2B66839D00C905A7 /* Assets.xcassets */; };
 		F7DFADA32B66839D00C905A7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7DFADA22B66839D00C905A7 /* Preview Assets.xcassets */; };
 		F7DFADB02B66926F00C905A7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DFADAF2B66926F00C905A7 /* HomeView.swift */; };
@@ -185,6 +186,7 @@
 		F792B75D2B71630C00FA5569 /* ActiveSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSheet.swift; sourceTree = "<group>"; };
 		F7985E122BF54997005362A4 /* NbFacturesGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NbFacturesGraphView.swift; sourceTree = "<group>"; };
 		F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceClientsGraphView.swift; sourceTree = "<group>"; };
+		F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllHistoriquesPaiements.swift; sourceTree = "<group>"; };
 		F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
@@ -194,7 +196,6 @@
 		F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		F7DFAD972B66839C00C905A7 /* Bordero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bordero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7DFAD9A2B66839C00C905A7 /* BorderoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderoApp.swift; sourceTree = "<group>"; };
-		F7DFAD9C2B66839C00C905A7 /* ConnexionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnexionView.swift; sourceTree = "<group>"; };
 		F7DFAD9E2B66839D00C905A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7DFADA02B66839D00C905A7 /* Bordero.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bordero.entitlements; sourceTree = "<group>"; };
 		F7DFADA22B66839D00C905A7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -220,6 +221,7 @@
 				F75575D92C06139D00483A47 /* MijickGridView in Frameworks */,
 				F75083A62C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				F75083AA2C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				F79D41AB2C11F667001D5C27 /* TokenTextField in Frameworks */,
 				F75083A42C10978000B32E1F /* FirebaseAnalytics in Frameworks */,
 				F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */,
 			);
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */,
+				F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -514,7 +517,6 @@
 				F762642B2B7AA983009C15F4 /* Client */,
 				F762642A2B7AA96B009C15F4 /* TypeActe */,
 				F7E88C7F2B895B9800AAF73C /* Home */,
-				F7DFAD9C2B66839C00C905A7 /* ConnexionView.swift */,
 				F75369CE2B8944A6000F4CB3 /* ExploreView.swift */,
 			);
 			path = Views;
@@ -563,6 +565,7 @@
 				F75083A72C10978000B32E1F /* FirebaseAnalyticsSwift */,
 				F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				F75083AB2C10978000B32E1F /* FirebaseAppCheck */,
+				F79D41AA2C11F667001D5C27 /* TokenTextField */,
 			);
 			productName = Bordero;
 			productReference = F7DFAD972B66839C00C905A7 /* Bordero.app */;
@@ -598,8 +601,7 @@
 				F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */,
 				F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */,
 				F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				F76DF6412C11DB6600EDB6BC /* XCRemoteSwiftPackageReference "TokenTextField_SwiftUI" */,
-				F71CE8712C11EA1D00D7B859 /* XCRemoteSwiftPackageReference "TokenTextField" */,
+				F79D41A92C11F667001D5C27 /* XCRemoteSwiftPackageReference "TokenTextField" */,
 			);
 			productRefGroup = F7DFAD982B66839C00C905A7 /* Products */;
 			projectDirPath = "";
@@ -694,7 +696,6 @@
 				F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */,
 				F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */,
 				F78096672BAC6BF600B3AF4A /* DevelopperMailView.swift in Sources */,
-				F7DFAD9D2B66839C00C905A7 /* ConnexionView.swift in Sources */,
 				F761B5C22BC811B3003AA878 /* PDFViewModel.swift in Sources */,
 				F76CE5A32BF381FB00C6502C /* HistoriquePaiementView.swift in Sources */,
 				F73B98E72B73C94600FCEC53 /* ListClients.swift in Sources */,
@@ -703,6 +704,7 @@
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,
 				F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */,
+				F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */,
 				F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */,
 				F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */,
 				F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */,
@@ -954,14 +956,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F71CE8712C11EA1D00D7B859 /* XCRemoteSwiftPackageReference "TokenTextField" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:avariable2/TokenTextField.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -986,20 +980,20 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		F76DF6412C11DB6600EDB6BC /* XCRemoteSwiftPackageReference "TokenTextField_SwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JayantBadlani/TokenTextField_SwiftUI.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/globulus/swiftui-digital-signature";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.1.2;
+			};
+		};
+		F79D41A92C11F667001D5C27 /* XCRemoteSwiftPackageReference "TokenTextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/avariable2/TokenTextField.git";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1044,6 +1038,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */;
 			productName = SwiftUIDigitalSignature;
+		};
+		F79D41AA2C11F667001D5C27 /* TokenTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F79D41A92C11F667001D5C27 /* XCRemoteSwiftPackageReference "TokenTextField" */;
+			productName = TokenTextField;
 		};
 /* End XCSwiftPackageProductDependency section */
 

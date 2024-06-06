@@ -119,7 +119,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                             .focused($focusedField, equals: .phone)
                     } label: {
                         ViewThatFits {
-                            Text("Numero de téléphone")
+                            Text("Numéro de téléphone")
                             Text("Téléphone")
                         }
                     }
@@ -177,7 +177,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                         .disabled(checkClientA3AdresseMax)
                     }
                 } footer: {
-                    Text("Pour supprimer une addresse, il vous suffit de la faire glisser sur la gauche et de clicquer sur supprimer.")
+                    Text("Pour supprimer une adresse, il vous suffit de la faire glisser sur la gauche et de cliquer sur supprimer.")
                 }
                 
                 if let _ = callbackOnDelete {

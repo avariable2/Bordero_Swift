@@ -16,7 +16,7 @@ struct PaiementClientGraphView: View {
         VStack {
             let payementsData = paymentsByPeriod(payments: paiements, temporalite: temporalite)
             if payementsData.isEmpty {
-                ContentUnavailableView("Aucun paiements", systemImage: "chart.bar", description: Text("Changer de période ou ajouter des paiements sur vos factures"))
+                ContentUnavailableView("Aucun paiement", systemImage: "chart.bar", description: Text("Changer de période ou ajouter des paiements sur vos factures"))
             } else {
                 Chart(payementsData) { paiement in
                     BarMark(

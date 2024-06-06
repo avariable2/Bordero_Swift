@@ -32,7 +32,7 @@ struct HomeView: View {
     let articles : Array<ArticleData> = [
         ArticleData(
             title: "Les bonnes pratiques pour les factures de psychologie",
-            corps: "Cette article couvre l'ensemble des bases et répond aux question de l'importance des factures.",
+            corps: "Cette article couvre l'ensemble des bases et répond aux questions de l'importance des factures.",
             image: "ArticleImageFacture"
         ),
     ]
@@ -189,7 +189,7 @@ private struct BandeauiCloud : View {
                     Text("Données Bordero non synchronisées")
                         .bold()
                     
-                    Text("Vos données et vos documents ne sont pas synchronisées. En tant que praticien, il est important d'avoir un point de sauvegarde de vos données.")
+                    Text("Vos données et vos documents ne sont pas synchronisés. En tant que praticien, il est important d'avoir un point de sauvegarde de vos données.")
                         .foregroundStyle(.secondary)
                     
                     Button {

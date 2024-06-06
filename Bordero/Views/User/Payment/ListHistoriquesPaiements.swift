@@ -18,7 +18,7 @@ struct ListHistoriquesPaiements: View {
     
     var body: some View {
         if payments.isEmpty {
-            ContentUnavailableView("Pas de paiements", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera afficher la liste des paiements de vos clients."))
+            ContentUnavailableView("Pas de paiement", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera affiché la liste des paiements de vos clients."))
         } else {
             ForEach(payments.prefix(5), id: \.id) { payment in
                 RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
@@ -80,94 +80,6 @@ struct TextPaiementView: View {
         }
         .tint(.primary)
     }
-}
-
-struct ListAllClientPaiements: View {
-    @Environment(\.dismiss) var dismiss
-    @State var payments : FetchedResults<Paiement>
-    @State private var searchText = ""
-    @State private var selectedTokens: [SearchToken] = []
-    
-    var filteredPayments: [Paiement] {
-        var paymentsFilter = Array(self.payments)
-        if selectedTokens.count > 0 {
-            paymentsFilter = payments.filter { payment in  payment.client?.lastname.localizedCaseInsensitiveContains(searchText) ?? false
-            }
-        }
-        if selectedTokens.count > 0 {
-            let tokens = selectedTokens.map { $0.value }
-//            paymentsFilter = payments.filter { payment in
-//                payment.client?.lastname.contains(<#T##regex: RegexComponent##RegexComponent#>)
-//            }
-        }
-        return paymentsFilter
-    }
-    
-    var body: some View {
-        NavigationStack {
-            
-            List(payments) { payment in
-                NavigationLink {
-                    DisplayPayementSheet(paiement: payment)
-                } label: {
-                    TextPaiementView(payment: payment)
-                }
-            }
-            .searchable(text: $searchText, tokens: $selectedTokens, prompt: "Rechercher par nom de client ou date") { token in
-                Text(token.value)
-            }
-            .trackEventOnAppear(event: .paymentListBrowsed, category: .paymentManagement)
-            .navigationTitle("Historique paiements")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Retour")
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct TokenView: View {
-    var token: SearchToken
-    var removeAction: () -> Void
-    
-    var body: some View {
-        HStack {
-            Text(token.value)
-                .padding(.vertical, 4)
-                .padding(.horizontal, 8)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-            Button(action: removeAction) {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.gray)
-                    .padding(.leading, 4)
-            }
-        }
-    }
-}
-
-struct SearchToken: Identifiable, Hashable {
-    let id = UUID()
-    var value: String
-    var type: TokenType
-    
-    static func testData() -> [SearchToken] {
-        [
-            SearchToken(value: "John Appleseed", type: .client),
-            SearchToken(value: "Kate Bell", type: .client),
-            SearchToken(value: "16/05/2024", type: .date)
-        ]
-    }
-}
-
-enum TokenType {
-    case client
-    case date
 }
 
 #Preview {

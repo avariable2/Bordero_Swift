@@ -15,7 +15,7 @@ struct ExploreView: View {
     
     var body: some View {
         List {
-            Section("Action rapides") {
+            Section("Actions rapides") {
                 Button {
                     activeSheet = .createTypeActe
                 } label: {

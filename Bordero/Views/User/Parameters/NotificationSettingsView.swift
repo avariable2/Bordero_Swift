@@ -24,7 +24,7 @@ struct NotificationSettingsView: View {
             } header: {
                 
             } footer: {
-                Text("Ces notifications serviront uniquement à vous alerter en cas de date d'échéance dépassé sur un document.")
+                Text("Ces notifications serviront uniquement à vous alerter en cas de date d'échéance dépassée sur une facture.")
             }
             
         }

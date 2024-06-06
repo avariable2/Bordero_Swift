@@ -43,13 +43,13 @@ struct DataBrutView: View {
                 GroupBox {
                     DataValueView(value: documentsEnAttente.description, unit: "facture(s)")
                 } label: {
-                    Label("En attentes", systemImage: "doc.badge.clock")
+                    Label("En attente", systemImage: "doc.badge.clock")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .blue))
                 
                 GroupBox {
                     DataValueView(value: facturesImpayés.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Impayés", systemImage: "doc.badge.clock")
+                    Label("Impayées", systemImage: "doc.badge.clock")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .orange))
             }
             
@@ -57,13 +57,13 @@ struct DataBrutView: View {
                 GroupBox {
                     DataValueView(value: facturePayé.description, unit: "facture(s)")
                 } label: {
-                    Label("Payer", systemImage: "checkmark")
+                    Label("Payées", systemImage: "checkmark")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .green))
                 
                 GroupBox {
                     DataValueView(value: factureOuverte.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Ouvert", systemImage: "pencil.and.list.clipboard")
+                    Label("Ouvertes", systemImage: "pencil.and.list.clipboard")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .yellow))
             }
             
@@ -77,7 +77,7 @@ struct DataBrutView: View {
                 GroupBox {
                     DataValueView(value: nbrFacture.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Facture", systemImage: "doc")
+                    Label("Factures", systemImage: "doc")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .teal))
             }
             
@@ -89,7 +89,7 @@ struct DataBrutView: View {
                 .fontWeight(.semibold)
                 
             } label: {
-                Label("Acte favoris", systemImage: "heart")
+                Label("Acte favori", systemImage: "heart")
             }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .pink))
             
             GroupBox {
@@ -100,7 +100,7 @@ struct DataBrutView: View {
                 }
                 .fontWeight(.semibold)
             } label: {
-                Label("Dernier acte effectuer", systemImage: "figure.walk")
+                Label("Dernier acte effectué", systemImage: "figure.walk")
             }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .purple))
         }
         .redacted(reason: isLoading ? .placeholder : [])

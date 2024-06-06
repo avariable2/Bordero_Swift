@@ -28,14 +28,14 @@ struct PayementSheet: View {
                         .multilineTextAlignment(.trailing)
                 }
                 
-                DatePicker("Payé le", selection: $date, displayedComponents: .date)
+                DatePicker("Payée le", selection: $date, displayedComponents: .date)
                 
-                Section("Note - optionnel") {
+                Section("Notes - optionnelles") {
                     TextEditor(text: $note)
                 }
                 
                 if !historiquePaiement.isEmpty {
-                    Section("Paiement reçus") {
+                    Section("Paiements reçus") {
                         ForEach(historiquePaiement) { paiement in
                             RowPaiementView(paiement: paiement)
                         }
@@ -136,15 +136,15 @@ struct DisplayPayementSheet : View {
                     Text(paiement.montant, format: .currency(code: "EUR"))
                 }
                 
-                LabeledContent("Payé le ") {
+                LabeledContent("Payée le ") {
                     if let date = paiement.date_ {
                         Text(date, format: .dateTime.day().month().year())
                     } else {
-                        Text("Date inconnu")
+                        Text("Date inconnue")
                     }
                 }
                 
-                LabeledContent("Note") {
+                LabeledContent("Notes") {
                     Text(paiement.note ?? "")
                 }
             }
@@ -196,7 +196,7 @@ struct RowPaiementView : View {
             DisplayPayementSheet(paiement: paiement)
         } label: {
             HStack {
-                Text(paiement.date_?.formatted() ?? "Date inconnu")
+                Text(paiement.date_?.formatted() ?? "Date inconnue")
                 Spacer()
                 Text(paiement.montant, format: .currency(code: "EUR"))
             }

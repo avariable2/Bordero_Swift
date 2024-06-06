@@ -90,10 +90,10 @@ struct Evenement : Identifiable, Codable {
         
         case création = "Création"
         case modification = "Modification"
-        case envoie = "Envoie"
-        case renvoie = "Renvoie"
-        case payer = "Payer"
-        case exporté = "Exporté"
+        case envoie = "Envoi"
+        case renvoie = "Renvoi"
+        case payer = "Ajout d'un paiement"
+        case exporté = "Exporté en PDF"
     }
     var id: UUID = UUID()
     

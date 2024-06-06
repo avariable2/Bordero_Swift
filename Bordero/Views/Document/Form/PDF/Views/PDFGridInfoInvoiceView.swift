@@ -63,7 +63,7 @@ struct PDFGridInfoInvoiceView : View {
                                     .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)
                                 
                                 if let siret = client.code_entreprise {
-                                    Text("Numero de SIRET : \(siret)")
+                                    Text("Numéro de SIRET : \(siret)")
                                 }
                             }
                             Spacer()

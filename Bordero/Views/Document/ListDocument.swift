@@ -69,7 +69,7 @@ struct ListDocument: View {
                 Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
                 Text(Document.Status.send.rawValue).tag(Document.Status.send)
             } label: {
-                Text("Trie des documents")
+                Text("Tri des documents")
             }
             .pickerStyle(.segmented)
             .padding([.trailing, .leading])
@@ -78,7 +78,7 @@ struct ListDocument: View {
                 ContentUnavailableView(
                     "Aucun document",
                     systemImage: "folder.badge.questionmark",
-                    description: Text("Les documents créer apparaitront ici.").foregroundStyle(.secondary)
+                    description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
                 )
             } else {
                 List {
@@ -129,7 +129,7 @@ struct RowDocumentView :View {
                 
                 HStack {
                     
-                    Text("Crée le: ")
+                    Text("Créé le: ")
                         .foregroundStyle(.secondary)
                     +
                     Text(document.dateEmission, format: .dateTime.day().month().year())
