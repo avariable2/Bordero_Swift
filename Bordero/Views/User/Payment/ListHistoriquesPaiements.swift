@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TokenTextField
 
 struct ListHistoriquesPaiements: View {
     @Environment(\.managedObjectContext) var moc
@@ -18,7 +17,7 @@ struct ListHistoriquesPaiements: View {
     
     var body: some View {
         if payments.isEmpty {
-            ContentUnavailableView("Pas de paiement", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera affiché la liste des paiements de vos clients."))
+            ContentUnavailableView("Pas de paiement", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera affichée la liste des paiements de vos clients."))
         } else {
             ForEach(payments.prefix(5), id: \.id) { payment in
                 RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
