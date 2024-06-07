@@ -38,6 +38,10 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
     @State var numero : String = ""
     @State var email : String = ""
     
+    @State var estUnProfessionel = false
+    @State var siret : String = ""
+    @State var siren : String = ""
+    
     // MARK: - Contact et adresse gestion
     @State private var selectedContact: CNContact?
     @State private var adresses: [TTLAdresse] = []
@@ -109,6 +113,17 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                     TextField("Nom", text: $nom)
                         .keyboardType(.namePhonePad)
                         .focused($focusedField, equals: .lastName)
+                }
+                
+                Section {
+                    Toggle("Le client est-il un professionnel ?", isOn: $estUnProfessionel.animation())
+                    
+                    if estUnProfessionel {
+                        TextField("N° SIRET", text: $siret)
+                        
+                        TextField("N° SIREN", text: $siren)
+                    }
+                    
                 }
                 
                 Section {
@@ -233,6 +248,13 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                 numero = client.phone
                 email = client.email
                 
+                siren = client.siren
+                siret = client.siret
+                
+                if !siren.isEmpty || !siret.isEmpty {
+                    estUnProfessionel = true
+                }
+                
                 // Si le tableau n'est pas vide on ajoute les informations à montrer
                 if let adresse1 = client.adresse1, !adresse1.isEmpty {
                     createTTLAdresse(adresse1)
@@ -283,6 +305,9 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         client.firstname = prenom
         client.email = email
         client.phone = numero
+        
+        client.siren = siren
+        client.siret = siret
         
         removeAllAddresses(for: client)
         

@@ -4,12 +4,13 @@
         <attribute name="adresse1" optional="YES" attributeType="Composite" composite="Adresse"/>
         <attribute name="adresse2" optional="YES" attributeType="Composite" composite="Adresse"/>
         <attribute name="adresse3" optional="YES" attributeType="Composite" composite="Adresse"/>
-        <attribute name="code_entreprise" optional="YES" attributeType="String"/>
         <attribute name="email_" optional="YES" attributeType="String"/>
         <attribute name="firstname_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="phone_" optional="YES" attributeType="String"/>
+        <attribute name="siren_" optional="YES" attributeType="String"/>
+        <attribute name="siret_" optional="YES" attributeType="String"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="documents_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Document" inverseName="client_" inverseEntity="Document"/>
         <relationship name="paiements_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Paiement" inverseName="client" inverseEntity="Paiement"/>
@@ -127,15 +128,6 @@
     <composite name="Remise">
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="montant" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-    </composite>
-    <composite name="SnapshotClient">
-        <attribute name="lastname" optional="YES" attributeType="String"/>
-        <attribute name="firstname" optional="YES" attributeType="String"/>
-        <attribute name="phone" optional="YES" attributeType="String"/>
-        <attribute name="email" optional="YES" attributeType="String"/>
-        <attribute name="code_entreprise" optional="YES" attributeType="String"/>
-        <attribute name="adresse" optional="YES" attributeType="String"/>
-        <attribute name="uuidClient" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </composite>
     <composite name="SnapshotPraticien">
         <attribute name="lastname" optional="YES" attributeType="String"/>

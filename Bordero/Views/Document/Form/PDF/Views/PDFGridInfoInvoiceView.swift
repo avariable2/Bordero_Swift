@@ -58,13 +58,20 @@ struct PDFGridInfoInvoiceView : View {
                                     Text(PDFUtils.getRowAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))
                                 }
                                 
-                                Text(client.phone)
-                                Text(client.email)
-                                    .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)
-                                
-                                if let siret = client.code_entreprise {
-                                    Text("Numéro de SIRET : \(siret)")
+                                if !client.phone.isEmpty {
+                                    Text(client.phone)
                                 }
+                                if !client.email.isEmpty {
+                                    Text(client.email)
+                                        .lineLimit(client.email.count > 50 ? 2 : 1, reservesSpace: true)
+                                }
+                                if !client.siret.isEmpty {
+                                    Text("Numéro de SIRET : \(client.siret)")
+                                }
+                                if !client.siren.isEmpty {
+                                    Text("Numéro de SIREN : \(client.siren)")
+                                }
+                                
                             }
                             Spacer()
                         }

@@ -236,17 +236,6 @@ class PDFViewModel {
         document.status = self.pdfModel.optionsDocument.payementFinish ? .payed : .created
         
         if let client = self.pdfModel.client {
-            
-            document.snapshotClient = Document.SnapshotClient(
-                lastname: client.lastname,
-                firstname: client.firstname,
-                phone: client.phone,
-                email: client.email,
-                code_entreprise: client.code_entreprise ?? "",
-                adresse: client.getAdresseSurUneLigne(client.adresse1),
-                uuidClient: client.id
-            )
-            
             document.client_ = client
         }
         
