@@ -70,6 +70,7 @@
 		F780966F2BAC855F00B3AF4A /* RowIconColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780966E2BAC855F00B3AF4A /* RowIconColor.swift */; };
 		F78096722BAC8CE600B3AF4A /* SwiftUIDigitalSignature in Frameworks */ = {isa = PBXBuildFile; productRef = F78096712BAC8CE600B3AF4A /* SwiftUIDigitalSignature */; };
 		F78096742BAC8F3500B3AF4A /* DigitalSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096732BAC8F3500B3AF4A /* DigitalSignature.swift */; };
+		F780FA612C134D4D00CDAAAF /* DisplayPayementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780FA602C134D4D00CDAAAF /* DisplayPayementSheet.swift */; };
 		F781153B2BB1A54900F2026E /* PDFDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153A2BB1A54900F2026E /* PDFDisplayView.swift */; };
 		F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153C2BB1A59700F2026E /* PDFUIView.swift */; };
 		F781153F2BB1A68C00F2026E /* PDFData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153E2BB1A68C00F2026E /* PDFData.swift */; };
@@ -168,6 +169,7 @@
 		F780966B2BAC803C00B3AF4A /* PencilUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilUIView.swift; sourceTree = "<group>"; };
 		F780966E2BAC855F00B3AF4A /* RowIconColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowIconColor.swift; sourceTree = "<group>"; };
 		F78096732BAC8F3500B3AF4A /* DigitalSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalSignature.swift; sourceTree = "<group>"; };
+		F780FA602C134D4D00CDAAAF /* DisplayPayementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPayementSheet.swift; sourceTree = "<group>"; };
 		F781153A2BB1A54900F2026E /* PDFDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDisplayView.swift; sourceTree = "<group>"; };
 		F781153C2BB1A59700F2026E /* PDFUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUIView.swift; sourceTree = "<group>"; };
 		F781153E2BB1A68C00F2026E /* PDFData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFData.swift; sourceTree = "<group>"; };
@@ -244,8 +246,10 @@
 		F75083B92C10EF7B00B32E1F /* Payment */ = {
 			isa = PBXGroup;
 			children = (
+				F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */,
 				F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */,
 				F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */,
+				F780FA602C134D4D00CDAAAF /* DisplayPayementSheet.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -286,7 +290,6 @@
 			isa = PBXGroup;
 			children = (
 				F76060822BCAE44500F9552E /* DocumentDetailView.swift */,
-				F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */,
 				F767E0E22C04C25000701BFE /* ToolBarView.swift */,
 				F767E0E12C04C21000701BFE /* Tab */,
 			);
@@ -716,6 +719,7 @@
 				F79D41AF2C122C8A001D5C27 /* HighlightText.swift in Sources */,
 				F7587B492BCB33A0007007B8 /* HistoriqueTabDetailView.swift in Sources */,
 				F78748622BE9221800EAE35F /* ClientDataView.swift in Sources */,
+				F780FA612C134D4D00CDAAAF /* DisplayPayementSheet.swift in Sources */,
 				F748ADD42B669B3600B82C5D /* ListTypeActe.swift in Sources */,
 				F767E0E32C04C25000701BFE /* ToolBarView.swift in Sources */,
 				F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */,
