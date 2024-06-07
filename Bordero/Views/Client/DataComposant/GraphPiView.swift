@@ -112,19 +112,23 @@ struct GraphPiView: View {
         switch temporalite {
         case .semaine:
             return client.listDocuments.filter { doc in
+                doc.status != .created &&
                 Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .weekOfYear)
             }
         case .mois:
             return client.listDocuments.filter { doc in
+                doc.status != .created &&
                 Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .month)
             }
         case .sixMois:
             let range = ClientDataUtils.getSixMonthPeriodRange()
             return client.listDocuments.filter { doc in
+                doc.status != .created &&
                 doc.dateEmission >= range.start && doc.dateEmission <= range.end
             }
         case .annee:
             return client.listDocuments.filter { doc in
+                doc.status != .created &&
                 Calendar.current.isDate(doc.dateEmission, equalTo: Date(), toGranularity: .year)
             }
         }
