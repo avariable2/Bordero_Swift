@@ -7,44 +7,44 @@
 
 import SwiftUI
 
-struct ModeleDocumentView: View {
-    enum DateEcheanceParams : String, CaseIterable, Identifiable {
-        case zero = "0 jour",
-             sept = "7 jours",
-             quatorze = "14 jours",
-             vingtEtUn = "21 jours",
-             trente = "30 jours",
-             quanranteCinq = "45 jours",
-             soixante = "60 jours",
-             quatreVingtDix = "90 jours"
-        var id : Self { self }
-        
-        var value : Int {
-            switch self {
-            case .zero:
-                0
-            case .sept:
-                7
-            case .quatorze:
-                14
-            case .vingtEtUn:
-                21
-            case .trente:
-                30
-            case .quanranteCinq:
-                45
-            case .soixante:
-                60
-            case .quatreVingtDix:
-                90
-            }
-        }
-        
-        static func from(value: Int) -> DateEcheanceParams? {
-            return self.allCases.first { $0.value == value }
+enum DateEcheanceParams : String, CaseIterable, Identifiable {
+    case zero = "0 jour",
+         sept = "7 jours",
+         quatorze = "14 jours",
+         vingtEtUn = "21 jours",
+         trente = "30 jours",
+         quanranteCinq = "45 jours",
+         soixante = "60 jours",
+         quatreVingtDix = "90 jours"
+    var id : Self { self }
+    
+    var value : Int {
+        switch self {
+        case .zero:
+            0
+        case .sept:
+            7
+        case .quatorze:
+            14
+        case .vingtEtUn:
+            21
+        case .trente:
+            30
+        case .quanranteCinq:
+            45
+        case .soixante:
+            60
+        case .quatreVingtDix:
+            90
         }
     }
     
+    static func from(value: Int) -> DateEcheanceParams? {
+        return self.allCases.first { $0.value == value }
+    }
+}
+
+struct ModeleDocumentView: View {
     @Environment(\.dismiss) var dismiss
     @State var praticien : Praticien
     

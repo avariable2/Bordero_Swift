@@ -144,44 +144,19 @@ extension Document {
         set { totalTTC_ = newValue }
     }
     
-    var snapshotClient : SnapshotClient {
-        get {
-            SnapshotClient(
-                lastname: snapshotClient_?["lastname"] as? String ?? "",
-                firstname: snapshotClient_?["firstname"] as? String ?? "",
-                phone: snapshotClient_?["phone"] as? String ?? "",
-                email: snapshotClient_?["email"] as? String ?? "",
-                code_entreprise: snapshotClient_?["code_entreprise"] as? String ?? "",
-                adresse: snapshotClient_?["adresse"] as? String ?? "",
-                uuidClient: snapshotClient_?["uuidClient"] as? UUID
-            )
-        }
-        set {
-            snapshotClient_ = [
-                "lastname" : newValue.lastname,
-                "firstname" : newValue.firstname,
-                "phone" : newValue.phone,
-                "email" : newValue.email,
-                "code_entreprise" : newValue.code_entreprise,
-                "adresse" : newValue.adresse,
-                "uuidClient" : newValue.uuidClient?.uuidString ?? "",
-            ]
-        }
-    }
-    
     var snapshotPraticien : SnapshotPraticien {
         get {
             SnapshotPraticien(
-                lastname: snapshotClient_?["lastname"] as? String ?? "",
-                firstname: snapshotClient_?["firstname"] as? String ?? "",
-                phone: snapshotClient_?["phone"] as? String ?? "",
-                email: snapshotClient_?["email"] as? String ?? "",
-                website: snapshotClient_?["website"] as? String ?? "",
-                adresse: snapshotClient_?["adresse"] as? String ?? "",
-                siret: snapshotClient_?["siret"] as? String ?? "",
-                adeli: snapshotClient_?["adeli"] as? String ?? "",
-                signature: snapshotClient_?["signature"] as? Data,
-                logo: snapshotClient_?["logo"] as? Data
+                lastname: snapshotPraticien_?["lastname"] as? String ?? "",
+                firstname: snapshotPraticien_?["firstname"] as? String ?? "",
+                phone: snapshotPraticien_?["phone"] as? String ?? "",
+                email: snapshotPraticien_?["email"] as? String ?? "",
+                website: snapshotPraticien_?["website"] as? String ?? "",
+                adresse: snapshotPraticien_?["adresse"] as? String ?? "",
+                siret: snapshotPraticien_?["siret"] as? String ?? "",
+                adeli: snapshotPraticien_?["adeli"] as? String ?? "",
+                signature: snapshotPraticien_?["signature"] as? Data,
+                logo: snapshotPraticien_?["logo"] as? Data
             )
         }
         set {
