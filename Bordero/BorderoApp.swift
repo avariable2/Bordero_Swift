@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import FirebaseCore
+import MijickPopupView
 
 @main
 struct BorderoApp: App {
@@ -29,6 +30,7 @@ struct BorderoApp: App {
                 HomeView(showNeediCloud: true)
                     .redacted(reason: .placeholder)
                     .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .implementPopupView()
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
                     .onAppear(perform: checkAndCreatePraticien) // Instanciate in firts launch an praticien for use the app everywhere
@@ -36,7 +38,9 @@ struct BorderoApp: App {
                         DataController.shared.updateICloudSettings()
                     }
                     .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .implementPopupView()
             }
+                
         }
     }
     

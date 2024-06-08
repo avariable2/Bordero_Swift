@@ -307,6 +307,7 @@ struct FormButtonsPrimaryActionView: View {
                 SaveButton(launchSauvegarde: $launchSauvegarde, viewModel: viewModel)
                     .padding(.bottom)
                 Button {
+                    
                     activeSheet = .apercusDocument
                 } label: {
                     Label("Aperçu", systemImage: "eyeglasses")

@@ -92,10 +92,12 @@ struct NavigationIpad: View {
             .listStyle(.sidebar)
             .navigationTitle("Bordero")
         } detail: {
-            if let navSelected = selectedNav {
-                destinationView(for: navSelected)
-            } else {
-                HomeView(showNeediCloud: userNeediCloud == .notConnected)
+            NavigationStack {
+                if let navSelected = selectedNav {
+                    destinationView(for: navSelected)
+                } else {
+                    HomeView(showNeediCloud: userNeediCloud == .notConnected)
+                }
             }
         }
     }
@@ -130,9 +132,9 @@ struct NavigationIpad: View {
 @Observable
 class NavModel {
     var navigation: [NavItem] = [
-        NavItem(id: 5, name: "Ajouter un client", icon: "person.badge.plus"),
+//        NavItem(id: 5, name: "Ajouter un client", icon: "person.badge.plus"),
         NavItem(id: 2, name: "Liste des clients", icon: "person.2"),
-        NavItem(id: 3, name: "Ajouter un acte", icon: "stethoscope"),
+//        NavItem(id: 3, name: "Ajouter un acte", icon: "stethoscope"),
         NavItem(id: 4, name: "Liste des actes", icon: "cross.case"),
         NavItem(id: 7, name: "Créer document", icon: "pencil.and.list.clipboard"),
         NavItem(id: 8, name: "Liste des docs", icon: "list.bullet"),

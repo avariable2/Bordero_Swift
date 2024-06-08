@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F706CA732C14CFE1000E991D /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = F706CA722C14CFE1000E991D /* MijickPopupView */; };
 		F70CFEA22B7EA9A500F777AA /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70CFEA12B7EA9A500F777AA /* DataController.swift */; };
 		F70DC1032BD5BD22004D6206 /* HistoriqueEvenement+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70DC1022BD5BD22004D6206 /* HistoriqueEvenement+helper.swift */; };
 		F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */; };
@@ -227,6 +228,7 @@
 				F75083A62C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				F75083AA2C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				F75083A42C10978000B32E1F /* FirebaseAnalytics in Frameworks */,
+				F706CA732C14CFE1000E991D /* MijickPopupView in Frameworks */,
 				F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -580,6 +582,7 @@
 				F75083A72C10978000B32E1F /* FirebaseAnalyticsSwift */,
 				F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				F75083AB2C10978000B32E1F /* FirebaseAppCheck */,
+				F706CA722C14CFE1000E991D /* MijickPopupView */,
 			);
 			productName = Bordero;
 			productReference = F7DFAD972B66839C00C905A7 /* Bordero.app */;
@@ -615,6 +618,7 @@
 				F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */,
 				F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */,
 				F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				F706CA712C14CFE0000E991D /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = F7DFAD982B66839C00C905A7 /* Products */;
 			projectDirPath = "";
@@ -972,6 +976,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F706CA712C14CFE0000E991D /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mijick/PopupView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.2;
+			};
+		};
 		F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -1007,6 +1019,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F706CA722C14CFE1000E991D /* MijickPopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F706CA712C14CFE0000E991D /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = MijickPopupView;
+		};
 		F75083A32C10978000B32E1F /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
