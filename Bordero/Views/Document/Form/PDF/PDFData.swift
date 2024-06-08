@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct PDFModel {    
-    struct OptionsLegalDocument : Codable {
+struct PDFModel : Hashable {
+    struct OptionsLegalDocument : Codable, Hashable {
         var estFacture : Bool
         var numeroDocument: String
         var payementAllow : [Payement]
@@ -84,8 +84,8 @@ struct PDFModel {
     }
 }
 
-struct Evenement : Identifiable, Codable {
-    enum TypeEvenement : String, CaseIterable, Identifiable, Codable {
+struct Evenement : Identifiable, Codable, Hashable {
+    enum TypeEvenement : String, CaseIterable, Identifiable, Codable, Hashable {
         var id : Self { self }
         
         case création = "Création"
@@ -101,13 +101,13 @@ struct Evenement : Identifiable, Codable {
     var date : Date
 }
 
-enum TypeDoc : String, CaseIterable, Identifiable, Codable {
+enum TypeDoc : String, CaseIterable, Identifiable, Codable, Hashable {
     case facture, devis
     
     var id: Self { self }
 }
 
-enum Payement : String, CaseIterable, Identifiable, Codable {
+enum Payement : String, CaseIterable, Identifiable, Codable, Hashable {
     case carte = "Carte bancaire", especes = "Espèces", virement = "Virement bancaire", cheque = "Chèque"
     
     var id: Self { self }
@@ -117,8 +117,8 @@ enum Payement : String, CaseIterable, Identifiable, Codable {
     }
 }
 
-struct Remise: Codable {
-    enum TypeRemise: CaseIterable, Identifiable, CustomStringConvertible, Codable {
+struct Remise: Codable, Hashable {
+    enum TypeRemise: CaseIterable, Identifiable, CustomStringConvertible, Codable, Hashable {
         case pourcentage
         case montantFixe
         
@@ -141,7 +141,7 @@ struct Remise: Codable {
     var montant : Double
 }
 
-struct TTLTypeActe : Identifiable, Equatable {
+struct TTLTypeActe : Identifiable, Equatable, Hashable {
     var id : UUID = UUID()
     var snapshotTypeActe: SnapshotTypeActe
     var quantity : Double

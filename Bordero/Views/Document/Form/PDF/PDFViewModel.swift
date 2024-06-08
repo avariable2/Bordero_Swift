@@ -205,22 +205,22 @@ class PDFViewModel {
         )
     }
     
-    func finalizeAndSave(completion: @escaping (Document) -> Void) async {
+    func finalizeAndSave() async -> Document? {
         let moc = DataController.shared.container.viewContext
         
         let pdfDocument = await Task.detached(priority: .userInitiated) {
             return PDFDocument(url: await self.renderView()!)
         }.value
         
-        await moc.perform() {
-            let document = self.attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
-            
+        var document: Document?
+        await moc.perform {
+            document = self.attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
             DataController.saveContext()
-            
-            completion(document)
-            
-            self.reset(needToDeleteFile: false) // reset before launch the new screen
         }
+        
+        self.reset(needToDeleteFile: false) // reset before launch the new screen
+        
+        return document
     }
     
     

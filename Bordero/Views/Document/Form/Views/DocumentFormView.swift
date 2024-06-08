@@ -76,7 +76,6 @@ struct ModifierDocumentView: View {
         return 1
     }
     
-    @Environment(\.colorScheme) var colorScheme
     @State var viewModel: PDFViewModel
     @State private var activeSheet: ActiveSheet?
     @State private var estPayer: Bool = false
@@ -84,32 +83,30 @@ struct ModifierDocumentView: View {
     @State private var typeSelected: TypeDoc = .facture
     
     var body: some View {
-        NavigationStack {
-            List {
-                DocumentTypeSection(typeSelected: $typeSelected, viewModel: $viewModel)
-                ClientSection(viewModel: viewModel, activeSheet: $activeSheet)
-                TypeActeSection(viewModel: $viewModel, activeSheet: $activeSheet)
-                if typeSelected == .facture {
-                    PaymentSection(estPayer: $estPayer, selectedPayement: $selectedPayement, viewModel: viewModel)
-                }
-                NoteSection(notes: $viewModel.pdfModel.optionsDocument.note)
+        List {
+            DocumentTypeSection(typeSelected: $typeSelected, viewModel: $viewModel)
+            ClientSection(viewModel: viewModel, activeSheet: $activeSheet)
+            TypeActeSection(viewModel: $viewModel, activeSheet: $activeSheet)
+            if typeSelected == .facture {
+                PaymentSection(estPayer: $estPayer, selectedPayement: $selectedPayement, viewModel: viewModel)
             }
-            .safeAreaInset(edge: .bottom) {
-                FormButtonsPrimaryActionView(activeSheet: $activeSheet, viewModel: $viewModel)
-            }
-            .navigationTitle("Document")
-            .listStyle(.plain)
-            .contentMargins(.top, 2)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink("Options") {
-                        DocumentOptionsView(viewModel: viewModel)
-                    }
+            NoteSection(notes: $viewModel.pdfModel.optionsDocument.note)
+        }
+        .safeAreaInset(edge: .bottom) {
+            FormButtonsPrimaryActionView(activeSheet: $activeSheet, viewModel: $viewModel)
+        }
+        .navigationTitle("Document")
+        .listStyle(.plain)
+        .contentMargins(.top, 2)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink("Options") {
+                    DocumentOptionsView(viewModel: viewModel)
                 }
             }
-            .sheet(item: $activeSheet) { item in
-                SheetView(activeSheet: item, viewModel: viewModel)
-            }
+        }
+        .sheet(item: $activeSheet) { item in
+            SheetView(activeSheet: item, viewModel: viewModel)
         }
     }
 }

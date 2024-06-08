@@ -13,12 +13,10 @@ struct ContentView: View {
     @State var userNeediCloud : UseriCloudController.StateCheckiCloud
     
     var body: some View {
-        Group {
-            if horizontalSizeClass == .compact {
-                CustomTabView(userNeediCloud: userNeediCloud)
-            } else {
-                NavigationIpad(userNeediCloud: userNeediCloud)
-            }
+        if horizontalSizeClass == .compact {
+            CustomTabView(userNeediCloud: userNeediCloud)
+        } else {
+            NavigationIpad(userNeediCloud: userNeediCloud)
         }
     }
 }
@@ -59,11 +57,13 @@ struct NavigationIpad: View {
     @State private var model = NavModel()
     @State private var selectedNav: NavItem.ID? = nil
     @State private var showExpandableFirstSection = true
+    @State private var preferredColumn =
+        NavigationSplitViewColumn.detail
     
     var userNeediCloud: UseriCloudController.StateCheckiCloud
     
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(preferredCompactColumn: $preferredColumn) {
             List {
                 Section {
                     NavigationLink {
@@ -92,7 +92,7 @@ struct NavigationIpad: View {
             .listStyle(.sidebar)
             .navigationTitle("Bordero")
         } detail: {
-            NavigationStack {
+            VStack {
                 if let navSelected = selectedNav {
                     destinationView(for: navSelected)
                 } else {

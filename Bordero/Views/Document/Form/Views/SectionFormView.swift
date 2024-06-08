@@ -277,7 +277,6 @@ struct TypeActeOptionsView: View {
 
 struct FormButtonsPrimaryActionView: View {
     @Environment(\.managedObjectContext) var moc
-    @Environment(\.dismiss) private var dismiss
     
     @Binding var activeSheet: ActiveSheet?
     @Binding var viewModel: PDFViewModel
@@ -307,7 +306,6 @@ struct FormButtonsPrimaryActionView: View {
                 SaveButton(launchSauvegarde: $launchSauvegarde, viewModel: viewModel)
                     .padding(.bottom)
                 Button {
-                    
                     activeSheet = .apercusDocument
                 } label: {
                     Label("Aperçu", systemImage: "eyeglasses")
@@ -317,24 +315,44 @@ struct FormButtonsPrimaryActionView: View {
         }
         .task(id: launchSauvegarde) {
             guard launchSauvegarde else { return }
-            await viewModel.finalizeAndSave { document in
-                if viewModel.documentObject == nil {
+            
+            defer {
+                launchSauvegarde = false
+            }
+            
+            if let document = await viewModel.finalizeAndSave() {
+                if leDocumentExisteEtEstEnModification() {
+//                    dismissAction()
+                } else {
                     self.detailDocument = document
                     self.showDetail = true
-                } else {
-                    dismiss()
                 }
             }
-            launchSauvegarde = false
         }
+        .onChange(of: detailDocument, { oldValue, newValue in
+            if newValue != nil {
+                self.showDetail = true
+            }
+        })
         .padding()
         .frame(maxWidth: .infinity)
         .background(.regularMaterial)
         .navigationDestination(isPresented: $showDetail) {
             if let document = detailDocument {
                 DocumentDetailView(document: document)
+            } else {
+                ContentUnavailableView(
+                    "Une erreur c'est produite",
+                    systemImage: "exclamationmark.warninglight.fill",
+                    description: Text("Veuillez contacter le développeur depuis le bouton dans les paramètres si cela se reproduit.").foregroundStyle(.secondary)
+                )
             }
         }
+    }
+    
+    // Retourne true si le document à déja ete creeer et en cours de modification
+    func leDocumentExisteEtEstEnModification() -> Bool {
+        return viewModel.documentObject != nil
     }
 }
 
@@ -355,7 +373,7 @@ struct SaveButton: View {
             }
         }
         .buttonStyle(.borderedProminent)
-        .disabled(viewModel.pdfModel.client == nil)
+        .disabled(!(viewModel.pdfModel.client != nil && viewModel.pdfModel.elements.count > 0))
     }
 }
 

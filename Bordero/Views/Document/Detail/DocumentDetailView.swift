@@ -95,9 +95,7 @@ struct DocumentDetailView: View {
                     Text("La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
                 })
                 .sheet(isPresented: $modifyDocument) {
-                    NavigationStack {
-                        DocumentFormView(document: document)
-                    }
+                    DocumentFormView(document: document)
                 }
                 
                 if let _ = pdfDocument, let _ = urlSharing {
