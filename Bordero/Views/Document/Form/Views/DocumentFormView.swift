@@ -26,20 +26,23 @@ struct DocumentFormView: View {
     }
     
     var body: some View {
-        ModifierDocumentView(viewModel: viewModel)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    BackButton(viewModel: viewModel, dismiss: dismiss)
+        NavigationStack {
+            ModifierDocumentView(viewModel: viewModel)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        BackButton(viewModel: viewModel, dismiss: dismiss)
+                    }
                 }
-            }
-            .onAppear {
-                if !isPraticienDataSetup {
-                    setupViewModel()
-                    isPraticienDataSetup = true
+                .onAppear {
+                    if !isPraticienDataSetup {
+                        setupViewModel()
+                        isPraticienDataSetup = true
+                    }
+                    
                 }
-                
-            }
+        }
+       
     }
     
     private func setupViewModel() {

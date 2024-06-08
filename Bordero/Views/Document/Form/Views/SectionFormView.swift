@@ -276,8 +276,6 @@ struct TypeActeOptionsView: View {
 }
 
 struct FormButtonsPrimaryActionView: View {
-    @Environment(\.managedObjectContext) var moc
-    
     @Binding var activeSheet: ActiveSheet?
     @Binding var viewModel: PDFViewModel
     
@@ -322,7 +320,7 @@ struct FormButtonsPrimaryActionView: View {
             
             if let document = await viewModel.finalizeAndSave() {
                 if leDocumentExisteEtEstEnModification() {
-//                    dismissAction()
+                    activeSheet = nil
                 } else {
                     self.detailDocument = document
                     self.showDetail = true

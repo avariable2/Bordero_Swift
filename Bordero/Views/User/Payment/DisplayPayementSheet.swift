@@ -78,10 +78,8 @@ struct DisplayPayementSheet : View {
     
     func delete() {
         if let doc = paiement.document {
-            if doc.resteAPayer + paiement.montant >= 0 { // ex : reste = -100 alors on veut verifier que le reste est supperieur à 0 pour changer l'etat
+            if let listPaiements = doc.paiements, listPaiements.count == 1 { // Si il ne reste plus de paiements on change le statut
                 doc.status = .send
-            } else {
-                doc.status = .payed
             }
         }
         
