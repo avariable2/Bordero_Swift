@@ -22,6 +22,21 @@ class PDFViewModel {
         }
     }
     
+    func setupPraticienData(praticien: Praticien?) {
+        guard let praticien = praticien else { return }
+        
+        self.pdfModel.praticien = praticien
+        self.pdfModel.optionsDocument.numeroDocument = praticien.lastDocumentNumber ?? ""
+        
+        // Initialisation des options de paiement si elles sont vides
+        if self.pdfModel.optionsDocument.payementAllow.isEmpty {
+            self.modifyPayementAllow(.cheque, value: praticien.cheque)
+            self.modifyPayementAllow(.carte, value: praticien.carte)
+            self.modifyPayementAllow(.virement, value: praticien.virement_bancaire)
+            self.modifyPayementAllow(.especes, value: praticien.espece)
+        }
+    }
+    
     func reset(needToDeleteFile : Bool = true) {
         if documentObject == nil, let fileNeedToBeDeleted = pdfModel.urlFilePreview, !fileNeedToBeDeleted.lastPathComponent.isEmpty, needToDeleteFile {
             deleteFile(fileNeedToBeDeleted)
