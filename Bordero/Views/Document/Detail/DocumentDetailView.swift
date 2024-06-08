@@ -10,7 +10,7 @@ import PDFKit
 import CoreData
 
 struct DocumentDetailView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
@@ -75,10 +75,7 @@ struct DocumentDetailView: View {
             
             ToolbarItemGroup(placement: .secondaryAction) {
                 Button {
-                    // Tracking envoyer uniquement si on à reussi à récupérer l'id du document
-                    if let documentID = document.id_?.uuidString {
-                        AnalyticsService.shared.track(event: .documentEdited, category: .documentManagement, parameters: ["document_id" : documentID])
-                    }
+                    AnalyticsService.shared.track(event: .documentEdited, category: .documentManagement)
                     
                     // Empeche la modification si le document est envoyé relativement au loi française
                     if document.estDeTypeFacture && document.status != .created {
@@ -94,7 +91,7 @@ struct DocumentDetailView: View {
                 }, message: {
                     Text("La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée.")
                 })
-                .sheet(isPresented: $modifyDocument) {
+                .navigationDestination(isPresented: $modifyDocument) {
                     DocumentFormView(document: document)
                 }
                 
@@ -213,7 +210,7 @@ struct DocumentDetailView: View {
         moc.delete(document)
         
         DataController.saveContext()
-        dismiss()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

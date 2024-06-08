@@ -276,6 +276,7 @@ struct TypeActeOptionsView: View {
 }
 
 struct FormButtonsPrimaryActionView: View {
+    @Environment(\.presentationMode) var presentationMode
     @Binding var activeSheet: ActiveSheet?
     @Binding var viewModel: PDFViewModel
     
@@ -320,7 +321,7 @@ struct FormButtonsPrimaryActionView: View {
             
             if let document = await viewModel.finalizeAndSave() {
                 if leDocumentExisteEtEstEnModification() {
-                    activeSheet = nil
+                    presentationMode.wrappedValue.dismiss()
                 } else {
                     self.detailDocument = document
                     self.showDetail = true
@@ -376,6 +377,7 @@ struct SaveButton: View {
 }
 
 struct SheetView: View {
+    @Environment(\.dismiss) var dismiss
     var activeSheet: ActiveSheet
     var viewModel: PDFViewModel
     
@@ -392,7 +394,7 @@ struct SheetView: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button {
-                            // Close sheet
+                            dismiss()
                         } label: {
                             Text("Retour")
                         }
