@@ -232,45 +232,58 @@ struct TypeActeRowView: View {
             NavigationStack {
                 TypeActeOptionsView(snapshotTypeActe: $snapshotTypeActe)
             }
+            .presentationDetents([.medium])
         }
     }
 }
 
 struct TypeActeOptionsView: View {
+    @Environment(\.presentationMode) var presentationMode
     @Binding var snapshotTypeActe: SnapshotTypeActe
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Quantité")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Stepper(
-                value: $snapshotTypeActe.quantity,
-                in: 0...100
-            ) {
-                Text(snapshotTypeActe.quantity, format: .number)
+        VStack {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Quantité")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Stepper(
+                    value: $snapshotTypeActe.quantity,
+                    in: 0...100
+                ) {
+                    Text(snapshotTypeActe.quantity, format: .number)
+                }
+            }
+            DatePicker("Date de l'acte", selection: $snapshotTypeActe.date, displayedComponents: .date)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Remarques")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                TextEditor(text: $snapshotTypeActe.remarque)
+                    .lineSpacing(2)
+                    .keyboardType(.default)
+                    .multilineTextAlignment(.leading)
+                    .padding(2)
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.tertiary, lineWidth: 1)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
             }
         }
-        DatePicker("Date de l'acte", selection: $snapshotTypeActe.date, displayedComponents: .date)
-        VStack(alignment: .leading, spacing: 2) {
-            Text("Remarques")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            TextEditor(text: $snapshotTypeActe.remarque)
-                .lineSpacing(2)
-                .keyboardType(.default)
-                .multilineTextAlignment(.leading)
-                .padding(2)
-                .cornerRadius(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.tertiary, lineWidth: 1)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("Retour")
+                }
+
+            }
         }
         .padding()
         .navigationTitle("Options de \(snapshotTypeActe.name)")
-        .presentationDetents([.fraction(0.3), .medium])
     }
     
 }
