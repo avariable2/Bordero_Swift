@@ -52,6 +52,7 @@ struct BorderoApp: App {
             let praticien = try context.fetch(fetchRequest)
             if praticien.isEmpty {
                 let praticien = Praticien(context: context)
+                praticien.id = FormPraticienView.uuidPraticien
                 praticien.defaultRangeDateEcheance_ = Int16(DateEcheanceParams.trente.value)
                 try context.save()
             }
