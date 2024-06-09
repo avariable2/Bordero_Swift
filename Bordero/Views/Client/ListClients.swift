@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+struct SplitViewListClients : View {
+    @State private var selectedClient : Client?
+    
+    var body: some View {
+        NavigationSplitView {
+            ListClients { client in
+                selectedClient = client
+            }
+        } detail: {
+            if let selectedClient = selectedClient {
+                ClientDetailView(client: selectedClient)
+            } else {
+                Text("Sélectionner un client")
+            }
+        }
+    }
+}
+
 struct ListClients: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss

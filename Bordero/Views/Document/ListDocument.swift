@@ -114,11 +114,11 @@ struct ListDocument: View {
             !tags.contains(where: { $0.value == type && $0.type == .typeDoc }) && type.lowercased().contains(searchText.lowercased())
         }
     }
-
+    
     var filteredSuggestionsClients: [String] {
         suggestedClients.filter { $0.lowercased().contains(searchText.lowercased()) }
     }
-
+    
     var filteredSuggestionsDates: [String] {
         suggestedDates.filter { $0.lowercased().contains(searchText.lowercased()) }
     }
@@ -220,55 +220,70 @@ struct ListDocument: View {
 }
 
 struct RowDocumentView :View {
-    
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var document : Document
     
     var body: some View {
-        
         HStack {
             Image(systemName: "doc.circle.fill")
                 .imageScale(.large)
                 .foregroundStyle(.white, .blue)
             
-            VStack(spacing: 6) {
-                HStack {
-                    Text(document.getNameOfDocument())
-                    
-                    Spacer()
-                    
-                    Text(document.totalTTC, format: .currency(code: "EUR"))
-                    
+            VStack(alignment: .leading, spacing: 6) {
+                Text(document.getNameOfDocument())
+                    .fontWeight(.semibold)
+                if horizontalSizeClass == .regular {
+                    Text("N° : \(document.numero)")
+                        .font(.footnote)
                 }
-                .fontWeight(.medium)
+                Text("Créé le: \(document.dateEmission.formatted(.dateTime.day().month().year()))")
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+                if horizontalSizeClass == .regular {
+                    Text("Date d'échéance: \(document.dateEcheance.formatted(.dateTime.day().month().year()))")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                }
+            }
+            Spacer()
+            VStack(alignment: .trailing, spacing: 6) {
+                Text(document.totalTTC, format: .currency(code: "EUR"))
                 
-                HStack {
+                if horizontalSizeClass == .compact {
+                    if document.dateEcheance <= Date() && document.status == .send {
+                        Label("En retard", systemImage: "hourglass.tophalf.filled")
+                            .foregroundStyle(.pink)
+                    } else {
+                        viewStatus
+                    }
+                } else {
+                    viewStatus
                     
-                    Text("Créé le: ")
-                        .foregroundStyle(.secondary)
-                    +
-                    Text(document.dateEmission, format: .dateTime.day().month().year())
-                        .foregroundStyle(.secondary)
-                    
-                    
-                    Spacer()
-                    
-                    HStack(spacing: nil) {
-                        Image(systemName: "circle.circle.fill")
-                            .foregroundStyle(.black, document.determineColor())
-                        
-                        Text(document.determineStatut())
-                            .foregroundStyle(.primary)
-                            .fontWeight(.light)
+                    if document.dateEcheance <= Date() && document.status == .send {
+                        Label("En retard", systemImage: "hourglass.tophalf.filled")
+                            .foregroundStyle(.pink)
                     }
                 }
-                .font(.footnote)
             }
+        }
+        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+            return 0
         }
         .background(
             NavigationLink("") {
                 DocumentDetailView(document: document)
             }.opacity(0)
         )
+    }
+    
+    var viewStatus : some View {
+        HStack(spacing: nil) {
+            Image(systemName: "circle.circle.fill")
+                .foregroundStyle(.black, document.determineColor())
+            Text(document.determineStatut())
+                .foregroundStyle(.primary)
+                .fontWeight(.light)
+        }
     }
 }
 

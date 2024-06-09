@@ -60,10 +60,12 @@ struct NavigationIpad: View {
     @State private var preferredColumn =
         NavigationSplitViewColumn.detail
     
+    @State private var selectedClient : Client?
+    
     var userNeediCloud: UseriCloudController.StateCheckiCloud
     
     var body: some View {
-        NavigationSplitView(preferredCompactColumn: $preferredColumn) {
+        NavigationSplitView {
             List {
                 Section {
                     NavigationLink {
@@ -117,7 +119,7 @@ struct NavigationIpad: View {
         case 5:
             FormClientView()
         case 6:
-            ListClients()
+            SplitViewListClients()
         case 7:
             DocumentFormView()
         case 8:
