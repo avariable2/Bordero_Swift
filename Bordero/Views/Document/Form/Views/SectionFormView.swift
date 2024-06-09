@@ -289,7 +289,6 @@ struct TypeActeOptionsView: View {
 }
 
 struct FormButtonsPrimaryActionView: View {
-    @Environment(\.presentationMode) var presentationMode
     @Binding var activeSheet: ActiveSheet?
     @Binding var viewModel: PDFViewModel
     
@@ -333,12 +332,7 @@ struct FormButtonsPrimaryActionView: View {
             }
             
             if let document = await viewModel.finalizeAndSave() {
-                if leDocumentExisteEtEstEnModification() {
-                    presentationMode.wrappedValue.dismiss()
-                } else {
-                    self.detailDocument = document
-                    self.showDetail = true
-                }
+                self.detailDocument = document
             }
         }
         .onChange(of: detailDocument, { oldValue, newValue in
