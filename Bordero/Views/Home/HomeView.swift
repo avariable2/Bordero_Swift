@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 import ScrollableGradientBackground
 import MijickGridView
 
@@ -19,12 +20,15 @@ struct ArticleData : Identifiable {
 
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
-    
+    @Environment(\.managedObjectContext) var context
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     @State private var gridViewConfig = GridView.Config()
     @State private var numberOfColumns = 1
     
-    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    @FetchRequest(
+        sortDescriptors: []
+    ) var praticien: FetchedResults<Praticien>
     
     @State private var userHasSeenAllOnBoarding = false
     @State private var activeSheet: ActiveSheet?
@@ -60,7 +64,6 @@ struct HomeView: View {
                         .contentMargins(.top, 0)
                     }
                 }
-                
             },
             heightPercentage: 0.35,
             maxHeight: 200,
@@ -91,6 +94,12 @@ struct HomeView: View {
             }
             
         )
+        .onAppear {
+            if praticien.count == 0 {
+                _ = Praticien(moc: context)
+                DataController.saveContext()
+            }
+        }
         .sheet(item: $activeSheet) { type in
             switch(type) {
             case .parameters:
@@ -104,6 +113,27 @@ struct HomeView: View {
     private func calculateGridHeight(for itemsCount: Int, columns: Int, itemHeight: CGFloat = 380) -> CGFloat {
         let rows = (itemsCount + columns - 1) / columns // Calculate the number of rows needed
         return CGFloat(rows) * itemHeight // Calculate the total height
+    }
+
+    private func deleteAllEntities(named entityName: String) {
+        #if DEBUG
+        // Créer un fetch request pour l'entité cible
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entityName)
+        
+        // Créer une requête de suppression par lot
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        // Obtenir le contexte de vue de votre conteneur persistant
+        let context = DataController.shared.container.viewContext
+        
+        do {
+            // Exécuter la requête de suppression par lot
+            try context.execute(deleteRequest)
+            print("Toutes les occurrences de \(entityName) ont été supprimées.")
+        } catch {
+            print("Erreur lors de la suppression des occurrences de \(entityName): \(error)")
+        }
+        #endif
     }
 }
 

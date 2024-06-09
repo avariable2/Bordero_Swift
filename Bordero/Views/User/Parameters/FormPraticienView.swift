@@ -340,7 +340,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     }
     
     func createPraticienObject() -> Praticien {
-        praticien.id = FormPraticienView.uuidPraticien!
         praticien.version = FormPraticienView.getVersion()
         
         praticien.profilPicture = profilPicture?.jpegData(compressionQuality: 1.0)

@@ -33,7 +33,6 @@ struct BorderoApp: App {
                     .implementPopupView()
             case .connected, .notConnected:
                 ContentView(userNeediCloud: userController.accountAvailable)
-                    .onAppear(perform: checkAndCreatePraticien) // Instanciate in firts launch an praticien for use the app everywhere
                     .onChange(of: userController.accountAvailable) { oldValue, newValue in
                         DataController.shared.updateICloudSettings()
                     }
@@ -41,23 +40,6 @@ struct BorderoApp: App {
                     .implementPopupView()
             }
                 
-        }
-    }
-    
-    func checkAndCreatePraticien() {
-        let context = dataController.container.viewContext
-        let fetchRequest : NSFetchRequest<Praticien> = Praticien.fetchRequest()
-        
-        do {
-            let praticien = try context.fetch(fetchRequest)
-            if praticien.isEmpty {
-                let praticien = Praticien(context: context)
-                praticien.id = FormPraticienView.uuidPraticien
-                praticien.defaultRangeDateEcheance_ = Int16(DateEcheanceParams.trente.value)
-                try context.save()
-            }
-        } catch {
-            print("Erreur lors de la vérification de l'entité Praticien : \(error)")
         }
     }
 }
