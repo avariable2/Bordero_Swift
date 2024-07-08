@@ -20,9 +20,9 @@ struct PDFPayementAndSignature: View {
                 
                 if praticien?.paramsDocument.showModePaiement ?? true {
                     if data.optionsDocument.payementAllow.isEmpty {
-                        Text("Mode de règlement acceptées : Aucun")
+                        Text("Modes de règlement acceptés : Aucun")
                     } else {
-                        Text("Mode de règlement acceptées : \(data.optionsDocument.payementAllow.map { $0.rawValue }.joined(separator: ", "))")
+                        Text("Modes de règlement acceptés : \(data.optionsDocument.payementAllow.map { $0.rawValue }.joined(separator: ", "))")
                     }
                 }
                 
@@ -35,7 +35,7 @@ struct PDFPayementAndSignature: View {
                 }
                 
                 if !data.optionsDocument.note.isEmpty {
-                    Text("Note: \(data.optionsDocument.note)")
+                    Text("Notes : \(data.optionsDocument.note)")
                 }
                 
             }

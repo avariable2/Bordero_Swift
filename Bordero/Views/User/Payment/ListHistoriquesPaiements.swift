@@ -17,7 +17,7 @@ struct ListHistoriquesPaiements: View {
     
     var body: some View {
         if payments.isEmpty {
-            ContentUnavailableView("Pas de paiements", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera afficher la liste des paiements de vos clients."))
+            ContentUnavailableView("Pas de paiement", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera affichée la liste des paiements de vos clients."))
         } else {
             ForEach(payments.prefix(5), id: \.id) { payment in
                 RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
@@ -32,13 +32,11 @@ struct ListHistoriquesPaiements: View {
             .sheet(item: $activeSheet) { activeSheet in
                 switch activeSheet {
                 case .showAllHistoriquePaiement:
-                    NavigationStack {
-                        ListAllClientPaiements(payments: payments)
-                    }
+                    ListAllClientPaiements(payments: payments)
                 case .showDetailPaiement(paiement: let paiement):
                     NavigationView {
                         DisplayPayementSheet(paiement: paiement)
-                            
+                        
                     }
                     .presentationDetents([.medium, .large])
                 default:
@@ -63,10 +61,6 @@ struct RowHistoriquePaiements : View {
     }
 }
 
-#Preview {
-    ListHistoriquesPaiements()
-}
-
 struct TextPaiementView: View {
     let payment : Paiement
     var body: some View {
@@ -87,28 +81,6 @@ struct TextPaiementView: View {
     }
 }
 
-struct ListAllClientPaiements: View {
-    @Environment(\.dismiss) var dismiss
-    @State var payments : FetchedResults<Paiement>
-    
-    var body: some View {
-        List(payments) { payment in
-            NavigationLink {
-                DisplayPayementSheet(paiement: payment)
-            } label: {
-                TextPaiementView(payment: payment)
-            }
-        }
-        .trackEventOnAppear(event: .paymentListBrowsed, category: .paymentManagement)
-        .navigationTitle("Historique paiements")
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Retour")
-                }
-            }
-        }
-    }
+#Preview {
+    ListHistoriquesPaiements()
 }

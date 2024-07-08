@@ -140,7 +140,7 @@ struct ModifierDocumentView: View, Versionnable {
                             activeSheet = .selectClient
                         } label: {
                             Label {
-                                Text("séléctioner un(e) client(e)")
+                                Text("sélectionner un(e) client(e)")
                                     .tint(.primary)
                             } icon: {
                                 Image(systemName: "plus.circle")
@@ -175,9 +175,9 @@ struct ModifierDocumentView: View, Versionnable {
                         }
                     }
                 } header : {
-                    Text("Préstation(s)")
+                    Text("Prestation(s)")
                 } footer : {
-                    Text("Pour supprimer un élément de la liste, déplacé le sur la gauche.")
+                    Text("Pour supprimer un élément de la liste, déplacez le sur la gauche.")
                 }
                 
                 if typeSelected == .facture {
@@ -326,7 +326,7 @@ private struct TypeActeRowView: View {
                     
                     if !snapshotTypeActe.remarque.isEmpty {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Remarque :")
+                            Text("Remarques :")
                                 .foregroundStyle(.secondary)
                             
                             Text("«")
@@ -365,7 +365,7 @@ private struct TypeActeRowView: View {
                 DatePicker("Date de l'acte", selection: $snapshotTypeActe.date, displayedComponents: .date)
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Remarque")
+                    Text("Remarques")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
@@ -384,7 +384,7 @@ private struct TypeActeRowView: View {
                 
             }
             .padding()
-            .navigationTitle("Option de \(snapshotTypeActe.name)")
+            .navigationTitle("Options de \(snapshotTypeActe.name)")
             .presentationDetents([.fraction(0.3), .medium])
         }
     }
@@ -428,7 +428,7 @@ struct FormButtonsPrimaryActionView: View {
                 Button {
                     activeSheet = .apercusDocument
                 } label: {
-                    Label("Aperçus", systemImage: "eyeglasses")
+                    Label("Aperçu", systemImage: "eyeglasses")
                 }
                 .buttonStyle(.bordered)
                 
@@ -453,7 +453,7 @@ struct FormButtonsPrimaryActionView: View {
                 Button {
                     activeSheet = .apercusDocument
                 } label: {
-                    Label("Aperçus", systemImage: "eyeglasses")
+                    Label("Aperçu", systemImage: "eyeglasses")
                 }
                 .buttonStyle(.bordered)
                 

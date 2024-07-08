@@ -148,10 +148,11 @@ struct CoordooneesPraticienView : View {
     @Binding var userHasSeenAllOnBoarding : Bool
     
     var body: some View {
-        FormPraticienView(isOnBoarding: true) {
-            userHasSeenAllOnBoarding.toggle()
-        }
-            .interactiveDismissDisabled()
+//        FormPraticienView(isOnBoarding: true) {
+//            userHasSeenAllOnBoarding.toggle()
+//        }
+//            .interactiveDismissDisabled()
+        EmptyView()
     }
 }
 

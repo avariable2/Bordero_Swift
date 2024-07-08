@@ -37,13 +37,15 @@ struct ParametersView: View {
                 
                 Section {
                     NavigationLink {
-                        FormPraticienView(isOnBoarding: false, praticien : praticien)
+                        if let praticien = praticien {
+                            FormPraticienView(isOnBoarding: false, praticien : praticien)
+                        }
                     } label: {
                         RowIconColor(
-                            text: "Vos coordoonées",
+                            text: "Vos coordonnées",
                             systemName: "person.crop.square.fill",
                             color: .green,
-                            accessibility: "Bouton pour modifier vos informations personnels"
+                            accessibility: "Bouton pour modifier vos informations personnelles"
                         )
                     }
                 }
@@ -73,7 +75,7 @@ struct ParametersView: View {
                             text: "Contact avec le client",
                             systemName: "square.text.square.fill",
                             color: .brown,
-                            accessibility: "Bouton pour automatiser vos envoies de document"
+                            accessibility: "Bouton pour automatiser vos envois de documents"
                         )
                     }
                     
@@ -124,7 +126,7 @@ struct ParametersView: View {
                 if ProcessInfo.processInfo.isiOSAppOnMac {
                     
                     Section {
-                        Text("Si un problème survient contacter le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
+                        Text("Si un problème survient, contactez le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
                             .contextMenu {
                                 Button(action: {
                                     UIPasteboard.general.string = "feuilles.neutron_0i@icloud.com"
@@ -134,7 +136,7 @@ struct ParametersView: View {
                                 }
                             }
                     } footer: {
-                        Text("Maintener le texte pour copier l'email.")
+                        Text("Maintenir le texte pour copier l'email.")
                     }
                     
                 } else {
@@ -160,7 +162,7 @@ struct ParametersView: View {
                         
                     } footer: {
                         if !MFMailComposeViewController.canSendMail() {
-                            Text("Vous ne pouvez envoyer de e-mail depuis cette appareil")
+                            Text("Vous ne pouvez pas envoyer d'email depuis cette appareil")
                         }
                     }
                    
@@ -174,7 +176,7 @@ struct ParametersView: View {
                                 UIApplication.shared.open(url)
                             }
                         } label: {
-                            Text("Activé la synchronisation iCloud ")
+                            Text("Activer la synchronisation iCloud ")
                         }
                     } footer: {
                         VStack(alignment: .leading) {

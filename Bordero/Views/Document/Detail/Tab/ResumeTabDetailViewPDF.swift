@@ -65,7 +65,7 @@ struct ResumeTabDetailViewPDF: View {
                                 .tint(.primary)
                         } else {
                             Label {
-                                Text("Le client n'à pas été retrouvé ou bien à été supprimer.")
+                                Text("Le client n'a pas été retrouvé ou bien a été supprimé.")
                                     .fontWeight(.regular)
                             } icon: {
                                 Image(systemName: "person.crop.circle.badge.questionmark.fill")
@@ -82,7 +82,7 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     HStack {
-                        Text("Status")
+                        Text("Statut")
                         Spacer()
                         HStack(spacing: nil) {
                             Image(systemName: "circle.circle.fill")
@@ -94,7 +94,7 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     
                     HStack {
-                        Text("Reste à payé")
+                        Text("Reste à payer")
                         Spacer()
                         Text(document.resteAPayer, format: .currency(code: "EUR"))
                             .fontWeight(.semibold)
@@ -117,8 +117,8 @@ struct ResumeTabDetailViewPDF: View {
                 
                 Section {
                     RowMontantDetail(text: "Total H.T.", price: document.totalHT)
-                    RowMontantDetail(text: "T.V.A", price: document.totalTVA)
-                    RowMontantDetail(text: "Total T.T.C", price: document.totalTTC)
+                    RowMontantDetail(text: "TVA", price: document.totalTVA)
+                    RowMontantDetail(text: "Total T.T.C.", price: document.totalTTC)
                 } header: {
                     Text("Détails")
                 }

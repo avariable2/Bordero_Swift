@@ -25,7 +25,7 @@ public struct SignatureViewCustom: View {
     @State private var saveSignature = false
     
     @State private var fontFamily = fontFamlies[0]
-    @State private var color = Color.blue
+    @State private var color = Color.black
     
     @State private var drawing = DrawingPath()
     @State private var image = UIImage()
@@ -53,7 +53,7 @@ public struct SignatureViewCustom: View {
                 }
                 .buttonStyle(.borderless)
                 
-                Text("Choissisez un style")
+                Text("Choisir un style")
                     .font(.headline)
                 
                 if availableTabs.count > 1 {
@@ -67,7 +67,7 @@ public struct SignatureViewCustom: View {
                 
                 signatureContent
                 
-                Button("Effacer signature", action: clear)
+                Button("Effacer la signature", action: clear)
                     .buttonStyle(.bordered)
                     
             }

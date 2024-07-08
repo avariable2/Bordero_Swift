@@ -256,7 +256,7 @@ struct ToolBarView: View {
         let content = UNMutableNotificationContent()
         content.title = "Date d'échéance dépassée"
         content.subtitle = "\(document.getNameOfDocument()) est en retard"
-        content.body = "La date d'échéance pour \(document.getNameOfDocument()) était le \(document.dateEcheance.formatted(.dateTime.day().month().year())). Penser à contacter le client dès que possible."
+        content.body = "La date d'échéance pour \(document.getNameOfDocument()) était le \(document.dateEcheance.formatted(.dateTime.day().month().year())). Pensez à contacter le client dès que possible."
         content.sound = .default
         
         let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: dateEcheance)

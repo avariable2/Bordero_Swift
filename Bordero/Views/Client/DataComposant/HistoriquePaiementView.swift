@@ -52,7 +52,7 @@ struct HistoriquePaiementView: View {
             }
             
             if filteredPaymentsByWeek.isEmpty {
-                ContentUnavailableView("Aucun paiements", systemImage: "magnifyingglass")
+                ContentUnavailableView("Aucun paiement", systemImage: "magnifyingglass")
             } else {
                 List {
                     ForEach(filteredPaymentsByWeek, id: \.id) { payment in

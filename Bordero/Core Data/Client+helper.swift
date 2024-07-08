@@ -39,6 +39,16 @@ extension Client {
         get { paiements_ as? Set<Paiement> ?? [] }
     }
     
+    var siret : String {
+        get { siret_ ?? "" }
+        set { siret_ = newValue }
+    }
+    
+    var siren : String {
+        get { siren_ ?? "" }
+        set { siren_ = newValue }
+    }
+    
     func getAdresseSurUneLigne(_ adresse : [String : Any]?) -> String {
         if let coordonne = adresse {
             return PDFUtils.getRowAdresse(

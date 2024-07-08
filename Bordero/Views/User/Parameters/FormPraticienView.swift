@@ -27,8 +27,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var signature: UIImage? = nil
     @State private var showSheetForSignature = false
     
-    @State private var nom = ""
-    @State private var prenom = ""
     @State private var pays = "France"
     @State private var etageOrAppt = ""
     @State private var rue = ""
@@ -37,28 +35,20 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     @State private var selectedPhotoPicker: PhotosPickerItem?
     @State private var selectedPhotoSocieteUIImage: UIImage?
-    @State private var nomSociete = ""
-    @State private var applyTVA : Bool = true
-    @State private var siret = ""
-    @State private var adeli = ""
-    
-    @State private var email = ""
-    @State private var numero = ""
-    @State private var website = ""
     
     @State private var selectedContact: CNContact?
     @State private var showAlert = false
     
     // MARK: Option d'affichage du formulaire
     var isOnBoarding : Bool
-    var titre = "Renseignements professionnel"
+    var titre = "Renseignements professionnels"
     var textFacultatif = "facultatif"
     
-    @State var praticien : Praticien?
+    @State var praticien : Praticien
     var callback : (() -> Void)?
     
     var body: some View {
-        Form {
+        List {
             VStack(alignment: .center, spacing: 20) {
                 
                 ProfilImageView(imageData: profilPicture?.jpegData(compressionQuality: 1.0))
@@ -103,10 +93,10 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                         
                     }
                     
-                    prenom = contact.givenName
-                    nom = contact.familyName
-                    numero = contact.phoneNumbers.first?.value.stringValue ?? ""
-                    email = String(contact.emailAddresses.first?.value ?? "")
+                    praticien.firstname = contact.givenName
+                    praticien.lastname = contact.familyName
+                    praticien.phone = contact.phoneNumbers.first?.value.stringValue ?? ""
+                    praticien.email = String(contact.emailAddresses.first?.value ?? "")
                     
                     ville = contact.postalAddresses.first?.value.city ?? ""
                     rue = contact.postalAddresses.first?.value.street ?? ""
@@ -116,82 +106,82 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 .multilineTextAlignment(.leading)
                 
             } footer: {
-                Text("Pour gagner du temps importer les champs principaux comme votre nom ou prénom depuis votre fiche Contacts.")
+                Text("Pour gagner du temps, importez les champs principaux comme votre nom ou prénom depuis votre fiche Contacts.")
                     .multilineTextAlignment(.leading)
             }
             
             Section {
                 
-                TextField("Nom de l'entreprise", text: $nomSociete)
+                TextField("Nom de l'entreprise", text: $praticien.nomEntreprise)
                     .keyboardType(.default)
                     .multilineTextAlignment(.leading)
                 
                 ViewThatFits {
                     LabeledContent("Numéro de SIRET") {
-                        TextField("Important", text: $siret)
+                        TextField("Important", text: $praticien.siret)
                             .keyboardType(.numberPad)
                     }
                     
                     LabeledContent("SIRET") {
-                        TextField("Important", text: $siret)
+                        TextField("Important", text: $praticien.siret)
                             .keyboardType(.numberPad)
                     }
                 }
                 
                 ViewThatFits {
                     LabeledContent("Numéro ADELI") {
-                        TextField("Important", text: $adeli)
+                        TextField("Important", text: $praticien.adeli)
                             .keyboardType(.numberPad)
                     }
                     LabeledContent("ADELI") {
-                        TextField("Important", text: $adeli)
+                        TextField("Important", text: $praticien.adeli)
                             .keyboardType(.numberPad)
                     }
                 }
                 
                 ViewThatFits {
-                    Toggle("Appliquer la TVA sur les factures", isOn: $applyTVA)
+                    Toggle("Appliquer la TVA sur les factures", isOn: $praticien.applyTVA)
                         .toggleStyle(SwitchToggleStyle(tint: .green))
-                        .sensoryFeedback(.success, trigger: applyTVA)
+                        .sensoryFeedback(.success, trigger: praticien.applyTVA)
                     
                     VStack(alignment: .center) {
                         Text("Appliquer la TVA sur les factures")
                             .multilineTextAlignment(.leading)
                         
-                        Toggle("", isOn: $applyTVA)
+                        Toggle("", isOn: $praticien.applyTVA)
                             .toggleStyle(SwitchToggleStyle(tint: .green))
-                            .sensoryFeedback(.success, trigger: applyTVA)
+                            .sensoryFeedback(.success, trigger: praticien.applyTVA)
                     }
                 }
                 
             } header: {
                 Text("Identification")
             } footer: {
-                Text("Ces champs sont important ficalement pour que vos documents soient valides.")
+                Text("Ces champs sont importants fiscalement pour que vos documents soient valides.")
                     .multilineTextAlignment(.leading)
             }
             
             Section {
                 LabeledContent("Prénom") {
-                    TextField(textFacultatif, text: $prenom)
+                    TextField(textFacultatif, text: $praticien.firstname)
                         .keyboardType(.alphabet)
                 }
                 LabeledContent("Nom") {
-                    TextField(textFacultatif, text: $nom)
+                    TextField(textFacultatif, text: $praticien.lastname)
                         .keyboardType(.alphabet)
                 }
                 LabeledContent("Téléphone") {
-                    TextField(textFacultatif, text: $numero)
+                    TextField(textFacultatif, text: $praticien.phone)
                         .keyboardType(.phonePad)
                 }
                 LabeledContent("E-mail") {
-                    TextField(textFacultatif, text: $email)
+                    TextField(textFacultatif, text: $praticien.email)
                         .keyboardType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                 }
                 LabeledContent("Site web") {
-                    TextField(textFacultatif, text: $website)
+                    TextField(textFacultatif, text: $praticien.website)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
@@ -199,7 +189,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             } header: {
                 Text("Contact")
             } footer: {
-                Text("Tous les champs sont facultatifs mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document.")
+                Text("Tous les champs sont facultatifs, mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document.")
                     .multilineTextAlignment(.leading)
             }
             
@@ -281,9 +271,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             }
         }
         .onAppear {
-            if let user = praticien {
-                retrieveInfoFormPraticienNotNull(user)
-            }
+            retrieveInfoFormPraticienNotNull(praticien)
         }
         .navigationTitle(isOnBoarding ? "" : titre)
         .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
@@ -302,7 +290,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 }
             }
         }
-        .alert("Les données ne seront pas sauvegarder", isPresented: $showAlert, actions: {
+        .alert("Les données ne seront pas sauvegardées", isPresented: $showAlert, actions: {
             Button("Quitter", role: .destructive) {
                 dismiss()
             }
@@ -352,24 +340,10 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     }
     
     func createPraticienObject() -> Praticien {
-        let praticien = praticien ?? Praticien(context: moc)
-        
-        praticien.id = FormPraticienView.uuidPraticien!
         praticien.version = FormPraticienView.getVersion()
         
         praticien.profilPicture = profilPicture?.jpegData(compressionQuality: 1.0)
         praticien.logoSociete = selectedPhotoSocieteUIImage?.jpegData(compressionQuality: 1.0)
-        
-        praticien.nom_proffession = nomSociete
-        praticien.adeli = adeli
-        praticien.siret = siret
-        praticien.applyTVA = applyTVA
-        
-        praticien.firstname = prenom
-        praticien.lastname = nom
-        praticien.email = email
-        praticien.phone = numero
-        praticien.website = website
         
         modifiyAdresseToPraticien(praticien)
         
@@ -394,17 +368,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
             profilPicture = UIImage(data: data) ?? nil
         }
         
-        nomSociete = user.nom_proffession ?? ""
-        adeli = user.adeli
-        siret = user.siret 
-        applyTVA = user.applyTVA
-        
-        prenom = user.firstname 
-        nom = user.lastname 
-        email = user.email 
-        numero = user.phone 
-        website = user.website
-        
         if let dataSignature = user.signature, let uiImage = UIImage(data: dataSignature) {
             signature = uiImage
         }
@@ -424,5 +387,5 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
 }
 
 #Preview {
-    FormPraticienView(isOnBoarding: false)
+    FormPraticienView(isOnBoarding: false, praticien: Praticien.example)
 }

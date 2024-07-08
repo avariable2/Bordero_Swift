@@ -22,6 +22,21 @@ class PDFViewModel {
         }
     }
     
+    func setupPraticienData(praticien: Praticien?) {
+        guard let praticien = praticien else { return }
+        
+        self.pdfModel.praticien = praticien
+        self.pdfModel.optionsDocument.numeroDocument = praticien.lastDocumentNumber ?? ""
+        
+        // Initialisation des options de paiement si elles sont vides
+        if self.pdfModel.optionsDocument.payementAllow.isEmpty {
+            self.modifyPayementAllow(.cheque, value: praticien.cheque)
+            self.modifyPayementAllow(.carte, value: praticien.carte)
+            self.modifyPayementAllow(.virement, value: praticien.virement_bancaire)
+            self.modifyPayementAllow(.especes, value: praticien.espece)
+        }
+    }
+    
     func reset(needToDeleteFile : Bool = true) {
         if documentObject == nil, let fileNeedToBeDeleted = pdfModel.urlFilePreview, !fileNeedToBeDeleted.lastPathComponent.isEmpty, needToDeleteFile {
             deleteFile(fileNeedToBeDeleted)
@@ -35,7 +50,7 @@ class PDFViewModel {
             try fileManager.removeItem(at: urlFile)
             print("Fichier supprimé avec succès")
         } catch {
-            print("Erreur lors de la suppression du fichier: \(error)")
+            print("Erreur lors de la suppression du fichier : \(error)")
         }
     }
     
@@ -190,22 +205,22 @@ class PDFViewModel {
         )
     }
     
-    func finalizeAndSave(completion: @escaping (Document) -> Void) async {
+    func finalizeAndSave() async -> Document? {
         let moc = DataController.shared.container.viewContext
         
         let pdfDocument = await Task.detached(priority: .userInitiated) {
             return PDFDocument(url: await self.renderView()!)
         }.value
         
-        await moc.perform() {
-            let document = self.attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
-            
+        var document: Document?
+        await moc.perform {
+            document = self.attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
             DataController.saveContext()
-            
-            completion(document)
-            
-            self.reset(needToDeleteFile: false) // reset before launch the new screen
         }
+        
+        self.reset(needToDeleteFile: false) // reset before launch the new screen
+        
+        return document
     }
     
     
@@ -236,17 +251,6 @@ class PDFViewModel {
         document.status = self.pdfModel.optionsDocument.payementFinish ? .payed : .created
         
         if let client = self.pdfModel.client {
-            
-            document.snapshotClient = Document.SnapshotClient(
-                lastname: client.lastname,
-                firstname: client.firstname,
-                phone: client.phone,
-                email: client.email,
-                code_entreprise: client.code_entreprise ?? "",
-                adresse: client.getAdresseSurUneLigne(client.adresse1),
-                uuidClient: client.id
-            )
-            
             document.client_ = client
         }
         

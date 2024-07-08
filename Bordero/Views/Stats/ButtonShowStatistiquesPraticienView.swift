@@ -14,7 +14,7 @@ struct BarData: Identifiable {
     var id = UUID()
 }
 
-struct StatistiquePaticientView: View {
+struct ButtonShowStatistiquesPraticienView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -41,5 +41,5 @@ struct StatistiquePaticientView: View {
 }
 
 #Preview {
-    StatistiquePaticientView()
+    ButtonShowStatistiquesPraticienView()
 }

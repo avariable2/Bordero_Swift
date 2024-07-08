@@ -18,7 +18,7 @@ struct FormTypeActeView: View {
             })
             
             if showSuccess {
-                Text("Votre type d'acte à bien été enregistré.")
+                Text("Votre type d'acte a bien été enregistré.")
             }
         }
     }

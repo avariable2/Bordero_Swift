@@ -34,7 +34,7 @@ struct ListTypeActe: View {
                 ContentUnavailableView(label: {
                     Label("Aucun type d'acte", systemImage: "cross.case")
                 }, description: {
-                    Text("Les type d'acte ajoutés apparaîtront ici.")
+                    Text("Les types d'acte ajoutés apparaîtront ici.")
                 }, actions: {
                     Button {
                         activeSheet = .createTypeActe
@@ -52,7 +52,7 @@ struct ListTypeActe: View {
                         
                     } footer: {
                         if !filteredTypeActe.isEmpty {
-                            Text("Déplacé l'élément à gauche pour le supprimer.")
+                            Text("Déplacer l'élément à gauche pour le supprimer.")
                         }
                     }
                 }
@@ -65,7 +65,7 @@ struct ListTypeActe: View {
                 
             }
         }
-        .navigationTitle("Type d'actes")
+        .navigationTitle("Types d'acte")
         .tint(.purple)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {

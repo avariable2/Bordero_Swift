@@ -28,24 +28,27 @@ struct PayementSheet: View {
                         .multilineTextAlignment(.trailing)
                 }
                 
-                DatePicker("Payé le", selection: $date, displayedComponents: .date)
+                DatePicker("Payée le", selection: $date, displayedComponents: .date)
                 
-                Section("Note - optionnel") {
+                Section("Notes - optionnelles") {
                     TextEditor(text: $note)
                 }
                 
                 if !historiquePaiement.isEmpty {
-                    Section("Paiement reçus") {
+                    Section {
                         ForEach(historiquePaiement) { paiement in
                             RowPaiementView(paiement: paiement)
                         }
+                    } header : {
+                        Text("Paiements reçus")
+                            
                     }
+                    .headerProminence(.increased)
                 }
                 
             }
             .listStyle(.grouped)
             .navigationTitle("Ajouter un paiement")
-            .navigationBarTitleDisplayMode(.inline)
             .onAppear() {
                 amount = document.resteAPayer
                 historiquePaiement = Array(document.listPayements)
@@ -115,75 +118,9 @@ struct PayementSheet: View {
     }
 }
 
-struct DisplayPayementSheet : View {
-    @Environment(\.managedObjectContext) var moc
-    @Environment(\.dismiss) var dismiss
-    
-    let paiement: Paiement
-    private var nomClient = ""
-    
-    init(paiement: Paiement) {
-        self.paiement = paiement
-        if let client = paiement.client {
-            nomClient = "\(client.firstname) \(client.lastname)"
-        }
-    }
-    
-    var body: some View {
-        VStack {
-            List {
-                LabeledContent("Montant") {
-                    Text(paiement.montant, format: .currency(code: "EUR"))
-                }
-                
-                LabeledContent("Payé le ") {
-                    if let date = paiement.date_ {
-                        Text(date, format: .dateTime.day().month().year())
-                    } else {
-                        Text("Date inconnu")
-                    }
-                }
-                
-                LabeledContent("Note") {
-                    Text(paiement.note ?? "")
-                }
-            }
-            .navigationTitle(nomClient.isEmpty ? "Paiement" : "Paiement de \(nomClient)")
-            .safeAreaInset(edge: .bottom) {
-                Button(role: .destructive) {
-                    delete()
-                } label: {
-                    Text("Supprimer")
-                        .foregroundStyle(.white)
-                }
-                .frame(maxWidth: .infinity, maxHeight: 50)
-                .background(Color.red)
-            }
-        }
-        
-    }
-    
-    func delete() {
-        if let doc = paiement.document {
-            if doc.resteAPayer + paiement.montant >= 0 { // ex : reste = -100 alors on veut verifier que le reste est supperieur à 0 pour changer l'etat
-                doc.status = .send
-            } else {
-                doc.status = .payed
-            }
-        }
-        
-        dismiss()
-        moc.delete(paiement)
-        try? moc.save()
-    }
-}
-
 #Preview {
-    Group {
+    NavigationStack {
         PayementSheet(document: Document.example)
-        DisplayPayementSheet(
-            paiement: Paiement(context: DataController.shared.container.viewContext)
-        )
     }
     
 }
@@ -196,11 +133,10 @@ struct RowPaiementView : View {
             DisplayPayementSheet(paiement: paiement)
         } label: {
             HStack {
-                Text(paiement.date_?.formatted() ?? "Date inconnu")
+                Text(paiement.date_?.formatted() ?? "Date inconnue")
                 Spacer()
                 Text(paiement.montant, format: .currency(code: "EUR"))
             }
-            .fontWeight(.semibold)
         }
     }
 }

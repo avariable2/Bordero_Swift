@@ -13,12 +13,10 @@ struct ContentView: View {
     @State var userNeediCloud : UseriCloudController.StateCheckiCloud
     
     var body: some View {
-        Group {
-            if horizontalSizeClass == .compact {
-                CustomTabView(userNeediCloud: userNeediCloud)
-            } else {
-                NavigationIpad(userNeediCloud: userNeediCloud)
-            }
+        if horizontalSizeClass == .compact {
+            CustomTabView(userNeediCloud: userNeediCloud)
+        } else {
+            NavigationIpad(userNeediCloud: userNeediCloud)
         }
     }
 }
@@ -59,6 +57,10 @@ struct NavigationIpad: View {
     @State private var model = NavModel()
     @State private var selectedNav: NavItem.ID? = nil
     @State private var showExpandableFirstSection = true
+    @State private var preferredColumn =
+        NavigationSplitViewColumn.detail
+    
+    @State private var selectedClient : Client?
     
     var userNeediCloud: UseriCloudController.StateCheckiCloud
     
@@ -92,10 +94,12 @@ struct NavigationIpad: View {
             .listStyle(.sidebar)
             .navigationTitle("Bordero")
         } detail: {
-            if let navSelected = selectedNav {
-                destinationView(for: navSelected)
-            } else {
-                HomeView(showNeediCloud: userNeediCloud == .notConnected)
+            VStack {
+                if let navSelected = selectedNav {
+                    destinationView(for: navSelected)
+                } else {
+                    HomeView(showNeediCloud: userNeediCloud == .notConnected)
+                }
             }
         }
     }
@@ -115,7 +119,7 @@ struct NavigationIpad: View {
         case 5:
             FormClientView()
         case 6:
-            ListClients()
+            SplitViewListClients()
         case 7:
             DocumentFormView()
         case 8:
@@ -130,9 +134,9 @@ struct NavigationIpad: View {
 @Observable
 class NavModel {
     var navigation: [NavItem] = [
-        NavItem(id: 5, name: "Ajouter un client", icon: "person.badge.plus"),
+//        NavItem(id: 5, name: "Ajouter un client", icon: "person.badge.plus"),
         NavItem(id: 2, name: "Liste des clients", icon: "person.2"),
-        NavItem(id: 3, name: "Ajouter un acte", icon: "stethoscope"),
+//        NavItem(id: 3, name: "Ajouter un acte", icon: "stethoscope"),
         NavItem(id: 4, name: "Liste des actes", icon: "cross.case"),
         NavItem(id: 7, name: "Créer document", icon: "pencil.and.list.clipboard"),
         NavItem(id: 8, name: "Liste des docs", icon: "list.bullet"),

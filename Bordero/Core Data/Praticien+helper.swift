@@ -54,6 +54,11 @@ extension Praticien {
         set { adeli_ = newValue }
     }
     
+    var nomEntreprise : String {
+        get { nom_proffession ?? "" }
+        set { nom_proffession = newValue }
+    }
+    
     var paramsDocument : ParametersModele {
         get {
             ParametersModele(
@@ -120,6 +125,36 @@ extension Praticien {
             ).formatted(.list(type: .and, width: .narrow))
         }
         return ""
+    }
+    
+    convenience init(
+        moc : NSManagedObjectContext
+    ) {
+        self.init(context: moc)
+        self.id = UUID(uuidString: "62094590-C187-4F68-BE0D-D8E348299900")
+        self.defaultRangeDateEcheance_ = Int16(DateEcheanceParams.trente.value)
+        self.structureMessageDevis = [
+            "titre" : "Devis #NUMERO#",
+            "corps" : """
+Bonjour #NOM_CLIENT#,
+
+Voici votre devis du #DATE_DOCUMENT#.
+
+Cordialement,
+#NOM_SOCIETE#
+"""
+        ]
+        self.structureMessageFacture = [
+            "titre" : "Facture #NUMERO#",
+            "corps" : """
+Bonjour #NOM_CLIENT#,
+
+Voici votre facture du #DATE_DOCUMENT#.
+
+Cordialement,
+#NOM_SOCIETE#
+"""
+        ]
     }
     
     convenience init(

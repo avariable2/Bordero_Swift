@@ -38,6 +38,10 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
     @State var numero : String = ""
     @State var email : String = ""
     
+    @State var estUnProfessionel = false
+    @State var siret : String = ""
+    @State var siren : String = ""
+    
     // MARK: - Contact et adresse gestion
     @State private var selectedContact: CNContact?
     @State private var adresses: [TTLAdresse] = []
@@ -112,6 +116,17 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                 }
                 
                 Section {
+                    Toggle("Le client est-il un professionnel ?", isOn: $estUnProfessionel.animation())
+                    
+                    if estUnProfessionel {
+                        TextField("N° SIRET", text: $siret)
+                        
+                        TextField("N° SIREN", text: $siren)
+                    }
+                    
+                }
+                
+                Section {
                     LabeledContent {
                         TextField("facultatif", text: $numero)
                             .textContentType(.telephoneNumber)
@@ -119,7 +134,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                             .focused($focusedField, equals: .phone)
                     } label: {
                         ViewThatFits {
-                            Text("Numero de téléphone")
+                            Text("Numéro de téléphone")
                             Text("Téléphone")
                         }
                     }
@@ -177,7 +192,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                         .disabled(checkClientA3AdresseMax)
                     }
                 } footer: {
-                    Text("Pour supprimer une addresse, il vous suffit de la faire glisser sur la gauche et de clicquer sur supprimer.")
+                    Text("Pour supprimer une adresse, il vous suffit de la faire glisser sur la gauche et de cliquer sur supprimer.")
                 }
                 
                 if let _ = callbackOnDelete {
@@ -233,6 +248,13 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                 numero = client.phone
                 email = client.email
                 
+                siren = client.siren
+                siret = client.siret
+                
+                if !siren.isEmpty || !siret.isEmpty {
+                    estUnProfessionel = true
+                }
+                
                 // Si le tableau n'est pas vide on ajoute les informations à montrer
                 if let adresse1 = client.adresse1, !adresse1.isEmpty {
                     createTTLAdresse(adresse1)
@@ -283,6 +305,9 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         client.firstname = prenom
         client.email = email
         client.phone = numero
+        
+        client.siren = siren
+        client.siret = siret
         
         removeAllAddresses(for: client)
         
