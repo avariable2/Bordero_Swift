@@ -95,6 +95,7 @@
 		F79D41AF2C122C8A001D5C27 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D41AE2C122C8A001D5C27 /* HighlightText.swift */; };
 		F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
+		F7B634B52C3C8A2600FC2B2B /* ConsultPayementsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B634B42C3C8A2600FC2B2B /* ConsultPayementsIntent.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
 		F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */; };
@@ -113,6 +114,19 @@
 		F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */; };
 		F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E42BFA985800A2CB01 /* MailUIView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F7B634DC2C3C8D2400FC2B2B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		F70CFEA12B7EA9A500F777AA /* DataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
@@ -195,6 +209,7 @@
 		F79D41AE2C122C8A001D5C27 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
+		F7B634B42C3C8A2600FC2B2B /* ConsultPayementsIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultPayementsIntent.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHistoriquesPaiements.swift; sourceTree = "<group>"; };
@@ -459,6 +474,14 @@
 			path = DataComposant;
 			sourceTree = "<group>";
 		};
+		F7B634B32C3C86C300FC2B2B /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				F7B634B42C3C8A2600FC2B2B /* ConsultPayementsIntent.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
 		F7B6678C2BFBD3A200061908 /* Parameters */ = {
 			isa = PBXGroup;
 			children = (
@@ -498,6 +521,7 @@
 		F7DFAD992B66839C00C905A7 /* Bordero */ = {
 			isa = PBXGroup;
 			children = (
+				F7B634B32C3C86C300FC2B2B /* Intents */,
 				F75083AD2C10991800B32E1F /* Tracking */,
 				F75083A02C10971C00B32E1F /* GoogleService-Info.plist */,
 				F780966D2BAC853E00B3AF4A /* Components */,
@@ -567,6 +591,7 @@
 				F7DFAD932B66839C00C905A7 /* Sources */,
 				F7DFAD942B66839C00C905A7 /* Frameworks */,
 				F7DFAD952B66839C00C905A7 /* Resources */,
+				F7B634DC2C3C8D2400FC2B2B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -595,7 +620,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					F7DFAD962B66839C00C905A7 = {
@@ -696,6 +721,7 @@
 				F777A2EA2B8DEF46001E0169 /* ParametersView.swift in Sources */,
 				F75083B32C109E7800B32E1F /* AnalyticsEnvironmentKey.swift in Sources */,
 				F72BA1EF2BE15AB700E459B2 /* GroupBoxStyleData.swift in Sources */,
+				F7B634B52C3C8A2600FC2B2B /* ConsultPayementsIntent.swift in Sources */,
 				F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */,
 				F75FC8092BCB1FC8007DA47A /* ResumeTabDetailViewPDF.swift in Sources */,
 				F75575DC2C06394C00483A47 /* GridViewWrapper.swift in Sources */,

@@ -25,6 +25,14 @@ extension Paiement {
         self.id = UUID()
     }
     
+    public static func fetch() -> NSFetchRequest<Paiement> {
+        let request = Paiement.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)]
+//        request.predicate = predicate
+        
+        return request
+    }
+    
     static var example : Paiement {
         return Paiement(montant: 50, date: Date(), context: DataController.shared.container.viewContext)
     }
