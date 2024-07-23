@@ -16,16 +16,20 @@ struct NbFacturesGraphView: View {
     
     @State private var selectedPeriod: String = "Month"
     
+    var showPicker = true
+    
     var body: some View {
         VStack {
-            Picker("Selectionner la période", selection: $selectedPeriod) {
-                Text("Jour").tag("Day")
-                Text("Semaine").tag("Week")
-                Text("Mois").tag("Month")
-                Text("Année").tag("Year")
+            if showPicker {
+                Picker("Selectionner la période", selection: $selectedPeriod) {
+                    Text("Jour").tag("Day")
+                    Text("Semaine").tag("Week")
+                    Text("Mois").tag("Month")
+                    Text("Année").tag("Year")
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
             
             let chartData = chartData(for: selectedPeriod)
             if chartData.isEmpty {

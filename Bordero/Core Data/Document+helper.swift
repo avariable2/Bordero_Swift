@@ -317,6 +317,7 @@ extension Document {
         let document = Document(context: context)
         
         document.estDeTypeFacture = true
+        document.status = .created
         
         return document
     }

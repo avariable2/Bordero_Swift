@@ -106,11 +106,18 @@ struct ResumeTabDetailViewPDF: View {
                             .fontWeight(.light)
                     }
                     
+                    let isLate = document.dateEcheance <= Date() && document.status == .send
                     LabeledContent("Date d'échéance") {
+                        if isLate {
+                            Image(systemName: "hourglass.tophalf.filled")
+                                .foregroundStyle(.pink)
+                        }
+                        
                         Text(document.dateEcheance.formatted(.dateTime.day().month().year()))
                             .foregroundStyle(.primary)
                             .fontWeight(.light)
                     }
+                    .foregroundStyle(isLate ? .red : .black)
                 } header: {
                     Text("Informations")
                 }

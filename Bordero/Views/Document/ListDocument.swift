@@ -125,16 +125,6 @@ struct ListDocument: View {
     
     var body: some View {
         VStack {
-            Picker(selection: $documentScope) {
-                Text(Document.Status.all.rawValue).tag(Document.Status.all)
-                Text(Document.Status.created.rawValue).tag(Document.Status.created)
-                Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
-                Text(Document.Status.send.rawValue).tag(Document.Status.send)
-            } label: {
-                Text("Tri des documents")
-            }
-            .pickerStyle(.segmented)
-            .padding([.trailing, .leading])
             
             if documents.isEmpty {
                 ContentUnavailableView(
@@ -143,7 +133,30 @@ struct ListDocument: View {
                     description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
                 )
             } else {
+                Picker(selection: $documentScope) {
+                    Text(Document.Status.all.rawValue).tag(Document.Status.all)
+                    Text(Document.Status.created.rawValue).tag(Document.Status.created)
+                    Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
+                    Text(Document.Status.send.rawValue).tag(Document.Status.send)
+                } label: {
+                    Text("Tri des documents")
+                }
+                .pickerStyle(.segmented)
+                .padding([.trailing, .leading])
+                
                 List {
+                    
+                    Section("Répartition documents sur le mois") {
+                        NbFacturesGraphView(showPicker: false)
+                        
+                        NavigationLink {
+                            PraticienDataView()
+                        } label: {
+                            Text("Voir plus")
+                                .foregroundStyle(.link)
+                        }
+                    }
+                    
                     if filteredListDocuments.isEmpty {
                         ContentUnavailableView.search(text: searchText)
                     } else {
@@ -216,6 +229,16 @@ struct ListDocument: View {
         }
         .navigationTitle("Documents")
         .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                NavigationLink {
+                    DocumentFormView()
+                } label: {
+                    Image(systemName: "plus")
+                        .foregroundStyle(.blue)
+                }
+            }
+        }
     }
 }
 
@@ -224,71 +247,87 @@ struct RowDocumentView :View {
     @ObservedObject var document : Document
     
     var body: some View {
-        HStack {
-            Image(systemName: "doc.circle.fill")
-                .imageScale(.large)
-                .foregroundStyle(.white, .blue)
-            
-            VStack(alignment: .leading, spacing: 6) {
-                Text(document.getNameOfDocument())
-                    .fontWeight(.semibold)
-                if horizontalSizeClass == .regular {
-                    Text("N° : \(document.numero)")
-                        .font(.footnote)
+        let isLate = document.dateEcheance <= Date() && document.status == .send
+        NavigationLink {
+            DocumentDetailView(document: document)
+        } label : {
+            HStack {
+                VStack(alignment: .center) {
+                    Text(document.dateEmission.formatted(.dateTime.month()))
+                    + Text("\n")
+                    + Text(document.dateEmission.formatted(.dateTime.day()))
                 }
-                Text("Créé le: \(document.dateEmission.formatted(.dateTime.day().month().year()))")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-                if horizontalSizeClass == .regular {
-                    Text("Date d'échéance: \(document.dateEcheance.formatted(.dateTime.day().month().year()))")
-                        .foregroundStyle(.secondary)
-                        .font(.footnote)
-                }
-            }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 6) {
-                Text(document.totalTTC, format: .currency(code: "EUR"))
+                .foregroundStyle(isLate ? .red : .primary)
+                .multilineTextAlignment(.center)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .padding(4)
                 
-                if horizontalSizeClass == .compact {
-                    if document.dateEcheance <= Date() && document.status == .send {
-                        Label("En retard", systemImage: "hourglass.tophalf.filled")
-                            .foregroundStyle(.pink)
-                    } else {
-                        viewStatus
-                    }
-                } else {
-                    viewStatus
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(document.getNameOfDocument())
+                        .font(.headline)
+                        .fontWeight(.semibold)
                     
-                    if document.dateEcheance <= Date() && document.status == .send {
-                        Label("En retard", systemImage: "hourglass.tophalf.filled")
-                            .foregroundStyle(.pink)
+                    if horizontalSizeClass == .regular {
+                        Text("N° : \(document.numero)")
                     }
+                    
+                    HStack {
+                        VStack {
+                            if isLate {
+                                Image(systemName: "hourglass.tophalf.filled")
+                                    .foregroundStyle(.pink)
+                            } else {
+                                viewStatus
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        Image(systemName: "stopwatch")
+                        
+                        Text(document.dateEcheance.formatted(.dateTime.day().month().year()))
+                        
+                        Divider()
+                        
+                        Text(document.totalTTC, format: .currency(code: "EUR"))
+                            .fontWeight(.semibold)
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 }
+                .padding(8)
             }
+            .tint(.primary)
         }
-        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-            return 0
-        }
-        .background(
-            NavigationLink("") {
-                DocumentDetailView(document: document)
-            }.opacity(0)
-        )
     }
     
     var viewStatus : some View {
-        HStack(spacing: nil) {
-            Image(systemName: "circle.circle.fill")
-                .foregroundStyle(.black, document.determineColor())
-            Text(document.determineStatut())
-                .foregroundStyle(.primary)
-                .fontWeight(.light)
+        switch document.determineStatut() {
+        case Document.Status.created.rawValue:
+            Image(systemName: "doc.badge.clock.fill")
+                .foregroundStyle(.orange)
+        case Document.Status.payed.rawValue:
+            Image(systemName: "checkmark.seal.fill")
+                .foregroundStyle(.green)
+        case Document.Status.send.rawValue:
+            Image(systemName: "checkmark.bubble.fill")
+                .foregroundStyle(.blue)
+        default:
+            Image(systemName: "questionmark.circle.fill")
+                .foregroundStyle(.gray)
         }
     }
 }
 
 #Preview {
-    ListDocument()
+    NavigationStack {
+        List{
+            RowDocumentView(document: Document.example)
+        }
+        
+        ListDocument()
+    }
 }
 
 extension Client {

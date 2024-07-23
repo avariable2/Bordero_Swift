@@ -23,17 +23,10 @@ struct ContentView: View {
 
 struct CustomTabView: View {
     var userNeediCloud: UseriCloudController.StateCheckiCloud
+    @State private var selection = 2
     
     var body: some View {
-        TabView {
-            NavigationStack {
-                HomeView(showNeediCloud: userNeediCloud == .notConnected)
-            }
-            .tabItem {
-                Image(systemName: "house")
-                Text("Résumé")
-            }
-            
+        TabView(selection: $selection) {
             NavigationStack {
                 ListClients()
             }
@@ -41,6 +34,17 @@ struct CustomTabView: View {
                 Image(systemName: "person.2")
                 Text("Clients")
             }
+            .tag(1)
+            
+            NavigationStack {
+                ListDocument()
+            }
+            .tabItem {
+                Image(systemName: "list.bullet.rectangle.fill")
+                    .bold()
+                Text("Documents")
+            }
+            .tag(2)
             
             NavigationStack {
                 ExploreView()
@@ -49,6 +53,7 @@ struct CustomTabView: View {
                 Image(systemName: "rectangle.split.2x2.fill")
                 Text("Parcourir")
             }
+            .tag(3)
         }
     }
 }
