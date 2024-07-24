@@ -133,20 +133,9 @@ struct ListDocument: View {
                     description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
                 )
             } else {
-                Picker(selection: $documentScope) {
-                    Text(Document.Status.all.rawValue).tag(Document.Status.all)
-                    Text(Document.Status.created.rawValue).tag(Document.Status.created)
-                    Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
-                    Text(Document.Status.send.rawValue).tag(Document.Status.send)
-                } label: {
-                    Text("Tri des documents")
-                }
-                .pickerStyle(.segmented)
-                .padding([.trailing, .leading])
-                
                 List {
                     
-                    Section("Répartition documents sur le mois") {
+                    Section("Répartition mensuels") {
                         NbFacturesGraphView(showPicker: false)
                         
                         NavigationLink {
@@ -187,6 +176,12 @@ struct ListDocument: View {
                         }
                     }
                 )
+                .searchScopes($documentScope, activation: .onSearchPresentation) {
+                    Text(Document.Status.all.rawValue).tag(Document.Status.all)
+                    Text(Document.Status.created.rawValue).tag(Document.Status.created)
+                    Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
+                    Text(Document.Status.send.rawValue).tag(Document.Status.send)
+                }
                 .searchSuggestions {
                     if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
                         Section("Suggestions") {
@@ -228,6 +223,7 @@ struct ListDocument: View {
             }
         }
         .navigationTitle("Documents")
+        .headerProminence(.increased)
         .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
