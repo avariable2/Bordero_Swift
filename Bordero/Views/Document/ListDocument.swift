@@ -234,7 +234,7 @@ struct ListDocument: View {
                 NavigationLink {
                     DocumentFormView()
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: "square.and.pencil")
                         .foregroundStyle(.blue)
                 }
             }
