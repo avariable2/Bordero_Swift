@@ -97,6 +97,7 @@
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
+		F7BD18302C511D4E003C09ED /* IconStatusDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BD182F2C511D4E003C09ED /* IconStatusDocument.swift */; };
 		F7C75DA52BF77EB000A75DBB /* ListHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */; };
 		F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */; };
 		F7D8E0162B8BA15600D4F28B /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */; };
@@ -197,6 +198,7 @@
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		F7BD182F2C511D4E003C09ED /* IconStatusDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconStatusDocument.swift; sourceTree = "<group>"; };
 		F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHistoriquesPaiements.swift; sourceTree = "<group>"; };
 		F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPaymentEstimateGraphView.swift; sourceTree = "<group>"; };
 		F7D8E0152B8BA15600D4F28B /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				F767E0E42C04C26600701BFE /* Form */,
 				F75FC8072BCB1FB3007DA47A /* Detail */,
 				F75F36AB2BD52938003FF0D0 /* ListDocument.swift */,
+				F7BD182F2C511D4E003C09ED /* IconStatusDocument.swift */,
 			);
 			path = Document;
 			sourceTree = "<group>";
@@ -682,6 +685,7 @@
 				F792B7592B70EF6200FA5569 /* FormTypeActeSheet.swift in Sources */,
 				F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */,
 				F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */,
+				F7BD18302C511D4E003C09ED /* IconStatusDocument.swift in Sources */,
 				F75F36AC2BD52938003FF0D0 /* ListDocument.swift in Sources */,
 				F7E88C8A2B8A432700AAF73C /* TitleWithIconColorComponentView.swift in Sources */,
 				F75F3C9E2BB0A51400514246 /* AlphabetSidebarView.swift in Sources */,

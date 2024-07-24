@@ -25,21 +25,10 @@ struct BorderoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch userController.accountAvailable {
-            case .isLoading:
-                HomeView(showNeediCloud: true)
-                    .redacted(reason: .placeholder)
-                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                    .implementPopupView()
-            case .connected, .notConnected:
-                ContentView(userNeediCloud: userController.accountAvailable)
-                    .onChange(of: userController.accountAvailable) { oldValue, newValue in
-                        DataController.shared.updateICloudSettings()
-                    }
-                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                    .implementPopupView()
-            }
-                
+            ContentView(userNeediCloud: userController.accountAvailable)
+                .redacted(reason: userController.accountAvailable == .isLoading ? .placeholder : [])
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .implementPopupView()
         }
     }
 }

@@ -85,8 +85,9 @@ struct ResumeTabDetailViewPDF: View {
                         Text("Statut")
                         Spacer()
                         HStack(spacing: nil) {
-                            Image(systemName: "circle.circle.fill")
-                                .foregroundStyle(.black, document.determineColor())
+                            
+                            IconStatusDocument(document: document)
+                            
                             Text(document.determineStatut())
                                 .foregroundStyle(.primary)
                                 .fontWeight(.light)
@@ -117,7 +118,7 @@ struct ResumeTabDetailViewPDF: View {
                             .foregroundStyle(.primary)
                             .fontWeight(.light)
                     }
-                    .foregroundStyle(isLate ? .red : .black)
+                    .foregroundStyle(isLate ? .red : .primary)
                 } header: {
                     Text("Informations")
                 }

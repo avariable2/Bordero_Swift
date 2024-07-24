@@ -10,13 +10,15 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @State var userNeediCloud : UseriCloudController.StateCheckiCloud
+    var userNeediCloud : UseriCloudController.StateCheckiCloud
     
     var body: some View {
-        if horizontalSizeClass == .compact {
-            CustomTabView(userNeediCloud: userNeediCloud)
-        } else {
-            NavigationIpad(userNeediCloud: userNeediCloud)
+        VStack {
+            if horizontalSizeClass == .compact {
+                CustomTabView(userNeediCloud: userNeediCloud)
+            } else {
+                NavigationIpad(userNeediCloud: userNeediCloud)
+            }
         }
     }
 }
@@ -24,6 +26,7 @@ struct ContentView: View {
 struct CustomTabView: View {
     var userNeediCloud: UseriCloudController.StateCheckiCloud
     @State private var selection = 2
+    @State var activeSheet : ActiveSheet? = nil
     
     var body: some View {
         TabView(selection: $selection) {
@@ -47,11 +50,11 @@ struct CustomTabView: View {
             .tag(2)
             
             NavigationStack {
-                ExploreView()
+                ParametersView(activeSheet: $activeSheet)
             }
             .tabItem {
-                Image(systemName: "rectangle.split.2x2.fill")
-                Text("Parcourir")
+                Image(systemName: "person.crop.circle")
+                Text("Paramètres")
             }
             .tag(3)
         }

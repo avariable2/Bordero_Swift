@@ -257,7 +257,6 @@ struct RowDocumentView :View {
                     + Text("\n")
                     + Text(document.dateEmission.formatted(.dateTime.day()))
                 }
-                .foregroundStyle(isLate ? .red : .primary)
                 .multilineTextAlignment(.center)
                 .font(.subheadline)
                 .fontWeight(.semibold)
@@ -268,17 +267,13 @@ struct RowDocumentView :View {
                         .font(.headline)
                         .fontWeight(.semibold)
                     
-                    if horizontalSizeClass == .regular {
-                        Text("N° : \(document.numero)")
-                    }
-                    
                     HStack {
                         VStack {
                             if isLate {
                                 Image(systemName: "hourglass.tophalf.filled")
                                     .foregroundStyle(.pink)
                             } else {
-                                viewStatus
+                                IconStatusDocument(document: document)
                             }
                         }
                         
@@ -287,8 +282,14 @@ struct RowDocumentView :View {
                         Image(systemName: "stopwatch")
                         
                         Text(document.dateEcheance.formatted(.dateTime.day().month().year()))
+                            .foregroundStyle(isLate ? .red : .secondary)
                         
                         Divider()
+                        
+                        if horizontalSizeClass == .regular {
+                            Divider()
+                            Text("N° : \(document.numero)")
+                        }
                         
                         Text(document.totalTTC, format: .currency(code: "EUR"))
                             .fontWeight(.semibold)
@@ -298,24 +299,6 @@ struct RowDocumentView :View {
                 }
                 .padding(8)
             }
-            .tint(.primary)
-        }
-    }
-    
-    var viewStatus : some View {
-        switch document.determineStatut() {
-        case Document.Status.created.rawValue:
-            Image(systemName: "doc.badge.clock.fill")
-                .foregroundStyle(.orange)
-        case Document.Status.payed.rawValue:
-            Image(systemName: "checkmark.seal.fill")
-                .foregroundStyle(.green)
-        case Document.Status.send.rawValue:
-            Image(systemName: "checkmark.bubble.fill")
-                .foregroundStyle(.blue)
-        default:
-            Image(systemName: "questionmark.circle.fill")
-                .foregroundStyle(.gray)
         }
     }
 }
