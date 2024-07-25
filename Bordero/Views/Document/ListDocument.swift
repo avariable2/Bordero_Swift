@@ -22,18 +22,19 @@ private struct TokenDocumentModel: Identifiable, Hashable, Equatable {
 
 struct ListDocument: View {
     
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest var documents: FetchedResults<Document>
+//    @Environment(\.managedObjectContext) var moc
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    @FetchRequest(
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
+        ],
+        animation: .default
+    ) var documents: FetchedResults<Document>
+    
     @State private var searchText = ""
     @State private var tags: [TokenDocumentModel] = []
     @State private var documentScope : Document.Status = .all
-    
-    init() {
-        let request: NSFetchRequest<Document> = Document.fetchRequest()
-        let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
-        request.sortDescriptors = [ sortByDate]
-        _documents = FetchRequest<Document>(fetchRequest: request, animation: .default)
-    }
     
     let sectionOrder = [
         "Aujourd'hui",
@@ -46,39 +47,32 @@ struct ListDocument: View {
         "Années précédentes"
     ]
     
-    // Filtered and grouped documents
     var filteredListDocuments: Dictionary<String, [Document]> {
-        // Determine the filtered documents based on scope
-        let filteredDocuments: [Document]
-        switch documentScope {
-        case .created:
-            filteredDocuments = documents.filter { $0.status == .created }
-        case .payed:
-            filteredDocuments = documents.filter { $0.status == .payed }
-        case .send:
-            filteredDocuments = documents.filter { $0.status == .send }
-        case .all, .unknow:
-            filteredDocuments = Array(documents)
-        }
+        let tokens = tags.map { $0.value.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
         
-        // Filter based on tokens
-        let tokens = tags.map { $0.value }.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-        let documentsToGroup: [Document]
-        if tokens.isEmpty {
-            documentsToGroup = filteredDocuments
-        } else {
-            documentsToGroup = filteredDocuments.filter { document in
-                tokens.allSatisfy { term in
-                    let matchesClient = document.client_?.fullname.lowercased().contains(term.lowercased()) ?? false
-                    let matchesDate = document.dateEmission.formatted(.dateTime.month().year()).lowercased().contains(term.lowercased())
-                    let matchesType = (term == "Factures" && document.estDeTypeFacture) || (term == "Devis" && !document.estDeTypeFacture)
-                    
-                    switch term {
-                    case _ where term == "Factures" || term == "Devis":
-                        return matchesType
-                    default:
-                        return matchesClient || matchesDate
-                    }
+        // Filter documents based on scope and tokens
+        let documentsToGroup = documents.filter { document in
+            let isInScope: Bool
+            switch documentScope {
+            case .created: isInScope = document.status == .created
+            case .payed: isInScope = document.status == .payed
+            case .send: isInScope = document.status == .send
+            case .all, .unknow: isInScope = true
+            }
+            guard isInScope else { return false }
+            
+            // If no tokens, return the document
+            guard !tokens.isEmpty else { return true }
+            
+            return tokens.allSatisfy { term in
+                let matchesClient = document.client_?.fullname.lowercased().contains(term) ?? false
+                let matchesDate = document.dateEmission.formatted(.dateTime.month().year()).lowercased().contains(term)
+                let matchesType = (term == "factures" && document.estDeTypeFacture) || (term == "devis" && !document.estDeTypeFacture)
+                
+                if term == "factures" || term == "devis" {
+                    return matchesType
+                } else {
+                    return matchesClient || matchesDate
                 }
             }
         }
@@ -89,25 +83,18 @@ struct ListDocument: View {
         }
     }
     
-    var suggestedClients : [String] {
-        let clients = documents.map { $0.client_ }
-        let uniqueClients = Set(clients.map { "\($0?.firstname ?? "") \($0?.lastname ?? "Inconnu")"})
+    var suggestedClients: [String] {
+        let clients = documents.compactMap { $0.client_?.fullname }
+        let uniqueClients = Set(clients).sorted()
         return uniqueClients.filter { $0.lowercased().contains(searchText.lowercased()) }
     }
     
     var suggestedDates: [String] {
-        let dates = documents.map { $0.dateEmission }
-        let uniqueDates = Set(dates.map { $0.formatted(.dateTime.month().year()) })
+        let dates = documents.map { $0.dateEmission.formatted(.dateTime.month().year()) }
+        let uniqueDates = Set(dates).sorted()
         return uniqueDates.filter { $0.lowercased().contains(searchText.lowercased()) }
     }
     
-    var suggestedTypeDocs : [String] {
-        let uniqueType = ["Factures", "Devis"]
-        return uniqueType.filter { $0.lowercased().contains(searchText.lowercased()) }
-    }
-    
-    
-    // Pré-calcul pour réduire le besoin de vérification conditionnelle de rendu
     var filteredSuggestionsTypeDocs: [String] {
         let uniqueType = ["Factures", "Devis"]
         return uniqueType.filter { type in
@@ -134,14 +121,18 @@ struct ListDocument: View {
                 )
             } else {
                 List {
-                    
                     Section("Répartition mensuels") {
-                        NbFacturesGraphView(showPicker: false)
+                        NbFacturesGraphView(
+                            documents: documents,
+                            showPicker: false
+                        )
                         
                         NavigationLink {
-                            PraticienDataView()
+                            PraticienDataView(
+                                documents: documents
+                            )
                         } label: {
-                            Text("Voir plus")
+                            Text("Toutes les stats")
                                 .foregroundStyle(.link)
                         }
                     }
@@ -153,7 +144,10 @@ struct ListDocument: View {
                             if let documentsForSection = filteredListDocuments[key] {
                                 Section(header: Text(key)) {
                                     ForEach(documentsForSection, id: \.self) { document in
-                                        RowDocumentView(document: document)
+                                        RowDocumentView(
+                                            horizontalSizeClass: horizontalSizeClass,
+                                            document: document
+                                        )
                                             .tag(document.status)
                                     }
                                 }
@@ -239,8 +233,9 @@ struct ListDocument: View {
 }
 
 struct RowDocumentView :View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @ObservedObject var document : Document
+    
+    var horizontalSizeClass : UserInterfaceSizeClass?
+    @ObservedObject var document : FetchedResults<Document>.Element
     
     var body: some View {
         let isLate = document.dateEcheance <= Date() && document.status == .send
@@ -283,8 +278,8 @@ struct RowDocumentView :View {
                         Divider()
                         
                         if horizontalSizeClass == .regular {
-                            Divider()
                             Text("N° : \(document.numero)")
+                            Divider()
                         }
                         
                         Text(document.totalTTC, format: .currency(code: "EUR"))
@@ -302,7 +297,7 @@ struct RowDocumentView :View {
 #Preview {
     NavigationStack {
         List{
-            RowDocumentView(document: Document.example)
+            RowDocumentView(horizontalSizeClass: .regular, document: Document.example)
         }
         
         ListDocument()

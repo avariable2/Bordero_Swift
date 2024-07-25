@@ -8,14 +8,14 @@
 import SwiftUI
 import CoreData
 import FirebaseCore
-import MijickPopupView
+//import MijickPopupView
 
 @main
 struct BorderoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     private var dataController = DataController.shared
-    private var userController = UseriCloudController()
+//    private var userController = UseriCloudController()
     
     init() {
         // Définir le délégué
@@ -25,10 +25,11 @@ struct BorderoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(userNeediCloud: userController.accountAvailable)
-                .redacted(reason: userController.accountAvailable == .isLoading ? .placeholder : [])
+            ContentView()
+//            ContentView(userNeediCloud: userController.accountAvailable)
+//                .redacted(reason: userController.accountAvailable == .isLoading ? .placeholder : [])
                 .environment(\.managedObjectContext, dataController.container.viewContext)
-                .implementPopupView()
+//                .implementPopupView()
         }
     }
 }

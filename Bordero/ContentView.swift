@@ -10,21 +10,23 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    var userNeediCloud : UseriCloudController.StateCheckiCloud
+//    var userNeediCloud : UseriCloudController.StateCheckiCloud
     
     var body: some View {
         VStack {
-            if horizontalSizeClass == .compact {
-                CustomTabView(userNeediCloud: userNeediCloud)
-            } else {
-                NavigationIpad(userNeediCloud: userNeediCloud)
-            }
+//            if horizontalSizeClass == .compact {
+//                 CustomTabView(userNeediCloud: userNeediCloud)
+//            } else {
+//                NavigationIpad(userNeediCloud: userNeediCloud)
+//            }
+            
+            CustomTabView()
         }
     }
 }
 
 struct CustomTabView: View {
-    var userNeediCloud: UseriCloudController.StateCheckiCloud
+//    var userNeediCloud: UseriCloudController.StateCheckiCloud
     @State private var selection = 2
     @State var activeSheet : ActiveSheet? = nil
     
@@ -158,5 +160,6 @@ struct NavItem: Identifiable, Hashable {
 }
 
 #Preview {
-    ContentView(userNeediCloud: UseriCloudController.StateCheckiCloud.connected)
+//    ContentView(userNeediCloud: UseriCloudController.StateCheckiCloud.connected)
+    ContentView()
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PraticienDataView: View {
-    
+    var documents : FetchedResults<Document>
     
     var body: some View {
         VStack {
@@ -29,7 +29,7 @@ struct PraticienDataView: View {
                 }
                 
                 Section("Répartition factures") {
-                    NbFacturesGraphView()
+                    NbFacturesGraphView(documents: documents)
                 }
                 
                 Section("Historique paiements") {
@@ -43,6 +43,6 @@ struct PraticienDataView: View {
     }
 }
 
-#Preview {
-    PraticienDataView()
-}
+//#Preview {
+//    PraticienDataView(documents: Document.fetchRequest())
+//}

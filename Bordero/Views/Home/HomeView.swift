@@ -77,9 +77,9 @@ struct HomeView: View {
                     BandeauCreateDocument()
                 }
                 
-                SectionHomeComponentView(title: "Statistiques") {
-                    ButtonShowStatistiquesPraticienView()
-                }
+//                SectionHomeComponentView(title: "Statistiques") {
+//                    ButtonShowStatistiquesPraticienView()
+//                }
                 
                 SectionHomeComponentView(title: "Articles") {
                     GridViewWrapper(articles: articles, config: $gridViewConfig, numberOfColumns: $numberOfColumns) { article in

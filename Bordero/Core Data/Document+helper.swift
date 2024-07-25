@@ -264,8 +264,14 @@ extension Document {
         } else if calendar.isDate(date, equalTo: currentDate, toGranularity: .month) {
             return "Ce mois"
         } else {
+            let monthAgo = calendar.date(byAdding: .month, value: -1, to: currentDate)!
+            if calendar.isDate(date, equalTo: monthAgo, toGranularity: .month) {
+                return "Le mois dernier"
+            }
+            
             // Calculate the start date for 6 months ago
             let sixMonthsAgo = calendar.date(byAdding: .month, value: -6, to: currentDate)!
+            
             
             if date >= sixMonthsAgo {
                 return "6 derniers mois"
