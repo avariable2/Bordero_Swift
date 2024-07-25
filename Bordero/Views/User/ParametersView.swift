@@ -48,18 +48,27 @@ struct ParametersView: View {
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color.clear)
                 
-                
-                Section {
+                Section("Votre société") {
                     NavigationLink {
                         if let firstPraticien {
                             FormPraticienView(praticien: firstPraticien)
                         }
-                        
                     } label: {
                         RowIconColor(
                             text: "Vos coordonnées",
                             systemName: "person.crop.square.fill",
                             color: .green,
+                            accessibility: "Bouton pour modifier vos informations personnelles"
+                        )
+                    }
+                    
+                    NavigationLink {
+                        ListTypeActe()
+                    } label: {
+                        RowIconColor(
+                            text: "Vos types d'actes",
+                            systemName: "heart.square.fill",
+                            color: .purple,
                             accessibility: "Bouton pour modifier vos informations personnelles"
                         )
                     }
@@ -75,7 +84,7 @@ struct ParametersView: View {
                         RowIconColor(
                             text: "Paramètres du modèle",
                             systemName: "lightswitch.on.square.fill",
-                            color: .purple,
+                            color: .gray,
                             accessibility: "Bouton pour modifier les options de votre facture"
                         )
                     }
