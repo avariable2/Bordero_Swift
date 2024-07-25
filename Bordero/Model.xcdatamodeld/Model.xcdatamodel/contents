@@ -69,6 +69,7 @@
         <attribute name="lastDocumentNumber" optional="YES" attributeType="String"/>
         <attribute name="lastname_" optional="YES" attributeType="String"/>
         <attribute name="logoSociete" optional="YES" attributeType="Binary"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="nom_proffession" optional="YES" attributeType="String"/>
         <attribute name="parametersDocument_" optional="YES" attributeType="Composite" composite="ParametersModeleDocument"/>
         <attribute name="parametersNotifications_" optional="YES" attributeType="Composite" composite="Notification"/>

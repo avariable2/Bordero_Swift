@@ -15,13 +15,13 @@
 							<key>EndingColumnNumber</key>
 							<string>0</string>
 							<key>EndingLineNumber</key>
-							<string>126</string>
+							<string>145</string>
 							<key>StartingColumnNumber</key>
 							<string>0</string>
 							<key>StartingLineNumber</key>
-							<string>125</string>
+							<string>144</string>
 							<key>Timestamp</key>
-							<string>739636439.895748</string>
+							<string>743631016.5776139</string>
 						</dict>
 						<key>rebasable-url</key>
 						<dict>
@@ -179,6 +179,53 @@ struct OnBoardingView : View {
 			</dict>
 			<key>title</key>
 			<string>A mutualiser avec DevelopperMailView</string>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>15</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>14</string>
+					<key>Timestamp</key>
+					<string>743631331.912708</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Bordero/Views/User/ParametersView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>    @FetchRequest(
+</string>
+				<key>leading</key>
+				<string>    
+    @Environment(\.managedObjectContext) var moc
+</string>
+				<key>trailing</key>
+				<string>        sortDescriptors: [SortDescriptor(\Praticien.modificationDate)]
+        
+    ) var praticien: FetchedResults&lt;Praticien&gt;
+</string>
+			</dict>
+			<key>title</key>
+			<string>Gerer le cas ou une personne change ses informations mais garde deux appareil allumé et ne change pas de screnne sur l'appareil qui na pas changer les infos </string>
 			<key>type</key>
 			<string>bookmark</string>
 		</dict>

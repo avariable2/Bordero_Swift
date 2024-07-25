@@ -112,7 +112,6 @@ struct ListDocument: View {
     
     var body: some View {
         VStack {
-            
             if documents.isEmpty {
                 ContentUnavailableView(
                     "Aucun document",

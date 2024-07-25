@@ -102,8 +102,8 @@ struct HomeView: View {
         }
         .sheet(item: $activeSheet) { type in
             switch(type) {
-            case .parameters:
-                ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
+//            case .parameters:
+//                ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
             default:
                 EmptyView()
             }

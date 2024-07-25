@@ -9,6 +9,7 @@ import SwiftUI
 import Contacts
 import SwiftUIDigitalSignature
 import PhotosUI
+import CoreData
 
 struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     static func getVersion() -> Int32 {
@@ -40,7 +41,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var showAlert = false
     
     // MARK: Option d'affichage du formulaire
-    var isOnBoarding : Bool
+    
     var titre = "Renseignements professionnels"
     var textFacultatif = "facultatif"
     
@@ -50,19 +51,9 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         List {
             VStack(alignment: .center, spacing: 20) {
-                
-                ProfilImageView(imageData: profilPicture?.jpegData(compressionQuality: 1.0))
+                ProfilImageView(imageData: praticien.profilPicture)
                     .frame(height: 80)
                     .font(.system(size: 60))
-                
-                if isOnBoarding {
-                    Text("Configurer les renseignements \n professionnels")
-                        .font(.title)
-                        .bold()
-                    
-                    Text("Vos renseignements professionnels correspondent aux informations élémentaires dont l'app a besoin pour respecter au mieux les normes de l'édition de documents administratifs.")
-                        .padding(.horizontal)
-                }
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -89,6 +80,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                         if let imageData = contact.thumbnailImageData, let uiImage = UIImage(data: imageData) {
                             profilPicture = uiImage
                             profilPicture!.jpegData(compressionQuality: 1.0)
+                            praticien.profilPicture = uiImage.pngData()
                         }
                         
                     }
@@ -273,19 +265,19 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         .onAppear {
             retrieveInfoFormPraticienNotNull(praticien)
         }
-        .navigationTitle(isOnBoarding ? "" : titre)
-        .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
         .headerProminence(.increased)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
+        .navigationBarBackButtonHidden(true)
         .toolbar {
-            if !isOnBoarding {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        modify()
-                        dismiss()
-                    } label: {
-                        Text("OK")
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    modify()
+                    dismiss()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Retour")
                     }
                 }
             }
@@ -301,22 +293,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                 Text("Sauvegarder")
             }
         })
-        .safeAreaInset(edge: .bottom) {
-            if isOnBoarding {
-                Button {
-                    modify()
-                } label: {
-                    Text("Suivant")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
-            }
-        }
     }
     
     func save() {
@@ -341,6 +317,8 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     func createPraticienObject() -> Praticien {
         praticien.version = FormPraticienView.getVersion()
+        
+        praticien.modificationDate = Date()
         
         praticien.profilPicture = profilPicture?.jpegData(compressionQuality: 1.0)
         praticien.logoSociete = selectedPhotoSocieteUIImage?.jpegData(compressionQuality: 1.0)
@@ -387,5 +365,5 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
 }
 
 #Preview {
-    FormPraticienView(isOnBoarding: false, praticien: Praticien.example)
+    FormPraticienView(praticien: Praticien.example)
 }
