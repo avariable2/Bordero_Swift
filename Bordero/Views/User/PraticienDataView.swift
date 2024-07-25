@@ -16,8 +16,11 @@ struct PraticienDataView: View {
                 Section {
                     ClientPaymentEstimateGraphView()
                 } header: {
-                    Text("Temps moyen de paiement des clients")
-                        .fixedSize()
+                    ViewThatFits {
+                        Text("Temps moyen de paiement des clients")
+                        
+                        Text("Délai moyen de paiement")
+                    }
                 }
                 
                 Section("Revenu sur période") {
