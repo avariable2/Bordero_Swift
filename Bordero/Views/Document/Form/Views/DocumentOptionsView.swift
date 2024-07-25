@@ -18,7 +18,7 @@ struct DocumentOptionsView: View, Saveable {
     @State private var virementB : Bool = false
     @State private var cheque : Bool = false
     
-    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
+    @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
     
     @Bindable var viewModel : PDFViewModel
     

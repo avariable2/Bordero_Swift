@@ -30,7 +30,7 @@ class PraticienUtils {
     static let shared = PraticienUtils()
     
     static let predicate = NSPredicate(
-        format: "version <= %d && id == %@",
-        argumentArray: [FormPraticienView.getVersion(), FormPraticienView.uuidPraticien! as CVarArg]
+        format: "version <= %d",
+        argumentArray: [FormPraticienView.getVersion() as CVarArg]
     )
 }

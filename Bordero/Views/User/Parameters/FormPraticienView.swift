@@ -16,9 +16,6 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         return 1
     }
     
-    // Create a unique and specif uuid for be sure all user has the same and can get her data from home
-    static let uuidPraticien = UUID(uuidString: "62094590-C187-4F68-BE0D-D8E348299900")
-    
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     

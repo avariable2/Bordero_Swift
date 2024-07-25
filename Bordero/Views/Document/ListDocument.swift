@@ -27,8 +27,9 @@ struct ListDocument: View {
     
     @FetchRequest(
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
+            NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false),
         ],
+//        predicate: PraticienUtils.predicate,
         animation: .default
     ) var documents: FetchedResults<Document>
     
