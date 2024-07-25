@@ -34,7 +34,7 @@ struct DocumentOptionsView: View, Saveable {
                         RowIconColor(
                             text: "Vos informations",
                             systemName: "person.crop.square.fill",
-                            color: .pink,
+                            color: .green,
                             accessibility: "Bouton pour modifier vos informations"
                         )
                     }
