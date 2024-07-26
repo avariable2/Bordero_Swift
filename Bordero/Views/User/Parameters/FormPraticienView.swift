@@ -18,6 +18,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     // MARK: Textfield pour les coordoonées du praticien
     @State private var profilPicture : UIImage? = nil
@@ -35,10 +36,8 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var selectedPhotoSocieteUIImage: UIImage?
     
     @State private var selectedContact: CNContact?
-    @State private var showAlert = false
     
     // MARK: Option d'affichage du formulaire
-    
     var titre = "Renseignements professionnels"
     var textFacultatif = "facultatif"
     
@@ -262,54 +261,26 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         .onAppear {
             retrieveInfoFormPraticienNotNull(praticien)
         }
+        .onDisappear() {
+            modify()
+            
+            if horizontalSizeClass == .compact {
+                dismiss()
+            }
+        }
         .headerProminence(.increased)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button {
-                    modify()
-                    dismiss()
-                } label: {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("Retour")
-                    }
-                }
-            }
-        }
-        .alert("Les données ne seront pas sauvegardées", isPresented: $showAlert, actions: {
-            Button("Quitter", role: .destructive) {
-                dismiss()
-            }
-            
-            Button {
-                modify()
-            } label :{
-                Text("Sauvegarder")
-            }
-        })
-    }
-    
-    func save() {
-        do {
-            try moc.save()
-            
-            print("Success")
-            
-            if let action = callback {
-                action()
-            }
-        } catch let err {
-            print("error \(err)")
-        }
     }
     
     func modify() {
         let _ = createPraticienObject()
         
         save()
+    }
+    
+    func save() {
+        DataController.saveContext()
     }
     
     func createPraticienObject() -> Praticien {

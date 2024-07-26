@@ -133,7 +133,6 @@ struct ListDocument: View {
                             )
                         } label: {
                             Text("Toutes les stats")
-                                .foregroundStyle(.link)
                         }
                     }
                     
@@ -276,11 +275,6 @@ struct RowDocumentView :View {
                             .foregroundStyle(isLate ? .red : .secondary)
                         
                         Divider()
-                        
-                        if horizontalSizeClass == .regular {
-                            Text("N° : \(document.numero)")
-                            Divider()
-                        }
                         
                         Text(document.totalTTC, format: .currency(code: "EUR"))
                             .fontWeight(.semibold)

@@ -46,6 +46,8 @@ enum DateEcheanceParams : String, CaseIterable, Identifiable {
 
 struct ModeleDocumentView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     @State var praticien : Praticien
     
     @State private var color: Color = .green
@@ -110,15 +112,11 @@ struct ModeleDocumentView: View {
             }
         }
         .navigationTitle("Conception du modèle")
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button {
-                    save()
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                }
+        .onDisappear() {
+            save()
+            
+            if horizontalSizeClass == .compact {
+                dismiss()
             }
         }
     }
