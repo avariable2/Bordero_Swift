@@ -229,7 +229,7 @@ struct ParametersView: View {
         if results.count > 0 {
             firstPraticien = results.first
         } else {
-            firstPraticien = Praticien(context: moc)
+            firstPraticien = Praticien(moc: moc)
         }
     }
 }
