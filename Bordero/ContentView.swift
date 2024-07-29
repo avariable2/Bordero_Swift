@@ -28,19 +28,21 @@ enum MenuNavigation : String, Identifiable, CaseIterable {
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
+    @State private var selection : MenuNavigation? = .documents
+    
     var body: some View {
         VStack {
             if horizontalSizeClass == .compact {
-                 CustomTabView()
+                CustomTabView(selection: $selection)
             } else {
-                NavigationIpad()
+                NavigationIpad(selectedMenu: $selection)
             }
         }
     }
 }
 
 struct CustomTabView: View {
-    @State private var selection : MenuNavigation = .documents
+    @Binding var selection : MenuNavigation?
     @State var activeSheet : ActiveSheet? = nil
     
     var body: some View {
@@ -79,7 +81,7 @@ struct CustomTabView: View {
 struct NavigationIpad: View {
     @State private var selectedClient : Client?
     
-    @State private var selectedMenu : MenuNavigation? = .documents
+    @Binding var selectedMenu : MenuNavigation?
     @State var activeSheet : ActiveSheet? = nil
     
     var body: some View {
