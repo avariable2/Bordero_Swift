@@ -259,8 +259,13 @@ class PDFViewModel {
             document.elements?.adding(snapshotTypeActe)
         }
         
-        document.payementFinish = self.pdfModel.optionsDocument.payementFinish
-        document.payementUse = self.pdfModel.optionsDocument.payementUse.rawValue // Prend le nom du payement pour le retrouvé après
+        if self.pdfModel.optionsDocument.estFacture {
+            document.payementFinish = self.pdfModel.optionsDocument.payementFinish
+            document.payementUse = self.pdfModel.optionsDocument.payementUse.rawValue // Prend le nom du payement pour le retrouvé après
+        } else {
+            document.payementFinish = false
+            document.payementUse = ""
+        }
         document.note = self.pdfModel.optionsDocument.note
         
         if let praticien = self.pdfModel.praticien {

@@ -125,6 +125,7 @@ struct ListClients: View {
                 }
             }
         }
+        .listStyle(.plain)
         .trackEventOnAppear(event: .clientListBrowsed, category: .clientManagement)
         .navigationTitle("Clients")
         .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
@@ -255,16 +256,19 @@ struct ClientRow: View {
                     .tint(.primary)
                 }
             } else {
-                NavigationLink{
-                    ClientDetailView(client: client)
-                } label: {
-                    HStack {
-                        Text(client.firstname)
-                        + Text(" ")
-                        + Text(client.lastname).bold()
-                        Spacer()
+                HStack {
+                    Text(client.firstname)
+                    + Text(" ")
+                    + Text(client.lastname).bold()
+                    Spacer()
+                }.background(
+                    NavigationLink{
+                        ClientDetailView(client: client)
+                    } label: {
+                        
                     }
-                }
+                        .opacity(0)
+                )
             }
         }
     }

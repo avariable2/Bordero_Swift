@@ -215,6 +215,7 @@ struct ListDocument: View {
                 }
             }
         }
+        .listStyle(.grouped)
         .navigationTitle("Documents")
         .headerProminence(.increased)
         .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
