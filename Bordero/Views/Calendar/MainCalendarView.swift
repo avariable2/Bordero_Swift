@@ -42,7 +42,9 @@ struct MainCalendarView: View {
 }
 
 #Preview {
-    MainCalendarView()
+    NavigationStack {
+        MainCalendarView()
+    }
 }
 
 
@@ -137,10 +139,10 @@ class DataModel {
         ]
 
         let eventTomorrow = [
-            CalendarEvent(id: "wakeup", startDate: dateTomorrow.bySettingHour(6, minute: 10), activity: getActivities(withTitle: "Wakeup")!),
-            CalendarEvent(id: "2jog", startDate: dateTomorrow.bySettingHour(6, minute: 30), activity: getActivities(withTitle: "Morning Jog")!),
-            CalendarEvent(id: "2breakfast", startDate: dateTomorrow.bySettingHour(7, minute: 30), activity: getActivities(withTitle: "Breakfast")!),
-            CalendarEvent(id: "2Meditation", startDate: dateTomorrow.bySettingHour(8, minute: 30), activity: getActivities(withTitle: "Meditation")!),
+            CalendarEvent(id: "wakeup", startDate: dateTomorrow.bySettingHour(8, minute: 10), activity: getActivities(withTitle: "Wakeup")!),
+            CalendarEvent(id: "2jog", startDate: dateTomorrow.bySettingHour(8, minute: 30), activity: getActivities(withTitle: "Morning Jog")!),
+            CalendarEvent(id: "2breakfast", startDate: dateTomorrow.bySettingHour(9, minute: 30), activity: getActivities(withTitle: "Breakfast")!),
+            CalendarEvent(id: "2Meditation", startDate: dateTomorrow.bySettingHour(10, minute: 30), activity: getActivities(withTitle: "Meditation")!),
             CalendarEvent(id: "2Meditation2", startDate: dateTomorrow.bySettingHour(15, minute: 30), activity: getActivities(withTitle: "Meditation")!),
             CalendarEvent(id: "2reading2", startDate: dateTomorrow.bySettingHour(15, minute: 45), activity: getActivities(withTitle: "Reading")!)
         ]

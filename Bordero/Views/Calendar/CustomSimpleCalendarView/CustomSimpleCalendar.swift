@@ -110,7 +110,7 @@ public struct CustomSimpleCalendarView: View {
                 )
             }
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItem(placement: .topBarLeading) {
                     ZStack {
                         switch dateSelectionStyle {
                         case .datePicker:
