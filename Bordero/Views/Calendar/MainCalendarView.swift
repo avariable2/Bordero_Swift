@@ -16,19 +16,28 @@ struct MainCalendarView: View {
     @State private var selectedDate = Date()
 
     var body: some View {
-//        VStack {
-//            SimpleCalendarView(
-//                events: $events,
-//                selectedDate: $selectedDate,
-//                startHourOfDay: 8
-//            )
-//        }
-//        .onAppear {
-//            self.events = dataModel.getEvents()
-//        }
-//        .navigationTitle("Calendrier")
-        
-        CalendarController()
+        VStack {
+            CustomSimpleCalendarView(
+                events: $events,
+                selectedDate: $selectedDate,
+                hourSpacing: 50,
+                startHourOfDay: 8
+            )
+        }
+        .onAppear {
+            self.events = dataModel.getEvents()
+        }
+        .navigationTitle("\(selectedDate.formatted(.dateTime.weekday(.wide)).capitalized)")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "calendar.badge.plus")
+                        .foregroundStyle(.green, .blue)
+                }
+            }
+        }
     }
 }
 
@@ -117,11 +126,11 @@ class DataModel {
         let dateTenDaysFromNow = Date(timeIntervalSinceNow: (24 * 3600) * 10)
 
         let eventsToday = [
-            CalendarEvent(id: "wakeup", startDate: dateToday.bySettingHour(6, minute: 10), activity: getActivities(withTitle: "Wakeup")!),
-            CalendarEvent(id: "1jog", startDate: dateToday.bySettingHour(6, minute: 30), activity: getActivities(withTitle: "Morning Jog")!),
-            CalendarEvent(id: "1breakfast", startDate: dateToday.bySettingHour(7, minute: 30), activity: getActivities(withTitle: "Breakfast")!),
-            CalendarEvent(id: "1Meditation", startDate: dateToday.bySettingHour(8, minute: 30), activity: getActivities(withTitle: "Meditation")!),
-            CalendarEvent(id: "1reading", startDate: dateToday.bySettingHour(9, minute: 30), activity: getActivities(withTitle: "Reading")!),
+            CalendarEvent(id: "wakeup", startDate: dateToday.bySettingHour(8, minute: 10), activity: getActivities(withTitle: "Wakeup")!),
+            CalendarEvent(id: "1jog", startDate: dateToday.bySettingHour(8, minute: 30), activity: getActivities(withTitle: "Morning Jog")!),
+            CalendarEvent(id: "1breakfast", startDate: dateToday.bySettingHour(9, minute: 30), activity: getActivities(withTitle: "Breakfast")!),
+            CalendarEvent(id: "1Meditation", startDate: dateToday.bySettingHour(9, minute: 30), activity: getActivities(withTitle: "Meditation")!),
+            CalendarEvent(id: "1reading", startDate: dateToday.bySettingHour(10, minute: 30), activity: getActivities(withTitle: "Reading")!),
             CalendarEvent(id: "1Meditation2", startDate: dateToday.bySettingHour(15, minute: 30), activity: getActivities(withTitle: "Meditation")!),
             CalendarEvent(id: "1reading2", startDate: dateToday.bySettingHour(15, minute: 45), activity: getActivities(withTitle: "Reading")!),
             CalendarEvent(id: "1movie", startDate: dateToday.bySettingHour(21, minute: 0), activity: getActivities(withTitle: "Watch a Movie")!)

@@ -97,8 +97,14 @@
 		F7B401992C57B7C900104862 /* CalendarKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7B401982C57B7C900104862 /* CalendarKit */; };
 		F7B4019C2C57B7E900104862 /* MainCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4019B2C57B7E900104862 /* MainCalendarView.swift */; };
 		F7B4019F2C57B87A00104862 /* SimpleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F7B4019E2C57B87A00104862 /* SimpleCalendar */; };
-		F7B401A12C592B9D00104862 /* CalendarKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401A02C592B9D00104862 /* CalendarKitView.swift */; };
 		F7B401A32C593EDE00104862 /* EKWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401A22C593EDE00104862 /* EKWrapper.swift */; };
+		F7B401AE2C59645700104862 /* CustomSimpleCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401AD2C59645700104862 /* CustomSimpleCalendar.swift */; };
+		F7B401B12C59670B00104862 /* CalendarPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B02C59670B00104862 /* CalendarPageView.swift */; };
+		F7B401B32C59672800104862 /* CalendarTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B22C59672800104862 /* CalendarTimelineView.swift */; };
+		F7B401B52C59674C00104862 /* CalendarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B42C59674C00104862 /* CalendarContentView.swift */; };
+		F7B401B82C5967AD00104862 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B72C5967AD00104862 /* EventView.swift */; };
+		F7B401BA2C5967E900104862 /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B92C5967E900104862 /* EventDetailsView.swift */; };
+		F7B401BD2C59682100104862 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401BC2C59682100104862 /* Date+Formatting.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
@@ -200,8 +206,14 @@
 		F79D41AE2C122C8A001D5C27 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		F7B4019B2C57B7E900104862 /* MainCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCalendarView.swift; sourceTree = "<group>"; };
-		F7B401A02C592B9D00104862 /* CalendarKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarKitView.swift; sourceTree = "<group>"; };
 		F7B401A22C593EDE00104862 /* EKWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKWrapper.swift; sourceTree = "<group>"; };
+		F7B401AD2C59645700104862 /* CustomSimpleCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSimpleCalendar.swift; sourceTree = "<group>"; };
+		F7B401B02C59670B00104862 /* CalendarPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPageView.swift; sourceTree = "<group>"; };
+		F7B401B22C59672800104862 /* CalendarTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTimelineView.swift; sourceTree = "<group>"; };
+		F7B401B42C59674C00104862 /* CalendarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarContentView.swift; sourceTree = "<group>"; };
+		F7B401B72C5967AD00104862 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		F7B401B92C5967E900104862 /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
+		F7B401BC2C59682100104862 /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
@@ -473,11 +485,41 @@
 		F7B4019A2C57B7D300104862 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F7B401AF2C5966BD00104862 /* CustomSimpleCalendarView */,
 				F7B4019B2C57B7E900104862 /* MainCalendarView.swift */,
-				F7B401A02C592B9D00104862 /* CalendarKitView.swift */,
 				F7B401A22C593EDE00104862 /* EKWrapper.swift */,
 			);
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		F7B401AF2C5966BD00104862 /* CustomSimpleCalendarView */ = {
+			isa = PBXGroup;
+			children = (
+				F7B401AD2C59645700104862 /* CustomSimpleCalendar.swift */,
+				F7B401BB2C59680A00104862 /* Extensions */,
+				F7B401B62C59678000104862 /* Views */,
+			);
+			path = CustomSimpleCalendarView;
+			sourceTree = "<group>";
+		};
+		F7B401B62C59678000104862 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F7B401B02C59670B00104862 /* CalendarPageView.swift */,
+				F7B401B22C59672800104862 /* CalendarTimelineView.swift */,
+				F7B401B42C59674C00104862 /* CalendarContentView.swift */,
+				F7B401B72C5967AD00104862 /* EventView.swift */,
+				F7B401B92C5967E900104862 /* EventDetailsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F7B401BB2C59680A00104862 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F7B401BC2C59682100104862 /* Date+Formatting.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		F7B6678C2BFBD3A200061908 /* Parameters */ = {
@@ -615,6 +657,7 @@
 				TargetAttributes = {
 					F7DFAD962B66839C00C905A7 = {
 						CreatedOnToolsVersion = 15.2;
+						LastSwiftMigration = 1540;
 					};
 				};
 			};
@@ -695,12 +738,15 @@
 				F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */,
 				F78737282BDD60A6002E6C85 /* NSPredicate+helper.swift in Sources */,
 				F72B0FDE2BF3EDE700740770 /* PaiementPraticienGraphView.swift in Sources */,
+				F7B401B12C59670B00104862 /* CalendarPageView.swift in Sources */,
 				F7E88C812B895BAE00AAF73C /* BandeauCreateDocument.swift in Sources */,
 				F792B7592B70EF6200FA5569 /* FormTypeActeSheet.swift in Sources */,
 				F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */,
 				F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */,
 				F7BD18302C511D4E003C09ED /* IconStatusDocument.swift in Sources */,
 				F75F36AC2BD52938003FF0D0 /* ListDocument.swift in Sources */,
+				F7B401BA2C5967E900104862 /* EventDetailsView.swift in Sources */,
+				F7B401AE2C59645700104862 /* CustomSimpleCalendar.swift in Sources */,
 				F7E88C8A2B8A432700AAF73C /* TitleWithIconColorComponentView.swift in Sources */,
 				F75F3C9E2BB0A51400514246 /* AlphabetSidebarView.swift in Sources */,
 				F7878F422BD87F3500EC53E0 /* PDFTableView.swift in Sources */,
@@ -721,11 +767,11 @@
 				F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */,
 				F78096632BAC651A00B3AF4A /* TVAParametersView.swift in Sources */,
 				F780966F2BAC855F00B3AF4A /* RowIconColor.swift in Sources */,
+				F7B401B82C5967AD00104862 /* EventView.swift in Sources */,
 				F75083AF2C109A2C00B32E1F /* AnalyticsService.swift in Sources */,
 				F70CFEA22B7EA9A500F777AA /* DataController.swift in Sources */,
 				F76063872BC6BB6400776C8E /* Client+helper.swift in Sources */,
 				F7878F3B2BD7ED7000EC53E0 /* ApercusTabDetailView.swift in Sources */,
-				F7B401A12C592B9D00104862 /* CalendarKitView.swift in Sources */,
 				F76ECAC52BD283730089C739 /* Document+helper.swift in Sources */,
 				F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */,
 				F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */,
@@ -754,9 +800,12 @@
 				F7DFAD9B2B66839C00C905A7 /* BorderoApp.swift in Sources */,
 				F79D41AF2C122C8A001D5C27 /* HighlightText.swift in Sources */,
 				F7587B492BCB33A0007007B8 /* HistoriqueTabDetailView.swift in Sources */,
+				F7B401B52C59674C00104862 /* CalendarContentView.swift in Sources */,
+				F7B401B32C59672800104862 /* CalendarTimelineView.swift in Sources */,
 				F78748622BE9221800EAE35F /* ClientDataView.swift in Sources */,
 				F780FA612C134D4D00CDAAAF /* DisplayPayementSheet.swift in Sources */,
 				F748ADD42B669B3600B82C5D /* ListTypeActe.swift in Sources */,
+				F7B401BD2C59682100104862 /* Date+Formatting.swift in Sources */,
 				F767E0E32C04C25000701BFE /* ToolBarView.swift in Sources */,
 				F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */,
 				F78227982BB3428D0033429F /* FormTypeActeView.swift in Sources */,
@@ -889,6 +938,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Bordero/Bordero.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -923,6 +973,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -933,6 +984,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Bordero/Bordero.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
