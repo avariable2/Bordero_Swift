@@ -11,6 +11,7 @@ enum MenuNavigation : String, Identifiable, CaseIterable {
     case clients
     case documents
     case parametres = "Paramètres"
+    case calendrier
     
     var id : String { return self.rawValue }
     var systemNameImage : String {
@@ -21,6 +22,8 @@ enum MenuNavigation : String, Identifiable, CaseIterable {
             "list.bullet.rectangle"
         case .parametres:
             "person.crop.circle"
+        case .calendrier:
+            "calendar"
         }
     }
 }
@@ -50,7 +53,7 @@ struct CustomTabView: View {
             }
             .tabItem {
                 Image(systemName: "person.2")
-                Text("Clients")
+                Text(MenuNavigation.clients.rawValue.capitalized)
             }
             .tag(MenuNavigation.clients)
             
@@ -60,16 +63,26 @@ struct CustomTabView: View {
             .tabItem {
                 Image(systemName: "list.bullet.rectangle.fill")
                     .bold()
-                Text("Documents")
+                Text(MenuNavigation.documents.rawValue.capitalized)
             }
             .tag(MenuNavigation.documents)
+            
+            NavigationStack {
+                MainCalendarView()
+            }
+            .tabItem {
+                Image(systemName: "calendar")
+                    .bold()
+                Text(MenuNavigation.calendrier.rawValue.capitalized)
+            }
+            .tag(MenuNavigation.calendrier)
             
             NavigationStack {
                 ParametersView(activeSheet: $activeSheet)
             }
             .tabItem {
                 Image(systemName: "person.crop.circle")
-                Text("Paramètres")
+                Text(MenuNavigation.parametres.rawValue.capitalized)
             }
             .tag(MenuNavigation.parametres)
         }
@@ -112,6 +125,8 @@ struct NavigationIpad: View {
             ListDocument()
         case .parametres:
             ParametersView(activeSheet: $activeSheet)
+        case .calendrier:
+            MainCalendarView()
         }
     }
 }

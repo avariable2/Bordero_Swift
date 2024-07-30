@@ -1,5 +1,5 @@
 {
-  "originHash" : "8db6c866f9e5bff1007ff4afbac22de0e5e8b50e319b19a75b3ef83fdb3c891a",
+  "originHash" : "7bbdd0e4ce6af0f1a87cd0bd78cdc7d0bab652696ea5f73a79dc7fc18380e30f",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "076b241a625e25eac22f8849be256dfb960fcdfe",
         "version" : "10.19.1"
+      }
+    },
+    {
+      "identity" : "calendarkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/richardtop/CalendarKit.git",
+      "state" : {
+        "revision" : "92684acdffb76941268b6627f894274754771e41",
+        "version" : "1.1.10"
       }
     },
     {
@@ -134,6 +143,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "ac89cf395140d4629ff2698ab9837033836db110"
+      }
+    },
+    {
+      "identity" : "simplecalendar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ppeelen/SimpleCalendar.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "86793d8912607790b61b2737be060b09ecc1bd0e"
       }
     },
     {

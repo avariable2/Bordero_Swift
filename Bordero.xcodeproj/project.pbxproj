@@ -94,6 +94,11 @@
 		F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */; };
 		F79D41AF2C122C8A001D5C27 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D41AE2C122C8A001D5C27 /* HighlightText.swift */; };
 		F7A9255F2C0229A900F9EE55 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */; };
+		F7B401992C57B7C900104862 /* CalendarKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7B401982C57B7C900104862 /* CalendarKit */; };
+		F7B4019C2C57B7E900104862 /* MainCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4019B2C57B7E900104862 /* MainCalendarView.swift */; };
+		F7B4019F2C57B87A00104862 /* SimpleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F7B4019E2C57B87A00104862 /* SimpleCalendar */; };
+		F7B401A12C592B9D00104862 /* CalendarKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401A02C592B9D00104862 /* CalendarKitView.swift */; };
+		F7B401A32C593EDE00104862 /* EKWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401A22C593EDE00104862 /* EKWrapper.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
@@ -194,6 +199,9 @@
 		F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllHistoriquesPaiements.swift; sourceTree = "<group>"; };
 		F79D41AE2C122C8A001D5C27 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		F7A9255E2C0229A900F9EE55 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		F7B4019B2C57B7E900104862 /* MainCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCalendarView.swift; sourceTree = "<group>"; };
+		F7B401A02C592B9D00104862 /* CalendarKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarKitView.swift; sourceTree = "<group>"; };
+		F7B401A22C593EDE00104862 /* EKWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKWrapper.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
@@ -221,11 +229,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7B4019F2C57B87A00104862 /* SimpleCalendar in Frameworks */,
 				F75083AC2C10978000B32E1F /* FirebaseAppCheck in Frameworks */,
 				F75083A82C10978000B32E1F /* FirebaseAnalyticsSwift in Frameworks */,
 				F78096722BAC8CE600B3AF4A /* SwiftUIDigitalSignature in Frameworks */,
 				F75575D92C06139D00483A47 /* MijickGridView in Frameworks */,
 				F75083A62C10978000B32E1F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				F7B401992C57B7C900104862 /* CalendarKit in Frameworks */,
 				F75083AA2C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				F75083A42C10978000B32E1F /* FirebaseAnalytics in Frameworks */,
 				F706CA732C14CFE1000E991D /* MijickPopupView in Frameworks */,
@@ -460,6 +470,16 @@
 			path = DataComposant;
 			sourceTree = "<group>";
 		};
+		F7B4019A2C57B7D300104862 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				F7B4019B2C57B7E900104862 /* MainCalendarView.swift */,
+				F7B401A02C592B9D00104862 /* CalendarKitView.swift */,
+				F7B401A22C593EDE00104862 /* EKWrapper.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
 		F7B6678C2BFBD3A200061908 /* Parameters */ = {
 			isa = PBXGroup;
 			children = (
@@ -527,6 +547,7 @@
 		F7DFADA92B66894500C905A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F7B4019A2C57B7D300104862 /* Calendar */,
 				F78096682BAC7FFA00B3AF4A /* PackageSwift */,
 				F777A2E82B8DEF2E001E0169 /* User */,
 				F7D8E0142B8BA14400D4F28B /* OnBoarding */,
@@ -575,6 +596,8 @@
 				F75083A92C10978000B32E1F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				F75083AB2C10978000B32E1F /* FirebaseAppCheck */,
 				F706CA722C14CFE1000E991D /* MijickPopupView */,
+				F7B401982C57B7C900104862 /* CalendarKit */,
+				F7B4019E2C57B87A00104862 /* SimpleCalendar */,
 			);
 			productName = Bordero;
 			productReference = F7DFAD972B66839C00C905A7 /* Bordero.app */;
@@ -611,6 +634,8 @@
 				F75575D72C06139D00483A47 /* XCRemoteSwiftPackageReference "GridView" */,
 				F75083A22C10978000B32E1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F706CA712C14CFE0000E991D /* XCRemoteSwiftPackageReference "PopupView" */,
+				F7B401972C57B7C900104862 /* XCRemoteSwiftPackageReference "CalendarKit" */,
+				F7B4019D2C57B87A00104862 /* XCRemoteSwiftPackageReference "SimpleCalendar" */,
 			);
 			productRefGroup = F7DFAD982B66839C00C905A7 /* Products */;
 			projectDirPath = "";
@@ -666,6 +691,7 @@
 				F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */,
 				F7710D2F2BF11C13009D43C0 /* PayementSheet.swift in Sources */,
 				F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */,
+				F7B401A32C593EDE00104862 /* EKWrapper.swift in Sources */,
 				F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */,
 				F78737282BDD60A6002E6C85 /* NSPredicate+helper.swift in Sources */,
 				F72B0FDE2BF3EDE700740770 /* PaiementPraticienGraphView.swift in Sources */,
@@ -699,6 +725,7 @@
 				F70CFEA22B7EA9A500F777AA /* DataController.swift in Sources */,
 				F76063872BC6BB6400776C8E /* Client+helper.swift in Sources */,
 				F7878F3B2BD7ED7000EC53E0 /* ApercusTabDetailView.swift in Sources */,
+				F7B401A12C592B9D00104862 /* CalendarKitView.swift in Sources */,
 				F76ECAC52BD283730089C739 /* Document+helper.swift in Sources */,
 				F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */,
 				F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */,
@@ -714,6 +741,7 @@
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,
 				F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */,
+				F7B4019C2C57B7E900104862 /* MainCalendarView.swift in Sources */,
 				F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */,
 				F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */,
 				F772821E2C14BF9500FF153D /* DocumentFormView.swift in Sources */,
@@ -1008,6 +1036,22 @@
 				minimumVersion = 0.1.2;
 			};
 		};
+		F7B401972C57B7C900104862 /* XCRemoteSwiftPackageReference "CalendarKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/richardtop/CalendarKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.10;
+			};
+		};
+		F7B4019D2C57B87A00104862 /* XCRemoteSwiftPackageReference "SimpleCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ppeelen/SimpleCalendar.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1055,6 +1099,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F78096702BAC8CE600B3AF4A /* XCRemoteSwiftPackageReference "swiftui-digital-signature" */;
 			productName = SwiftUIDigitalSignature;
+		};
+		F7B401982C57B7C900104862 /* CalendarKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7B401972C57B7C900104862 /* XCRemoteSwiftPackageReference "CalendarKit" */;
+			productName = CalendarKit;
+		};
+		F7B4019E2C57B87A00104862 /* SimpleCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7B4019D2C57B87A00104862 /* XCRemoteSwiftPackageReference "SimpleCalendar" */;
+			productName = SimpleCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 
