@@ -14,6 +14,7 @@
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="documents_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Document" inverseName="client_" inverseEntity="Document"/>
         <relationship name="paiements_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Paiement" inverseName="client" inverseEntity="Paiement"/>
+        <relationship name="participateTo_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Seance" inverseName="client_" inverseEntity="Seance"/>
     </entity>
     <entity name="Document" representedClassName="Document" syncable="YES" codeGenerationType="class">
         <attribute name="contenuPdf" optional="YES" attributeType="Binary"/>
@@ -83,6 +84,15 @@
         <attribute name="virement_bancaire" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="website_" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="Seance" representedClassName="Seance" syncable="YES" codeGenerationType="class">
+        <attribute name="color_" optional="YES" attributeType="String"/>
+        <attribute name="comment_" optional="YES" attributeType="String"/>
+        <attribute name="endDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="startDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="client_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Client" inverseName="participateTo_" inverseEntity="Client"/>
+        <relationship name="typeActe_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TypeActe" inverseName="seances_" inverseEntity="TypeActe"/>
+    </entity>
     <entity name="SnapshotTypeActe" representedClassName="SnapshotTypeActe" syncable="YES" codeGenerationType="class">
         <attribute name="date_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -98,6 +108,7 @@
         <relationship name="estUnElementDe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="elements" inverseEntity="Document"/>
     </entity>
     <entity name="TypeActe" representedClassName="TypeActe" syncable="YES" codeGenerationType="class">
+        <attribute name="duration_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="info_" optional="YES" attributeType="String"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
@@ -105,6 +116,7 @@
         <attribute name="total_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="tva_" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="version" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="seances_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Seance" inverseName="typeActe_" inverseEntity="Seance"/>
     </entity>
     <composite name="Adresse">
         <attribute name="rue" optional="YES" attributeType="String"/>

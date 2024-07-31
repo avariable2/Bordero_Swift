@@ -31,6 +31,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     @State private var tot : Double = 0
     @State private var addFavoris = false
     
+    @State private var duration : Date = Calendar.current.date(bySettingHour: 1, minute: 0, second: 0, of: Date())!
+    
     private var disableForm: Bool {
         nom.isEmpty
     }
@@ -53,6 +55,11 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                     LabeledContent("Prix") {
                         TextField("facultatif", value: $prix, format: .currency(code: "EUR"))
                     }
+                    
+                    DatePicker("Durée", selection: $duration, displayedComponents: .hourAndMinute)
+                        .onAppear {
+                            UIDatePicker.appearance().minuteInterval = 5
+                        }
                     
                     Text("Description")
                         .foregroundStyle(.secondary)
@@ -123,6 +130,8 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                 description = typeActe.info
                 prix = typeActe.price
                 
+                duration = typeActe.duree
+                
                 applyTVA = typeActe.tva != 0
                 tauxTVA = typeActe.tva
                 tot = typeActe.total
@@ -152,6 +161,7 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         typeActe.price = prix
         typeActe.tva = applyTVA ? tauxTVA : 0
         typeActe.total = montantFinal()
+        typeActe.duree = duration
         
         save()
     }

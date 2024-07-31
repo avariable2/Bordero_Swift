@@ -35,6 +35,11 @@ extension TypeActe {
         set { total_ = newValue }
     }
     
+    var duree : Date {
+        get { duration_ ?? Calendar.current.date(bySettingHour: 1, minute: 0, second: 0, of: Date())! }
+        set { duration_ = newValue }
+    }
+    
     /**
      Fonction qui à pour objectif de creer une copie du type d'acte pour etre sauvegarder en l'etat et évité que celui ci puisse etre modifier dans le future.
      Il prend un document en cours de création dans ces parametres pour l'affecté au champ **estUnElementDe**.
@@ -70,6 +75,7 @@ extension TypeActe {
         info : String = "",
         price : Double,
         tva : Double,
+        duree: Date = Calendar.current.date(bySettingHour: 1, minute: 0, second: 0, of: Date())!,
         context : NSManagedObjectContext) {
             self.init(context: context)
             self.id = UUID()
@@ -77,6 +83,7 @@ extension TypeActe {
             self.info = info
             self.price = price
             self.tva = tva
+            self.duree = duree
             self.total = tva == 0 ? price : price * tva + price
     }
     

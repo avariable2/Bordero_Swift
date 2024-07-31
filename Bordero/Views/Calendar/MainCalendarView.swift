@@ -7,13 +7,16 @@
 
 import SwiftUI
 import SimpleCalendar
-//import EventKitUI
 
 struct MainCalendarView: View {
+    @Environment(\.managedObjectContext) var moc
+    
     private let dataModel = DataModel()
 
     @State private var events: [any CalendarEventRepresentable] = []
     @State private var selectedDate = Date()
+    
+    @State private var activeSheet : ActiveSheet? = nil
 
     var body: some View {
         VStack {
@@ -23,15 +26,15 @@ struct MainCalendarView: View {
                 hourSpacing: 50,
                 startHourOfDay: 8
             )
-        }
-        .onAppear {
-            self.events = dataModel.getEvents()
+            .onAppear {
+                self.events = dataModel.getEvents()
+            }
         }
         .navigationTitle("\(selectedDate.formatted(.dateTime.weekday(.wide)).capitalized)")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    
+                    activeSheet = .createSeance
                 } label: {
                     Image(systemName: "calendar.badge.plus")
                         .foregroundStyle(.green, .blue)
@@ -41,6 +44,17 @@ struct MainCalendarView: View {
             ToolbarItem(placement: .bottomBar) {
                 DayPickerView(selectedDay: $selectedDate)
             }
+        }
+        .sheet(item: $activeSheet) { activeSheet in
+            NavigationStack {
+                switch activeSheet {
+                case .createSeance:
+                    CreationSeanceSheet(moc: moc)
+                default:
+                    EmptyView() // Impossible
+                }
+            }
+            
         }
     }
 }
