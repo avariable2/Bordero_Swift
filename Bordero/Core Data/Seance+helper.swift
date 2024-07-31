@@ -19,14 +19,14 @@ extension Seance {
         }
     }
     
-    var dateFin: Date {
-        get {
-            return endDate_ ?? Date()
-        }
-        set {
-            endDate_ = newValue
-        }
-    }
+//    var dateFin: Date {
+//        get {
+//            return endDate_ ?? Date()
+//        }
+//        set {
+//            endDate_ = newValue
+//        }
+//    }
     
     var commentaire : String {
         get {
@@ -36,4 +36,9 @@ extension Seance {
             comment_ = newValue
         }
     }
+    
+    public override func awakeFromInsert() {
+        self.id = UUID()
+    }
+    
 }

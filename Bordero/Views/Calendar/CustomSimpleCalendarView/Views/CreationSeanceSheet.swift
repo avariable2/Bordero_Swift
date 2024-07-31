@@ -8,40 +8,40 @@
 import SwiftUI
 import CoreData
 
-enum Recurrence: String, CaseIterable, Identifiable {
-    case never = "Jamais"
-    case daily = "Tous les jours"
-    case weekly = "Toutes les semaine"
-    case biweekly = "Toutes les 2 semaines"
-    case monthly = "Tous les mois"
-//    case yearly = "Tous les ans"
-    
-    var id: String { self.rawValue }
-    
-    // Vous pouvez ajouter une méthode pour obtenir l'intervalle de temps en secondes
-    var timeInterval: TimeInterval? {
-        switch self {
-        case .never:
-            return nil
-        case .daily:
-            return 24 * 60 * 60 // 1 jour
-        case .weekly:
-            return 7 * 24 * 60 * 60 // 1 semaine
-        case .biweekly:
-            return 14 * 24 * 60 * 60 // 2 semaines
-        case .monthly:
-            return 30 * 24 * 60 * 60 // 1 mois approximatif
-//        case .yearly:
-//            return 365 * 24 * 60 * 60 // 1 an
-        }
-    }
-    
-    // Vous pouvez également ajouter une méthode pour obtenir la prochaine date de récurrence à partir d'une date donnée
-    func nextOccurrence(from date: Date) -> Date? {
-        guard let interval = timeInterval else { return nil }
-        return Calendar.current.date(byAdding: .second, value: Int(interval), to: date)
-    }
-}
+//enum Recurrence: String, CaseIterable, Identifiable {
+//    case never = "Jamais"
+//    case daily = "Tous les jours"
+//    case weekly = "Toutes les semaine"
+//    case biweekly = "Toutes les 2 semaines"
+//    case monthly = "Tous les mois"
+////    case yearly = "Tous les ans"
+//    
+//    var id: String { self.rawValue }
+//    
+//    // Vous pouvez ajouter une méthode pour obtenir l'intervalle de temps en secondes
+//    var timeInterval: TimeInterval? {
+//        switch self {
+//        case .never:
+//            return nil
+//        case .daily:
+//            return 24 * 60 * 60 // 1 jour
+//        case .weekly:
+//            return 7 * 24 * 60 * 60 // 1 semaine
+//        case .biweekly:
+//            return 14 * 24 * 60 * 60 // 2 semaines
+//        case .monthly:
+//            return 30 * 24 * 60 * 60 // 1 mois approximatif
+////        case .yearly:
+////            return 365 * 24 * 60 * 60 // 1 an
+//        }
+//    }
+//    
+//    // Vous pouvez également ajouter une méthode pour obtenir la prochaine date de récurrence à partir d'une date donnée
+//    func nextOccurrence(from date: Date) -> Date? {
+//        guard let interval = timeInterval else { return nil }
+//        return Calendar.current.date(byAdding: .second, value: Int(interval), to: date)
+//    }
+//}
 
 struct CreationSeanceSheet: View {
     @Environment(\.dismiss) var dismiss
@@ -51,8 +51,10 @@ struct CreationSeanceSheet: View {
     @State private var typeActes : [TypeActe] = []
     @State private var client : Client? = nil
     @State private var bgColor = Color.green
-    @State private var recurrence : Recurrence = .never
-    @State private var intervalRecurrence : Int = 1
+    @FocusState private var commentIsFocused: Bool
+//    @State private var recurrence : Recurrence = .never
+    
+//    @State private var intervalRecurrence : Int = 1
     
     init(moc: NSManagedObjectContext) {
         seanceObject = Seance(context: moc)
@@ -62,19 +64,39 @@ struct CreationSeanceSheet: View {
         Form {
             Section {
                 DatePicker("Début", selection: $seanceObject.dateDebut)
+                    .onAppear {
+                        UIDatePicker.appearance().minuteInterval = 5
+                    }
             }
             
-            Section {
-                Picker("Récurrence", selection: $recurrence) {
-                    ForEach(Recurrence.allCases) { recurrence in
-                        Text(recurrence.rawValue).tag(recurrence)
-                    }
-                }
-                
-                if recurrence != .never {
-                    Stepper("Fréquence", value: $intervalRecurrence, step: 1)
-                }
-            }
+//            Section {
+//                Picker("Récurrence", selection: $recurrence) {
+//                    ForEach(Recurrence.allCases) { recurrence in
+//                        Text(recurrence.rawValue).tag(recurrence)
+//                    }
+//                }
+//                
+//                if recurrence != .never {
+//                    let finSentence = switch recurrence {
+//                    case .never:
+//                        ""
+//                    case .daily:
+//                        "jour(s)"
+//                    case .weekly:
+//                        "semaine(2)"
+//                    case .biweekly:
+//                        "2 semaines"
+//                    case .monthly:
+//                        "mois"
+//                    }
+                    
+//                    LabeledContent("Fréquence") {
+//                        
+//                        Stepper("\(intervalRecurrence) \(finSentence)", value: $intervalRecurrence, step: 1)
+//                    }
+                    
+//                }
+//            }
             
             Section("Client") {
                 if let client {
@@ -137,7 +159,9 @@ struct CreationSeanceSheet: View {
             }
             
             Section {
-                TextField("Commentaire", text: $seanceObject.commentaire)
+                TextField("Commentaire", text: $seanceObject.commentaire, axis: .vertical)
+                    .focused($commentIsFocused)
+                    .lineLimit(3, reservesSpace: true)
                 
                 ColorPicker("Couleur", selection: $bgColor, supportsOpacity: false)
             }
@@ -147,7 +171,8 @@ struct CreationSeanceSheet: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    
+                    save()
+                    dismiss()
                 } label: {
                     Text("Ajouter")
                 }
@@ -156,9 +181,17 @@ struct CreationSeanceSheet: View {
             
             ToolbarItem(placement: .cancellationAction) {
                 Button {
-                    // Close sheet
+                    dismiss()
                 } label: {
                     Text("Annuler")
+                }
+            }
+            
+            ToolbarItem(placement: .keyboard) {
+                Button {
+                    commentIsFocused = false
+                } label: {
+                    Text("OK")
                 }
             }
         }
@@ -197,6 +230,23 @@ struct CreationSeanceSheet: View {
         .onDisappear {
             DataController.rollback()
         }
+    }
+    
+    func save() {
+        seanceObject.client_ = client
+        seanceObject.typeActe_ = NSSet(array: typeActes)
+        do {
+            try seanceObject.color_ = NSKeyedArchiver.archivedData(withRootObject: bgColor.uiColor, requiringSecureCoding: false)
+        } catch {
+            print(error)
+        }
+        
+        seanceObject.duration_ = typeActes.reduce(0) { (result, typeActe) -> Double in
+            let interval = typeActe.duree.timeIntervalSince(seanceObject.dateDebut)
+            return result + interval
+        } // affecte l'addition des durées des types d'actes pour obtenir le temps global
+        
+        DataController.saveContext()
     }
 }
 

@@ -57,7 +57,6 @@
 		F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D302BF132A7009D43C0 /* Paiement+helper.swift */; };
 		F7710D332BF141D5009D43C0 /* PaiementClientGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D322BF141D5009D43C0 /* PaiementClientGraphView.swift */; };
 		F772821E2C14BF9500FF153D /* DocumentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772821D2C14BF9500FF153D /* DocumentFormView.swift */; };
-		F77282202C14BFC300FF153D /* DocumentFormSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772821F2C14BFC300FF153D /* DocumentFormSectionView.swift */; };
 		F77312872B8CC2F500413820 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77312862B8CC2F500413820 /* Protocol.swift */; };
 		F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729C2BEFC099001C85CE /* ClientDataUtils.swift */; };
 		F773729F2BEFC628001C85CE /* DataBrutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729E2BEFC628001C85CE /* DataBrutView.swift */; };
@@ -78,6 +77,7 @@
 		F781153F2BB1A68C00F2026E /* PDFData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153E2BB1A68C00F2026E /* PDFData.swift */; };
 		F78227962BB33FAF0033429F /* FormClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78227952BB33FAF0033429F /* FormClientView.swift */; };
 		F78227982BB3428D0033429F /* FormTypeActeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78227972BB3428D0033429F /* FormTypeActeView.swift */; };
+		F78341D52C5AAB16000719C7 /* SectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78341D42C5AAB15000719C7 /* SectionFormView.swift */; };
 		F786F7552BEE924300382B21 /* GraphPiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F786F7542BEE924300382B21 /* GraphPiView.swift */; };
 		F786F7572BEE9C8B00382B21 /* PDFPayementAndSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F786F7562BEE9C8B00382B21 /* PDFPayementAndSignature.swift */; };
 		F78737262BDD5F7C002E6C85 /* ClientRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78737252BDD5F7C002E6C85 /* ClientRowView.swift */; };
@@ -171,7 +171,6 @@
 		F7710D302BF132A7009D43C0 /* Paiement+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Paiement+helper.swift"; sourceTree = "<group>"; };
 		F7710D322BF141D5009D43C0 /* PaiementClientGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementClientGraphView.swift; sourceTree = "<group>"; };
 		F772821D2C14BF9500FF153D /* DocumentFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentFormView.swift; sourceTree = "<group>"; };
-		F772821F2C14BFC300FF153D /* DocumentFormSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentFormSectionView.swift; sourceTree = "<group>"; };
 		F77312862B8CC2F500413820 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		F773729C2BEFC099001C85CE /* ClientDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataUtils.swift; sourceTree = "<group>"; };
 		F773729E2BEFC628001C85CE /* DataBrutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBrutView.swift; sourceTree = "<group>"; };
@@ -192,6 +191,8 @@
 		F781153E2BB1A68C00F2026E /* PDFData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFData.swift; sourceTree = "<group>"; };
 		F78227952BB33FAF0033429F /* FormClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormClientView.swift; sourceTree = "<group>"; };
 		F78227972BB3428D0033429F /* FormTypeActeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTypeActeView.swift; sourceTree = "<group>"; };
+		F78341D42C5AAB15000719C7 /* SectionFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionFormView.swift; sourceTree = "<group>"; };
+		F78341D62C5AC927000719C7 /* Model_v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_v2.xcdatamodel; sourceTree = "<group>"; };
 		F786F7542BEE924300382B21 /* GraphPiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphPiView.swift; sourceTree = "<group>"; };
 		F786F7562BEE9C8B00382B21 /* PDFPayementAndSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPayementAndSignature.swift; sourceTree = "<group>"; };
 		F78737252BDD5F7C002E6C85 /* ClientRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRowView.swift; sourceTree = "<group>"; };
@@ -401,9 +402,9 @@
 		F772821C2C14BF6600FF153D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F78341D42C5AAB15000719C7 /* SectionFormView.swift */,
 				F77F53192B7BA121004329B9 /* DocumentOptionsView.swift */,
 				F772821D2C14BF9500FF153D /* DocumentFormView.swift */,
-				F772821F2C14BFC300FF153D /* DocumentFormSectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -724,11 +725,11 @@
 				F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */,
 				F7DFADB02B66926F00C905A7 /* HomeView.swift in Sources */,
 				F75083B52C109EB400B32E1F /* AnalyticsModifier.swift in Sources */,
+				F78341D52C5AAB16000719C7 /* SectionFormView.swift in Sources */,
 				F78227962BB33FAF0033429F /* FormClientView.swift in Sources */,
 				F76063892BC6BCC600776C8E /* TypeActe+helper.swift in Sources */,
 				F7878F3D2BD86DD500EC53E0 /* PDFHeaderView.swift in Sources */,
 				F77312872B8CC2F500413820 /* Protocol.swift in Sources */,
-				F77282202C14BFC300FF153D /* DocumentFormSectionView.swift in Sources */,
 				F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */,
 				F7D8E0162B8BA15600D4F28B /* OnBoardingView.swift in Sources */,
 				F786F7552BEE924300382B21 /* GraphPiView.swift in Sources */,
@@ -1180,6 +1181,7 @@
 		F76ECAC12BD27CDF0089C739 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				F78341D62C5AC927000719C7 /* Model_v2.xcdatamodel */,
 				F76ECAC22BD27CDF0089C739 /* Model.xcdatamodel */,
 			);
 			currentVersion = F76ECAC22BD27CDF0089C739 /* Model.xcdatamodel */;
