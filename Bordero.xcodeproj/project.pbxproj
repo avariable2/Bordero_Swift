@@ -105,6 +105,7 @@
 		F7B401B82C5967AD00104862 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B72C5967AD00104862 /* EventView.swift */; };
 		F7B401BA2C5967E900104862 /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B92C5967E900104862 /* EventDetailsView.swift */; };
 		F7B401BD2C59682100104862 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401BC2C59682100104862 /* Date+Formatting.swift */; };
+		F7B401C12C5A1F1500104862 /* DayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401C02C5A1F1500104862 /* DayPickerView.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
 		F7BBA3742BCC10BE0058E8F3 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */; };
@@ -214,6 +215,7 @@
 		F7B401B72C5967AD00104862 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		F7B401B92C5967E900104862 /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		F7B401BC2C59682100104862 /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
+		F7B401C02C5A1F1500104862 /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
 		F7BBA3732BCC10BE0058E8F3 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 				F7B401B42C59674C00104862 /* CalendarContentView.swift */,
 				F7B401B72C5967AD00104862 /* EventView.swift */,
 				F7B401B92C5967E900104862 /* EventDetailsView.swift */,
+				F7B401C02C5A1F1500104862 /* DayPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -743,6 +746,7 @@
 				F792B7592B70EF6200FA5569 /* FormTypeActeSheet.swift in Sources */,
 				F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */,
 				F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */,
+				F7B401C12C5A1F1500104862 /* DayPickerView.swift in Sources */,
 				F7BD18302C511D4E003C09ED /* IconStatusDocument.swift in Sources */,
 				F75F36AC2BD52938003FF0D0 /* ListDocument.swift in Sources */,
 				F7B401BA2C5967E900104862 /* EventDetailsView.swift in Sources */,

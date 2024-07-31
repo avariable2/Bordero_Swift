@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SimpleCalendar
-import EventKitUI
+//import EventKitUI
 
 struct MainCalendarView: View {
     private let dataModel = DataModel()
@@ -36,6 +36,10 @@ struct MainCalendarView: View {
                     Image(systemName: "calendar.badge.plus")
                         .foregroundStyle(.green, .blue)
                 }
+            }
+            
+            ToolbarItem(placement: .bottomBar) {
+                DayPickerView(selectedDay: $selectedDate)
             }
         }
     }
