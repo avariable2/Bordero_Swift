@@ -12,44 +12,46 @@ struct NbFacturesGraphView: View {
     var documents : FetchedResults<Document>
     
     @State private var selectedPeriod: String = "Month"
+    @State private var tabDataChart : [DocumentChartData] = []
     
     var showPicker = true
     
     var body: some View {
         VStack {
-            if showPicker {
-                Picker("Selectionner la période", selection: $selectedPeriod) {
-                    Text("Jour").tag("Day")
-                    Text("Semaine").tag("Week")
-                    Text("Mois").tag("Month")
-                    Text("Année").tag("Year")
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
+            Picker("Selectionner la période", selection: $selectedPeriod) {
+                Text("Jour").tag("Day")
+                Text("Semaine").tag("Week")
+                Text("Mois").tag("Month")
+                Text("Année").tag("Year")
             }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            .opacity(showPicker ? 1 : 0)
             
-            let chartData = chartData(for: selectedPeriod)
-            if chartData.isEmpty {
-                ContentUnavailableView(
-                    "Aucune facture",
-                    systemImage: "chart.bar.xaxis",
-                    description: Text(selectedPeriod == "Day" ? "Aucune facture pour la date sélectionnée" : "Il n'y a aucun document avec le statut payé ou envoyé.")
+            Chart(tabDataChart) { element in
+                BarMark(
+                    x: .value("Période", element.period),
+                    y: .value("Somme", element.count)
                 )
-            } else {
-                Chart(chartData) { element in
-                    BarMark(
-                        x: .value("Période", element.period),
-                        y: .value("Somme", element.count)
-                    )
-                    .foregroundStyle(by: .value("Status", element.status.rawValue))
-                }
-                .padding()
+                .foregroundStyle(by: .value("Status", element.status.rawValue))
             }
-            
+            .padding()
+            .task {
+                tabDataChart = getChartData(for: selectedPeriod)
+            }
+            .overlay {
+                if tabDataChart.isEmpty {
+                    ContentUnavailableView(
+                        "Aucune facture",
+                        systemImage: "chart.bar.xaxis",
+                        description: Text(selectedPeriod == "Day" ? "Aucune facture pour la date sélectionnée" : "Il n'y a aucun document avec le statut payé ou envoyé.")
+                    )
+                }
+            }
         }
     }
     
-    func chartData(for period: String) -> [DocumentChartData] {
+    func getChartData(for period: String) -> [DocumentChartData] {
         var groupedData: [String: [Document]] = [:]
         
         // Grouper les documents par période

@@ -37,17 +37,6 @@ struct ListDocument: View {
     @State private var tags: [TokenDocumentModel] = []
     @State private var documentScope : Document.Status = .all
     
-    let sectionOrder = [
-        "Aujourd'hui",
-        "Hier",
-        "Cette semaine",
-        "Ce mois",
-        "Le mois dernier",
-        "6 derniers mois",
-        "Cette année",
-        "Années précédentes"
-    ]
-    
     var filteredListDocuments: Dictionary<String, [Document]> {
         let tokens = tags.map { $0.value.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
         
@@ -58,7 +47,7 @@ struct ListDocument: View {
             case .created: isInScope = document.status == .created
             case .payed: isInScope = document.status == .payed
             case .send: isInScope = document.status == .send
-            case .all, .unknow: isInScope = true
+            default: isInScope = true
             }
             guard isInScope else { return false }
             
@@ -80,7 +69,20 @@ struct ListDocument: View {
         
         // Group documents by section title by date
         return Dictionary(grouping: documentsToGroup) { document in
-            document.sectionTitleByDate
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            return formatter.string(from: document.dateEmission)
+        }
+    }
+    
+    var sortedGroupKeys: [String] {
+        filteredListDocuments.keys.sorted { key1, key2 in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            if let date1 = formatter.date(from: key1), let date2 = formatter.date(from: key2) {
+                return date1 > date2
+            }
+            return false
         }
     }
     
@@ -113,103 +115,102 @@ struct ListDocument: View {
     
     var body: some View {
         VStack {
-            if documents.isEmpty {
-                ContentUnavailableView(
-                    "Aucun document",
-                    systemImage: "folder.badge.questionmark",
-                    description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
-                )
-            } else {
-                List {
-                    Section("Répartition mensuels") {
-                        NbFacturesGraphView(
-                            documents: documents,
-                            showPicker: false
-                        )
-                        
-                        NavigationLink {
-                            PraticienDataView(
-                                documents: documents
-                            )
-                        } label: {
-                            Text("Toutes les stats")
-                        }
-                    }
+            List {
+                Section("Répartition mensuels") {
+                    NbFacturesGraphView(
+                        documents: documents,
+                        showPicker: false
+                    )
                     
-                    if filteredListDocuments.isEmpty {
-                        ContentUnavailableView.search(text: searchText)
-                    } else {
-                        ForEach(sectionOrder, id: \.self) { key in
-                            if let documentsForSection = filteredListDocuments[key] {
-                                Section(header: Text(key)) {
-                                    ForEach(documentsForSection, id: \.self) { document in
-                                        RowDocumentView(
-                                            horizontalSizeClass: horizontalSizeClass,
-                                            document: document
-                                        )
-                                            .tag(document.status)
-                                    }
-                                }
-                            }
+                    NavigationLink {
+                        PraticienDataView(
+                            documents: documents
+                        )
+                    } label: {
+                        Text("Toutes les stats")
+                    }
+                }
+                
+                ForEach(sortedGroupKeys, id: \.self) { key in
+                    Section(header: Text(key)) {
+                        ForEach(filteredListDocuments[key]!, id: \.self) { document in
+                            RowDocumentView(
+                                horizontalSizeClass: horizontalSizeClass,
+                                document: document
+                            )
+                                .tag(document.status)
                         }
                     }
                 }
-                .searchable(
-                    text: $searchText,
-                    tokens: $tags,
-                    placement: .navigationBarDrawer(displayMode: .always),
-                    token: { token in
-                        switch token.type {
-                        case .client:
-                            Label(token.value, systemImage: "person.crop.circle")
-                        case .date:
-                            Label(token.value, systemImage: "calendar")
-                        case .typeDoc:
-                            Label(token.value, systemImage: "doc.circle")
-                        }
-                    }
-                )
-                .searchScopes($documentScope, activation: .onSearchPresentation) {
-                    Text(Document.Status.all.rawValue).tag(Document.Status.all)
-                    Text(Document.Status.created.rawValue).tag(Document.Status.created)
-                    Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
-                    Text(Document.Status.send.rawValue).tag(Document.Status.send)
+            }
+            .overlay {
+                if documents.isEmpty {
+                    ContentUnavailableView(
+                        "Aucun document",
+                        systemImage: "folder.badge.questionmark",
+                        description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
+                    )
                 }
-                .searchSuggestions {
-                    if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
-                        Section("Suggestions") {
-                            ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
-                                Label {
-                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                                } icon: {
-                                    Image(systemName: "doc")
-                                        .foregroundStyle(.blue)
-                                        .imageScale(.large)
-                                }
-                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
+                
+                if filteredListDocuments.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
+                }
+            }
+            .searchable(
+                text: $searchText,
+                tokens: $tags,
+                placement: .navigationBarDrawer(displayMode: .always),
+                token: { token in
+                    switch token.type {
+                    case .client:
+                        Label(token.value, systemImage: "person.crop.circle")
+                    case .date:
+                        Label(token.value, systemImage: "calendar")
+                    case .typeDoc:
+                        Label(token.value, systemImage: "doc.circle")
+                    }
+                }
+            )
+            .searchScopes($documentScope, activation: .onSearchPresentation) {
+                Text(Document.Status.all.rawValue).tag(Document.Status.all)
+                Text(Document.Status.created.rawValue).tag(Document.Status.created)
+                Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
+                Text(Document.Status.send.rawValue).tag(Document.Status.send)
+            }
+            .searchSuggestions {
+                if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
+                    Section("Suggestions") {
+                        ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
+                            Label {
+                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                            } icon: {
+                                Image(systemName: "doc")
+                                    .foregroundStyle(.blue)
+                                    .imageScale(.large)
                             }
-                            
-                            ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
-                                Label {
-                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                                } icon: {
-                                    Image(systemName: "person.crop.circle")
-                                        .foregroundStyle(.blue)
-                                        .imageScale(.large)
-                                }
-                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
+                            .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
+                        }
+                        
+                        ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
+                            Label {
+                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                            } icon: {
+                                Image(systemName: "person.crop.circle")
+                                    .foregroundStyle(.blue)
+                                    .imageScale(.large)
                             }
-                            
-                            ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
-                                Label {
-                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                                } icon: {
-                                    Image(systemName: "calendar")
-                                        .foregroundStyle(.blue)
-                                        .imageScale(.large)
-                                }
-                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
+                            .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
+                        }
+                        
+                        ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
+                            Label {
+                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                            } icon: {
+                                Image(systemName: "calendar")
+                                    .foregroundStyle(.blue)
+                                    .imageScale(.large)
                             }
+                            .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
                         }
                     }
                 }
@@ -236,8 +237,11 @@ struct RowDocumentView :View {
     var horizontalSizeClass : UserInterfaceSizeClass?
     @ObservedObject var document : FetchedResults<Document>.Element
     
+    var isLate : Bool {
+        document.dateEcheance <= Date() && document.status == .send
+    }
+    
     var body: some View {
-        let isLate = document.dateEcheance <= Date() && document.status == .send
         NavigationLink {
             DocumentDetailView(document: document)
         } label : {
@@ -258,14 +262,7 @@ struct RowDocumentView :View {
                         .fontWeight(.semibold)
                     
                     HStack {
-                        VStack {
-                            if isLate {
-                                Image(systemName: "hourglass.tophalf.filled")
-                                    .foregroundStyle(.pink)
-                            } else {
-                                IconStatusDocument(document: document)
-                            }
-                        }
+                        IconStatusDocument(status: document.determineStatut())
                         
                         Divider()
                         

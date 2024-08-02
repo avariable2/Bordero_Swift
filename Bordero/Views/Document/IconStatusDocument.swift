@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct IconStatusDocument: View {
-    @ObservedObject var document : Document
+    var status : Document.Status
     
     var body: some View {
-        switch document.determineStatut() {
-        case Document.Status.created.rawValue:
+        switch status {
+        case Document.Status.created:
             Image(systemName: "doc.badge.clock.fill")
                 .foregroundStyle(.orange)
-        case Document.Status.payed.rawValue:
+        case Document.Status.payed:
             Image(systemName: "checkmark.seal.fill")
                 .foregroundStyle(.green)
-        case Document.Status.send.rawValue:
+        case Document.Status.send:
             Image(systemName: "checkmark.bubble.fill")
                 .foregroundStyle(.blue)
+        case Document.Status.retard :
+            Image(systemName: "hourglass.tophalf.filled")
+                .foregroundStyle(.pink)
         default:
             Image(systemName: "questionmark.circle.fill")
                 .foregroundStyle(.gray)
@@ -29,5 +32,5 @@ struct IconStatusDocument: View {
 }
 
 #Preview {
-    IconStatusDocument(document: Document.example)
+    IconStatusDocument(status: Document.example.determineStatut())
 }

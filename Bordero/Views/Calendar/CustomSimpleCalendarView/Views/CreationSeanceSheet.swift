@@ -101,10 +101,7 @@ struct CreationSeanceSheet: View {
             Section("Client") {
                 if let client {
                     HStack {
-                        ClientRowView(
-                            firstname: client.firstname,
-                            name: client.lastname
-                        )
+                        ClientRowView(client: .constant(client))
                         Spacer()
                         Button {
                             withAnimation {

@@ -68,6 +68,7 @@ extension Document {
         case created = "Ouvert"
         case payed = "Payée"
         case send = "Envoyée"
+        case retard = "Retard"
         
         var id: String { rawValue }
         
@@ -283,8 +284,11 @@ extension Document {
         }
     }
     
-    func determineStatut() -> String {
-        return self.status.rawValue
+    func determineStatut() -> Status {
+        if self.dateEcheance <= Date() && self.status == .send {
+            return Status.retard
+        }
+        return self.status
     }
     
     func determineColor() -> Color {
