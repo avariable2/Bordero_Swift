@@ -189,9 +189,8 @@ struct ParametersView: View {
                         }
                         
                     } footer: {
-                        if !MFMailComposeViewController.canSendMail() {
-                            Text("Vous ne pouvez pas envoyer d'email depuis cette appareil")
-                        }
+                        Text("Vous ne pouvez pas envoyer d'email depuis cette appareil")
+                            .opacity(MFMailComposeViewController.canSendMail() ? 1 : 0)
                     }
                     
                 }

@@ -37,6 +37,16 @@ extension Seance {
         }
     }
     
+    var titre : String {
+        get {
+            if let client_ {
+                "Séance \(client_.fullname)"
+            } else {
+                "Inconnu"
+            }
+        }
+    }
+    
     public override func awakeFromInsert() {
         self.id = UUID()
     }
