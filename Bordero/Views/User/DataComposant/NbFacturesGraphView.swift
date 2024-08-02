@@ -39,11 +39,14 @@ struct NbFacturesGraphView: View {
             .task {
                 tabDataChart = getChartData(for: selectedPeriod)
             }
+            .onChange(of: selectedPeriod, { oldValue, newValue in
+                tabDataChart = getChartData(for: selectedPeriod)
+            })
             .overlay {
                 if tabDataChart.isEmpty {
                     ContentUnavailableView(
                         "Aucune facture",
-                        systemImage: "chart.bar.xaxis",
+                        systemImage: "questionmark.circle",
                         description: Text(selectedPeriod == "Day" ? "Aucune facture pour la date sélectionnée" : "Il n'y a aucun document avec le statut payé ou envoyé.")
                     )
                 }
