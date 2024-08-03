@@ -25,14 +25,24 @@ struct MainCalendarView: View {
     
     @State private var viewModel = CalendarViewModel()
     
+    func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let seance = seances[index]
+            moc.delete(seance)
+        }
+    }
+    
     var body: some View {
         
         VStack {
             
             Text("Nombre d'entity : \(seances.count)")
-            List(seances) { s in
-                Text("\(s.dateDebut)")
-            }.frame(height: 200)
+            List {
+                ForEach(seances, id: \.self) { s in
+                    Text("\(s.dateDebut)")
+                }.onDelete(perform: delete)
+            }
+            .frame(height: 200)
             
             CustomSimpleCalendarView(
                 events: $viewModel.events,
@@ -70,7 +80,8 @@ struct MainCalendarView: View {
             NavigationStack {
                 switch activeSheet {
                 case .createSeance:
-                    CreationSeanceSheet(moc: moc)
+                    let _ = print("-DEBUG =======> \(seances.count)")
+                    CreationSeanceSheet()
                 default:
                     EmptyView() // Impossible
                 }
@@ -117,7 +128,7 @@ class CalendarViewModel {
                 description: seance.commentaire,
                 mentors: [""],
                 type: exerciseType,
-                duration: seance.duration_
+                duration: Double(seance.duration_)
             )
         }
     }

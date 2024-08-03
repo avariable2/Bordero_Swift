@@ -130,7 +130,12 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
                 description = typeActe.info
                 prix = typeActe.price
                 
-                duration = typeActe.duree
+                let timeComponent = Int(typeActe.duration_).extractTimeComponents()
+                duration = Calendar.current.date(
+                    bySettingHour: timeComponent.hour,
+                    minute: timeComponent.minute,
+                    second: timeComponent.second,
+                    of: Date())!
                 
                 applyTVA = typeActe.tva != 0
                 tauxTVA = typeActe.tva
@@ -161,7 +166,9 @@ struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
         typeActe.price = prix
         typeActe.tva = applyTVA ? tauxTVA : 0
         typeActe.total = montantFinal()
-        typeActe.duree = duration
+        
+        let time = duration.hour ?? 0 + (duration.minute ?? 0)
+        typeActe.duration_ = Int64(time)
         
         save()
     }

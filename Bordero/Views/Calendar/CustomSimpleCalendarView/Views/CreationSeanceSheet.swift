@@ -8,95 +8,33 @@
 import SwiftUI
 import CoreData
 
-//enum Recurrence: String, CaseIterable, Identifiable {
-//    case never = "Jamais"
-//    case daily = "Tous les jours"
-//    case weekly = "Toutes les semaine"
-//    case biweekly = "Toutes les 2 semaines"
-//    case monthly = "Tous les mois"
-////    case yearly = "Tous les ans"
-//    
-//    var id: String { self.rawValue }
-//    
-//    // Vous pouvez ajouter une méthode pour obtenir l'intervalle de temps en secondes
-//    var timeInterval: TimeInterval? {
-//        switch self {
-//        case .never:
-//            return nil
-//        case .daily:
-//            return 24 * 60 * 60 // 1 jour
-//        case .weekly:
-//            return 7 * 24 * 60 * 60 // 1 semaine
-//        case .biweekly:
-//            return 14 * 24 * 60 * 60 // 2 semaines
-//        case .monthly:
-//            return 30 * 24 * 60 * 60 // 1 mois approximatif
-////        case .yearly:
-////            return 365 * 24 * 60 * 60 // 1 an
-//        }
-//    }
-//    
-//    // Vous pouvez également ajouter une méthode pour obtenir la prochaine date de récurrence à partir d'une date donnée
-//    func nextOccurrence(from date: Date) -> Date? {
-//        guard let interval = timeInterval else { return nil }
-//        return Calendar.current.date(byAdding: .second, value: Int(interval), to: date)
-//    }
-//}
+struct TypeActeWithDuration: Hashable {
+    let typeActe : TypeActe
+    var duration : Date
+}
 
 struct CreationSeanceSheet: View {
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
-    @State private var seanceObject : Seance
     
     @State private var activeSheet : ActiveSheet? = nil
-    @State private var typeActes : [TypeActe] = []
+    
+    @State private var dateDebut = Date()
+    @State private var typeActes : [TypeActeWithDuration] = []
     @State private var client : Client? = nil
+    @State private var commentaire = ""
     @State private var bgColor = Color.green
     @FocusState private var commentIsFocused: Bool
-//    @State private var recurrence : Recurrence = .never
-    
-//    @State private var intervalRecurrence : Int = 1
-    
-    init(moc: NSManagedObjectContext) {
-        seanceObject = Seance(context: moc)
-    }
+    @State private var chrono : Date = Calendar.current.date(bySettingHour: 1, minute: 0, second: 0, of: Date())!
     
     var body: some View {
         Form {
             Section {
-                DatePicker("Début", selection: $seanceObject.dateDebut)
+                DatePicker("Début", selection: $dateDebut)
                     .onAppear {
                         UIDatePicker.appearance().minuteInterval = 5
                     }
             }
-            
-//            Section {
-//                Picker("Récurrence", selection: $recurrence) {
-//                    ForEach(Recurrence.allCases) { recurrence in
-//                        Text(recurrence.rawValue).tag(recurrence)
-//                    }
-//                }
-//                
-//                if recurrence != .never {
-//                    let finSentence = switch recurrence {
-//                    case .never:
-//                        ""
-//                    case .daily:
-//                        "jour(s)"
-//                    case .weekly:
-//                        "semaine(2)"
-//                    case .biweekly:
-//                        "2 semaines"
-//                    case .monthly:
-//                        "mois"
-//                    }
-                    
-//                    LabeledContent("Fréquence") {
-//                        
-//                        Stepper("\(intervalRecurrence) \(finSentence)", value: $intervalRecurrence, step: 1)
-//                    }
-                    
-//                }
-//            }
             
             Section("Client") {
                 if let client {
@@ -156,7 +94,7 @@ struct CreationSeanceSheet: View {
             }
             
             Section {
-                TextField("Commentaire", text: $seanceObject.commentaire, axis: .vertical)
+                TextField("Commentaire", text: $commentaire, axis: .vertical)
                     .focused($commentIsFocused)
                     .lineLimit(3, reservesSpace: true)
                 
@@ -209,7 +147,11 @@ struct CreationSeanceSheet: View {
                 }
             case .selectTypeActe:
                 ListTypeActe { typeActe in
-                    typeActes.append(typeActe)
+                    let timeComponents = Int(typeActe.duration_).extractTimeComponents()
+                    
+                    let typeActeWithDuration = TypeActeWithDuration(typeActe: typeActe, duration: Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!)
+                    
+                    typeActes.append(typeActeWithDuration)
                 }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -230,6 +172,9 @@ struct CreationSeanceSheet: View {
     }
     
     func save() {
+        let seanceObject = Seance(context: moc)
+        seanceObject.commentaire = commentaire
+        seanceObject.dateDebut = dateDebut
         seanceObject.client_ = client
         seanceObject.typeActe_ = NSSet(array: typeActes)
         do {
@@ -238,45 +183,52 @@ struct CreationSeanceSheet: View {
             print(error)
         }
         
-        seanceObject.duration_ = typeActes.reduce(0) { (result, typeActe) -> Double in
-            let interval = typeActe.duree.timeIntervalSince(seanceObject.dateDebut)
-            return result + interval
-        } // affecte l'addition des durées des types d'actes pour obtenir le temps global
+        seanceObject.duration_ = Int64(typeActes.reduce(0, { partialResult, typeActe in
+            typeActe.duration.hour ?? 0 + (typeActe.duration.minute ?? 0)
+        }))
         
         DataController.saveContext()
     }
 }
 
 private struct RowTypeActeInfoView: View {
-    @Binding var typeActeWithDuree: TypeActe
+    @Binding var typeActeWithDuree: TypeActeWithDuration
     
     var body: some View {
         Label {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
-                    Text(typeActeWithDuree.name)
+                    Text(typeActeWithDuree.typeActe.name)
                         .font(.headline)
                         .fontWeight(.semibold)
                     Spacer()
                 }
                 
-                DatePicker("Durée", selection: $typeActeWithDuree.duree, displayedComponents: .hourAndMinute)
+                DatePicker("Durée", selection: $typeActeWithDuree.duration, displayedComponents: .hourAndMinute)
                     .foregroundStyle(.secondary)
-                    .onAppear {
-                        UIDatePicker.appearance().minuteInterval = 5
-                    }
+                    
+                    .pickerStyle(.wheel)
+                    .tint(.primary)
             }
-            .tint(.primary)
         } icon: {
             Image(systemName: "cross.case.circle.fill")
                 .imageScale(.large)
                 .foregroundStyle(.white, .purple)
+        }
+        .onAppear {
+            
+            // TODO: Bouger ce code ailleurs car il est appeler a chaque fois que l'on defocus le timer picker. Donc ça reset le timer tous le temps
+            UIDatePicker.appearance().minuteInterval = 5
+            
+            let timeComponents = Int(typeActeWithDuree.typeActe.duration_).extractTimeComponents()
+            
+            typeActeWithDuree.duration = Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        CreationSeanceSheet(moc: DataController.shared.container.viewContext)
+        CreationSeanceSheet()
     }
 }

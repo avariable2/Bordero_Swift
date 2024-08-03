@@ -25,8 +25,29 @@ extension Date {
 
     var hour: Int? {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
+        let components = calendar.dateComponents([.hour, .minute, .second], from: self)
 
         return components.hour
+    }
+    
+    var minute: Int? {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.minute, .second], from: self)
+
+        return components.minute
+    }
+}
+
+extension Int {
+    func extractHour() -> Int {
+        return self / 3600
+    }
+    
+    func extractTimeComponents() -> (hour: Int, minute: Int, second: Int) {
+        let hours = self / 3600
+        let remainingSecondsAfterHours = self % 3600
+        let minutes = remainingSecondsAfterHours / 60
+        let remainingSeconds = remainingSecondsAfterHours % 60
+        return (hour: hours, minute: minutes, second: remainingSeconds)
     }
 }
