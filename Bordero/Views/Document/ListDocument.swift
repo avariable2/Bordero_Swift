@@ -38,7 +38,6 @@ struct ListDocument: View {
     @State private var documentScope : Document.Status = .all
     
     var filteredListDocuments: Dictionary<String, [Document]> {
-        return Dictionary()
         let tokens = tags.map { $0.value.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
         
         // Filter documents based on scope and tokens
