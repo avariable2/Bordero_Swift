@@ -9,6 +9,7 @@ import SwiftUI
 import Charts
 
 struct NbFacturesGraphView: View {
+    @Environment(\.isSearching) var isSearching
     var documents : FetchedResults<Document>
     
     @State private var selectedPeriod: String = "Month"
@@ -17,16 +18,18 @@ struct NbFacturesGraphView: View {
     var showPicker = true
     
     var body: some View {
-        VStack {
-            Picker("Selectionner la période", selection: $selectedPeriod) {
-                Text("Jour").tag("Day")
-                Text("Semaine").tag("Week")
-                Text("Mois").tag("Month")
-                Text("Année").tag("Year")
+        DisclosureGroup("Répartition mensuels", isExpanded: .constant(isSearching ? false : true).animation()) {
+            
+            if showPicker {
+                Picker("Selectionner la période", selection: $selectedPeriod) {
+                    Text("Jour").tag("Day")
+                    Text("Semaine").tag("Week")
+                    Text("Mois").tag("Month")
+                    Text("Année").tag("Year")
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            .opacity(showPicker ? 1 : 0)
             
             Chart(tabDataChart) { element in
                 BarMark(
@@ -50,6 +53,15 @@ struct NbFacturesGraphView: View {
                         description: Text(selectedPeriod == "Day" ? "Aucune facture pour la date sélectionnée" : "Il n'y a aucun document avec le statut payé ou envoyé.")
                     )
                 }
+            }
+            
+            NavigationLink {
+                PraticienDataView(
+                    documents: documents
+                )
+            } label: {
+                Text("Toutes les stats")
+                    .foregroundStyle(.link)
             }
         }
     }

@@ -38,6 +38,7 @@ struct ListDocument: View {
     @State private var documentScope : Document.Status = .all
     
     var filteredListDocuments: Dictionary<String, [Document]> {
+        return Dictionary()
         let tokens = tags.map { $0.value.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
         
         // Filter documents based on scope and tokens
@@ -116,44 +117,31 @@ struct ListDocument: View {
     var body: some View {
         VStack {
             List {
-                Section("Répartition mensuels") {
+                Section {
                     NbFacturesGraphView(
                         documents: documents,
                         showPicker: false
                     )
-                    
-                    NavigationLink {
-                        PraticienDataView(
-                            documents: documents
-                        )
-                    } label: {
-                        Text("Toutes les stats")
-                    }
                 }
                 
-                ForEach(sortedGroupKeys, id: \.self) { key in
-                    Section(header: Text(key)) {
-                        ForEach(filteredListDocuments[key]!, id: \.self) { document in
-                            RowDocumentView(
-                                horizontalSizeClass: horizontalSizeClass,
-                                document: document
-                            )
-                                .tag(document.status)
-                        }
-                    }
-                }
-            }
-            .overlay {
-                if documents.isEmpty {
+                if filteredListDocuments.isEmpty {
                     ContentUnavailableView(
                         "Aucun document",
                         systemImage: "folder.badge.questionmark",
                         description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
                     )
-                }
-                
-                if filteredListDocuments.isEmpty {
-                    ContentUnavailableView.search(text: searchText)
+                } else {
+                    ForEach(sortedGroupKeys, id: \.self) { key in
+                        Section(header: Text(key)) {
+                            ForEach(filteredListDocuments[key]!, id: \.self) { document in
+                                RowDocumentView(
+                                    horizontalSizeClass: horizontalSizeClass,
+                                    document: document
+                                )
+                                    .tag(document.status)
+                            }
+                        }
+                    }
                 }
             }
             .searchable(
