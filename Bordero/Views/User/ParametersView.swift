@@ -27,11 +27,6 @@ struct ParametersView: View {
     var body: some View {
         NavigationStack {
             Form {
-                #if DEBUG
-                Section("Debug") {
-                    Text("Nbr de praticien = \(praticien.count)")
-                }
-                #endif
                 
                 VStack(alignment: .center, spacing: 20) {
                     ProfilImageView(imageData: firstPraticien?.profilPicture)
@@ -47,6 +42,12 @@ struct ParametersView: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color.clear)
+                
+                #if DEBUG
+                Section("Debug") {
+                    Text("Nbr de praticien = \(praticien.count)")
+                }
+                #endif
                 
                 Section("Votre société") {
                     NavigationLink {

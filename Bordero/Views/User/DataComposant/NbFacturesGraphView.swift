@@ -27,8 +27,7 @@ struct NbFacturesGraphView: View {
                     Text("Mois").tag("Month")
                     Text("Année").tag("Year")
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
+                .pickerStyle(.segmented)
             }
             
             Chart(tabDataChart) { element in
@@ -55,14 +54,17 @@ struct NbFacturesGraphView: View {
                 }
             }
             
-            NavigationLink {
-                PraticienDataView(
-                    documents: documents
-                )
-            } label: {
-                Text("Toutes les stats")
-                    .foregroundStyle(.link)
+            if !showPicker {
+                NavigationLink {
+                    PraticienDataView(
+                        documents: documents
+                    )
+                } label: {
+                    Text("Toutes les stats")
+                        .foregroundStyle(.link)
+                }
             }
+            
         } label: {
             Text("Répartition mensuels")
                 .bold()
