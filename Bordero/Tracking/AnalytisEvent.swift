@@ -14,6 +14,7 @@ enum EventCategory: String {
     case paymentManagement = "Payment Management"
     case clientManagement = "Client Management"
     case praticienManagement = "Praticien Management"
+    case calendarManagement = "Calendrier Management"
 }
 
 enum EventName: String {
@@ -44,4 +45,8 @@ enum EventName: String {
     case clientCreated = "client_created"
     case clientStatsBrowsed = "client_stats_browsed"
     case clientDetailBrowsed = "client_detail_browsed"
+    
+    // MARK: - Calendar
+    case calendarListBrowsed = "calendar_list_browsed"
+    case calendarEventCreated = "calendar_event_created"
 }

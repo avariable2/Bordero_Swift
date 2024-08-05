@@ -47,13 +47,9 @@ struct MainCalendarView: View {
             CustomSimpleCalendarView(
                 events: $viewModel.events,
                 selectedDate: $selectedDate,
-                hourSpacing: 50,
+                hourSpacing: 30,
                 startHourOfDay: 8
             )
-            
-            //            List(viewModel.seances) { s in
-            //                Text(s.dateDebut, format: .dateTime)
-            //            }
         }
         .onAppear() {
             viewModel.fetchPayments(moc, targetDate: Date())
@@ -88,6 +84,7 @@ struct MainCalendarView: View {
             }
             
         }
+        .trackEventOnAppear(event: .calendarListBrowsed, category: .calendarManagement)
     }
 }
 

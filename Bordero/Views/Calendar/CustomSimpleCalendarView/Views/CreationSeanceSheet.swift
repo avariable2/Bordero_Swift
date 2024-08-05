@@ -20,12 +20,11 @@ struct CreationSeanceSheet: View {
     @State private var activeSheet : ActiveSheet? = nil
     
     @State private var dateDebut = Date()
-    @State private var typeActes : [TypeActeWithDuration] = []
+    @State private var tabTypeActeWithDuration : [TypeActeWithDuration] = []
     @State private var client : Client? = nil
     @State private var commentaire = ""
     @State private var bgColor = Color.green
     @FocusState private var commentIsFocused: Bool
-    @State private var chrono : Date = Calendar.current.date(bySettingHour: 1, minute: 0, second: 0, of: Date())!
     
     var body: some View {
         Form {
@@ -67,12 +66,12 @@ struct CreationSeanceSheet: View {
             }
             
             Section {
-                if !typeActes.isEmpty {
-                    ForEach($typeActes, id: \.self) { typeActe in
+                if !tabTypeActeWithDuration.isEmpty {
+                    ForEach($tabTypeActeWithDuration, id: \.self) { typeActe in
                         RowTypeActeInfoView(typeActeWithDuree: typeActe)
                     }
                     .onDelete { indexSet in
-                        typeActes.remove(atOffsets: indexSet)
+                        tabTypeActeWithDuration.remove(atOffsets: indexSet)
                     }
                 }
                 
@@ -111,7 +110,7 @@ struct CreationSeanceSheet: View {
                 } label: {
                     Text("Ajouter")
                 }
-                .disabled(client == nil && typeActes.isEmpty)
+                .disabled(client == nil || tabTypeActeWithDuration.isEmpty)
             }
             
             ToolbarItem(placement: .cancellationAction) {
@@ -131,39 +130,51 @@ struct CreationSeanceSheet: View {
             }
         }
         .sheet(item: $activeSheet) { activeSheet in
-            switch activeSheet {
-            case .selectClient:
-                ListClients(callbackClientClick: { client in
-                    self.client = client
-                })
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Retour")
+            NavigationStack {
+                switch activeSheet {
+                case .selectClient:
+                    ListClients(callbackClientClick: { client in
+                        self.client = client
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Text("Retour")
+                            }
                         }
                     }
-                }
-            case .selectTypeActe:
-                ListTypeActe { typeActe in
-                    let timeComponents = Int(typeActe.duration_).extractTimeComponents()
-                    
-                    let typeActeWithDuration = TypeActeWithDuration(typeActe: typeActe, duration: Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!)
-                    
-                    typeActes.append(typeActeWithDuration)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Retour")
+                case .selectTypeActe:
+                    ListTypeActe { typeActe in
+                        
+                        let timeComponents = Int(typeActe.duration_).extractTimeComponents()
+                        let duration : Date
+                        if (timeComponents.hour != 0) && (timeComponents.minute != 0) {
+                            duration = Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
+                        } else {
+                            duration = Calendar.current.date(bySettingHour: 1, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
+                        }
+                        
+                        let typeActeWithDuration = TypeActeWithDuration(
+                            typeActe: typeActe,
+                            duration: duration
+                        )
+                        
+                        tabTypeActeWithDuration.append(typeActeWithDuration)
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Text("Retour")
+                            }
                         }
                     }
+                default:
+                    EmptyView()
                 }
-            default:
-                EmptyView()
             }
         }
         .onDisappear {
@@ -176,19 +187,31 @@ struct CreationSeanceSheet: View {
         seanceObject.commentaire = commentaire
         seanceObject.dateDebut = dateDebut
         seanceObject.client_ = client
-        seanceObject.typeActe_ = NSSet(array: typeActes)
+        
+        let tabTypeActes = tabTypeActeWithDuration.map { $0.typeActe }
+        seanceObject.typeActe_ = NSSet(array: tabTypeActes)
         do {
             try seanceObject.color_ = NSKeyedArchiver.archivedData(withRootObject: bgColor.uiColor, requiringSecureCoding: false)
         } catch {
             print(error)
         }
         
-        seanceObject.duration_ = Int64(typeActes.reduce(0, { partialResult, typeActe in
-            typeActe.duration.hour ?? 0 + (typeActe.duration.minute ?? 0)
+        // Add
+        seanceObject.duration_ = Int64(tabTypeActeWithDuration.reduce(0, { partialResult, typeActe in
+            convertHoursToSeconds(hours: typeActe.duration.hour ?? 0) + convertMinutesToSeconds(minutes: typeActe.duration.minute ?? 0)
         }))
         
         DataController.saveContext()
     }
+    
+    func convertHoursToSeconds(hours: Int) -> Int {
+        return hours * 3600
+    }
+    
+    func convertMinutesToSeconds(minutes: Int) -> Int {
+        return minutes * 60
+    }
+
 }
 
 private struct RowTypeActeInfoView: View {
@@ -216,13 +239,7 @@ private struct RowTypeActeInfoView: View {
                 .foregroundStyle(.white, .purple)
         }
         .onAppear {
-            
-            // TODO: Bouger ce code ailleurs car il est appeler a chaque fois que l'on defocus le timer picker. Donc ça reset le timer tous le temps
             UIDatePicker.appearance().minuteInterval = 5
-            
-            let timeComponents = Int(typeActeWithDuree.typeActe.duration_).extractTimeComponents()
-            
-            typeActeWithDuree.duration = Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
         }
     }
 }

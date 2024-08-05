@@ -79,7 +79,7 @@ struct NbFacturesGraphView: View {
             }
             
         } label: {
-            Text("Répartition mensuels")
+            Text(showPicker ? "Répartion documents sur période" : "Répartition mensuels")
                 .bold()
         }
     }

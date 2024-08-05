@@ -602,8 +602,8 @@
 		F7DFADA92B66894500C905A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F7B4019A2C57B7D300104862 /* Calendar */,
 				F78096682BAC7FFA00B3AF4A /* PackageSwift */,
+				F7B4019A2C57B7D300104862 /* Calendar */,
 				F777A2E82B8DEF2E001E0169 /* User */,
 				F7D8E0142B8BA14400D4F28B /* OnBoarding */,
 				F762642C2B7AA9AE009C15F4 /* Document */,
