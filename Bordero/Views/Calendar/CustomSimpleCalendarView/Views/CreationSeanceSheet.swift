@@ -185,7 +185,7 @@ struct CreationSeanceSheet: View {
     func save() {
         let seanceObject = Seance(context: moc)
         seanceObject.commentaire = commentaire
-        seanceObject.dateDebut = dateDebut
+        seanceObject.startDate = dateDebut
         seanceObject.client_ = client
         
         seanceObject.typeActes = tabTypeActeWithDuration.map { $0.typeActe }

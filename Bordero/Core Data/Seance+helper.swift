@@ -8,10 +8,19 @@
 import Foundation
 import CoreData
 import SwiftUI
+import SimpleCalendar
 
 extension Seance {
     
-    var dateDebut : Date {
+    var uuid : UUID {
+        #if DEBUG
+        id!
+        #else
+        id ?? UUID()
+        #endif
+    }
+    
+    var startDate : Date {
         get {
             return startDate_ ?? Date()
         }
@@ -19,15 +28,6 @@ extension Seance {
             startDate_ = newValue
         }
     }
-    
-//    var dateFin: Date {
-//        get {
-//            return endDate_ ?? Date()
-//        }
-//        set {
-//            endDate_ = newValue
-//        }
-//    }
     
     var commentaire : String {
         get {
@@ -71,6 +71,16 @@ extension Seance {
         self.id = UUID()
     }
     
+    func convertToCalendarActivity() -> CalendarActivity {
+        return CalendarActivity(
+            id: uuid.uuidString,
+            title: titre,
+            description: commentaire,
+            mentors: [],
+            type: CalendarViewModel.exerciseType,
+            duration: Double(duration_)
+        )
+    }
 }
 
 

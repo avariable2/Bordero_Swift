@@ -75,6 +75,10 @@ extension Document {
         case unknow = "Inconnu"
     }
     
+    var uuid : UUID {
+        id_ ?? UUID()
+    }
+    
     var numero : String {
         get { numeroDocument_ ?? "" }
         set { numeroDocument_ = newValue }

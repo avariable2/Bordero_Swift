@@ -132,7 +132,7 @@ struct ListDocument: View {
                 } else {
                     ForEach(sortedGroupKeys, id: \.self) { key in
                         Section(header: Text(key)) {
-                            ForEach(filteredListDocuments[key]!, id: \.self) { document in
+                            ForEach(filteredListDocuments[key]!, id: \.uuid) { document in
                                 RowDocumentView(
                                     horizontalSizeClass: horizontalSizeClass,
                                     document: document
