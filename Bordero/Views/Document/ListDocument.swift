@@ -233,25 +233,27 @@ struct RowDocumentView :View {
             DocumentDetailView(document: document)
         } label : {
             HStack {
-                VStack(alignment: .center) {
-                    Text(document.dateEmission.formatted(.dateTime.month()))
+                VStack(alignment: .trailing) {
+                    Text(document.dateEmission.formatted(.dateTime.day()))
                     + Text("\n")
-                    + Text(document.dateEmission.formatted(.dateTime.day()))
+                    + Text(document.dateEmission.formatted(.dateTime.month()))
+                    
                 }
                 .multilineTextAlignment(.center)
                 .font(.subheadline)
-                .fontWeight(.semibold)
+                .fontWeight(.medium)
                 .padding(4)
                 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(document.getNameOfDocument())
-                        .font(.headline)
+                        .font(.callout)
                         .fontWeight(.semibold)
                     
-                    HStack {
+                    HStack(spacing: 4) {
                         IconStatusDocument(status: document.determineStatut())
                         
                         Divider()
+                            .frame(height: 10)
                         
                         Image(systemName: "stopwatch")
                         
@@ -259,14 +261,16 @@ struct RowDocumentView :View {
                             .foregroundStyle(isLate ? .red : .secondary)
                         
                         Divider()
+                            .frame(height: 10)
                         
                         Text(document.totalTTC, format: .currency(code: "EUR"))
-                            .fontWeight(.semibold)
                     }
                     .font(.footnote)
                     .foregroundStyle(.secondary)
+                    .fontWeight(.semibold)
+                    
                 }
-                .padding(8)
+                .padding(.leading, 4)
             }
         }
     }
@@ -276,9 +280,10 @@ struct RowDocumentView :View {
     NavigationStack {
         List{
             RowDocumentView(horizontalSizeClass: .regular, document: Document.example)
+            RowDocumentView(horizontalSizeClass: .regular, document: Document.example)
         }
         
-        ListDocument()
+//        ListDocument()
     }
 }
 
