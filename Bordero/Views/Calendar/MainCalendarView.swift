@@ -131,13 +131,12 @@ class CalendarViewModel {
     }
     
     func getEvents() -> [CalendarEvent] {
+        var tabEvents : [CalendarEvent] = []
         let listCalendarActivity = convertToCalendarActivity()
-        if let cActivity = listCalendarActivity.first {
-            return [
-                CalendarEvent(id: "eeeeee", startDate: selectedDate, activity: cActivity)
-            ]
+        for calendarActivty in listCalendarActivity {
+            tabEvents.append(CalendarEvent(id: calendarActivty.id, startDate: selectedDate, activity: calendarActivty))
         }
-        return []
+        return tabEvents
     }
     
     private func getMinutes(from date: Date) -> Int {

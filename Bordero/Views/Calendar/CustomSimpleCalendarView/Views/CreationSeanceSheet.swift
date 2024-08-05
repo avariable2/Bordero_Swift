@@ -188,13 +188,8 @@ struct CreationSeanceSheet: View {
         seanceObject.dateDebut = dateDebut
         seanceObject.client_ = client
         
-        let tabTypeActes = tabTypeActeWithDuration.map { $0.typeActe }
-        seanceObject.typeActe_ = NSSet(array: tabTypeActes)
-        do {
-            try seanceObject.color_ = NSKeyedArchiver.archivedData(withRootObject: bgColor.uiColor, requiringSecureCoding: false)
-        } catch {
-            print(error)
-        }
+        seanceObject.typeActes = tabTypeActeWithDuration.map { $0.typeActe }
+        seanceObject.color = bgColor
         
         // Add
         seanceObject.duration_ = Int64(tabTypeActeWithDuration.reduce(0, { partialResult, typeActe in

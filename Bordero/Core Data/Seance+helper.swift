@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 extension Seance {
     
@@ -37,6 +38,25 @@ extension Seance {
         }
     }
     
+    var color : Color {
+        get {
+            guard let color_ else { return .blue }
+            return Color(data: color_) ?? .blue
+        }
+        set {
+            color_ = newValue.toData()
+        }
+    }
+    
+    var typeActes : [TypeActe] {
+        get {
+            return typeActe_?.allObjects as? [TypeActe] ?? []
+        }
+        set {
+            typeActe_ = NSSet(array: newValue)
+        }
+    }
+    
     var titre : String {
         get {
             if let client_ {
@@ -51,4 +71,28 @@ extension Seance {
         self.id = UUID()
     }
     
+}
+
+
+extension Color {
+    init?(data: Data) {
+        guard let components = try? JSONDecoder().decode([CGFloat].self, from: data), components.count >= 3 else {
+            return nil
+        }
+        self = Color(
+            .sRGB,
+            red: components[0],
+            green: components[1],
+            blue: components[2],
+            opacity: components.count > 3 ? components[3] : 1.0
+        )
+    }
+    
+    func toData() -> Data? {
+        guard let components = UIColor(self).cgColor.components, components.count >= 3 else {
+            return nil
+        }
+        let colorData = try? JSONEncoder().encode(components)
+        return colorData
+    }
 }
