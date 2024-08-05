@@ -134,7 +134,7 @@ struct ListClients: View {
                 Button {
                     activeSheet = .createClient
                 } label: {
-                    Image(systemName: "person.fill.badge.plus")
+                    Image(systemName: "person.badge.plus")
                         .foregroundStyle(.green, .blue)
                 }
             }
