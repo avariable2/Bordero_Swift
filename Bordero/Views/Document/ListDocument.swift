@@ -267,7 +267,7 @@ struct RowDocumentView :View {
                     }
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     
                 }
                 .padding(.leading, 4)

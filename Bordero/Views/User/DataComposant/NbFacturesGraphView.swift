@@ -18,7 +18,7 @@ struct NbFacturesGraphView: View {
     var showPicker = true
     
     var body: some View {
-        DisclosureGroup("Répartition mensuels", isExpanded: .constant(isSearching ? false : true).animation()) {
+        DisclosureGroup(isExpanded: .constant(isSearching ? false : true).animation()) {
             
             if showPicker {
                 Picker("Selectionner la période", selection: $selectedPeriod) {
@@ -38,7 +38,7 @@ struct NbFacturesGraphView: View {
                 )
                 .foregroundStyle(by: .value("Status", element.status.rawValue))
             }
-            .padding()
+            .padding(.vertical)
             .task {
                 tabDataChart = getChartData(for: selectedPeriod)
             }
@@ -63,6 +63,9 @@ struct NbFacturesGraphView: View {
                 Text("Toutes les stats")
                     .foregroundStyle(.link)
             }
+        } label: {
+            Text("Répartition mensuels")
+                .bold()
         }
     }
     
