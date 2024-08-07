@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE172AE12C613C6100C4DB66 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE172AE02C613C6100C4DB66 /* CalendarViewModel.swift */; };
 		BEB46D452C5E7CA7006830D5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BEB46D422C5E7CA7006830D5 /* Model.xcdatamodeld */; };
 		BEB46D472C5E7F16006830D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEB46D462C5E7F16006830D5 /* GoogleService-Info.plist */; };
 		F706CA732C14CFE1000E991D /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = F706CA722C14CFE1000E991D /* MijickPopupView */; };
@@ -130,6 +131,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE172AE02C613C6100C4DB66 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		BEB46D432C5E7CA7006830D5 /* Model_v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_v2.xcdatamodel; sourceTree = "<group>"; };
 		BEB46D442C5E7CA7006830D5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BEB46D462C5E7F16006830D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -498,6 +500,7 @@
 				F7B401AF2C5966BD00104862 /* CustomSimpleCalendarView */,
 				F7B4019B2C57B7E900104862 /* MainCalendarView.swift */,
 				F7B401A22C593EDE00104862 /* EKWrapper.swift */,
+				BE172AE02C613C6100C4DB66 /* CalendarViewModel.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -758,6 +761,7 @@
 				F75F3C9C2BB077E100514246 /* ClientDetailView.swift in Sources */,
 				F7985E152BF562B3005362A4 /* PerformanceClientsGraphView.swift in Sources */,
 				F7B401C12C5A1F1500104862 /* DayPickerView.swift in Sources */,
+				BE172AE12C613C6100C4DB66 /* CalendarViewModel.swift in Sources */,
 				F7BD18302C511D4E003C09ED /* IconStatusDocument.swift in Sources */,
 				F75F36AC2BD52938003FF0D0 /* ListDocument.swift in Sources */,
 				F7B401BA2C5967E900104862 /* EventDetailsView.swift in Sources */,

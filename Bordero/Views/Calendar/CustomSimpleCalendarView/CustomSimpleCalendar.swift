@@ -94,6 +94,7 @@ public struct CustomSimpleCalendarView: View {
                     hourSpacing: $hourSpacing,
                     hourHeight: $hourHeight
                 )
+                .zIndex(1)
 
                 let calendar = Calendar.current
                 if calendar.isDateInToday(selectedDate) {
@@ -102,12 +103,14 @@ public struct CustomSimpleCalendarView: View {
                         hourSpacing: $hourSpacing,
                         hourHeight: $hourHeight
                     )
+                    .zIndex(3)
                 }
 
                 CalendarContentView(
                     events: $visibleEvents,
                     selectionAction: selectionAction
                 )
+                .zIndex(2)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

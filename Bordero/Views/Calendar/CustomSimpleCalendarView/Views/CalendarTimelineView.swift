@@ -25,7 +25,8 @@ struct CalendarTimelineView: View {
                     .offset(CGSize(width: 0, height: timelineOffset))
                     .padding(.vertical, 8)
             }
-            .padding(.horizontal, 16)
+            
+            .padding(.leading, 60)
             .onAppear {
                 calculateOffset()
             }
