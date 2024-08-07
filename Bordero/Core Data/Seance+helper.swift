@@ -67,10 +67,6 @@ extension Seance {
         }
     }
     
-    public override func awakeFromInsert() {
-        self.id = UUID()
-    }
-    
     func convertToCalendarActivity() -> CalendarActivity {
         return CalendarActivity(
             id: uuid.uuidString,
@@ -80,6 +76,20 @@ extension Seance {
             type: CalendarViewModel.exerciseType,
             duration: Double(duration_)
         )
+    }
+    
+    public override func awakeFromInsert() {
+        self.id = UUID()
+    }
+    
+    static var example : Seance {
+        let context = DataController.shared.container.viewContext
+        let seance = Seance(context: context)
+        seance.commentaire = "AAAAAAAAAA"
+        seance.client_ = Client.example
+        seance.typeActes = []
+        seance.duration_ = Int64(60)
+        return seance
     }
 }
 

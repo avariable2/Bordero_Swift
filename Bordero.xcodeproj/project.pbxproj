@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BE172AE12C613C6100C4DB66 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE172AE02C613C6100C4DB66 /* CalendarViewModel.swift */; };
+		BE172AE32C64155200C4DB66 /* CalendarSeanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE172AE22C64155200C4DB66 /* CalendarSeanceView.swift */; };
 		BEB46D452C5E7CA7006830D5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BEB46D422C5E7CA7006830D5 /* Model.xcdatamodeld */; };
 		BEB46D472C5E7F16006830D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEB46D462C5E7F16006830D5 /* GoogleService-Info.plist */; };
 		F706CA732C14CFE1000E991D /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = F706CA722C14CFE1000E991D /* MijickPopupView */; };
@@ -132,6 +133,7 @@
 
 /* Begin PBXFileReference section */
 		BE172AE02C613C6100C4DB66 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		BE172AE22C64155200C4DB66 /* CalendarSeanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSeanceView.swift; sourceTree = "<group>"; };
 		BEB46D432C5E7CA7006830D5 /* Model_v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_v2.xcdatamodel; sourceTree = "<group>"; };
 		BEB46D442C5E7CA7006830D5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BEB46D462C5E7F16006830D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				F7B401C02C5A1F1500104862 /* DayPickerView.swift */,
 				F7B401C22C5A4D0900104862 /* CreationSeanceSheet.swift */,
 				F78341D72C5D58C0000719C7 /* RecurrenceView.swift */,
+				BE172AE22C64155200C4DB66 /* CalendarSeanceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				F75369CF2B8944A6000F4CB3 /* ExploreView.swift in Sources */,
 				F76264302B7AC1D8009C15F4 /* FormPraticienView.swift in Sources */,
 				F786F7572BEE9C8B00382B21 /* PDFPayementAndSignature.swift in Sources */,
+				BE172AE32C64155200C4DB66 /* CalendarSeanceView.swift in Sources */,
 				F781153B2BB1A54900F2026E /* PDFDisplayView.swift in Sources */,
 				F76E6BF82BF5487800BC9D68 /* PraticienDataView.swift in Sources */,
 				F7C75DA72BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift in Sources */,

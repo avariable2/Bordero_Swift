@@ -36,7 +36,7 @@ struct MainCalendarView: View {
             CustomSimpleCalendarView(
                 events: $viewModel.events,
                 selectedDate: $selectedDate,
-                selectionAction: .customSheet({ calendarEvent in
+                selectionAction: .destination({ calendarEvent in
                     Text(calendarEvent.id)
                 }),
                 hourSpacing: 30,
