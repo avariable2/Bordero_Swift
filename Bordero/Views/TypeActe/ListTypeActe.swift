@@ -132,6 +132,7 @@ struct RowTypeActeView : View {
     
     @Environment(\.dismiss) private var dismiss
     @Binding var activeSheet : ActiveSheet?
+    
     let type : TypeActe
     let callback : ((TypeActe) -> Void)?
     

@@ -109,7 +109,7 @@
 		F7B401BA2C5967E900104862 /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401B92C5967E900104862 /* EventDetailsView.swift */; };
 		F7B401BD2C59682100104862 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401BC2C59682100104862 /* Date+Formatting.swift */; };
 		F7B401C12C5A1F1500104862 /* DayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401C02C5A1F1500104862 /* DayPickerView.swift */; };
-		F7B401C32C5A4D0900104862 /* CreationSeanceSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401C22C5A4D0900104862 /* CreationSeanceSheet.swift */; };
+		F7B401C32C5A4D0900104862 /* FormSeanceSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401C22C5A4D0900104862 /* FormSeanceSheet.swift */; };
 		F7B401C52C5A53F200104862 /* Seance+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B401C42C5A53F200104862 /* Seance+helper.swift */; };
 		F7B5F7652BC98BC0004F8D45 /* DatePickerViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */; };
 		F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */; };
@@ -225,7 +225,7 @@
 		F7B401B92C5967E900104862 /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		F7B401BC2C59682100104862 /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
 		F7B401C02C5A1F1500104862 /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
-		F7B401C22C5A4D0900104862 /* CreationSeanceSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationSeanceSheet.swift; sourceTree = "<group>"; };
+		F7B401C22C5A4D0900104862 /* FormSeanceSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSeanceSheet.swift; sourceTree = "<group>"; };
 		F7B401C42C5A53F200104862 /* Seance+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seance+helper.swift"; sourceTree = "<group>"; };
 		F7B5F7642BC98BC0004F8D45 /* DatePickerViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewCustom.swift; sourceTree = "<group>"; };
 		F7B6678A2BFBD39E00061908 /* TextSettingsSendClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSettingsSendClientView.swift; sourceTree = "<group>"; };
@@ -526,7 +526,7 @@
 				F7B401B72C5967AD00104862 /* EventView.swift */,
 				F7B401B92C5967E900104862 /* EventDetailsView.swift */,
 				F7B401C02C5A1F1500104862 /* DayPickerView.swift */,
-				F7B401C22C5A4D0900104862 /* CreationSeanceSheet.swift */,
+				F7B401C22C5A4D0900104862 /* FormSeanceSheet.swift */,
 				F78341D72C5D58C0000719C7 /* RecurrenceView.swift */,
 				BE172AE22C64155200C4DB66 /* CalendarSeanceView.swift */,
 			);
@@ -755,7 +755,7 @@
 				F7710D2F2BF11C13009D43C0 /* PayementSheet.swift in Sources */,
 				F7710D312BF132A7009D43C0 /* Paiement+helper.swift in Sources */,
 				F7B401A32C593EDE00104862 /* EKWrapper.swift in Sources */,
-				F7B401C32C5A4D0900104862 /* CreationSeanceSheet.swift in Sources */,
+				F7B401C32C5A4D0900104862 /* FormSeanceSheet.swift in Sources */,
 				F76ECAC72BD2986F0089C739 /* SnapshotTypeActe+helper.swift in Sources */,
 				F78737282BDD60A6002E6C85 /* NSPredicate+helper.swift in Sources */,
 				F72B0FDE2BF3EDE700740770 /* PaiementPraticienGraphView.swift in Sources */,

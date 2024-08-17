@@ -36,8 +36,8 @@ struct MainCalendarView: View {
             CustomSimpleCalendarView(
                 events: $viewModel.events,
                 selectedDate: $selectedDate,
-                selectionAction: .destination({ calendarEvent in
-                    Text(calendarEvent.id)
+                selectionAction: .destination({ calendarSeanceEvent in
+                    CalendarSeanceView(seance: (calendarSeanceEvent as! CalendarSeanceEvent).seance)
                 }),
                 hourSpacing: 30,
                 startHourOfDay: 8
@@ -68,7 +68,7 @@ struct MainCalendarView: View {
             NavigationStack {
                 switch activeSheet {
                 case .createSeance:
-                    CreationSeanceSheet()
+                    FormSeanceSheet()
                 default:
                     EmptyView() // Impossible
                 }

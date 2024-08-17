@@ -13,18 +13,20 @@ struct TypeActeWithDuration: Hashable {
     var duration : Date
 }
 
-struct CreationSeanceSheet: View {
+struct FormSeanceSheet: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
-    @State private var activeSheet : ActiveSheet? = nil
+    @State var seance : Seance? = nil
     
-    @State private var dateDebut = Date()
-    @State private var tabTypeActeWithDuration : [TypeActeWithDuration] = []
-    @State private var client : Client? = nil
-    @State private var commentaire = ""
-    @State private var bgColor = Color.green
+    @State var dateDebut = Date()
+    @State var tabTypeActeWithDuration : [TypeActeWithDuration] = []
+    @State var client : Client? = nil
+    @State var commentaire = ""
+    @State var bgColor = Color.green
+    
     @FocusState private var commentIsFocused: Bool
+    @State private var activeSheet : ActiveSheet? = nil
     
     var body: some View {
         Form {
@@ -101,7 +103,7 @@ struct CreationSeanceSheet: View {
             }
             
         }
-        .navigationTitle("Nouvelle réservation")
+        .navigationTitle(seance == nil ? "Nouvelle évènement" : "Modifier évènement")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
@@ -147,21 +149,7 @@ struct CreationSeanceSheet: View {
                     }
                 case .selectTypeActe:
                     ListTypeActe { typeActe in
-                        
-                        let timeComponents = Int(typeActe.duration_).extractTimeComponents()
-                        let duration : Date
-                        if (timeComponents.hour != 0) && (timeComponents.minute != 0) {
-                            duration = Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
-                        } else {
-                            duration = Calendar.current.date(bySettingHour: 1, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
-                        }
-                        
-                        let typeActeWithDuration = TypeActeWithDuration(
-                            typeActe: typeActe,
-                            duration: duration
-                        )
-                        
-                        tabTypeActeWithDuration.append(typeActeWithDuration)
+                        tabTypeActeWithDuration.append(typeActe.getWithDuration())
                     }
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -183,7 +171,11 @@ struct CreationSeanceSheet: View {
     }
     
     func save() {
-        let seanceObject = Seance(context: moc)
+        let seanceObject : Seance = if seance != nil {
+            seance!
+        } else {
+            Seance(context: moc)
+        }
         seanceObject.commentaire = commentaire
         seanceObject.startDate = dateDebut
         seanceObject.client_ = client
@@ -241,6 +233,6 @@ private struct RowTypeActeInfoView: View {
 
 #Preview {
     NavigationStack {
-        CreationSeanceSheet()
+        FormSeanceSheet()
     }
 }

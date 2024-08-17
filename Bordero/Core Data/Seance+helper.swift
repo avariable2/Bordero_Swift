@@ -13,11 +13,11 @@ import SimpleCalendar
 extension Seance {
     
     var uuid : UUID {
-        #if DEBUG
+#if DEBUG
         id!
-        #else
+#else
         id ?? UUID()
-        #endif
+#endif
     }
     
     var startDate : Date {
@@ -63,6 +63,22 @@ extension Seance {
                 "Séance \(client_.fullname)"
             } else {
                 "Inconnu"
+            }
+        }
+    }
+    
+    var durationConvertie : String {
+        get {
+            let secondes = Int(duration_)
+            let heures = secondes / 3600
+            let minutes = (secondes % 3600) / 60
+            
+            if heures > 0 {
+                return heures == 1 ? "1 heure" : "\(heures) heures"
+            } else if minutes > 0 {
+                return minutes == 1 ? "1 minute" : "\(minutes) minutes"
+            } else {
+                return "moins d'une minute"
             }
         }
     }

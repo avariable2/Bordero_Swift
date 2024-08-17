@@ -12,7 +12,7 @@ import SimpleCalendar
 /// This specific class is rewrite for match my specific need.
 public struct CustomSimpleCalendarView: View {
     /// The events the calendar should show
-    @Binding var events: [CalendarEvent]
+    @Binding var events: [CalendarSeanceEvent]
     @Binding var selectedDate: Date
 
     @State private var visibleEvents: [any CalendarEventRepresentable]
@@ -35,7 +35,7 @@ public struct CustomSimpleCalendarView: View {
     ///   - startHourOfDay: The first hour of the day to show. Defaults to `6` as 6 in the morning / 6 am
     ///   - endHourOfDay: The last hour of the day to show. Defaults to `24` as 00 in the morning / 12pm
     public init(
-        events: Binding<[CalendarEvent]>,
+        events: Binding<[CalendarSeanceEvent]>,
         selectedDate: Binding<Date>,
         selectionAction: SelectionAction = .sheet,
         dateSelectionStyle: DateSelectionStyle = .datePicker,
