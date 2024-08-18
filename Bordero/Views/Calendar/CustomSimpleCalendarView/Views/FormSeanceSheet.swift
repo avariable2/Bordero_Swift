@@ -38,7 +38,20 @@ struct FormSeanceSheet: View {
             }
             
             Section("Client") {
-                if let client {
+                switch client {
+                case nil :
+                    Button {
+                        activeSheet = .selectClient
+                    } label: {
+                        Label {
+                            Text("sélectionner un(e) client(e)")
+                                .tint(.primary)
+                        } icon: {
+                            Image(systemName: "plus.circle")
+                                .foregroundStyle(.green)
+                        }
+                    }
+                default :
                     HStack {
                         ClientRowView(client: .constant(client))
                         Spacer()
@@ -50,18 +63,6 @@ struct FormSeanceSheet: View {
                             Image(systemName: "minus.circle.fill")
                                 .symbolRenderingMode(.monochrome)
                                 .foregroundStyle(.red)
-                        }
-                    }
-                } else {
-                    Button {
-                        activeSheet = .selectClient
-                    } label: {
-                        Label {
-                            Text("sélectionner un(e) client(e)")
-                                .tint(.primary)
-                        } icon: {
-                            Image(systemName: "plus.circle")
-                                .foregroundStyle(.green)
                         }
                     }
                 }

@@ -22,17 +22,7 @@ struct MainCalendarView: View {
     @State private var activeSheet : ActiveSheet? = nil
     
     var body: some View {
-        
         VStack {
-//            
-//            Text("Nombre d'entity : \(seances.count)")
-//            List {
-//                ForEach(seances, id: \.self) { s in
-//                    Text("\(s.startDate)")
-//                }.onDelete(perform: delete)
-//            }
-//            .frame(height: 200)
-            
             CustomSimpleCalendarView(
                 events: $viewModel.events,
                 selectedDate: $selectedDate,
@@ -64,7 +54,9 @@ struct MainCalendarView: View {
                 DayPickerView(selectedDay: $selectedDate)
             }
         }
-        .sheet(item: $activeSheet) { activeSheet in
+        .sheet(item: $activeSheet) {
+            viewModel.fetchCalendarSeances(moc, targetDate: selectedDate)
+        } content: { activeSheet in
             NavigationStack {
                 switch activeSheet {
                 case .createSeance:
@@ -73,7 +65,6 @@ struct MainCalendarView: View {
                     EmptyView() // Impossible
                 }
             }
-            
         }
         .trackEventOnAppear(event: .calendarListBrowsed, category: .calendarManagement)
     }
