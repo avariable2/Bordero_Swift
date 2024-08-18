@@ -104,7 +104,7 @@ extension Seance {
         seance.commentaire = "AAAAAAAAAA"
         seance.client_ = Client.example
         seance.typeActes = []
-        seance.duration_ = Int64(60)
+        seance.duration_ = Int64(3600*3)
         return seance
     }
 }

@@ -89,7 +89,7 @@ struct MainCalendarView: View {
 
 #Preview {
     NavigationStack {
-        MainCalendarView()
+//        MainCalendarView()
     }
 }
 
