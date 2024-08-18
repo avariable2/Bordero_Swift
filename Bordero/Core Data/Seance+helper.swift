@@ -101,6 +101,7 @@ extension Seance {
     static var example : Seance {
         let context = DataController.shared.container.viewContext
         let seance = Seance(context: context)
+        seance.startDate = Date().atHour(11, minute: 28) ?? Date()
         seance.commentaire = "AAAAAAAAAA"
         seance.client_ = Client.example
         seance.typeActes = []

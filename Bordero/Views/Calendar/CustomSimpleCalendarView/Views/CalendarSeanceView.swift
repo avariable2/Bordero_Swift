@@ -32,14 +32,6 @@ struct CalendarSeanceView: View {
                     .bold()
                 
                 Divider()
-//                
-//                Text("Client")
-//                    .font(.headline)
-//                    .padding(.bottom, 4)
-//                
-//                ClientRowView(client: .constant(seance.client_))
-//                
-//                Divider()
                 
                 LabeledContent {
                     Text("\(seance.typeActes.count.description)")
@@ -49,8 +41,6 @@ struct CalendarSeanceView: View {
                 }
                 
                 ForEach(seance.typeActes) { typeActe in
-//                    Text(typeActe.name)
-//                        .foregroundStyle(seance.color)
                     
                     DisplayTypeActeView(text: typeActe.name, price: String(format: "Prix total : %.2f €", typeActe.total))
                     
@@ -61,6 +51,7 @@ struct CalendarSeanceView: View {
                 
                 LabeledContent("Durée", value: seance.durationConvertie)
                 
+                Divider()
                 
                 ZStack(alignment: .topLeading) {
                                     
@@ -78,7 +69,7 @@ struct CalendarSeanceView: View {
                     }
                     
                     eventCell(seance)
-                        .clipped()
+                        .mask(Rectangle())
                 }
                 .frame(height: 150)
                 .background(
@@ -94,7 +85,7 @@ struct CalendarSeanceView: View {
                 } label: {
                     Text("Commentaire")
                     
-                    Text("\(seance.commentaire)")
+                    Text("\(seance.commentaire.isEmpty ? "Aucun" : seance.commentaire)")
                         .foregroundStyle(.secondary)
                     
                 }
@@ -157,10 +148,21 @@ struct CalendarSeanceView: View {
     }
     
     func eventCell(_ event: Seance) -> some View {
-        let height : CGFloat = CGFloat(seance.duration_ / 60 / 60 * 50)
+        // Calculez la durée de l'événement en minutes
+        let durationInMinutes = Double(event.duration_) / 60
+        
+        // Définir l'échelle : chaque minute correspond à un certain nombre de points
+        let pointsPerMinute: CGFloat = 2
+        
+        // Calculer la hauteur en fonction de la durée
+        let height: CGFloat = CGFloat(durationInMinutes) * pointsPerMinute
+        
+        let maxHeight: CGFloat = 150
+        let finalHeight = min(height, maxHeight)
+        
+//        print("DEBUG_BRO: taille : \(height)")
         
         let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: event.startDate)
         let minute = calendar.component(.minute, from: event.startDate)
         let offset = (Double(minute) / 60) * 50 + 26
 
@@ -173,16 +175,16 @@ struct CalendarSeanceView: View {
         .font(.caption)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(4)
-        .frame(height: height, alignment: .top)
+        .frame(height: finalHeight, alignment: .top)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(seance.color)
+                .fill(event.color)
                 .opacity(0.7)
         )
         .padding(.trailing, 30)
         .offset(x: 30, y: offset)
-
     }
+
 }
 
 #Preview {
