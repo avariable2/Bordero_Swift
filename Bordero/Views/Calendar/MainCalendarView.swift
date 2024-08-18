@@ -68,14 +68,6 @@ struct MainCalendarView: View {
         }
         .trackEventOnAppear(event: .calendarListBrowsed, category: .calendarManagement)
     }
-    
-//    func delete(at offsets: IndexSet) {
-//        for index in offsets {
-//            let seance = seances[index]
-//            moc.delete(seance)
-//        }
-//        DataController.saveContext()
-//    }
 }
 
 #Preview {

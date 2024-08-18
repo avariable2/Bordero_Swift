@@ -84,12 +84,14 @@ extension Seance {
     }
     
     func convertToCalendarActivity() -> CalendarActivity {
+        let activityType = ActivityType(name: "Réservation", color: color)
+        
         return CalendarActivity(
             id: uuid.uuidString,
             title: titre,
             description: commentaire,
             mentors: [],
-            type: CalendarViewModel.exerciseType,
+            type: activityType,
             duration: Double(duration_)
         )
     }
