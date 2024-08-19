@@ -9,7 +9,6 @@ import SwiftUI
 import Charts
 
 struct PaiementPraticienGraphView: View {
-    @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [
         NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
     ]) var payments : FetchedResults<Paiement>
@@ -23,9 +22,9 @@ struct PaiementPraticienGraphView: View {
     
     @State private var showSelectionBar = false
     
+    @State private var cumulativePayments : [CumulativePaiementData] = []
+    
     var body: some View {
-        let cumulativePayments = getCumulativePaiements(paiments: Array(payments), for: selectedDateInterval)
-        
         VStack {
             Chart(cumulativePayments) { data in
                 LineMark(
@@ -50,7 +49,12 @@ struct PaiementPraticienGraphView: View {
                 self.selectedDateInterval = DateInterval(start: self.selectedDateInterval.start, end: newEnd)
             }), displayedComponents: .date)
         }
-        
+        .onAppear() {
+            cumulativePayments = getCumulativePaiements(paiments: Array(payments), for: selectedDateInterval)
+        }
+        .onChange(of: selectedDateInterval, { oldValue, newValue in
+            cumulativePayments = getCumulativePaiements(paiments: Array(payments), for: selectedDateInterval)
+        })
         .padding()
     }
     

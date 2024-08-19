@@ -68,10 +68,15 @@ extension Document {
         case created = "Ouvert"
         case payed = "Payée"
         case send = "Envoyée"
+        case retard = "Retard"
         
         var id: String { rawValue }
         
         case unknow = "Inconnu"
+    }
+    
+    var uuid : UUID {
+        id_ ?? UUID()
     }
     
     var numero : String {
@@ -264,8 +269,14 @@ extension Document {
         } else if calendar.isDate(date, equalTo: currentDate, toGranularity: .month) {
             return "Ce mois"
         } else {
+            let monthAgo = calendar.date(byAdding: .month, value: -1, to: currentDate)!
+            if calendar.isDate(date, equalTo: monthAgo, toGranularity: .month) {
+                return "Le mois dernier"
+            }
+            
             // Calculate the start date for 6 months ago
             let sixMonthsAgo = calendar.date(byAdding: .month, value: -6, to: currentDate)!
+            
             
             if date >= sixMonthsAgo {
                 return "6 derniers mois"
@@ -277,8 +288,11 @@ extension Document {
         }
     }
     
-    func determineStatut() -> String {
-        return self.status.rawValue
+    func determineStatut() -> Status {
+        if self.dateEcheance <= Date() && self.status == .send {
+            return Status.retard
+        }
+        return self.status
     }
     
     func determineColor() -> Color {
@@ -317,6 +331,7 @@ extension Document {
         let document = Document(context: context)
         
         document.estDeTypeFacture = true
+        document.status = .created
         
         return document
     }

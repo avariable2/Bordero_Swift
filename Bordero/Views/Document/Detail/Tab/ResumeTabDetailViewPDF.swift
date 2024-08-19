@@ -22,10 +22,18 @@ struct ResumeTabDetailViewPDF: View {
     @State var presentURL: URL? = nil
     @ObservedObject var document : Document
     
+    var isLate: Bool {
+        document.dateEcheance <= Date() && document.status == .send
+    }
     
     var body: some View {
         VStack {
             Form {
+                
+                #if DEBUG
+                Text("ID du document : \(String(describing: document.id_?.uuidString))")
+                #endif
+                
                 Section {
                     VStack(alignment: .center, spacing: 20) {
                         
@@ -57,25 +65,8 @@ struct ResumeTabDetailViewPDF: View {
                 }
                 
                 Section {
-                    Button {
-                        
-                    } label: {
-                        if let client = document.client_ {
-                            ClientRowView(firstname: client.firstname, name: client.lastname)
-                                .tint(.primary)
-                        } else {
-                            Label {
-                                Text("Le client n'a pas été retrouvé ou bien a été supprimé.")
-                                    .fontWeight(.regular)
-                            } icon: {
-                                Image(systemName: "person.crop.circle.badge.questionmark.fill")
-                                    .foregroundStyle(.yellow, .gray)
-                                    .imageScale(.large)
-                            }
-                            .tint(.primary)
-                        }
-                    }
-                    
+                    ClientRowView(client: $document.client_)
+                        .tint(.primary)
                 } header: {
                     Text("Créer pour")
                 }
@@ -85,9 +76,10 @@ struct ResumeTabDetailViewPDF: View {
                         Text("Statut")
                         Spacer()
                         HStack(spacing: nil) {
-                            Image(systemName: "circle.circle.fill")
-                                .foregroundStyle(.black, document.determineColor())
-                            Text(document.determineStatut())
+                            
+                            IconStatusDocument(status: document.status)
+                            
+                            Text(document.determineStatut().rawValue)
                                 .foregroundStyle(.primary)
                                 .fontWeight(.light)
                         }
@@ -107,10 +99,16 @@ struct ResumeTabDetailViewPDF: View {
                     }
                     
                     LabeledContent("Date d'échéance") {
+                        if isLate {
+                            Image(systemName: "hourglass.tophalf.filled")
+                                .foregroundStyle(.pink)
+                        }
+                        
                         Text(document.dateEcheance.formatted(.dateTime.day().month().year()))
                             .foregroundStyle(.primary)
                             .fontWeight(.light)
                     }
+                    .foregroundStyle(isLate ? .red : .primary)
                 } header: {
                     Text("Informations")
                 }

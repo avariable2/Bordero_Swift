@@ -55,10 +55,7 @@ struct ClientSection: View {
         Section {
             if let client = viewModel.pdfModel.client {
                 HStack {
-                    ClientRowView(
-                        firstname: client.firstname,
-                        name: client.lastname
-                    )
+                    ClientRowView(client: .constant(client))
                     Spacer()
                     Button {
                         withAnimation {

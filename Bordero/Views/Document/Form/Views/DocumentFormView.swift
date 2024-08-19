@@ -14,7 +14,12 @@ struct DocumentFormView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
+    @FetchRequest(
+        sortDescriptors: [],
+//        predicate: PraticienUtils.predicate,
+        animation: .default
+    )
+    var praticien: FetchedResults<Praticien>
     
     @State private var isPraticienDataSetup = false
     

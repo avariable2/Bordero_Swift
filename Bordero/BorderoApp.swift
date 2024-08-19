@@ -8,50 +8,67 @@
 import SwiftUI
 import CoreData
 import FirebaseCore
-import MijickPopupView
+import UserNotifications
 
 @main
 struct BorderoApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @UIApplicationDelegateAdaptor private var appDelegate : CustomAppDelegate
     
     private var dataController = DataController.shared
-    private var userController = UseriCloudController()
-    
-    init() {
-        // Définir le délégué
-        UNUserNotificationCenter.current().delegate = appDelegate
-    }
-    
     
     var body: some Scene {
         WindowGroup {
-            switch userController.accountAvailable {
-            case .isLoading:
-                HomeView(showNeediCloud: true)
-                    .redacted(reason: .placeholder)
-                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                    .implementPopupView()
-            case .connected, .notConnected:
-                ContentView(userNeediCloud: userController.accountAvailable)
-                    .onChange(of: userController.accountAvailable) { oldValue, newValue in
-                        DataController.shared.updateICloudSettings()
-                    }
-                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                    .implementPopupView()
-            }
-                
+            ContentView()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .onAppear(perform: {
+                    // this makes sure that we are setting the app to the app delegate as soon as the main view appears
+                    appDelegate.app = self
+                })
         }
     }
 }
 
-class AppDelegate : NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class CustomAppDelegate : NSObject, UIApplicationDelegate {
+    
+    var app: BorderoApp?
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        
+        // This is where we register this device to recieve push notifications from Apple
+        // All this function does is register the device with APNs, it doesn't set up push notifications by itself
+        application.registerForRemoteNotifications()
+        
+        UNUserNotificationCenter.current().delegate = self
+        
         return true
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound, .badge])
+    func application(_ application: UIApplication,
+                           didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Once the device is registered for push notifications Apple will send the token to our app and it will be available here.
+        // This is also where we will forward the token to our push server
+        // If you want to see a string version of your token, you can use the following code to print it out
+        
+        #if DEBUG
+        let stringifiedToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        print("stringifiedToken:", stringifiedToken)
+        #endif
+    }
+}
+
+extension CustomAppDelegate : UNUserNotificationCenterDelegate {
+    // This function lets us do something when the user interacts with a notification
+    // like log that they clicked it, or navigate to a specific screen
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        print("Got notification title: ", response.notification.request.content.title)
+    }
+    
+    // This function allows us to view notifications in the app even with it in the foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        // These options are the options that will be used when displaying a notification with the app in the foreground
+        // for example, we will be able to display a badge on the app a banner alert will appear and we could play a sound
+        return [.badge, .banner, .list, .sound]
     }
 }

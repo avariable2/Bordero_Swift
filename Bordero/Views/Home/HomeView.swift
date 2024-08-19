@@ -77,9 +77,9 @@ struct HomeView: View {
                     BandeauCreateDocument()
                 }
                 
-                SectionHomeComponentView(title: "Statistiques") {
-                    ButtonShowStatistiquesPraticienView()
-                }
+//                SectionHomeComponentView(title: "Statistiques") {
+//                    ButtonShowStatistiquesPraticienView()
+//                }
                 
                 SectionHomeComponentView(title: "Articles") {
                     GridViewWrapper(articles: articles, config: $gridViewConfig, numberOfColumns: $numberOfColumns) { article in
@@ -102,8 +102,8 @@ struct HomeView: View {
         }
         .sheet(item: $activeSheet) { type in
             switch(type) {
-            case .parameters:
-                ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
+//            case .parameters:
+//                ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
             default:
                 EmptyView()
             }

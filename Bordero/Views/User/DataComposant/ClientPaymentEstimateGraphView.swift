@@ -14,22 +14,29 @@ struct ClientPaymentEstimateGraphView: View {
         sortDescriptors: []
     ) var clients: FetchedResults<Client>
     
+    @State private var clientData : [ClientPaymentData] = []
+    
     var body: some View {
-        let clientData = calculateClientPaymentData(clients: Array(clients))
-        if !clientData.isEmpty  {
-            CombinedChartView(clientData: clientData)
-        } else {
-            ContentUnavailableView("Pas de donnée disponible", systemImage: "chart.line.flattrend.xyaxis")
-        }
+        CombinedChartView(clientData: $clientData)
+            .task {
+                clientData = calculateClientPaymentData(clients: Array(clients))
+            }
+            .overlay {
+                if clientData.isEmpty {
+                    ContentUnavailableView("Pas de donnée disponible", systemImage: "chart.line.flattrend.xyaxis")
+                }
+            }
     }
 }
 
 struct CombinedChartView: View {
-    let clientData: [ClientPaymentData]
+    @Binding var clientData: [ClientPaymentData]
+    
+    var averageTime : Double {
+        clientData.map { $0.averagePaymentTime }.reduce(0, +) / Double(clientData.count)
+    }
     
     var body: some View {
-        let averageTime = clientData.map { $0.averagePaymentTime }.reduce(0, +) / Double(clientData.count)
-        
         VStack {
             Chart {
                 ForEach(clientData) { data in

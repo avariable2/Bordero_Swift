@@ -70,6 +70,7 @@ extension TypeActe {
         info : String = "",
         price : Double,
         tva : Double,
+        duree: Int64 = 60*60,
         context : NSManagedObjectContext) {
             self.init(context: context)
             self.id = UUID()
@@ -77,7 +78,23 @@ extension TypeActe {
             self.info = info
             self.price = price
             self.tva = tva
+            self.duration_ = duree
             self.total = tva == 0 ? price : price * tva + price
     }
     
+    func getWithDuration() -> TypeActeWithDuration {
+        let timeComponents = Int(duration_).extractTimeComponents()
+        let duration : Date
+        if (timeComponents.hour != 0) && (timeComponents.minute != 0) {
+            duration = Calendar.current.date(bySettingHour: timeComponents.hour, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
+        } else {
+            duration = Calendar.current.date(bySettingHour: 1, minute: timeComponents.minute, second: timeComponents.second, of: Date())!
+        }
+        
+        let typeActeWithDuration = TypeActeWithDuration(
+            typeActe: self,
+            duration: duration
+        )
+        return typeActeWithDuration
+    }
 }

@@ -9,17 +9,16 @@ import SwiftUI
 import Contacts
 import SwiftUIDigitalSignature
 import PhotosUI
+import CoreData
 
 struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     static func getVersion() -> Int32 {
         return 1
     }
     
-    // Create a unique and specif uuid for be sure all user has the same and can get her data from home
-    static let uuidPraticien = UUID(uuidString: "62094590-C187-4F68-BE0D-D8E348299900")
-    
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     // MARK: Textfield pour les coordoonées du praticien
     @State private var profilPicture : UIImage? = nil
@@ -37,10 +36,8 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     @State private var selectedPhotoSocieteUIImage: UIImage?
     
     @State private var selectedContact: CNContact?
-    @State private var showAlert = false
     
     // MARK: Option d'affichage du formulaire
-    var isOnBoarding : Bool
     var titre = "Renseignements professionnels"
     var textFacultatif = "facultatif"
     
@@ -50,19 +47,9 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
     var body: some View {
         List {
             VStack(alignment: .center, spacing: 20) {
-                
-                ProfilImageView(imageData: profilPicture?.jpegData(compressionQuality: 1.0))
+                ProfilImageView(imageData: praticien.profilPicture)
                     .frame(height: 80)
                     .font(.system(size: 60))
-                
-                if isOnBoarding {
-                    Text("Configurer les renseignements \n professionnels")
-                        .font(.title)
-                        .bold()
-                    
-                    Text("Vos renseignements professionnels correspondent aux informations élémentaires dont l'app a besoin pour respecter au mieux les normes de l'édition de documents administratifs.")
-                        .padding(.horizontal)
-                }
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -89,6 +76,7 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
                         if let imageData = contact.thumbnailImageData, let uiImage = UIImage(data: imageData) {
                             profilPicture = uiImage
                             profilPicture!.jpegData(compressionQuality: 1.0)
+                            praticien.profilPicture = uiImage.pngData()
                         }
                         
                     }
@@ -273,64 +261,16 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         .onAppear {
             retrieveInfoFormPraticienNotNull(praticien)
         }
-        .navigationTitle(isOnBoarding ? "" : titre)
-        .navigationBarTitleDisplayMode(isOnBoarding ? .automatic : .inline)
+        .onDisappear() {
+            modify()
+            
+            if horizontalSizeClass == .compact {
+                dismiss()
+            }
+        }
         .headerProminence(.increased)
         .multilineTextAlignment(.trailing)
         .background(Color(.systemGray6))
-        .toolbar {
-            if !isOnBoarding {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        modify()
-                        dismiss()
-                    } label: {
-                        Text("OK")
-                    }
-                }
-            }
-        }
-        .alert("Les données ne seront pas sauvegardées", isPresented: $showAlert, actions: {
-            Button("Quitter", role: .destructive) {
-                dismiss()
-            }
-            
-            Button {
-                modify()
-            } label :{
-                Text("Sauvegarder")
-            }
-        })
-        .safeAreaInset(edge: .bottom) {
-            if isOnBoarding {
-                Button {
-                    modify()
-                } label: {
-                    Text("Suivant")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
-            }
-        }
-    }
-    
-    func save() {
-        do {
-            try moc.save()
-            
-            print("Success")
-            
-            if let action = callback {
-                action()
-            }
-        } catch let err {
-            print("error \(err)")
-        }
     }
     
     func modify() {
@@ -339,8 +279,14 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
         save()
     }
     
+    func save() {
+        DataController.saveContext()
+    }
+    
     func createPraticienObject() -> Praticien {
         praticien.version = FormPraticienView.getVersion()
+        
+        praticien.modificationDate = Date()
         
         praticien.profilPicture = profilPicture?.jpegData(compressionQuality: 1.0)
         praticien.logoSociete = selectedPhotoSocieteUIImage?.jpegData(compressionQuality: 1.0)
@@ -387,5 +333,5 @@ struct FormPraticienView: View, Saveable, Modifyable, Versionnable {
 }
 
 #Preview {
-    FormPraticienView(isOnBoarding: false, praticien: Praticien.example)
+    FormPraticienView(praticien: Praticien.example)
 }

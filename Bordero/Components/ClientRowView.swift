@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct ClientRowView: View {
-    let firstname : String
-    let name : String
+    
+    @Binding var client: Client?
     
     var body: some View {
         Label {
             VStack {
-                Text(firstname)
+                Text(client?.firstname ?? "Le client n'a pas été retrouvé ou bien a été supprimé.")
                 + Text(" ")
-                + Text(name)
+                + Text(client?.lastname ?? "")
                     .bold()
             }
         } icon: {
-            ProfilImageView(imageData: nil)
+            Image(systemName: client != nil ? "person.crop.circle.fill" : "person.crop.circle.badge.questionmark.fill")
+                .foregroundStyle(.white, .gray)
+                .imageScale(.large)
         }
     }
 }
 
 #Preview {
-    ClientRowView(firstname: "AAAAAA", name: "AAAAAA")
+    ClientRowView(client: .constant(.example))
 }

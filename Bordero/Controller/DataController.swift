@@ -10,7 +10,8 @@ import Foundation
 import CloudKit
 import Observation
 
-@Observable class DataController {
+@Observable 
+class DataController {
     static let shared = DataController()
     
     var container: NSPersistentCloudKitContainer
@@ -22,7 +23,6 @@ import Observation
     }
     
     private init() {
-//        DataController.resetAppData()
         self.container = DataController.setupSyncContainer(iCloudIsOn: false) // Charge une premiere fois pour initialiser la description à nul puis le refresh si nécessaire.
         
         updateICloudSettings()
@@ -82,49 +82,38 @@ import Observation
         // 1. Configure for App Group
         let groupIdentifier = "group.com.bigVariable.bordero"
         let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier)
-        let storeDescription = NSPersistentStoreDescription(url: sharedContainerURL!.appendingPathComponent("Model.sqlite")) // Replace with your data model name
+        let storeURL = sharedContainerURL!.appendingPathComponent("Model.sqlite")
         
-        // 2. Configure for CloudKit
-        let cloudKitContainerIdentifier = "iCloud.com.bigVariable.Bordero" // Replace with your CloudKit container identifier
-        let cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitContainerIdentifier)
-        storeDescription.cloudKitContainerOptions = cloudKitOptions
+        // 2. Configure Store Description
+        let storeDescription = NSPersistentStoreDescription(url: storeURL)
         
-        // 3. Handle merges
+        // 3. Configure for CloudKit
+        if iCloudIsOn {
+            let cloudKitContainerIdentifier = "iCloud.com.bigVariable.Bordero"
+            let cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitContainerIdentifier)
+            storeDescription.cloudKitContainerOptions = cloudKitOptions
+        } else {
+            storeDescription.cloudKitContainerOptions = nil
+        }
+        
+        // 4. Enable History Tracking and Automatic Migration
         storeDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        container.viewContext.automaticallyMergesChangesFromParent = true
+        storeDescription.shouldMigrateStoreAutomatically = true
+        storeDescription.shouldInferMappingModelAutomatically = true
         
-        // 4. Assign store description
+        // 5. Assign Store Description
         container.persistentStoreDescriptions = [storeDescription]
         
-        guard let description = container.persistentStoreDescriptions.first else {
-            fatalError("###\(#function): Failed to retrieve a persistent store description.")
-        }
-        
-        // leave the default cloudKitContainerOptions value as it is, then it will sync automatically
-        if !iCloudIsOn {
-            description.cloudKitContainerOptions = nil
-        }
-        
-//        description.url = sharedStoreURL
-//        
-//        
-//        
-//        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-//        let remoteChangeKey = "NSPersistentStoreRemoteChangeNotificationOptionKey"
-//        description.setOption(true as NSNumber,
-//                              forKey: remoteChangeKey)
-//        
+        // 6. Load Persistent Stores
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
         
-//        container.viewContext.automaticallyMergesChangesFromParent = true
-//        
-//        // sets the merge conflict strategy. If this property is not set, Core Data will default to using NSErrorMergePolicy as the conflict resolution strategy (do not handle any conflicts, directly report an error), which will cause iCloud data to not merge correctly into the local database.
-//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        // 7. Configure View Context
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
         
         do {
             try container.viewContext.setQueryGenerationFrom(.current)

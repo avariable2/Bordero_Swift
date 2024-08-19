@@ -98,9 +98,6 @@ struct ExploreView: View {
                     activeSheet = nil
                 })
                 .presentationDetents([.large])
-                
-            case .parameters:
-                ParametersView(activeSheet: $activeSheet, praticien: praticien.first)
             default:
                 EmptyView() // IMPOSSIBLE
             }

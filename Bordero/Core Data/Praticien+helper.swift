@@ -131,7 +131,6 @@ extension Praticien {
         moc : NSManagedObjectContext
     ) {
         self.init(context: moc)
-        self.id = UUID(uuidString: "62094590-C187-4F68-BE0D-D8E348299900")
         self.defaultRangeDateEcheance_ = Int16(DateEcheanceParams.trente.value)
         self.structureMessageDevis = [
             "titre" : "Devis #NUMERO#",

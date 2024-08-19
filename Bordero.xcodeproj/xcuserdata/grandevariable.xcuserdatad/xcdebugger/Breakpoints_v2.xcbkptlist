@@ -14,6 +14,15 @@
             symbolName = "CGPostError"
             moduleName = "">
             <Locations>
+               <Location
+                  uuid = "77794C81-A962-4C14-9EAC-1726E9B902C6 - 6b2a6ff60c6dfa83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CGPostError"
+                  moduleName = "CoreGraphics"
+                  usesParentBreakpointCondition = "Yes">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -40,6 +49,15 @@
             symbolName = "print_cycle"
             moduleName = "">
             <Locations>
+               <Location
+                  uuid = "8C37DF89-6C52-4BC9-B75E-1AF2B9A73C63 - cc86abe8c9557793"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AG::Graph::print_cycle(AG::data::ptr&lt;AG::Node&gt;) const"
+                  moduleName = "AttributeGraph"
+                  usesParentBreakpointCondition = "Yes">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,19 +75,41 @@
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
-            uuid = "DDF4D9FB-77B9-433B-8A02-C0CB0DE9DD68"
-            shouldBeEnabled = "No"
+            uuid = "1BD6E4DD-7298-4C48-8D89-4E0F18C5A0CA"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Bordero/Controller/UseriCloudController.swift"
+            symbolName = "_PFFaultLogExcessivePrepareForPendingChangesAttempts"
+            moduleName = "">
+            <Locations>
+               <Location
+                  uuid = "1BD6E4DD-7298-4C48-8D89-4E0F18C5A0CA - ccf4a2b9618e19b7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "_PFFaultLogExcessivePrepareForPendingChangesAttempts"
+                  moduleName = "CoreData"
+                  usesParentBreakpointCondition = "Yes">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D7CB68A2-646C-4023-A666-F4D919509B52"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Bordero/Views/Calendar/CustomSimpleCalendarView/Views/CreationSeanceSheet.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "checkAccountStatus()"
-            landmarkType = "7">
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

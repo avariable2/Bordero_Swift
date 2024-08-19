@@ -7,148 +7,131 @@
 
 import SwiftUI
 
+enum MenuNavigation : String, Identifiable, CaseIterable {
+    case clients
+    case documents
+    case calendrier
+    case parametres = "Paramètres"
+    
+    var id : String { return self.rawValue }
+    var systemNameImage : String {
+        switch self {
+        case .clients:
+            "person.2"
+        case .documents:
+            "list.bullet.rectangle"
+        case .parametres:
+            "person.crop.circle"
+        case .calendrier:
+            "calendar"
+        }
+    }
+}
+
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @State var userNeediCloud : UseriCloudController.StateCheckiCloud
-    
     var body: some View {
-        if horizontalSizeClass == .compact {
-            CustomTabView(userNeediCloud: userNeediCloud)
-        } else {
-            NavigationIpad(userNeediCloud: userNeediCloud)
+        VStack {
+            if horizontalSizeClass == .compact {
+                CustomTabView()
+            } else {
+                NavigationIpad()
+            }
         }
     }
 }
 
 struct CustomTabView: View {
-    var userNeediCloud: UseriCloudController.StateCheckiCloud
+    @State var selection : MenuNavigation = .documents
+    @State var activeSheet : ActiveSheet? = nil
     
     var body: some View {
-        TabView {
-            NavigationStack {
-                HomeView(showNeediCloud: userNeediCloud == .notConnected)
-            }
-            .tabItem {
-                Image(systemName: "house")
-                Text("Résumé")
-            }
-            
+        TabView(selection: $selection) {
             NavigationStack {
                 ListClients()
             }
             .tabItem {
                 Image(systemName: "person.2")
-                Text("Clients")
+                Text(MenuNavigation.clients.rawValue.capitalized)
             }
+            .tag(MenuNavigation.clients)
             
             NavigationStack {
-                ExploreView()
+                ListDocument()
             }
             .tabItem {
-                Image(systemName: "rectangle.split.2x2.fill")
-                Text("Parcourir")
+                Image(systemName: "list.bullet.rectangle.fill")
+                    .bold()
+                Text(MenuNavigation.documents.rawValue.capitalized)
             }
+            .tag(MenuNavigation.documents)
+            
+            NavigationStack {
+                MainCalendarView()
+            }
+            .tabItem {
+                Image(systemName: "calendar")
+                    .bold()
+                Text(MenuNavigation.calendrier.rawValue.capitalized)
+            }
+            .tag(MenuNavigation.calendrier)
+            
+            NavigationStack {
+                ParametersView(activeSheet: $activeSheet)
+            }
+            .tabItem {
+                Image(systemName: "person.crop.circle")
+                Text(MenuNavigation.parametres.rawValue.capitalized)
+            }
+            .tag(MenuNavigation.parametres)
         }
     }
 }
 
 struct NavigationIpad: View {
-    @State private var model = NavModel()
-    @State private var selectedNav: NavItem.ID? = nil
-    @State private var showExpandableFirstSection = true
-    @State private var preferredColumn =
-        NavigationSplitViewColumn.detail
-    
     @State private var selectedClient : Client?
     
-    var userNeediCloud: UseriCloudController.StateCheckiCloud
+    @State var selectedMenu : MenuNavigation? = .documents
+    @State var activeSheet : ActiveSheet? = nil
     
     var body: some View {
         NavigationSplitView {
-            List {
-                Section {
-                    NavigationLink {
-                        HomeView(showNeediCloud: userNeediCloud == .notConnected)
-                    } label: {
-                        Label("Résumé", systemImage: "house")
-                            .tint(.primary)
-                    }
-                }
-                
-                Section("Parcourir", isExpanded: $showExpandableFirstSection) {
-                    ForEach(model.navigation) { item in
-                        NavigationLink {
-                            destinationView(for: item.id)
-                        } label: {
-                            Label {
-                                Text(item.name)
-                            } icon: {
-                                Image(systemName: item.icon)
-                                    .symbolRenderingMode(.multicolor)
-                            }
-                        }
-                    }
+            List(selection: $selectedMenu) {
+                ForEach(MenuNavigation.allCases, id: \.id) { menu in
+                    Label(menu.rawValue.capitalized, systemImage: menu.systemNameImage)
+                        .tag(menu)
                 }
             }
-            .listStyle(.sidebar)
             .navigationTitle("Bordero")
-        } detail: {
-            VStack {
-                if let navSelected = selectedNav {
-                    destinationView(for: navSelected)
-                } else {
-                    HomeView(showNeediCloud: userNeediCloud == .notConnected)
-                }
+            .navigationBarTitleDisplayMode(.large)
+        } content: {
+            if let selectedMenu {
+                destinationMenu(for: selectedMenu)
+            } else {
+                Text("Rien n'a été sélectionné")
             }
+        } detail: {
+            Text("Rien n'a été sélectionné")
         }
     }
     
     @ViewBuilder
-    func destinationView(for id: Int) -> some View {
-        switch id {
-        case 1:
-            HomeView(showNeediCloud: userNeediCloud == .notConnected)
-        case 2:
+    func destinationMenu(for menu: MenuNavigation) -> some View {
+        switch menu {
+        case .clients:
             ListClients()
-                .trackEventOnAppear(event: .clientListBrowsed, category: .clientManagement)
-        case 3:
-            FormTypeActeView()
-        case 4:
-            ListTypeActe()
-        case 5:
-            FormClientView()
-        case 6:
-            SplitViewListClients()
-        case 7:
-            DocumentFormView()
-        case 8:
+        case .documents:
             ListDocument()
-                .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
-        default:
-            EmptyView()
+        case .calendrier:
+            MainCalendarView()
+        case .parametres:
+            ParametersView(activeSheet: $activeSheet)
+        
         }
     }
 }
 
-@Observable
-class NavModel {
-    var navigation: [NavItem] = [
-//        NavItem(id: 5, name: "Ajouter un client", icon: "person.badge.plus"),
-        NavItem(id: 2, name: "Liste des clients", icon: "person.2"),
-//        NavItem(id: 3, name: "Ajouter un acte", icon: "stethoscope"),
-        NavItem(id: 4, name: "Liste des actes", icon: "cross.case"),
-        NavItem(id: 7, name: "Créer document", icon: "pencil.and.list.clipboard"),
-        NavItem(id: 8, name: "Liste des docs", icon: "list.bullet"),
-    ]
-}
-
-struct NavItem: Identifiable, Hashable {
-    var id: Int
-    var name: String
-    var icon: String
-}
-
 #Preview {
-    ContentView(userNeediCloud: UseriCloudController.StateCheckiCloud.connected)
+    ContentView()
 }

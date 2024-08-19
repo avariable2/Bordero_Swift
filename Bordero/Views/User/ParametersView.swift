@@ -7,27 +7,35 @@
 
 import SwiftUI
 import MessageUI
+import CoreData
 
 struct ParametersView: View {
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(
+        sortDescriptors: [SortDescriptor(\Praticien.modificationDate)]
+        
+    ) var praticien: FetchedResults<Praticien>
+    
     @Binding var activeSheet : ActiveSheet?
-    @State var praticien : Praticien?
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
+    
+    @State private var firstPraticien: Praticien?
     
     var body: some View {
         NavigationStack {
             Form {
                 
                 VStack(alignment: .center, spacing: 20) {
-                    
-                    ProfilImageView(imageData: praticien?.profilPicture)
+                    ProfilImageView(imageData: firstPraticien?.profilPicture)
                         .frame(height: 80)
                         .font(.system(size: 60))
                         .shadow(radius: 5)
                     
-                    Text("\(praticien?.firstname ?? "")")
-                        + Text(" \(praticien?.lastname ?? "")")
+                    Text("\(firstPraticien?.firstname ?? "")")
+                        + Text(" \(firstPraticien?.lastname ?? "")")
                 }
                 .font(.title)
                 .bold()
@@ -35,10 +43,16 @@ struct ParametersView: View {
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color.clear)
                 
-                Section {
+                #if DEBUG
+                Section("Debug") {
+                    Text("Nbr de praticien = \(praticien.count)")
+                }
+                #endif
+                
+                Section("Votre société") {
                     NavigationLink {
-                        if let praticien = praticien {
-                            FormPraticienView(isOnBoarding: false, praticien : praticien)
+                        if let firstPraticien {
+                            FormPraticienView(praticien: firstPraticien)
                         }
                     } label: {
                         RowIconColor(
@@ -48,26 +62,37 @@ struct ParametersView: View {
                             accessibility: "Bouton pour modifier vos informations personnelles"
                         )
                     }
+                    
+                    NavigationLink {
+                        ListTypeActe()
+                    } label: {
+                        RowIconColor(
+                            text: "Vos types d'actes",
+                            systemName: "heart.square.fill",
+                            color: .purple,
+                            accessibility: "Bouton pour modifier vos informations personnelles"
+                        )
+                    }
                 }
                 
                 Section("Documents") {
                     NavigationLink {
-                        if let praticien = praticien {
-                            ModeleDocumentView(praticien: praticien)
+                        if let firstPraticien {
+                            ModeleDocumentView(praticien: firstPraticien)
                         }
+                       
                     } label: {
                         RowIconColor(
                             text: "Paramètres du modèle",
                             systemName: "lightswitch.on.square.fill",
-                            color: .purple,
+                            color: .gray,
                             accessibility: "Bouton pour modifier les options de votre facture"
                         )
                     }
-                    .disabled(praticien == nil)
                     
                     NavigationLink {
-                        if let praticien = praticien {
-                            TextSettingsSendClientView(praticien: praticien)
+                        if let firstPraticien {
+                            TextSettingsSendClientView(praticien: firstPraticien)
                                 .navigationTitle("Gérer les messages")
                         }
                     } label: {
@@ -80,8 +105,12 @@ struct ParametersView: View {
                     }
                     
                     NavigationLink {
-                        if let praticien = praticien {
-                            NotificationSettingsView(praticien: praticien, activeNotifications: praticien.hasAcceptNotification)
+                        if let firstPraticien {
+                            NotificationSettingsView(
+                                praticien: firstPraticien,
+                                activeNotifications: firstPraticien.hasAcceptNotification
+                                
+                            )
                         }
                     } label: {
                         RowIconColor(
@@ -161,11 +190,10 @@ struct ParametersView: View {
                         }
                         
                     } footer: {
-                        if !MFMailComposeViewController.canSendMail() {
-                            Text("Vous ne pouvez pas envoyer d'email depuis cette appareil")
-                        }
+                        Text("Vous ne pouvez pas envoyer d'email depuis cette appareil")
+                            .opacity(MFMailComposeViewController.canSendMail() ? 0 : 1)
                     }
-                   
+                    
                 }
                 
                 if !DataController.getStatusiCloud() {
@@ -185,22 +213,30 @@ struct ParametersView: View {
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        activeSheet = nil
-                    } label: {
-                        Text("OK")
-                    }
-                }
-            }
             .headerProminence(.increased)
+            .onAppear() {
+                checkIfAlreadyExist()
+            }
+            .onChange(of: praticien.count) { oldValue, newValue in
+                firstPraticien = praticien.first
+            }
+        }
+    }
+
+    
+    func checkIfAlreadyExist() {
+        let results = praticien
+        if results.count > 0 {
+            firstPraticien = results.first
+        } else {
+            firstPraticien = Praticien(moc: moc)
         }
     }
 }
 
-
-
 #Preview {
-    ParametersView(activeSheet: .constant(nil), praticien: Praticien.example)
+    ParametersView(activeSheet: .constant(nil))
 }
+
+
+

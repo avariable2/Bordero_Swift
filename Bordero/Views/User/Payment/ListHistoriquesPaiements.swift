@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListHistoriquesPaiements: View {
-    @Environment(\.managedObjectContext) var moc
+    
     @FetchRequest(sortDescriptors: [
         NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
     ]) var payments : FetchedResults<Paiement>
@@ -16,14 +16,10 @@ struct ListHistoriquesPaiements: View {
     @State private var activeSheet : ActiveSheet? = nil
     
     var body: some View {
+        
         if payments.isEmpty {
             ContentUnavailableView("Pas de paiement", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera affichée la liste des paiements de vos clients."))
         } else {
-            ForEach(payments.prefix(5), id: \.id) { payment in
-                RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
-                
-            }
-            
             Button {
                 activeSheet = .showAllHistoriquePaiement
             } label: {
@@ -42,6 +38,11 @@ struct ListHistoriquesPaiements: View {
                 default:
                     EmptyView() // Impossible
                 }
+            }
+            
+            ForEach(payments.prefix(5), id: \.id) { payment in
+                RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
+                
             }
         }
     }

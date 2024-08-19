@@ -18,7 +18,7 @@ struct DocumentOptionsView: View, Saveable {
     @State private var virementB : Bool = false
     @State private var cheque : Bool = false
     
-    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
+    @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
     
     @Bindable var viewModel : PDFViewModel
     
@@ -28,13 +28,13 @@ struct DocumentOptionsView: View, Saveable {
                 Section {
                     NavigationLink {
                         if let praticien = praticien.first {
-                            FormPraticienView(isOnBoarding: false, praticien: praticien)
+                            FormPraticienView(praticien: praticien)
                         }
                     } label: {
                         RowIconColor(
                             text: "Vos informations",
                             systemName: "person.crop.square.fill",
-                            color: .pink,
+                            color: .green,
                             accessibility: "Bouton pour modifier vos informations"
                         )
                     }

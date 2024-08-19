@@ -35,7 +35,7 @@ struct ProfilNavigationLink: View {
     var body: some View {
         NavigationLink {
             if let firstPraticien = praticien.first {
-                FormPraticienView(isOnBoarding: false, praticien: firstPraticien)
+                FormPraticienView(praticien: firstPraticien)
             }
         } label: {
             HStack {
