@@ -114,91 +114,89 @@ struct ListDocument: View {
     }
     
     var body: some View {
-        VStack {
-            List {
-                Section {
-                    NbFacturesGraphView(
-                        documents: documents,
-                        showPicker: false
-                    )
-                }
-                
-                if filteredListDocuments.isEmpty {
-                    ContentUnavailableView(
-                        "Aucun document",
-                        systemImage: "folder.badge.questionmark",
-                        description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
-                    )
-                } else {
-                    ForEach(sortedGroupKeys, id: \.self) { key in
-                        Section(header: Text(key)) {
-                            ForEach(filteredListDocuments[key]!, id: \.uuid) { document in
-                                RowDocumentView(
-                                    horizontalSizeClass: horizontalSizeClass,
-                                    document: document
-                                )
-                                    .tag(document.status)
-                            }
-                        }
+        List {
+            Section {
+                NbFacturesGraphView(
+                    documents: documents,
+                    showPicker: false
+                )
+            }
+            
+            ForEach(sortedGroupKeys, id: \.self) { key in
+                Section(header: Text(key)) {
+                    ForEach(filteredListDocuments[key]!, id: \.uuid) { document in
+                        RowDocumentView(
+                            horizontalSizeClass: horizontalSizeClass,
+                            document: document
+                        )
+                            .tag(document.status)
                     }
                 }
             }
-            .searchable(
-                text: $searchText,
-                tokens: $tags,
-                placement: .navigationBarDrawer(displayMode: .always),
-                token: { token in
-                    switch token.type {
-                    case .client:
-                        Label(token.value, systemImage: "person.crop.circle")
-                    case .date:
-                        Label(token.value, systemImage: "calendar")
-                    case .typeDoc:
-                        Label(token.value, systemImage: "doc.circle")
-                    }
-                }
-            )
-            .searchScopes($documentScope, activation: .onSearchPresentation) {
-                Text(Document.Status.all.rawValue).tag(Document.Status.all)
-                Text(Document.Status.created.rawValue).tag(Document.Status.created)
-                Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
-                Text(Document.Status.send.rawValue).tag(Document.Status.send)
+            
+            if filteredListDocuments.isEmpty {
+                ContentUnavailableView(
+                    "Aucun document",
+                    systemImage: "folder.badge.questionmark",
+                    description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
+                )
             }
-            .searchSuggestions {
-                if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
-                    Section("Suggestions") {
-                        ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
-                            Label {
-                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                            } icon: {
-                                Image(systemName: "doc")
-                                    .foregroundStyle(.blue)
-                                    .imageScale(.large)
-                            }
-                            .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
+        }
+        .searchable(
+            text: $searchText,
+            tokens: $tags,
+            placement: .navigationBarDrawer(displayMode: .always),
+            token: { token in
+                switch token.type {
+                case .client:
+                    Label(token.value, systemImage: "person.crop.circle")
+                case .date:
+                    Label(token.value, systemImage: "calendar")
+                case .typeDoc:
+                    Label(token.value, systemImage: "doc.circle")
+                }
+            }
+        )
+        .searchScopes($documentScope, activation: .onSearchPresentation) {
+            Text(Document.Status.all.rawValue).tag(Document.Status.all)
+            Text(Document.Status.created.rawValue).tag(Document.Status.created)
+            Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
+            Text(Document.Status.send.rawValue).tag(Document.Status.send)
+        }
+        .searchSuggestions {
+            if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
+                Section("Suggestions") {
+                    ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                        } icon: {
+                            Image(systemName: "doc")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
                         }
-                        
-                        ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
-                            Label {
-                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                            } icon: {
-                                Image(systemName: "person.crop.circle")
-                                    .foregroundStyle(.blue)
-                                    .imageScale(.large)
-                            }
-                            .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
+                        .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
+                    }
+                    
+                    ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                        } icon: {
+                            Image(systemName: "person.crop.circle")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
                         }
-                        
-                        ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
-                            Label {
-                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                            } icon: {
-                                Image(systemName: "calendar")
-                                    .foregroundStyle(.blue)
-                                    .imageScale(.large)
-                            }
-                            .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
+                        .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
+                    }
+                    
+                    ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                        } icon: {
+                            Image(systemName: "calendar")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
                         }
+                        .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
                     }
                 }
             }
@@ -219,76 +217,14 @@ struct ListDocument: View {
     }
 }
 
-struct RowDocumentView :View {
-    
-    var horizontalSizeClass : UserInterfaceSizeClass?
-    @ObservedObject var document : FetchedResults<Document>.Element
-    
-    var isLate : Bool {
-        document.dateEcheance <= Date() && document.status == .send
-    }
-    
-    var body: some View {
-        NavigationLink {
-            DocumentDetailView(document: document)
-        } label : {
-            HStack {
-                VStack(alignment: .trailing) {
-                    Text(document.dateEmission.formatted(.dateTime.day()))
-                    + Text("\n")
-                    + Text(document.dateEmission.formatted(.dateTime.month()))
-                    
-                }
-                .multilineTextAlignment(.center)
-                .font(.subheadline)
-                .fontWeight(.medium)
-                .padding(4)
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(document.getNameOfDocument())
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                    
-                    HStack(spacing: 4) {
-                        IconStatusDocument(status: document.determineStatut())
-                        
-                        Divider()
-                            .frame(height: 10)
-                        
-                        Image(systemName: "stopwatch")
-                        
-                        Text(document.dateEcheance.formatted(.dateTime.day().month().year()))
-                            .foregroundStyle(isLate ? .red : .secondary)
-                        
-                        Divider()
-                            .frame(height: 10)
-                        
-                        Text(document.totalTTC, format: .currency(code: "EUR"))
-                    }
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .fontWeight(.medium)
-                    
-                }
-                .padding(.leading, 4)
-            }
-        }
+extension Client {
+    var fullname: String {
+        "\(firstname) \(lastname)"
     }
 }
 
 #Preview {
     NavigationStack {
-        List{
-            RowDocumentView(horizontalSizeClass: .regular, document: Document.example)
-            RowDocumentView(horizontalSizeClass: .regular, document: Document.example)
-        }
-        
-//        ListDocument()
-    }
-}
-
-extension Client {
-    var fullname: String {
-        "\(firstname) \(lastname)"
+        ListDocument()
     }
 }

@@ -1,0 +1,1040 @@
+{
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "" : {
+
+    },
+    "\n" : {
+
+    },
+    " " : {
+
+    },
+    " %@" : {
+
+    },
+    "«" : {
+
+    },
+    "»" : {
+
+    },
+    "#" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ " : {
+
+    },
+    "%@ - %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ - %2$@"
+          }
+        }
+      }
+    },
+    "%@ - %@, %lld min" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ - %2$@, %3$lld min"
+          }
+        }
+      }
+    },
+    "%@ # %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ # %2$@"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@, %lld min" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$lld min"
+          }
+        }
+      }
+    },
+    "%@%@ %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@ %3$@"
+          }
+        }
+      }
+    },
+    "%lf euros" : {
+
+    },
+    "%lld" : {
+
+    },
+    "🏗️ En construction. Disponible dans une future mise à jour." : {
+
+    },
+    "👋" : {
+
+    },
+    "0,00 €" : {
+
+    },
+    "0,00€" : {
+
+    },
+    "0%" : {
+
+    },
+    "1. Établir des Tarifs Clairs et Transparents" : {
+
+    },
+    "2. Utiliser des Logiciels de Facturation Adaptés" : {
+
+    },
+    "3. Assurer la Confidentialité des Informations" : {
+
+    },
+    "4. Respecter les Obligations Légales et Fiscales" : {
+
+    },
+    "5. Offrir des Modalités de Paiement Flexibles" : {
+
+    },
+    "6. Gérer les Impayés de Manière Professionnelle" : {
+
+    },
+    "A %@, le %@," : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A %1$@, le %2$@,"
+          }
+        }
+      }
+    },
+    "Acte favori" : {
+
+    },
+    "Actions rapides" : {
+
+    },
+    "Activer la synchronisation iCloud " : {
+
+    },
+    "Activer les notifications" : {
+
+    },
+    "ADELI" : {
+
+    },
+    "Adresse %lld" : {
+
+    },
+    "Adresse de facturation" : {
+
+    },
+    "Adresse e-mail" : {
+
+    },
+    "Afficher" : {
+
+    },
+    "Afficher la date d'échéance" : {
+
+    },
+    "Afficher les modes de paiement" : {
+
+    },
+    "Ajouter" : {
+
+    },
+    "Ajouter un client" : {
+
+    },
+    "Ajouter un logo de société" : {
+
+    },
+    "Ajouter un paiement" : {
+
+    },
+    "ajouter un type d'acte" : {
+
+    },
+    "Ajouter un type d'acte" : {
+
+    },
+    "ajouter une adresse" : {
+
+    },
+    "Annuler" : {
+
+    },
+    "Aperçu" : {
+
+    },
+    "Appliquer la TVA" : {
+
+    },
+    "Appliquer la TVA sur les factures" : {
+
+    },
+    "Article utile sur la facturation" : {
+
+    },
+    "Attention" : {
+
+    },
+    "Aucun client" : {
+
+    },
+    "Aucun document" : {
+
+    },
+    "Aucun paiement" : {
+
+    },
+    "Aucun paiement n'a été enregistré pour un client" : {
+
+    },
+    "Aucun Top Client" : {
+
+    },
+    "Aucun type d'acte" : {
+
+    },
+    "Aucune donnée" : {
+
+    },
+    "Aucune facture" : {
+
+    },
+    "Aucune facture pour la date sélectionnée" : {
+
+    },
+    "Bienvenue dans Bordero" : {
+
+    },
+    "Bordero" : {
+
+    },
+    "Carte" : {
+
+    },
+    "Catégorie du produit" : {
+
+    },
+    "Ces champs sont importants fiscalement pour que vos documents soient valides." : {
+
+    },
+    "Ces notifications serviront uniquement à vous alerter en cas de date d'échéance dépassée sur une facture." : {
+
+    },
+    "Cette action est irréversible." : {
+
+    },
+    "Cette transparence permet d’éviter toute confusion et de garantir que les patients sont pleinement informés des coûts associés aux services." : {
+
+    },
+    "Changer de période ou ajouter des paiements sur vos factures" : {
+
+    },
+    "Chèque" : {
+
+    },
+    "Choisir dans Photos" : {
+
+    },
+    "Choisir un style" : {
+
+    },
+    "Client" : {
+
+    },
+    "Clients" : {
+
+    },
+    "Code postal" : {
+
+    },
+    "Code Postal" : {
+
+    },
+    "Commentaire" : {
+
+    },
+    "Commentaires : " : {
+
+    },
+    "Conception du modèle" : {
+
+    },
+    "Contact" : {
+
+    },
+    "Contacter le développeur" : {
+
+    },
+    "Continuer" : {
+
+    },
+    "Convertir en Facture" : {
+
+    },
+    "Copier" : {
+
+    },
+    "Corps du message pour la facture" : {
+
+    },
+    "Corps du message pour le devis" : {
+
+    },
+    "Couleur" : {
+
+    },
+    "Couleur des documents" : {
+
+    },
+    "Créer pour" : {
+
+    },
+    "Date" : {
+
+    },
+    "Date d'échéance" : {
+
+    },
+    "Date d'échéance : %@" : {
+
+    },
+    "Date d'émission" : {
+
+    },
+    "Date de début" : {
+
+    },
+    "Date de départ" : {
+
+    },
+    "Date de fin" : {
+
+    },
+    "Date de l'acte" : {
+
+    },
+    "Date inconnue" : {
+
+    },
+    "Debug" : {
+
+    },
+    "Début" : {
+
+    },
+    "Délai moyen de paiement" : {
+
+    },
+    "Déplacer l'élément à gauche pour le supprimer." : {
+
+    },
+    "Dernier acte effectué" : {
+
+    },
+    "Dès le premier contact, il est crucial d’informer les patients des tarifs des consultations. Les tarifs doivent être affichés de manière claire, que ce soit sur le site internet du cabinet ou par le biais de brochures disponibles lors des premières consultations." : {
+
+    },
+    "Description" : {
+
+    },
+    "Dessiner" : {
+
+    },
+    "Détails" : {
+
+    },
+    "Détails de l'évènement" : {
+
+    },
+    "Devis" : {
+
+    },
+    "Document" : {
+
+    },
+    "Documents" : {
+
+    },
+    "Données Bordero non synchronisées" : {
+
+    },
+    "Données Bordero non synchronisées \nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud." : {
+
+    },
+    "Données de %@ %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Données de %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "Données sur le mois en cours" : {
+
+    },
+    "Duration: %lld min" : {
+
+    },
+    "Durée" : {
+
+    },
+    "E-mail" : {
+
+    },
+    "Effacer" : {
+
+    },
+    "Effacer la signature" : {
+
+    },
+    "En attente" : {
+
+    },
+    "En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée." : {
+
+    },
+    "En savoir plus" : {
+
+    },
+    "Envoyer" : {
+
+    },
+    "Erreur de chargement" : {
+
+    },
+    "Espèces" : {
+
+    },
+    "Étage, appt." : {
+
+    },
+    "Exporter" : {
+
+    },
+    "Facture" : {
+
+    },
+    "Facture déjà réglée ?" : {
+
+    },
+    "Facture réglée avec : %@" : {
+
+    },
+    "Factures" : {
+
+    },
+    "facultatif" : {
+
+    },
+    "Fermer" : {
+
+    },
+    "Fiche client" : {
+
+    },
+    "Fin" : {
+
+    },
+    "Génération du PDF en cours..." : {
+
+    },
+    "Gérer les messages" : {
+
+    },
+    "H.T." : {
+
+    },
+    "Hello, World!" : {
+
+    },
+    "Historique" : {
+
+    },
+    "Historique des paiements" : {
+
+    },
+    "Historique paiements" : {
+
+    },
+    "Ici sera affichée la liste des paiements de vos clients." : {
+
+    },
+    "ID du document : %@" : {
+
+    },
+    "Identification" : {
+
+    },
+    "Il est recommandé d’utiliser des descriptions génériques pour les services rendus afin de ne pas compromettre la confidentialité des patients." : {
+
+    },
+    "Il n'y a aucun document avec le statut payé ou envoyé." : {
+
+    },
+    "Image" : {
+
+    },
+    "Impayées" : {
+
+    },
+    "Important" : {
+
+    },
+    "Importer depuis vos Contacts" : {
+
+    },
+    "Importer vos informations depuis votre fiche Contacts" : {
+
+    },
+    "Impossible de transformer votre devis" : {
+
+    },
+    "Informations" : {
+
+    },
+    "L’utilisation de logiciels de facturation permet de créer des factures professionnelles, de suivre les paiements et de générer des rapports financiers détaillés. Ces outils intégrés automatisent la saisie des données, réduisent les erreurs et accélèrent le processus de facturation, permettant ainsi aux professionnels de se concentrer davantage sur leurs patients." : {
+
+    },
+    "La confidentialité est une priorité en psychologie. Les factures doivent être rédigées de manière à protéger les informations sensibles des patients." : {
+
+    },
+    "La facturation en psychologie est essentielle pour assurer une gestion efficace du cabinet, maintenir des relations de confiance avec les patients et respecter les obligations légales." : {
+
+    },
+    "La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée." : {
+
+    },
+    "Le %@," : {
+
+    },
+    "Le client est-il un professionnel ?" : {
+
+    },
+    "Les bonnes pratiques pour les factures de psychologie" : {
+
+    },
+    "Les clients ajoutés apparaîtront ici." : {
+
+    },
+    "Les documents créés apparaîtront ici." : {
+
+    },
+    "Les impayés peuvent survenir malgré toutes les précautions. Environ 30% des psychologues ont signalé des difficultés avec des paiements en retard ou non effectués." : {
+
+    },
+    "Les psychologues doivent se conformer aux réglementations fiscales en vigueur, incluant la délivrance de factures conformes aux normes légales, la déclaration des revenus et le paiement des impôts correspondants. Il est conseillé de consulter un comptable pour s’assurer que toutes les obligations légales et fiscales sont respectées." : {
+
+    },
+    "Les types d'acte ajoutés apparaîtront ici." : {
+
+    },
+    "Libellé" : {
+
+    },
+    "Loi Française" : {
+
+    },
+    "Mail" : {
+
+    },
+    "Maintenir le texte pour copier l'email." : {
+
+    },
+    "Manuscrite" : {
+
+    },
+    "Mentors" : {
+
+    },
+    "Message" : {
+
+    },
+    "Messages n'est pas disponible avec votre appareil" : {
+
+    },
+    "Mode de paiement" : {
+
+    },
+    "Modèle de facture" : {
+
+    },
+    "Modes de paiement acceptés" : {
+
+    },
+    "Modes de règlement acceptés : %@" : {
+
+    },
+    "Modes de règlement acceptés : Aucun" : {
+
+    },
+    "Modifier" : {
+
+    },
+    "Modifier évènement" : {
+
+    },
+    "Modifier le logo de société" : {
+
+    },
+    "Modifier le paiement" : {
+
+    },
+    "Montant" : {
+
+    },
+    "Montant Additionnel" : {
+
+    },
+    "Montant de remise" : {
+
+    },
+    "Montant TVA" : {
+
+    },
+    "Moyenne" : {
+
+    },
+    "Moyenne: %.1f jours" : {
+
+    },
+    "N°" : {
+
+    },
+    "N° SIREN" : {
+
+    },
+    "N° SIRET" : {
+
+    },
+    "Nbr de praticien = %lld" : {
+
+    },
+    "Nom" : {
+
+    },
+    "Nom de l'entreprise" : {
+
+    },
+    "Note" : {
+
+    },
+    "Notes" : {
+
+    },
+    "Notes - optionnelles" : {
+
+    },
+    "Notes : %@" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "Nouveau client" : {
+
+    },
+    "Nouveau type d'acte" : {
+
+    },
+    "Nouvelle évènement" : {
+
+    },
+    "Numéro" : {
+
+    },
+    "Numéro ADELI" : {
+
+    },
+    "Numéro de %@:" : {
+
+    },
+    "Numéro de SIREN : %@" : {
+
+    },
+    "Numéro de SIRET" : {
+
+    },
+    "Numéro de SIRET : %@" : {
+
+    },
+    "Numéro de téléphone" : {
+
+    },
+    "obligatoire" : {
+
+    },
+    "OK" : {
+
+    },
+    "Options" : {
+
+    },
+    "Options de %@" : {
+
+    },
+    "Options document" : {
+
+    },
+    "Ouvertes" : {
+
+    },
+    "Ouvrir Réglages" : {
+
+    },
+    "Paiement" : {
+
+    },
+    "Paiement de %@" : {
+
+    },
+    "Paiement(s)" : {
+
+    },
+    "Paiements reçus" : {
+
+    },
+    "Paramètres" : {
+
+    },
+    "Paramètres de facturation" : {
+
+    },
+    "Paramètres prédéfinis" : {
+
+    },
+    "Parcourir" : {
+
+    },
+    "Pas de donnée disponible" : {
+
+    },
+    "Pas de paiement" : {
+
+    },
+    "Payée le" : {
+
+    },
+    "Payée le " : {
+
+    },
+    "Payées" : {
+
+    },
+    "Période" : {
+
+    },
+    "Pour faciliter les paiements, proposez diverses options comme les chèques, les virements bancaires, et les paiements par carte de crédit. Offrir des modalités de paiement flexibles peut réduire les retards de paiement et améliorer la satisfaction des patients. Les cabinets utilisant ces solutions voient souvent une amélioration de la collecte des paiements et une réduction des impayés de 15 à 25%." : {
+
+    },
+    "Pour gagner du temps, importez les champs principaux comme votre nom ou prénom depuis votre fiche Contacts." : {
+
+    },
+    "Pour gérer ces situations, envoyez des rappels polis et, si nécessaire, proposez des plans de paiement. En dernier recours, envisagez de faire appel à un service de recouvrement, en veillant à ce que cela soit fait de manière éthique." : {
+
+    },
+    "Pour supprimer un élément de la liste, déplacez le sur la gauche." : {
+
+    },
+    "Pour supprimer une adresse, il vous suffit de la faire glisser sur la gauche et de cliquer sur supprimer." : {
+
+    },
+    "pourcentage de TVA" : {
+
+    },
+    "Prénom" : {
+
+    },
+    "Prestation(s)" : {
+
+    },
+    "Prix" : {
+
+    },
+    "Profil" : {
+
+    },
+    "Qté" : {
+
+    },
+    "Quantité" : {
+
+    },
+    "Recherche" : {
+
+    },
+    "Rechercher" : {
+
+    },
+    "Réessayer. Si cette erreur persiste, veuillez contacter le développeur depuis les paramètres." : {
+
+    },
+    "Réglement" : {
+
+    },
+    "Remarques" : {
+
+    },
+    "Remarques :" : {
+
+    },
+    "Remarques : " : {
+
+    },
+    "Remise sur votre %@" : {
+
+    },
+    "Répartion documents sur période" : {
+
+    },
+    "Répartition mensuels" : {
+
+    },
+    "Reste à payer" : {
+
+    },
+    "Résumé" : {
+
+    },
+    "Retour" : {
+
+    },
+    "Revenu" : {
+
+    },
+    "Revenu sur période" : {
+
+    },
+    "Rien n'a été sélectionné" : {
+
+    },
+    "Rue" : {
+
+    },
+    "Sauvegarder" : {
+
+    },
+    "Sécurité de vos données" : {
+
+    },
+    "Selectionner la période" : {
+
+    },
+    "Sélectionner les informations prédéfinies pour quelles soient automatiquement préremplies lors de la création d'un document." : {
+
+    },
+    "Sélectionner un client" : {
+
+    },
+    "sélectionner un(e) client(e)" : {
+
+    },
+    "Selectionner une typographie" : {
+
+    },
+    "Sélectionnez un jour" : {
+
+    },
+    "Selon une étude, l’adoption de ces logiciels réduit le temps consacré aux tâches administratives de 30% en moyenne et augmente l’efficacité de la facturation de 20%" : {
+
+    },
+    "Sera affichée ici la répartition des montants exigibles. Revenez quand vous aurez envoyé des factures" : {
+
+    },
+    "Si cela se produit trop souvent, n'hésitez pas à contacter le développeur." : {
+
+    },
+    "Si un problème survient, contactez le développeur avec cette adresse : feuilles.neutron_0i@icloud.com" : {
+
+    },
+    "Signature" : {
+
+    },
+    "SIRET" : {
+
+    },
+    "Site web" : {
+
+    },
+    "Somme" : {
+
+    },
+    "Status" : {
+
+    },
+    "Statut" : {
+
+    },
+    "Suggestions" : {
+
+    },
+    "Suivi document(s)" : {
+
+    },
+    "Supprimer" : {
+
+    },
+    "Supprimer ce document ?" : {
+
+    },
+    "Supprimer l'évènement" : {
+
+    },
+    "Supprimer le client" : {
+
+    },
+    "Supprimer le logo" : {
+
+    },
+    "Synchronisé" : {
+
+    },
+    "T.T.C." : {
+
+    },
+    "Tableau de bord" : {
+
+    },
+    "Tax label" : {
+
+    },
+    "Téléphone" : {
+
+    },
+    "Temporalité" : {
+
+    },
+    "Temps moyen de paiement (jours)" : {
+
+    },
+    "Temps moyen de paiement des clients" : {
+
+    },
+    "Titre du message pour un devis" : {
+
+    },
+    "Titre du message pour une facture" : {
+
+    },
+    "Top Clients par Revenu (€)" : {
+
+    },
+    "Tous les champs sont facultatifs, mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document." : {
+
+    },
+    "Toutes les stats" : {
+
+    },
+    "TVA" : {
+
+    },
+    "Type" : {
+
+    },
+    "Type d'acte : %@" : {
+
+    },
+    "Type d'acte(s)" : {
+
+    },
+    "Type de document" : {
+
+    },
+    "Type de remise" : {
+
+    },
+    "Types d'acte" : {
+
+    },
+    "Une erreur c'est produite" : {
+
+    },
+    "Une erreur s'est produite" : {
+
+    },
+    "Veuillez contacter le développeur depuis le bouton dans les paramètres si cela se reproduit." : {
+
+    },
+    "Ville" : {
+
+    },
+    "Virement bancaire" : {
+
+    },
+    "Voici six bonnes pratiques à adopter pour une facturation transparente et professionnelle, illustrant l’impact des logiciels de facturation sur la gestion administrative." : {
+
+    },
+    "Voir l'historique des paiements" : {
+
+    },
+    "Voir plus" : {
+
+    },
+    "Voir plus de statistiques" : {
+
+    },
+    "Vos données Bordero sont stockées sur iCloud et ne peuvent être lues par personne sans votre permission, pas même Bordero, et ne seront jamais revendues à une tierce partie." : {
+
+    },
+    "Vos données et vos documents ne sont pas synchronisés. En tant que praticien, il est important d'avoir un point de sauvegarde de vos données." : {
+
+    },
+    "Vos données renseignées sont uniquement utilisés pour l'usage de cette application et ne sorte pas de celle ci. Vous pouvez les modifier à tous moment." : {
+
+    },
+    "Votre nouveau client est disponible dans la liste des clients." : {
+
+    },
+    "Votre société" : {
+
+    },
+    "Votre type d'acte a bien été enregistré." : {
+
+    },
+    "Voulez-vous vraiment supprimer cet évènement ?" : {
+
+    },
+    "Vous ne pouvez pas envoyer d'email depuis cette appareil" : {
+
+    },
+    "Vous pouvez personnaliser votre message lors de l'envoi des documents. Voici les balises que vous pouvez utiliser : " : {
+
+    }
+  },
+  "version" : "1.0"
+}

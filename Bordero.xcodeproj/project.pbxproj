@@ -15,6 +15,9 @@
 		F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */; };
 		F71364542B8CDB3100C68853 /* ProfilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71364532B8CDB3100C68853 /* ProfilView.swift */; };
 		F71F49142BCC5FE6007AD6E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F49132BCC5FE6007AD6E5 /* ContentView.swift */; };
+		F72334252D80691D00C8CD67 /* RowDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72334242D80691D00C8CD67 /* RowDocumentView.swift */; };
+		F72334272D80707E00C8CD67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F72334262D80707E00C8CD67 /* GoogleService-Info.plist */; };
+		F72334292D8073F700C8CD67 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F72334282D8073F700C8CD67 /* Localizable.xcstrings */; };
 		F72B0FDE2BF3EDE700740770 /* PaiementPraticienGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */; };
 		F72BA1EF2BE15AB700E459B2 /* GroupBoxStyleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72BA1EE2BE15AB700E459B2 /* GroupBoxStyleData.swift */; };
 		F72BA1F12BE15B3100E459B2 /* DataValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72BA1F02BE15B3100E459B2 /* DataValueView.swift */; };
@@ -76,7 +79,6 @@
 		F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153C2BB1A59700F2026E /* PDFUIView.swift */; };
 		F781153F2BB1A68C00F2026E /* PDFData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153E2BB1A68C00F2026E /* PDFData.swift */; };
 		F7812ACC2C73829600B080DF /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F7812AC92C73829600B080DF /* Model.xcdatamodeld */; };
-		F7812ACE2C7382AA00B080DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F7812ACD2C7382AA00B080DF /* GoogleService-Info.plist */; };
 		F78227962BB33FAF0033429F /* FormClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78227952BB33FAF0033429F /* FormClientView.swift */; };
 		F78227982BB3428D0033429F /* FormTypeActeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78227972BB3428D0033429F /* FormTypeActeView.swift */; };
 		F78341D52C5AAB16000719C7 /* SectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78341D42C5AAB15000719C7 /* SectionFormView.swift */; };
@@ -139,6 +141,9 @@
 		F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxStyleRememberiCloud.swift; sourceTree = "<group>"; };
 		F71364532B8CDB3100C68853 /* ProfilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilView.swift; sourceTree = "<group>"; };
 		F71F49132BCC5FE6007AD6E5 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F72334242D80691D00C8CD67 /* RowDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowDocumentView.swift; sourceTree = "<group>"; };
+		F72334262D80707E00C8CD67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F72334282D8073F700C8CD67 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementPraticienGraphView.swift; sourceTree = "<group>"; };
 		F72BA1EE2BE15AB700E459B2 /* GroupBoxStyleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxStyleData.swift; sourceTree = "<group>"; };
 		F72BA1F02BE15B3100E459B2 /* DataValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataValueView.swift; sourceTree = "<group>"; };
@@ -194,7 +199,6 @@
 		F781153E2BB1A68C00F2026E /* PDFData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFData.swift; sourceTree = "<group>"; };
 		F7812ACA2C73829600B080DF /* Model_v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_v2.xcdatamodel; sourceTree = "<group>"; };
 		F7812ACB2C73829600B080DF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		F7812ACD2C7382AA00B080DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F78227952BB33FAF0033429F /* FormClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormClientView.swift; sourceTree = "<group>"; };
 		F78227972BB3428D0033429F /* FormTypeActeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTypeActeView.swift; sourceTree = "<group>"; };
 		F78341D42C5AAB15000719C7 /* SectionFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionFormView.swift; sourceTree = "<group>"; };
@@ -365,6 +369,7 @@
 				F767E0E42C04C26600701BFE /* Form */,
 				F75FC8072BCB1FB3007DA47A /* Detail */,
 				F75F36AB2BD52938003FF0D0 /* ListDocument.swift */,
+				F72334242D80691D00C8CD67 /* RowDocumentView.swift */,
 				F7BD182F2C511D4E003C09ED /* IconStatusDocument.swift */,
 			);
 			path = Document;
@@ -580,7 +585,6 @@
 		F7DFAD992B66839C00C905A7 /* Bordero */ = {
 			isa = PBXGroup;
 			children = (
-				F7812ACD2C7382AA00B080DF /* GoogleService-Info.plist */,
 				F7812AC92C73829600B080DF /* Model.xcdatamodeld */,
 				F75083AD2C10991800B32E1F /* Tracking */,
 				F780966D2BAC853E00B3AF4A /* Components */,
@@ -593,6 +597,8 @@
 				F7DFAD9E2B66839D00C905A7 /* Assets.xcassets */,
 				F7DFADA02B66839D00C905A7 /* Bordero.entitlements */,
 				F7DFADA12B66839D00C905A7 /* Preview Content */,
+				F72334262D80707E00C8CD67 /* GoogleService-Info.plist */,
+				F72334282D8073F700C8CD67 /* Localizable.xcstrings */,
 			);
 			path = Bordero;
 			sourceTree = "<group>";
@@ -714,8 +720,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7DFADA32B66839D00C905A7 /* Preview Assets.xcassets in Resources */,
+				F72334272D80707E00C8CD67 /* GoogleService-Info.plist in Resources */,
+				F72334292D8073F700C8CD67 /* Localizable.xcstrings in Resources */,
 				F7DFAD9F2B66839D00C905A7 /* Assets.xcassets in Resources */,
-				F7812ACE2C7382AA00B080DF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +815,7 @@
 				F73B98E72B73C94600FCEC53 /* ListClients.swift in Sources */,
 				F7710D332BF141D5009D43C0 /* PaiementClientGraphView.swift in Sources */,
 				F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */,
+				F72334252D80691D00C8CD67 /* RowDocumentView.swift in Sources */,
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
 				F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */,
 				F7B401C52C5A53F200104862 /* Seance+helper.swift in Sources */,
@@ -899,6 +907,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -955,6 +964,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
