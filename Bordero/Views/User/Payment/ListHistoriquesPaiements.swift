@@ -67,7 +67,11 @@ struct TextPaiementView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("\(payment.client?.firstname ?? "Inconnu") ") + Text("\(payment.client?.lastname ?? "Inconnu")").bold()
+                HStack(spacing: 4) {
+                    Text(payment.client?.firstname ?? "Inconnu")
+                    
+                    Text(payment.client?.lastname ?? "Inconnu").bold()
+                }
                 
                 Text(payment.date, format: .dateTime)
                     .foregroundStyle(.secondary)

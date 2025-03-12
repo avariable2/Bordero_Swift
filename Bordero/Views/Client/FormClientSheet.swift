@@ -55,6 +55,10 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
         adresses.count >= 3
     }
     
+    var username : String {
+        "\(prenom.capitalized) \(nom.uppercased())"
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -231,7 +235,7 @@ struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
                     .disabled(!isAtLeastOneFieldFilled())
                 }
             }
-            .navigationTitle(clientToModify == nil ? "Nouveau client" : "\(prenom.capitalized) \(nom.uppercased())")
+            .navigationTitle(clientToModify == nil ? "Nouveau client" : username)
             .alert(Text("Une erreur s'est produite"),
                    isPresented: $showingAlert,
                    actions: {

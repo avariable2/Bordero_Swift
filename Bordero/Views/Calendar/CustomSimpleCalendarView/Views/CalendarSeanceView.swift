@@ -34,7 +34,7 @@ struct CalendarSeanceView: View {
                 Divider()
                 
                 LabeledContent {
-                    Text("\(seance.typeActes.count.description)")
+                    Text(seance.typeActes.count.description)
                 } label: {
                     Text("Type d'acte(s)")
                         .font(.headline)
@@ -85,7 +85,7 @@ struct CalendarSeanceView: View {
                 } label: {
                     Text("Commentaire")
                     
-                    Text("\(seance.commentaire.isEmpty ? "Aucun" : seance.commentaire)")
+                    Text(seance.commentaire.isEmpty ? "Aucun" : seance.commentaire)
                         .foregroundStyle(.secondary)
                     
                 }

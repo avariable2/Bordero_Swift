@@ -52,7 +52,7 @@ struct PDFGridInfoInvoiceView : View {
                     HStack {
                         if let client = data.client {
                             VStack(alignment: .leading) {
-                                Text("\(client.lastname.uppercased()) \(client.firstname)")
+                                Text(client.nameUppercaseWithFirstNameCapitalized)
                                 
                                 if let coordonne = client.adresse1 {
                                     Text(PDFUtils.getRowAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))

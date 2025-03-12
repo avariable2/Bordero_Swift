@@ -37,7 +37,7 @@ struct GraphPiView: View {
                     .foregroundStyle(by: .value("Catégorie du produit", dataItem.name))
                     .annotation(position: .overlay, alignment: .center) {
                         if dataItem.value != 0 {
-                            Text("\(dataItem.annotation, format: .currency(code: "EUR"))")
+                            Text(dataItem.annotation, format: .currency(code: "EUR"))
                                 .font(.headline)
                                 .foregroundStyle(.primary)
                                 .bold()

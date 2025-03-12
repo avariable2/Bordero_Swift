@@ -26,7 +26,10 @@ struct GroupBoxStyleData<V: View>: GroupBoxStyle {
                     Spacer()
                     
                     if date != nil {
-                        Text("\(date!)").font(.footnote).foregroundColor(.secondary).padding(.trailing, 4)
+                        Text(date!, style: .date)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .padding(.trailing, 4)
                     }
                 }
                 
@@ -56,7 +59,10 @@ struct GroupBoxStyleDataWithoutDestination: GroupBoxStyle {
                 Spacer()
                 
                 if date != nil {
-                    Text("\(date!)").font(.footnote).foregroundColor(.secondary).padding(.trailing, 4)
+                    Text(date!, style: .date)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .padding(.trailing, 4)
                 }
             }
             

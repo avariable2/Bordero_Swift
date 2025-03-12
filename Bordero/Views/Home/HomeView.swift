@@ -83,11 +83,11 @@ struct HomeView: View {
                 
                 SectionHomeComponentView(title: "Articles") {
                     GridViewWrapper(articles: articles, config: $gridViewConfig, numberOfColumns: $numberOfColumns) { article in
-                        ArticleComponentView(
-                            titre: article.title,
-                            sousTitre: article.corps,
-                            image: article.image
-                        )
+//                        ArticleComponentView(
+//                            titre: article.title,
+//                            sousTitre: article.corps,
+//                            image: article.image
+//                        )
                     }
                     .frame(height: calculateGridHeight(for: articles.count, columns: numberOfColumns))
                 }

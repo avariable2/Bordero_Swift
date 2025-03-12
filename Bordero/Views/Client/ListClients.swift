@@ -247,19 +247,19 @@ struct ClientRow: View {
                     call(client)
                     dismiss()
                 } label: {
-                    HStack {
+                    HStack(spacing: 4) {
                         Text(client.firstname)
-                        + Text(" ")
-                        + Text(client.lastname).bold()
+                        
+                        Text(client.lastname).bold()
                         Spacer()
                     }
                     .tint(.primary)
                 }
             } else {
-                HStack {
+                HStack(spacing: 4) {
                     Text(client.firstname)
-                    + Text(" ")
-                    + Text(client.lastname).bold()
+                    
+                    Text(client.lastname).bold()
                     Spacer()
                 }.background(
                     NavigationLink{

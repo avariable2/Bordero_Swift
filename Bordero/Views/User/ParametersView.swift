@@ -34,8 +34,7 @@ struct ParametersView: View {
                         .font(.system(size: 60))
                         .shadow(radius: 5)
                     
-                    Text("\(firstPraticien?.firstname ?? "")")
-                        + Text(" \(firstPraticien?.lastname ?? "")")
+                    Text(firstPraticien?.nameUppercaseWithFirstNameCapitalized ?? "")
                 }
                 .font(.title)
                 .bold()

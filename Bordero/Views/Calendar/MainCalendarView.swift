@@ -39,7 +39,7 @@ struct MainCalendarView: View {
         .onChange(of: selectedDate) { oldValue, newValue in
             viewModel.fetchCalendarSeances(moc, targetDate: newValue)
         }
-        .navigationTitle("\(selectedDate.formatted(.dateTime.weekday(.wide)).capitalized)")
+        .navigationTitle(selectedDate.formatted(.dateTime.weekday(.wide)).capitalized)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {

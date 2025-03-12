@@ -13,10 +13,10 @@ struct ClientRowView: View {
     
     var body: some View {
         Label {
-            VStack {
+            HStack(spacing: 4) {
                 Text(client?.firstname ?? "Le client n'a pas été retrouvé ou bien a été supprimé.")
-                + Text(" ")
-                + Text(client?.lastname ?? "")
+                
+                 Text(client?.lastname ?? "")
                     .bold()
             }
         } icon: {

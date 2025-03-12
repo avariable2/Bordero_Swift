@@ -160,6 +160,10 @@ struct ClientDetailHeaderView: View {
     @ObservedObject var client : Client
     @State private var showAdresses = false
     
+    var username : String {
+        "\(client.firstname) \(client.lastname)"
+    }
+    
     var body: some View {
         Section {
             DisclosureGroup(isExpanded: $showAdresses) {
@@ -207,7 +211,7 @@ struct ClientDetailHeaderView: View {
                     ProfilImageView(imageData: nil)
                         .font(.title)
                     
-                    Text("\(client.firstname) \(client.lastname)")
+                    Text(username)
                         .font(.title2)
                         .bold()
                 }

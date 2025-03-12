@@ -24,9 +24,12 @@ struct HeaderPDFView : View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text(praticien.lastname.uppercased()).bold()
-                        + Text(" ")
-                        + Text(praticien.firstname)
+                        HStack(spacing: 4) {
+                            Text(praticien.lastname.uppercased())
+                                .bold()
+                            
+                            Text(praticien.firstname)
+                        }
                         
                         if let coordonne = praticien.adresse1, !coordonne.isEmpty {
                             Text(PDFUtils.getRowAdresse(coordonne).formatted(.list(type: .and, width: .narrow)))

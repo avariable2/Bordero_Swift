@@ -65,20 +65,24 @@ struct EventView: View {
                     .padding(.top, 6)
                     .fontWeight(.semibold)
                 
-                if durationMinutes <= 30 {
-                    eventTimeView(mainColor: mainColor, startTime: formattedStartTime, endTime: formattedEndTime, durationMinutes: durationMinutes)
-                } else if durationMinutes <= 60 {
-                    eventTimeView(mainColor: mainColor, startTime: formattedStartTime, endTime: formattedEndTime, durationMinutes: durationMinutes, isShortDuration: false)
-                } else {
-                    Text("\(formattedStartTime) - \(formattedEndTime)")
-                        .foregroundColor(mainColor)
-                        .font(.caption2)
-                        .dynamicTypeSize(.small ... .large)
-                    Text("Duration: \(durationMinutes) min")
-                        .foregroundColor(mainColor)
-                        .font(.caption2)
-                        .dynamicTypeSize(.small ... .large)
+                Group {
+                    if durationMinutes <= 30 {
+                        eventTimeView(mainColor: mainColor, startTime: formattedStartTime, endTime: formattedEndTime, durationMinutes: durationMinutes)
+                    } else if durationMinutes <= 60 {
+                        eventTimeView(mainColor: mainColor, startTime: formattedStartTime, endTime: formattedEndTime, durationMinutes: durationMinutes, isShortDuration: false)
+                    } else {
+                        Text("\(formattedStartTime) - \(formattedEndTime)")
+                            .foregroundColor(mainColor)
+                            .font(.caption2)
+                            .dynamicTypeSize(.small ... .large)
+                        
+                        Text("Duration: \(durationMinutes) min")
+                            .foregroundColor(mainColor)
+                            .font(.caption2)
+                            .dynamicTypeSize(.small ... .large)
+                    }
                 }
+                
                 Spacer()
             }
             .padding(.horizontal, 8)

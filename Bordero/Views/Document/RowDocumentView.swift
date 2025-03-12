@@ -21,10 +21,10 @@ struct RowDocumentView :View {
             DocumentDetailView(document: document)
         } label : {
             HStack {
-                VStack(alignment: .trailing) {
+                VStack(alignment: .center) {
                     Text(document.dateEmission.formatted(.dateTime.day()))
-                    + Text("\n")
-                    + Text(document.dateEmission.formatted(.dateTime.month()))
+                    
+                    Text(document.dateEmission.formatted(.dateTime.month()))
                     
                 }
                 .multilineTextAlignment(.center)

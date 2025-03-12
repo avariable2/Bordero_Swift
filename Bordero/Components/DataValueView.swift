@@ -14,10 +14,16 @@ struct DataValueView: View {
     @ScaledMetric var size: CGFloat = 1
     
     @ViewBuilder var body: some View {
-        HStack {
-            Text(value).font(.system(size: 24 * size, weight: .bold, design: .rounded)) + Text(" \(unit)").font(.system(size: 14 * size, weight: .semibold, design: .rounded)).foregroundColor(.secondary)
+        HStack(spacing: 4) {
+            Text(value)
+                .font(.system(size: 24 * size, weight: .bold, design: .rounded))
+           
+            Text(unit)
+            
             Spacer()
         }
+        .font(.system(size: 14 * size, weight: .semibold, design: .rounded))
+        .foregroundColor(.secondary)
     }
 }
 

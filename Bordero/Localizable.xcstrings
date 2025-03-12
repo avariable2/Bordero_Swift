@@ -4,15 +4,6 @@
     "" : {
 
     },
-    "\n" : {
-
-    },
-    " " : {
-
-    },
-    " %@" : {
-
-    },
     "«" : {
 
     },
@@ -22,13 +13,8 @@
     "#" : {
 
     },
-    "%@" : {
-
-    },
-    "%@ " : {
-
-    },
     "%@ - %@" : {
+      "comment" : "Start date - End date",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -39,6 +25,7 @@
       }
     },
     "%@ - %@, %lld min" : {
+      "comment" : "Start date - End date, duration min",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -49,6 +36,7 @@
       }
     },
     "%@ # %@" : {
+      "comment" : "Type document # Numero document",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -58,17 +46,8 @@
         }
       }
     },
-    "%@ %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@"
-          }
-        }
-      }
-    },
     "%@, %lld min" : {
+      "comment" : "StartTime, DurationMinutes min",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -78,20 +57,13 @@
         }
       }
     },
-    "%@%@ %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@%2$@ %3$@"
-          }
-        }
-      }
-    },
     "%lf euros" : {
 
     },
     "%lld" : {
+
+    },
+    "⏺️ " : {
 
     },
     "🏗️ En construction. Disponible dans une future mise à jour." : {
@@ -107,24 +79,6 @@
 
     },
     "0%" : {
-
-    },
-    "1. Établir des Tarifs Clairs et Transparents" : {
-
-    },
-    "2. Utiliser des Logiciels de Facturation Adaptés" : {
-
-    },
-    "3. Assurer la Confidentialité des Informations" : {
-
-    },
-    "4. Respecter les Obligations Légales et Fiscales" : {
-
-    },
-    "5. Offrir des Modalités de Paiement Flexibles" : {
-
-    },
-    "6. Gérer les Impayés de Manière Professionnelle" : {
 
     },
     "A %@, le %@," : {
@@ -203,9 +157,6 @@
     "Appliquer la TVA sur les factures" : {
 
     },
-    "Article utile sur la facturation" : {
-
-    },
     "Attention" : {
 
     },
@@ -255,9 +206,6 @@
 
     },
     "Cette action est irréversible." : {
-
-    },
-    "Cette transparence permet d’éviter toute confusion et de garantir que les patients sont pleinement informés des coûts associés aux services." : {
 
     },
     "Changer de période ou ajouter des paiements sur vos factures" : {
@@ -363,9 +311,6 @@
 
     },
     "Dernier acte effectué" : {
-
-    },
-    "Dès le premier contact, il est crucial d’informer les patients des tarifs des consultations. Les tarifs doivent être affichés de manière claire, que ce soit sur le site internet du cabinet ou par le biais de brochures disponibles lors des premières consultations." : {
 
     },
     "Description" : {
@@ -501,9 +446,6 @@
     "Identification" : {
 
     },
-    "Il est recommandé d’utiliser des descriptions génériques pour les services rendus afin de ne pas compromettre la confidentialité des patients." : {
-
-    },
     "Il n'y a aucun document avec le statut payé ou envoyé." : {
 
     },
@@ -528,15 +470,6 @@
     "Informations" : {
 
     },
-    "L’utilisation de logiciels de facturation permet de créer des factures professionnelles, de suivre les paiements et de générer des rapports financiers détaillés. Ces outils intégrés automatisent la saisie des données, réduisent les erreurs et accélèrent le processus de facturation, permettant ainsi aux professionnels de se concentrer davantage sur leurs patients." : {
-
-    },
-    "La confidentialité est une priorité en psychologie. Les factures doivent être rédigées de manière à protéger les informations sensibles des patients." : {
-
-    },
-    "La facturation en psychologie est essentielle pour assurer une gestion efficace du cabinet, maintenir des relations de confiance avec les patients et respecter les obligations légales." : {
-
-    },
     "La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée." : {
 
     },
@@ -546,19 +479,10 @@
     "Le client est-il un professionnel ?" : {
 
     },
-    "Les bonnes pratiques pour les factures de psychologie" : {
-
-    },
     "Les clients ajoutés apparaîtront ici." : {
 
     },
     "Les documents créés apparaîtront ici." : {
-
-    },
-    "Les impayés peuvent survenir malgré toutes les précautions. Environ 30% des psychologues ont signalé des difficultés avec des paiements en retard ou non effectués." : {
-
-    },
-    "Les psychologues doivent se conformer aux réglementations fiscales en vigueur, incluant la délivrance de factures conformes aux normes légales, la déclaration des revenus et le paiement des impôts correspondants. Il est conseillé de consulter un comptable pour s’assurer que toutes les obligations légales et fiscales sont respectées." : {
 
     },
     "Les types d'acte ajoutés apparaîtront ici." : {
@@ -666,9 +590,6 @@
     "Notifications" : {
 
     },
-    "Nouveau client" : {
-
-    },
     "Nouveau type d'acte" : {
 
     },
@@ -759,13 +680,7 @@
     "Période" : {
 
     },
-    "Pour faciliter les paiements, proposez diverses options comme les chèques, les virements bancaires, et les paiements par carte de crédit. Offrir des modalités de paiement flexibles peut réduire les retards de paiement et améliorer la satisfaction des patients. Les cabinets utilisant ces solutions voient souvent une amélioration de la collecte des paiements et une réduction des impayés de 15 à 25%." : {
-
-    },
     "Pour gagner du temps, importez les champs principaux comme votre nom ou prénom depuis votre fiche Contacts." : {
-
-    },
-    "Pour gérer ces situations, envoyez des rappels polis et, si nécessaire, proposez des plans de paiement. En dernier recours, envisagez de faire appel à un service de recouvrement, en veillant à ce que cela soit fait de manière éthique." : {
 
     },
     "Pour supprimer un élément de la liste, déplacez le sur la gauche." : {
@@ -868,9 +783,6 @@
 
     },
     "Sélectionnez un jour" : {
-
-    },
-    "Selon une étude, l’adoption de ces logiciels réduit le temps consacré aux tâches administratives de 30% en moyenne et augmente l’efficacité de la facturation de 20%" : {
 
     },
     "Sera affichée ici la répartition des montants exigibles. Revenez quand vous aurez envoyé des factures" : {
@@ -994,9 +906,6 @@
 
     },
     "Virement bancaire" : {
-
-    },
-    "Voici six bonnes pratiques à adopter pour une facturation transparente et professionnelle, illustrant l’impact des logiciels de facturation sur la gestion administrative." : {
 
     },
     "Voir l'historique des paiements" : {

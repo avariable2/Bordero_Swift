@@ -62,6 +62,10 @@ extension Client {
         return "\(self.firstname) \(self.lastname)"
     }
     
+    var nameUppercaseWithFirstNameCapitalized : String {
+        return "\(lastname.uppercased()) \(firstname.capitalized)"
+    }
+    
     convenience init(
         firstname : String,
         lastname : String,

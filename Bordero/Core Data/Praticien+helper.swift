@@ -115,6 +115,10 @@ extension Praticien {
         }
     }
     
+    var nameUppercaseWithFirstNameCapitalized : String {
+        return "\(lastname.uppercased()) \(firstname.capitalized)"
+    }
+    
     func getAdresseSurUneLigne() -> String {
         if let coordonne = self.adresse1 {
             return PDFUtils.getTableauInfoAdresse(

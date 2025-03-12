@@ -36,7 +36,10 @@ struct DayPickerView: View {
     var body: some View {
         Picker("Sélectionnez un jour", selection: $selectedDay) {
             ForEach(DaySelection.allCases) { day in
-                Text("\(day.date == Date() ? "⏺️ " : "")\(day.date, format: .dateTime.day()) \(day.date, format: .dateTime.month())")
+                HStack {
+                    Text(day.date == Date() ? "⏺️ " : "")
+                    + Text(day.date, format: .dateTime.day().month())
+                }
                     .tag(day.date)
             }
         }

@@ -127,7 +127,6 @@
 		F7E88C812B895BAE00AAF73C /* BandeauCreateDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C802B895BAE00AAF73C /* BandeauCreateDocument.swift */; };
 		F7E88C832B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C822B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift */; };
 		F7E88C862B8A335F00AAF73C /* SectionHomeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */; };
-		F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */; };
 		F7E88C8A2B8A432700AAF73C /* TitleWithIconColorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */; };
 		F7EA15E32BFA8BE600A2CB01 /* MessageUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */; };
 		F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EA15E42BFA985800A2CB01 /* MailUIView.swift */; };
@@ -247,7 +246,6 @@
 		F7E88C802B895BAE00AAF73C /* BandeauCreateDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandeauCreateDocument.swift; sourceTree = "<group>"; };
 		F7E88C822B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableGradientBackgroundCustomView.swift; sourceTree = "<group>"; };
 		F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHomeComponentView.swift; sourceTree = "<group>"; };
-		F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponentView.swift; sourceTree = "<group>"; };
 		F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithIconColorComponentView.swift; sourceTree = "<group>"; };
 		F7EA15E22BFA8BE600A2CB01 /* MessageUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageUIView.swift; sourceTree = "<group>"; };
 		F7EA15E42BFA985800A2CB01 /* MailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailUIView.swift; sourceTree = "<group>"; };
@@ -451,7 +449,6 @@
 			children = (
 				F7E88C822B89F7F200AAF73C /* ScrollableGradientBackgroundCustomView.swift */,
 				F7E88C852B8A335F00AAF73C /* SectionHomeComponentView.swift */,
-				F7E88C872B8A346E00AAF73C /* ArticleComponentView.swift */,
 				F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */,
 				F71364532B8CDB3100C68853 /* ProfilView.swift */,
 				F780966E2BAC855F00B3AF4A /* RowIconColor.swift */,
@@ -839,7 +836,6 @@
 				F748ADD42B669B3600B82C5D /* ListTypeActe.swift in Sources */,
 				F7B401BD2C59682100104862 /* Date+Formatting.swift in Sources */,
 				F767E0E32C04C25000701BFE /* ToolBarView.swift in Sources */,
-				F7E88C882B8A346E00AAF73C /* ArticleComponentView.swift in Sources */,
 				F78341D82C5D58C0000719C7 /* RecurrenceView.swift in Sources */,
 				F78227982BB3428D0033429F /* FormTypeActeView.swift in Sources */,
 			);
