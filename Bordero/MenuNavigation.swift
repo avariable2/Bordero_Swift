@@ -32,19 +32,17 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var body: some View {
-        VStack {
-            if horizontalSizeClass == .compact {
-                CustomTabView()
-            } else {
-                NavigationIpad()
-            }
+        if horizontalSizeClass == .compact {
+            CustomTabView()
+        } else {
+            NavigationIpad()
         }
     }
 }
 
 struct CustomTabView: View {
-    @State var selection : MenuNavigation = .documents
-    @State var activeSheet : ActiveSheet? = nil
+    @AppStorage("selectedTab") var selection: MenuNavigation = .documents
+    @State var activeSheet: ActiveSheet? = nil
     
     var body: some View {
         TabView(selection: $selection) {
@@ -90,14 +88,22 @@ struct CustomTabView: View {
 }
 
 struct NavigationIpad: View {
-    @State private var selectedClient : Client?
+    @State private var selectedClient: Client?
+    @AppStorage("selectedMenu") private var selectedMenuRawValue: String = MenuNavigation.documents.rawValue
+    @State var activeSheet: ActiveSheet? = nil
     
-    @State var selectedMenu : MenuNavigation? = .documents
-    @State var activeSheet : ActiveSheet? = nil
+    private var selectedMenu: Binding<MenuNavigation?> {
+        Binding(
+            get: { MenuNavigation(rawValue: selectedMenuRawValue) },
+            set: { newValue in
+                selectedMenuRawValue = newValue?.rawValue ?? MenuNavigation.documents.rawValue
+            }
+        )
+    }
     
     var body: some View {
         NavigationSplitView {
-            List(selection: $selectedMenu) {
+            List(selection: selectedMenu) {
                 ForEach(MenuNavigation.allCases, id: \.id) { menu in
                     Label(menu.rawValue.capitalized, systemImage: menu.systemNameImage)
                         .tag(menu)
@@ -106,8 +112,8 @@ struct NavigationIpad: View {
             .navigationTitle("Bordero")
             .navigationBarTitleDisplayMode(.large)
         } content: {
-            if let selectedMenu {
-                destinationMenu(for: selectedMenu)
+            if let menu = MenuNavigation(rawValue: selectedMenuRawValue) {
+                destinationMenu(for: menu)
             } else {
                 Text("Rien n'a été sélectionné")
             }

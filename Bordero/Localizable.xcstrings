@@ -416,7 +416,14 @@
       }
     },
     "Appliquer la TVA sur les factures" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply VAT on invoices"
+          }
+        }
+      }
     },
     "Attention" : {
       "localizations" : {
@@ -1029,7 +1036,14 @@
       }
     },
     "Données de %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data for %@"
+          }
+        }
+      }
     },
     "Données sur le mois en cours" : {
       "localizations" : {
@@ -1432,7 +1446,14 @@
       }
     },
     "La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French anti-fraud law does not allow modification or deletion of an invoice that has already been sent or exported."
+          }
+        }
+      }
     },
     "Le %@," : {
       "localizations" : {
@@ -1445,16 +1466,44 @@
       }
     },
     "Le client est-il un professionnel ?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is the client a professional?"
+          }
+        }
+      }
     },
     "Les clients ajoutés apparaîtront ici." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added clients will appear here."
+          }
+        }
+      }
     },
     "Les documents créés apparaîtront ici." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created documents will appear here."
+          }
+        }
+      }
     },
     "Les types d'acte ajoutés apparaîtront ici." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added service types will appear here."
+          }
+        }
+      }
     },
     "Libellé" : {
       "localizations" : {
@@ -1707,10 +1756,24 @@
       }
     },
     "N° SIRET" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIRET No."
+          }
+        }
+      }
     },
     "Nbr de praticien = %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of practitioners = %lld"
+          }
+        }
+      }
     },
     "Nom" : {
       "localizations" : {
@@ -2043,7 +2106,14 @@
       }
     },
     "Payée le" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paid on"
+          }
+        }
+      }
     },
     "Payée le " : {
       "localizations" : {
@@ -2086,7 +2156,14 @@
       }
     },
     "Pour supprimer un élément de la liste, déplacez le sur la gauche." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To delete a list item, swipe it left."
+          }
+        }
+      }
     },
     "Pour supprimer une adresse, il vous suffit de la faire glisser sur la gauche et de cliquer sur supprimer." : {
       "localizations" : {
@@ -2719,31 +2796,94 @@
       }
     },
     "Type" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
     },
     "Type d'acte : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service type: %@"
+          }
+        }
+      }
     },
     "Type d'acte(s)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service type(s)"
+          }
+        }
+      }
     },
     "Type de document" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document type"
+          }
+        }
+      }
     },
     "Type de remise" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount type"
+          }
+        }
+      }
     },
     "Types d'acte" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service types"
+          }
+        }
+      }
     },
     "Une erreur c'est produite" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An error occurred"
+          }
+        }
+      }
     },
     "Une erreur s'est produite" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An error occurred"
+          }
+        }
+      }
     },
     "Veuillez contacter le développeur depuis le bouton dans les paramètres si cela se reproduit." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please contact the developer using the button in settings if this happens again."
+          }
+        }
+      }
     },
     "Ville" : {
       "localizations" : {
@@ -2756,7 +2896,14 @@
       }
     },
     "Virement bancaire" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank transfer"
+          }
+        }
+      }
     },
     "Voir l'historique des paiements" : {
       "localizations" : {

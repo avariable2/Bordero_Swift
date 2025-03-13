@@ -70,15 +70,16 @@ struct RowHistorique : View {
     }
     
     var body: some View {
+        
         Label {
-            Text(evenement.nom.capitalized)
-                .foregroundStyle(.primary)
-            
-            Spacer()
-            
-            Text(evenement.date, format: .dateTime)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+            LabeledContent {
+                Text(evenement.date, format: .dateTime)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            } label: {
+                Text(evenement.nom.capitalized)
+                    .foregroundStyle(.primary)
+            }
         } icon: {
             Image(systemName: image)
                 .symbolRenderingMode(.palette)

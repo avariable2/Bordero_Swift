@@ -14,7 +14,7 @@
 		F70DC1032BD5BD22004D6206 /* HistoriqueEvenement+helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70DC1022BD5BD22004D6206 /* HistoriqueEvenement+helper.swift */; };
 		F70DC7E32BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */; };
 		F71364542B8CDB3100C68853 /* ProfilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71364532B8CDB3100C68853 /* ProfilView.swift */; };
-		F71F49142BCC5FE6007AD6E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F49132BCC5FE6007AD6E5 /* ContentView.swift */; };
+		F71F49142BCC5FE6007AD6E5 /* MenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F49132BCC5FE6007AD6E5 /* MenuNavigation.swift */; };
 		F72334252D80691D00C8CD67 /* RowDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72334242D80691D00C8CD67 /* RowDocumentView.swift */; };
 		F72334272D80707E00C8CD67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F72334262D80707E00C8CD67 /* GoogleService-Info.plist */; };
 		F72334292D8073F700C8CD67 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F72334282D8073F700C8CD67 /* Localizable.xcstrings */; };
@@ -138,7 +138,7 @@
 		F70DC1022BD5BD22004D6206 /* HistoriqueEvenement+helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoriqueEvenement+helper.swift"; sourceTree = "<group>"; };
 		F70DC7E22BB44AE200967629 /* GroupBoxStyleRememberiCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxStyleRememberiCloud.swift; sourceTree = "<group>"; };
 		F71364532B8CDB3100C68853 /* ProfilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilView.swift; sourceTree = "<group>"; };
-		F71F49132BCC5FE6007AD6E5 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F71F49132BCC5FE6007AD6E5 /* MenuNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuNavigation.swift; sourceTree = "<group>"; };
 		F72334242D80691D00C8CD67 /* RowDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowDocumentView.swift; sourceTree = "<group>"; };
 		F72334262D80707E00C8CD67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F72334282D8073F700C8CD67 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -586,7 +586,7 @@
 				F75369CB2B893F55000F4CB3 /* Controller */,
 				F7DFADA92B66894500C905A7 /* Views */,
 				F7DFAD9A2B66839C00C905A7 /* BorderoApp.swift */,
-				F71F49132BCC5FE6007AD6E5 /* ContentView.swift */,
+				F71F49132BCC5FE6007AD6E5 /* MenuNavigation.swift */,
 				F77F53182B7B9439004329B9 /* Info.plist */,
 				F7DFAD9E2B66839D00C905A7 /* Assets.xcassets */,
 				F7DFADA02B66839D00C905A7 /* Bordero.entitlements */,
@@ -779,7 +779,7 @@
 				F77F531A2B7BA121004329B9 /* DocumentOptionsView.swift in Sources */,
 				F781153F2BB1A68C00F2026E /* PDFData.swift in Sources */,
 				F780966A2BAC801400B3AF4A /* PhotosUIView.swift in Sources */,
-				F71F49142BCC5FE6007AD6E5 /* ContentView.swift in Sources */,
+				F71F49142BCC5FE6007AD6E5 /* MenuNavigation.swift in Sources */,
 				F7681EC72BD045FD0058150A /* PDFUtils.swift in Sources */,
 				F777A2EA2B8DEF46001E0169 /* ParametersView.swift in Sources */,
 				F75083B32C109E7800B32E1F /* AnalyticsEnvironmentKey.swift in Sources */,
