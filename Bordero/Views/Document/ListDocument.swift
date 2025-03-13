@@ -37,10 +37,17 @@ struct ListDocument: View {
     @State private var tags: [TokenDocumentModel] = []
     @State private var documentScope : Document.Status = .all
     
+    private var localizedInvoiceKey: String {
+        NSLocalizedString("Factures", comment: "Plural form of Invoice")
+    }
+    
+    private var localizedQuoteKey: String {
+        NSLocalizedString("Devis", comment: "Plural form of Quote")
+    }
+    
     var filteredListDocuments: Dictionary<String, [Document]> {
         let tokens = tags.map { $0.value.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
         
-        // Filter documents based on scope and tokens
         let documentsToGroup = documents.filter { document in
             let isInScope: Bool
             switch documentScope {
@@ -51,15 +58,15 @@ struct ListDocument: View {
             }
             guard isInScope else { return false }
             
-            // If no tokens, return the document
             guard !tokens.isEmpty else { return true }
             
             return tokens.allSatisfy { term in
                 let matchesClient = document.client_?.fullname.lowercased().contains(term) ?? false
                 let matchesDate = document.dateEmission.formatted(.dateTime.month().year()).lowercased().contains(term)
-                let matchesType = (term == "factures" && document.estDeTypeFacture) || (term == "devis" && !document.estDeTypeFacture)
+                let matchesType = (term == localizedInvoiceKey.lowercased() && document.estDeTypeFacture) || 
+                                (term == localizedQuoteKey.lowercased() && !document.estDeTypeFacture)
                 
-                if term == "factures" || term == "devis" {
+                if term == localizedInvoiceKey.lowercased() || term == localizedQuoteKey.lowercased() {
                     return matchesType
                 } else {
                     return matchesClient || matchesDate
@@ -99,9 +106,10 @@ struct ListDocument: View {
     }
     
     var filteredSuggestionsTypeDocs: [String] {
-        let uniqueType = ["Factures", "Devis"]
+        let uniqueType = [localizedInvoiceKey, localizedQuoteKey]
         return uniqueType.filter { type in
-            !tags.contains(where: { $0.value == type && $0.type == .typeDoc }) && type.lowercased().contains(searchText.lowercased())
+            !tags.contains(where: { $0.value == type && $0.type == .typeDoc }) && 
+            type.lowercased().contains(searchText.lowercased())
         }
     }
     
