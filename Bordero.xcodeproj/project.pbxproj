@@ -32,7 +32,6 @@
 		F75083B12C109CF800B32E1F /* AnalytisEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083B02C109CF800B32E1F /* AnalytisEvent.swift */; };
 		F75083B32C109E7800B32E1F /* AnalyticsEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083B22C109E7800B32E1F /* AnalyticsEnvironmentKey.swift */; };
 		F75083B52C109EB400B32E1F /* AnalyticsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75083B42C109EB400B32E1F /* AnalyticsModifier.swift */; };
-		F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */; };
 		F75369CF2B8944A6000F4CB3 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75369CE2B8944A6000F4CB3 /* ExploreView.swift */; };
 		F75369D22B8944F2000F4CB3 /* ScrollableGradientBackground in Frameworks */ = {isa = PBXBuildFile; productRef = F75369D12B8944F2000F4CB3 /* ScrollableGradientBackground */; };
 		F75575D92C06139D00483A47 /* MijickGridView in Frameworks */ = {isa = PBXBuildFile; productRef = F75575D82C06139D00483A47 /* MijickGridView */; };
@@ -152,7 +151,6 @@
 		F75083B02C109CF800B32E1F /* AnalytisEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalytisEvent.swift; sourceTree = "<group>"; };
 		F75083B22C109E7800B32E1F /* AnalyticsEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEnvironmentKey.swift; sourceTree = "<group>"; };
 		F75083B42C109EB400B32E1F /* AnalyticsModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsModifier.swift; sourceTree = "<group>"; };
-		F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseriCloudController.swift; sourceTree = "<group>"; };
 		F75369CE2B8944A6000F4CB3 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
 		F75575DB2C06394C00483A47 /* GridViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewWrapper.swift; sourceTree = "<group>"; };
 		F7587B482BCB33A0007007B8 /* HistoriqueTabDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoriqueTabDetailView.swift; sourceTree = "<group>"; };
@@ -300,7 +298,6 @@
 			children = (
 				F792B75D2B71630C00FA5569 /* ActiveSheet.swift */,
 				F70CFEA12B7EA9A500F777AA /* DataController.swift */,
-				F75369CC2B893F6E000F4CB3 /* UseriCloudController.swift */,
 				F77312862B8CC2F500413820 /* Protocol.swift */,
 			);
 			path = Controller;
@@ -820,7 +817,6 @@
 				F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */,
 				F768CE8D2B738B07006E587E /* ImportContactView.swift in Sources */,
 				F772821E2C14BF9500FF153D /* DocumentFormView.swift in Sources */,
-				F75369CD2B893F6E000F4CB3 /* UseriCloudController.swift in Sources */,
 				F7EA15E52BFA985800A2CB01 /* MailUIView.swift in Sources */,
 				F75083B12C109CF800B32E1F /* AnalytisEvent.swift in Sources */,
 				F71364542B8CDB3100C68853 /* ProfilView.swift in Sources */,

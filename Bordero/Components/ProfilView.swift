@@ -49,6 +49,12 @@ struct ProfilNavigationLink: View {
     }
 }
 
-#Preview {
+#Preview("ProfilImageView") {
     ProfilImageView()
+}
+
+#Preview("ProfilNavigationLink") {
+    ProfilNavigationLink(
+        text: "Test"
+    )
 }

@@ -207,7 +207,7 @@ struct ParametersView: View {
                         }
                     } footer: {
                         VStack(alignment: .leading) {
-                            Text("Données Bordero non synchronisées \nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud.")
+                            Text("Données Bordero non synchronisées.\nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud.")
                         }
                     }
                 }

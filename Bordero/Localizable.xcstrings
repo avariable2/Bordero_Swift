@@ -2,20 +2,54 @@
   "sourceLanguage" : "fr",
   "strings" : {
     "" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "«" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«"
+          }
+        }
+      }
     },
     "»" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "»"
+          }
+        }
+      }
     },
     "#" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#"
+          }
+        }
+      }
     },
     "%@ - %@" : {
       "comment" : "Start date - End date",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ - %2$@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -27,6 +61,12 @@
     "%@ - %@, %lld min" : {
       "comment" : "Start date - End date, duration min",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ - %2$@, %3$lld min"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -38,6 +78,12 @@
     "%@ # %@" : {
       "comment" : "Type document # Numero document",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ # %2$@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -49,6 +95,12 @@
     "%@, %lld min" : {
       "comment" : "StartTime, DurationMinutes min",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$lld min"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -58,31 +110,93 @@
       }
     },
     "%lf euros" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf euros"
+          }
+        }
+      }
     },
     "%lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "⏺️ " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⏺️ "
+          }
+        }
+      }
     },
     "🏗️ En construction. Disponible dans une future mise à jour." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🏗️ Under construction. Available in a future update."
+          }
+        }
+      }
     },
     "👋" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👋"
+          }
+        }
+      }
     },
     "0,00 €" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0.00 €"
+          }
+        }
+      }
     },
     "0,00€" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0.00€"
+          }
+        }
+      }
     },
     "0%" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0%"
+          }
+        }
+      }
     },
     "A %@, le %@," : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At %1$@, on %2$@,"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -92,389 +206,1243 @@
       }
     },
     "Acte favori" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorite service"
+          }
+        }
+      }
     },
     "Actions rapides" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick actions"
+          }
+        }
+      }
     },
     "Activer la synchronisation iCloud " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable iCloud sync"
+          }
+        }
+      }
     },
     "Activer les notifications" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable notifications"
+          }
+        }
+      }
     },
     "ADELI" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ADELI"
+          }
+        }
+      }
     },
     "Adresse %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address %lld"
+          }
+        }
+      }
     },
     "Adresse de facturation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Billing address"
+          }
+        }
+      }
     },
     "Adresse e-mail" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email address"
+          }
+        }
+      }
     },
     "Afficher" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show"
+          }
+        }
+      }
     },
     "Afficher la date d'échéance" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show due date"
+          }
+        }
+      }
     },
     "Afficher les modes de paiement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show payment methods"
+          }
+        }
+      }
     },
     "Ajouter" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "Ajouter un client" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a client"
+          }
+        }
+      }
     },
     "Ajouter un logo de société" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add company logo"
+          }
+        }
+      }
     },
     "Ajouter un paiement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a payment"
+          }
+        }
+      }
     },
     "ajouter un type d'acte" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "add a service type"
+          }
+        }
+      }
     },
     "Ajouter un type d'acte" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a service type"
+          }
+        }
+      }
     },
     "ajouter une adresse" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "add an address"
+          }
+        }
+      }
     },
     "Annuler" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "Aperçu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview"
+          }
+        }
+      }
     },
     "Appliquer la TVA" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply VAT"
+          }
+        }
+      }
     },
     "Appliquer la TVA sur les factures" : {
 
     },
     "Attention" : {
-
-    },
-    "Aucun client" : {
-
-    },
-    "Aucun document" : {
-
-    },
-    "Aucun paiement" : {
-
-    },
-    "Aucun paiement n'a été enregistré pour un client" : {
-
-    },
-    "Aucun Top Client" : {
-
-    },
-    "Aucun type d'acte" : {
-
-    },
-    "Aucune donnée" : {
-
-    },
-    "Aucune facture" : {
-
-    },
-    "Aucune facture pour la date sélectionnée" : {
-
-    },
-    "Bienvenue dans Bordero" : {
-
-    },
-    "Bordero" : {
-
-    },
-    "Carte" : {
-
-    },
-    "Catégorie du produit" : {
-
-    },
-    "Ces champs sont importants fiscalement pour que vos documents soient valides." : {
-
-    },
-    "Ces notifications serviront uniquement à vous alerter en cas de date d'échéance dépassée sur une facture." : {
-
-    },
-    "Cette action est irréversible." : {
-
-    },
-    "Changer de période ou ajouter des paiements sur vos factures" : {
-
-    },
-    "Chèque" : {
-
-    },
-    "Choisir dans Photos" : {
-
-    },
-    "Choisir un style" : {
-
-    },
-    "Client" : {
-
-    },
-    "Clients" : {
-
-    },
-    "Code postal" : {
-
-    },
-    "Code Postal" : {
-
-    },
-    "Commentaire" : {
-
-    },
-    "Commentaires : " : {
-
-    },
-    "Conception du modèle" : {
-
-    },
-    "Contact" : {
-
-    },
-    "Contacter le développeur" : {
-
-    },
-    "Continuer" : {
-
-    },
-    "Convertir en Facture" : {
-
-    },
-    "Copier" : {
-
-    },
-    "Corps du message pour la facture" : {
-
-    },
-    "Corps du message pour le devis" : {
-
-    },
-    "Couleur" : {
-
-    },
-    "Couleur des documents" : {
-
-    },
-    "Créer pour" : {
-
-    },
-    "Date" : {
-
-    },
-    "Date d'échéance" : {
-
-    },
-    "Date d'échéance : %@" : {
-
-    },
-    "Date d'émission" : {
-
-    },
-    "Date de début" : {
-
-    },
-    "Date de départ" : {
-
-    },
-    "Date de fin" : {
-
-    },
-    "Date de l'acte" : {
-
-    },
-    "Date inconnue" : {
-
-    },
-    "Debug" : {
-
-    },
-    "Début" : {
-
-    },
-    "Délai moyen de paiement" : {
-
-    },
-    "Déplacer l'élément à gauche pour le supprimer." : {
-
-    },
-    "Dernier acte effectué" : {
-
-    },
-    "Description" : {
-
-    },
-    "Dessiner" : {
-
-    },
-    "Détails" : {
-
-    },
-    "Détails de l'évènement" : {
-
-    },
-    "Devis" : {
-
-    },
-    "Document" : {
-
-    },
-    "Documents" : {
-
-    },
-    "Données Bordero non synchronisées" : {
-
-    },
-    "Données Bordero non synchronisées \nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud." : {
-
-    },
-    "Données de %@ %@" : {
       "localizations" : {
-        "fr" : {
+        "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Données de %1$@ %2$@"
+            "state" : "translated",
+            "value" : "Warning"
           }
         }
       }
     },
-    "Données sur le mois en cours" : {
+    "Aucun client" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No client"
+          }
+        }
+      }
+    },
+    "Aucun document" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No document"
+          }
+        }
+      }
+    },
+    "Aucun paiement" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No payment"
+          }
+        }
+      }
+    },
+    "Aucun paiement n'a été enregistré pour un client" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No payment has been recorded for a client"
+          }
+        }
+      }
+    },
+    "Aucun Top Client" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Top Client"
+          }
+        }
+      }
+    },
+    "Aucun type d'acte" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No service type"
+          }
+        }
+      }
+    },
+    "Aucune donnée" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No data"
+          }
+        }
+      }
+    },
+    "Aucune facture" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No invoice"
+          }
+        }
+      }
+    },
+    "Aucune facture pour la date sélectionnée" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No invoice for the selected date"
+          }
+        }
+      }
+    },
+    "Bienvenue dans Bordero" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to Bordero"
+          }
+        }
+      }
+    },
+    "Bordero" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bordero"
+          }
+        }
+      }
+    },
+    "Carte" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card"
+          }
+        }
+      }
+    },
+    "Catégorie du produit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product category"
+          }
+        }
+      }
+    },
+    "Ces champs sont importants fiscalement pour que vos documents soient valides." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These fields are important for tax purposes to ensure your documents are valid."
+          }
+        }
+      }
+    },
+    "Ces notifications serviront uniquement à vous alerter en cas de date d'échéance dépassée sur une facture." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These notifications will only alert you when an invoice due date has passed."
+          }
+        }
+      }
+    },
+    "Cette action est irréversible." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action cannot be undone."
+          }
+        }
+      }
+    },
+    "Changer de période ou ajouter des paiements sur vos factures" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change period or add payments to your invoices"
+          }
+        }
+      }
+    },
+    "Chèque" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check"
+          }
+        }
+      }
+    },
+    "Choisir dans Photos" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from Photos"
+          }
+        }
+      }
+    },
+    "Choisir un style" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a style"
+          }
+        }
+      }
+    },
+    "Client" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client"
+          }
+        }
+      }
+    },
+    "Clients" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clients"
+          }
+        }
+      }
+    },
+    "Code postal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postal code"
+          }
+        }
+      }
+    },
+    "Code Postal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postal Code"
+          }
+        }
+      }
+    },
+    "Commentaire" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment"
+          }
+        }
+      }
+    },
+    "Commentaires : " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comments: "
+          }
+        }
+      }
+    },
+    "Conception du modèle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Template design"
+          }
+        }
+      }
+    },
+    "Contact" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact"
+          }
+        }
+      }
+    },
+    "Contacter le développeur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact the developer"
+          }
+        }
+      }
+    },
+    "Continuer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "Convertir en Facture" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convert to Invoice"
+          }
+        }
+      }
+    },
+    "Copier" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        }
+      }
+    },
+    "Corps du message pour la facture" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message body for invoice"
+          }
+        }
+      }
+    },
+    "Corps du message pour le devis" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message body for quote"
+          }
+        }
+      }
+    },
+    "Couleur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
+    },
+    "Couleur des documents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document colors"
+          }
+        }
+      }
+    },
+    "Créer pour" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create for"
+          }
+        }
+      }
+    },
+    "Date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        }
+      }
+    },
+    "Date d'échéance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Due date"
+          }
+        }
+      }
+    },
+    "Date d'échéance : %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Due date: %@"
+          }
+        }
+      }
+    },
+    "Date d'émission" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issue date"
+          }
+        }
+      }
+    },
+    "Date de début" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start date"
+          }
+        }
+      }
+    },
+    "Date de départ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start date"
+          }
+        }
+      }
+    },
+    "Date de fin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End date"
+          }
+        }
+      }
+    },
+    "Date de l'acte" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service date"
+          }
+        }
+      }
+    },
+    "Date inconnue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown date"
+          }
+        }
+      }
+    },
+    "Debug" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug"
+          }
+        }
+      }
+    },
+    "Début" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        }
+      }
+    },
+    "Délai moyen de paiement" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average payment delay"
+          }
+        }
+      }
+    },
+    "Déplacer l'élément à gauche pour le supprimer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe left to delete the item."
+          }
+        }
+      }
+    },
+    "Dernier acte effectué" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last service performed"
+          }
+        }
+      }
+    },
+    "Description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
+          }
+        }
+      }
+    },
+    "Dessiner" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draw"
+          }
+        }
+      }
+    },
+    "Détails" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        }
+      }
+    },
+    "Détails de l'évènement" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event details"
+          }
+        }
+      }
+    },
+    "Devis" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quote"
+          }
+        }
+      }
+    },
+    "Document" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document"
+          }
+        }
+      }
+    },
+    "Documents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documents"
+          }
+        }
+      }
+    },
+    "Données Bordero non synchronisées" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bordero data not synchronized"
+          }
+        }
+      }
+    },
+    "Données Bordero non synchronisées.\nVous pouvez activer la synchronisation de vos données Bordero dans les réglages iCloud." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bordero data not synchronized.\nYou can enable Bordero data synchronization in iCloud settings."
+          }
+        }
+      }
+    },
+    "Données de %@" : {
 
+    },
+    "Données sur le mois en cours" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current month data"
+          }
+        }
+      }
     },
     "Duration: %lld min" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duration: %lld min"
+          }
+        }
+      }
     },
     "Durée" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duration"
+          }
+        }
+      }
     },
     "E-mail" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
     },
     "Effacer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
+          }
+        }
+      }
     },
     "Effacer la signature" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear signature"
+          }
+        }
+      }
     },
     "En attente" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending"
+          }
+        }
+      }
     },
     "En france, la loi contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In France, anti-fraud law does not allow modification or deletion of an invoice that has already been sent or exported."
+          }
+        }
+      }
     },
     "En savoir plus" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn more"
+          }
+        }
+      }
     },
     "Envoyer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        }
+      }
     },
     "Erreur de chargement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading error"
+          }
+        }
+      }
     },
     "Espèces" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cash"
+          }
+        }
+      }
     },
     "Étage, appt." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor, apt."
+          }
+        }
+      }
     },
     "Exporter" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export"
+          }
+        }
+      }
     },
     "Facture" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoice"
+          }
+        }
+      }
     },
     "Facture déjà réglée ?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoice already paid?"
+          }
+        }
+      }
     },
     "Facture réglée avec : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoice paid with: %@"
+          }
+        }
+      }
     },
     "Factures" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoices"
+          }
+        }
+      }
     },
     "facultatif" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "optional"
+          }
+        }
+      }
     },
     "Fermer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
     },
     "Fiche client" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client details"
+          }
+        }
+      }
     },
     "Fin" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End"
+          }
+        }
+      }
     },
     "Génération du PDF en cours..." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generating PDF..."
+          }
+        }
+      }
     },
     "Gérer les messages" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage messages"
+          }
+        }
+      }
     },
     "H.T." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excl. VAT"
+          }
+        }
+      }
     },
     "Hello, World!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello, World!"
+          }
+        }
+      }
     },
     "Historique" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        }
+      }
     },
     "Historique des paiements" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment history"
+          }
+        }
+      }
     },
     "Historique paiements" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment history"
+          }
+        }
+      }
     },
     "Ici sera affichée la liste des paiements de vos clients." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The list of your clients' payments will be displayed here."
+          }
+        }
+      }
     },
     "ID du document : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document ID: %@"
+          }
+        }
+      }
     },
     "Identification" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identification"
+          }
+        }
+      }
     },
     "Il n'y a aucun document avec le statut payé ou envoyé." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no documents with paid or sent status."
+          }
+        }
+      }
     },
     "Image" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image"
+          }
+        }
+      }
     },
     "Impayées" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpaid"
+          }
+        }
+      }
     },
     "Important" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Important"
+          }
+        }
+      }
     },
     "Importer depuis vos Contacts" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from your Contacts"
+          }
+        }
+      }
     },
     "Importer vos informations depuis votre fiche Contacts" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import your information from your Contacts card"
+          }
+        }
+      }
     },
     "Impossible de transformer votre devis" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to convert your quote"
+          }
+        }
+      }
     },
     "Informations" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Information"
+          }
+        }
+      }
     },
     "La loi fançaise de la lutte contre la fraude ne permet pas la modification ou la suppression d'une facture déjà envoyée ou exportée." : {
 
     },
     "Le %@," : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On %@,"
+          }
+        }
+      }
     },
     "Le client est-il un professionnel ?" : {
 
@@ -489,79 +1457,254 @@
 
     },
     "Libellé" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Label"
+          }
+        }
+      }
     },
     "Loi Française" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French Law"
+          }
+        }
+      }
     },
     "Mail" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
     },
     "Maintenir le texte pour copier l'email." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long press to copy the email."
+          }
+        }
+      }
     },
     "Manuscrite" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handwritten"
+          }
+        }
+      }
     },
     "Mentors" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mentors"
+          }
+        }
+      }
     },
     "Message" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message"
+          }
+        }
+      }
     },
     "Messages n'est pas disponible avec votre appareil" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messages is not available on your device"
+          }
+        }
+      }
     },
     "Mode de paiement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment method"
+          }
+        }
+      }
     },
     "Modèle de facture" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoice template"
+          }
+        }
+      }
     },
     "Modes de paiement acceptés" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepted payment methods"
+          }
+        }
+      }
     },
     "Modes de règlement acceptés : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepted payment methods: %@"
+          }
+        }
+      }
     },
     "Modes de règlement acceptés : Aucun" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepted payment methods: None"
+          }
+        }
+      }
     },
     "Modifier" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
     },
     "Modifier évènement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit event"
+          }
+        }
+      }
     },
     "Modifier le logo de société" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit company logo"
+          }
+        }
+      }
     },
     "Modifier le paiement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit payment"
+          }
+        }
+      }
     },
     "Montant" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount"
+          }
+        }
+      }
     },
     "Montant Additionnel" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Additional amount"
+          }
+        }
+      }
     },
     "Montant de remise" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount amount"
+          }
+        }
+      }
     },
     "Montant TVA" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VAT amount"
+          }
+        }
+      }
     },
     "Moyenne" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average"
+          }
+        }
+      }
     },
     "Moyenne: %.1f jours" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average: %.1f days"
+          }
+        }
+      }
     },
     "N°" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No."
+          }
+        }
+      }
     },
     "N° SIREN" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIREN No."
+          }
+        }
+      }
     },
     "N° SIRET" : {
 
@@ -570,310 +1713,1010 @@
 
     },
     "Nom" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last name"
+          }
+        }
+      }
     },
     "Nom de l'entreprise" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company name"
+          }
+        }
+      }
     },
     "Note" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note"
+          }
+        }
+      }
     },
     "Notes" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        }
+      }
     },
     "Notes - optionnelles" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes - optional"
+          }
+        }
+      }
     },
     "Notes : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes: %@"
+          }
+        }
+      }
     },
     "Notifications" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
     },
     "Nouveau type d'acte" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New service type"
+          }
+        }
+      }
     },
     "Nouvelle évènement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New event"
+          }
+        }
+      }
     },
     "Numéro" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number"
+          }
+        }
+      }
     },
     "Numéro ADELI" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ADELI number"
+          }
+        }
+      }
     },
     "Numéro de %@:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of %@:"
+          }
+        }
+      }
     },
     "Numéro de SIREN : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIREN number: %@"
+          }
+        }
+      }
     },
     "Numéro de SIRET" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIRET number"
+          }
+        }
+      }
     },
     "Numéro de SIRET : %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIRET number: %@"
+          }
+        }
+      }
     },
     "Numéro de téléphone" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone number"
+          }
+        }
+      }
     },
     "obligatoire" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "required"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "Options" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options"
+          }
+        }
+      }
     },
     "Options de %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options for %@"
+          }
+        }
+      }
     },
     "Options document" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document options"
+          }
+        }
+      }
     },
     "Ouvertes" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        }
+      }
     },
     "Ouvrir Réglages" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        }
+      }
     },
     "Paiement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment method"
+          }
+        }
+      }
     },
     "Paiement de %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment of %@"
+          }
+        }
+      }
     },
     "Paiement(s)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment(s)"
+          }
+        }
+      }
     },
     "Paiements reçus" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Received payments"
+          }
+        }
+      }
     },
     "Paramètres" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
     },
     "Paramètres de facturation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Billing settings"
+          }
+        }
+      }
     },
     "Paramètres prédéfinis" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preset settings"
+          }
+        }
+      }
     },
     "Parcourir" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Browse"
+          }
+        }
+      }
     },
     "Pas de donnée disponible" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No data available"
+          }
+        }
+      }
     },
     "Pas de paiement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No payment"
+          }
+        }
+      }
     },
     "Payée le" : {
 
     },
     "Payée le " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paid on "
+          }
+        }
+      }
     },
     "Payées" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paid"
+          }
+        }
+      }
     },
     "Période" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Period"
+          }
+        }
+      }
     },
     "Pour gagner du temps, importez les champs principaux comme votre nom ou prénom depuis votre fiche Contacts." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To save time, import main fields like your first and last name from your Contacts card."
+          }
+        }
+      }
     },
     "Pour supprimer un élément de la liste, déplacez le sur la gauche." : {
 
     },
     "Pour supprimer une adresse, il vous suffit de la faire glisser sur la gauche et de cliquer sur supprimer." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To delete an address, swipe it left and tap delete."
+          }
+        }
+      }
     },
     "pourcentage de TVA" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VAT percentage"
+          }
+        }
+      }
     },
     "Prénom" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First name"
+          }
+        }
+      }
     },
     "Prestation(s)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service(s)"
+          }
+        }
+      }
     },
     "Prix" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Price"
+          }
+        }
+      }
     },
     "Profil" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
     },
     "Qté" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qty"
+          }
+        }
+      }
     },
     "Quantité" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity"
+          }
+        }
+      }
     },
     "Recherche" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        }
+      }
     },
     "Rechercher" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        }
+      }
     },
     "Réessayer. Si cette erreur persiste, veuillez contacter le développeur depuis les paramètres." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again. If this error persists, please contact the developer from settings."
+          }
+        }
+      }
     },
     "Réglement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment"
+          }
+        }
+      }
     },
     "Remarques" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remarks"
+          }
+        }
+      }
     },
     "Remarques :" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remarks:"
+          }
+        }
+      }
     },
     "Remarques : " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remarks: "
+          }
+        }
+      }
     },
     "Remise sur votre %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount on your %@"
+          }
+        }
+      }
     },
     "Répartion documents sur période" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document distribution over period"
+          }
+        }
+      }
     },
     "Répartition mensuels" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly distribution"
+          }
+        }
+      }
     },
     "Reste à payer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Balance due"
+          }
+        }
+      }
     },
     "Résumé" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summary"
+          }
+        }
+      }
     },
     "Retour" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
     },
     "Revenu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revenue"
+          }
+        }
+      }
     },
     "Revenu sur période" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revenue over period"
+          }
+        }
+      }
     },
     "Rien n'a été sélectionné" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing has been selected"
+          }
+        }
+      }
     },
     "Rue" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Street"
+          }
+        }
+      }
     },
     "Sauvegarder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
     },
     "Sécurité de vos données" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data security"
+          }
+        }
+      }
     },
     "Selectionner la période" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select period"
+          }
+        }
+      }
     },
     "Sélectionner les informations prédéfinies pour quelles soient automatiquement préremplies lors de la création d'un document." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select preset information to be automatically filled when creating a document."
+          }
+        }
+      }
     },
     "Sélectionner un client" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a client"
+          }
+        }
+      }
     },
     "sélectionner un(e) client(e)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "select a client"
+          }
+        }
+      }
     },
     "Selectionner une typographie" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a typography"
+          }
+        }
+      }
     },
     "Sélectionnez un jour" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a day"
+          }
+        }
+      }
     },
     "Sera affichée ici la répartition des montants exigibles. Revenez quand vous aurez envoyé des factures" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The distribution of amounts due will be displayed here. Come back when you have sent invoices"
+          }
+        }
+      }
     },
     "Si cela se produit trop souvent, n'hésitez pas à contacter le développeur." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If this happens too often, don't hesitate to contact the developer."
+          }
+        }
+      }
     },
     "Si un problème survient, contactez le développeur avec cette adresse : feuilles.neutron_0i@icloud.com" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If a problem occurs, contact the developer at this address: feuilles.neutron_0i@icloud.com"
+          }
+        }
+      }
     },
     "Signature" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature"
+          }
+        }
+      }
     },
     "SIRET" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIRET"
+          }
+        }
+      }
     },
     "Site web" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Website"
+          }
+        }
+      }
     },
     "Somme" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sum"
+          }
+        }
+      }
     },
     "Status" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        }
+      }
     },
     "Statut" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        }
+      }
     },
     "Suggestions" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        }
+      }
     },
     "Suivi document(s)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document tracking"
+          }
+        }
+      }
     },
     "Supprimer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "Supprimer ce document ?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this document?"
+          }
+        }
+      }
     },
     "Supprimer l'évènement" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete event"
+          }
+        }
+      }
     },
     "Supprimer le client" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete client"
+          }
+        }
+      }
     },
     "Supprimer le logo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete logo"
+          }
+        }
+      }
     },
     "Synchronisé" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronized"
+          }
+        }
+      }
     },
     "T.T.C." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inc. VAT"
+          }
+        }
+      }
     },
     "Tableau de bord" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dashboard"
+          }
+        }
+      }
     },
     "Tax label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tax label"
+          }
+        }
+      }
     },
     "Téléphone" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone"
+          }
+        }
+      }
     },
     "Temporalité" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temporality"
+          }
+        }
+      }
     },
     "Temps moyen de paiement (jours)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average payment time (days)"
+          }
+        }
+      }
     },
     "Temps moyen de paiement des clients" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average client payment time"
+          }
+        }
+      }
     },
     "Titre du message pour un devis" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message title for a quote"
+          }
+        }
+      }
     },
     "Titre du message pour une facture" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message title for an invoice"
+          }
+        }
+      }
     },
     "Top Clients par Revenu (€)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top Clients by Revenue (€)"
+          }
+        }
+      }
     },
     "Tous les champs sont facultatifs, mais vos documents manqueront d'informations. Il est de votre devoir d'être transparents sur vos informations pour vous identifier correctement sur un document." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All fields are optional, but your documents will lack information. It is your duty to be transparent about your information to properly identify yourself on a document."
+          }
+        }
+      }
     },
     "Toutes les stats" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All stats"
+          }
+        }
+      }
     },
     "TVA" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VAT"
+          }
+        }
+      }
     },
     "Type" : {
 
@@ -903,46 +2746,137 @@
 
     },
     "Ville" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City"
+          }
+        }
+      }
     },
     "Virement bancaire" : {
 
     },
     "Voir l'historique des paiements" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View payment history"
+          }
+        }
+      }
     },
     "Voir plus" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See more"
+          }
+        }
+      }
     },
     "Voir plus de statistiques" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See more statistics"
+          }
+        }
+      }
     },
     "Vos données Bordero sont stockées sur iCloud et ne peuvent être lues par personne sans votre permission, pas même Bordero, et ne seront jamais revendues à une tierce partie." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Bordero data is stored on iCloud and cannot be read by anyone without your permission, not even Bordero, and will never be sold to any third party."
+          }
+        }
+      }
     },
     "Vos données et vos documents ne sont pas synchronisés. En tant que praticien, il est important d'avoir un point de sauvegarde de vos données." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your data and documents are not synchronized. As a practitioner, it is important to have a backup point for your data."
+          }
+        }
+      }
     },
     "Vos données renseignées sont uniquement utilisés pour l'usage de cette application et ne sorte pas de celle ci. Vous pouvez les modifier à tous moment." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your entered data is only used within this application and does not leave it. You can modify it at any time."
+          }
+        }
+      }
     },
     "Votre nouveau client est disponible dans la liste des clients." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your new client is available in the client list."
+          }
+        }
+      }
     },
     "Votre société" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your company"
+          }
+        }
+      }
     },
     "Votre type d'acte a bien été enregistré." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your service type has been saved."
+          }
+        }
+      }
     },
     "Voulez-vous vraiment supprimer cet évènement ?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you really want to delete this event?"
+          }
+        }
+      }
     },
     "Vous ne pouvez pas envoyer d'email depuis cette appareil" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You cannot send emails from this device"
+          }
+        }
+      }
     },
     "Vous pouvez personnaliser votre message lors de l'envoi des documents. Voici les balises que vous pouvez utiliser : " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can customize your message when sending documents. Here are the tags you can use:"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

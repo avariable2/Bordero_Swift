@@ -171,7 +171,6 @@ struct ListDocument: View {
                             HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
                         } icon: {
                             Image(systemName: "doc")
-                                .foregroundStyle(.blue)
                                 .imageScale(.large)
                         }
                         .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
@@ -182,7 +181,6 @@ struct ListDocument: View {
                             HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
                         } icon: {
                             Image(systemName: "person.crop.circle")
-                                .foregroundStyle(.blue)
                                 .imageScale(.large)
                         }
                         .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
@@ -193,7 +191,6 @@ struct ListDocument: View {
                             HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
                         } icon: {
                             Image(systemName: "calendar")
-                                .foregroundStyle(.blue)
                                 .imageScale(.large)
                         }
                         .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
@@ -210,7 +207,6 @@ struct ListDocument: View {
                     DocumentFormView()
                 } label: {
                     Image(systemName: "square.and.pencil")
-                        .foregroundStyle(.blue)
                 }
             }
         }

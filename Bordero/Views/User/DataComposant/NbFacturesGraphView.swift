@@ -47,7 +47,7 @@ struct NbFacturesGraphView: View {
             }
             .chartForegroundStyleScale([
                 DocumentStatus.envoyer.rawValue : .blue,
-                DocumentStatus.enRetard.rawValue : .pink,
+                DocumentStatus.enRetard.rawValue : .red,
                 DocumentStatus.paye.rawValue : .green
             ])
             .padding(.vertical)
@@ -68,14 +68,12 @@ struct NbFacturesGraphView: View {
             }
             
             if !showPicker {
-                NavigationLink {
+                NavigationLink("Toutes les stats") {
                     PraticienDataView(
                         documents: documents
                     )
-                } label: {
-                    Text("Toutes les stats")
-                        .foregroundStyle(.link)
                 }
+                .foregroundStyle(.accent)
             }
             
         } label: {

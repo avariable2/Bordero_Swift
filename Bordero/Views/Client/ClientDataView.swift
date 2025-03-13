@@ -59,7 +59,7 @@ struct ClientDataView: View {
                     .listRowInsets(EdgeInsets())
             }
             .trackEventOnAppear(event: .clientStatsBrowsed, category: .clientManagement)
-            .navigationTitle("Données de \(client.firstname) \(client.lastname)")
+            .navigationTitle("Données de \(client.getFullName())")
             .navigationBarTitleDisplayMode(.inline)
             .headerProminence(.increased)
             .sheet(isPresented: $showHistoriquePaiement) {
