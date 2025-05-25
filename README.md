@@ -80,17 +80,6 @@ Bordero_Swift/
   <img src="assets/images/iPhone.png" alt="App Screenshot" width="200" />
 </p>
 
-### Download
-
-<p align="center">
-  [![Download on the App Store](https://linkmaker.itunes.apple.com/assets/shared/badges/fr-fr/appstore-lrg.svg)](https://apps.apple.com/fr/app/bordero/id6502880132)
-</p>
-
-<p align="center">
-  <img src="assets/images/icon.png" alt="App Icon" width="80" />
-  <img src="assets/images/iPhone.png" alt="App Screenshot" width="200" />
-</p>
-
 ---
 
 ## License
