@@ -11,7 +11,7 @@
   - Validate input and handle duplicates gracefully.
 - **Quotes & Invoices**  
   - Generate custom quotes and invoices with service details and pricing.  
-  - Preview, share via email, or export to PDF and Google Drive.
+  - Preview, share via email, or export to PDF.
 - **Event History**  
   - Track billing events and status changes per document.  
   - View detailed timelines for quotes and payments.
