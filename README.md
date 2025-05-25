@@ -1,6 +1,6 @@
 # Bordero (iOS)
 
-**Bordero** is a native iOS application built in Swift, crafted to streamline client, quote, and invoice management for professionals on the move. Leveraging Swift’s strong type safety and Core Data (or a REST API), it ensures reliable storage and retrieval of client records, billing documents, and practitioner details.
+**Bordero** is a native iOS application built in Swift, crafted to streamline client, quote, and invoice management for professionals on the move. Leveraging Swift’s strong type safety and Core Data, it ensures reliable storage and retrieval of client records, billing documents, and practitioner details.
 
 ---
 
