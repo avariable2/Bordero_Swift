@@ -24,7 +24,7 @@ struct ClientDataView: View {
     @State var showHistoriquePaiement = false
     
     var body: some View {
-        VStack {
+        Form {
             Picker("Temporalité", selection: $temporalite.animation()) {
                 ForEach(TempoChart.allCases) { type in
                     Text(type.rawValue)
@@ -32,49 +32,43 @@ struct ClientDataView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .padding([.leading, .trailing, .top])
             
-            Form {
-                Section("Paiement(s)") {
-                    let listTrier = client.listPaiements.sorted { $0.date < $1.date }
-                    PaiementClientGraphView(
-                        temporalite: $temporalite, paiements: Array(listTrier)
-                    )
-                    
-                    Button {
-                        showHistoriquePaiement = true
-                    } label: {
-                        Text("Voir l'historique des paiements")
-                    }
-                }
+            Section("Paiement(s)") {
+                let listTrier = client.listPaiements.sorted { $0.date < $1.date }
+                PaiementClientGraphView(
+                    temporalite: $temporalite, paiements: Array(listTrier)
+                )
                 
-                Section("Suivi document(s)") {
-                    GraphPiView(
-                        client: client,
-                        temporalite: $temporalite
-                    )
+                Button {
+                    showHistoriquePaiement = true
+                } label: {
+                    Text("Voir l'historique des paiements")
                 }
-                
-                DataBrutView(client: client, temporalite: $temporalite)
-                    .listRowInsets(EdgeInsets())
             }
-            .trackEventOnAppear(event: .clientStatsBrowsed, category: .clientManagement)
-            .navigationTitle("Données de \(client.firstname) \(client.lastname)")
-            .navigationBarTitleDisplayMode(.inline)
-            .headerProminence(.increased)
-            .sheet(isPresented: $showHistoriquePaiement) {
-                NavigationStack {
-                    HistoriquePaiementView(client: client)
-                }
-                .presentationDetents([.medium, .large])
+            
+            Section("Suivi document(s)") {
+                GraphPiView(
+                    client: client,
+                    temporalite: $temporalite
+                )
             }
+            
+            DataBrutView(client: client, temporalite: $temporalite)
+                .listRowInsets(EdgeInsets())
+        }
+        .trackEventOnAppear(event: .clientStatsBrowsed, category: .clientManagement)
+        .navigationTitle("Données de \(client.firstname) \(client.lastname)")
+        .sheet(isPresented: $showHistoriquePaiement) {
+            NavigationStack {
+                HistoriquePaiementView(client: client)
+            }
+            .presentationDetents([.medium, .large])
         }
     }
 }
 
 #Preview {
-    VStack {
+    NavigationStack {
         ClientDataView(client: Client.example)
     }
-    
 }

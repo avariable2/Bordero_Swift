@@ -35,9 +35,12 @@ struct PaiementsListRows: View {
 
 struct ListAllClientPaiements: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [
-        NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
-    ]) var payments : FetchedResults<Paiement>
+    @FetchRequest(
+        entity: Paiement.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+        ]
+    ) var payments: FetchedResults<Paiement>
     
     @State private var searchText = ""
     @State private var tags: [TokenPaiementModel] = []
@@ -72,6 +75,7 @@ struct ListAllClientPaiements: View {
                         )
                     )
                 }
+                
             }
             .searchable(
                 text: $searchText,
@@ -132,9 +136,14 @@ struct ListAllClientPaiements: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        ListAllClientPaiements()
-            
-    }
+#if DEBUG
+#Preview("Paiements fictifs") {
+    ListAllClientPaiements()
+        .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
+
+#Preview("Sans données") {
+    ListAllClientPaiements()
+        .environment(\.managedObjectContext, PreviewDataController.empty.context)
+}
+#endif

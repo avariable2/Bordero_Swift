@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Contacts
+import CoreData
 
 struct FormClientSheet: View, Saveable, Modifyable, Versionnable {
     enum FocusedField : Hashable {

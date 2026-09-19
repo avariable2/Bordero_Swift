@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SplitViewListClients : View {
     @State private var selectedClient : Client?
@@ -26,18 +27,20 @@ struct SplitViewListClients : View {
 }
 
 struct ListClients: View {
-    @Environment(\.managedObjectContext) var moc
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var moc
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Client.name_, ascending: true)], predicate: NSPredicate(
+    @FetchRequest(fetchRequest: Client.fetch(NSPredicate(
         format: "version <= %d",
         argumentArray: [FormClientSheet.getVersion()]
-    ))  var clients: FetchedResults<Client>
+    ))) private var clients: FetchedResults<Client>
     
     @State private var activeSheet: ActiveSheet?
     @State private var searchText = ""
-    
-    let alphabet: [String] = { (65...90).map { String(UnicodeScalar($0)!) } }()
+    @State private var selectedClientIDs = Set<NSManagedObjectID>()
+    @State private var isShowingDeleteConfirmation = false
+    @State private var editMode: EditMode = .inactive
+
+    private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ").map(String.init)
     
     var callbackClientClick : ((Client) -> Void)?
     
@@ -47,8 +50,66 @@ struct ListClients: View {
     
     var body: some View {
         VStack {
+            ScrollViewReader { proxy in
+                let unnamedClients = filteredClients.filter {
+                    guard let firstCharacter = $0.name_?.uppercased().first else {
+                        return true
+                    }
+                    return !alphabet.contains(String(firstCharacter))
+                }
+
+                ZStack {
+                    List(selection: $selectedClientIDs) {
+                        ForEach(alphabet, id: \.self) { letter in
+                            let clientsForLetter = filteredClients.filter {
+                                $0.name_?.uppercased().hasPrefix(letter) == true
+                            }
+
+                            if !clientsForLetter.isEmpty {
+                                Section {
+                                    ForEach(clientsForLetter) { client in
+                                        ClientRow(client: client, callback: callbackClientClick)
+                                            .tag(client.objectID)
+                                    }
+                                } header: {
+                                    Text(letter)
+                                        .id(letter)
+                                }
+                            }
+                        }
+
+                        if !unnamedClients.isEmpty {
+                            Section {
+                                ForEach(unnamedClients) { client in
+                                    ClientRow(client: client, callback: callbackClientClick)
+                                        .tag(client.objectID)
+                                }
+                            } header: {
+                                Text("#")
+                                    .id("#")
+                            }
+                        }
+                    }
+                    .environment(\.editMode, $editMode)
+                    .overlay {
+                        if !clients.isEmpty && filteredClients.isEmpty {
+                            ContentUnavailableView.search
+                        }
+                    }
+                    .searchable(
+                        text: $searchText,
+                        placement: .navigationBarDrawer(displayMode: .always),
+                        prompt: Text("Recherche")
+                    )
+                    .headerProminence(.increased)
+                }
+            }
+        }
+        .trackEventOnAppear(event: .clientListBrowsed, category: .clientManagement)
+        .navigationTitle("Clients")
+        .navigationBarTitleDisplayMode(callbackClientClick != nil ? .inline : .large)
+        .overlay {
             if clients.isEmpty {
-                
                 ContentUnavailableView(label: {
                     Label("Aucun client", systemImage: "person.slash")
                 }, description: {
@@ -60,82 +121,39 @@ struct ListClients: View {
                         Text("Ajouter un client")
                     }
                 })
-                
-            } else {
-                ScrollViewReader { proxy in
-                    
-                    let noNameClients = filteredClients.filter {
-                        let firstChar = $0.name_?.uppercased().prefix(1) ?? "#"
-                        return !alphabet.contains(String(firstChar))
-                    }
-                    
-                    ZStack {
-                        List {
-                            // Sections pour les contacts avec nom
-                            ForEach(alphabet, id: \.self) { letter in
-                                
-                                // Filtre les nom par la lettre
-                                let tabFiltered = filteredClients.filter({ client -> Bool in
-                                    guard let firstLetter = client.name_?.prefix(1).uppercased() else { return false }
-                                    return firstLetter == letter
-                                })
-                                
-                                // Affiche uniquement si la liste de nom n'est pas vide
-                                if !tabFiltered.isEmpty {
-                                    Section {
-                                        ForEach(tabFiltered) { client in
-                                            ClientRow(client: client, callback : callbackClientClick)
-                                        }
-                                    } header: {
-                                        Text(letter).id(letter)
-                                    }
-                                }
-                            }
-                            
-                            // Section pour les contacts sans nom
-                            if !noNameClients.isEmpty {
-                                Section {
-                                    ForEach(noNameClients) { client in
-                                        ClientRow(client: client, callback: callbackClientClick)
-                                    }
-                                } header: {
-                                    Text("#").id("#")
-                                }
-                            }
-                        }
-                        .overlay(content: {
-                            if filteredClients.isEmpty {
-                                ContentUnavailableView.search(text: searchText)
-                            }
-                        })
-                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Recherche"))
-                        .headerProminence(.increased)
-
-                        VStack {
-                            ForEach(alphabet, id: \.self) { letter in
-                                SectionIndexButton(letter: letter, proxy: proxy, filteredClients: filteredClients)
-                            }
-                            
-                            // Index de section ajusté pour inclure la section des contacts sans nom
-                            if !noNameClients.isEmpty {
-                                SectionIndexButton(letter: "#", proxy: proxy)
-                            }
-                        }
-                    }
-                }
             }
         }
-        .trackEventOnAppear(event: .clientListBrowsed, category: .clientManagement)
-        .navigationTitle("Clients")
-        .navigationBarTitleDisplayMode(callbackClientClick != nil ?.inline : .large)
         .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    activeSheet = .createClient
-                } label: {
-                    Image(systemName: "plus")
+            if callbackClientClick == nil && !clients.isEmpty {
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button(
+                        editMode.isEditing ? "OK" : "Modifier",
+                        systemImage: editMode.isEditing ? "xmark" : "checkmark.circle"
+                    ) {
+                        withAnimation {
+                            toggleEditing()
+                        }
+                    }
+
+                    if editMode.isEditing && !selectedClientIDs.isEmpty {
+                        Button("Supprimer", systemImage: "trash", role: .destructive) {
+                            isShowingDeleteConfirmation = true
+                        }
+                    }
                 }
             }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Ajouter un client", systemImage: "plus", action: createClient)
+            }
+        }
+        .confirmationDialog(
+            deleteConfirmationTitle,
+            isPresented: $isShowingDeleteConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Supprimer", role: .destructive, action: deleteSelectedClients)
+            Button("Annuler", role: .cancel) { }
         }
         .sheet(item: $activeSheet) { item in
             switch item {
@@ -159,36 +177,37 @@ struct ListClients: View {
         }
     }
     
-    private func applyOnClick(_ client: Client) {
-        if callbackClientClick != nil {
-            callbackClientClick!(client)
-            dismiss()
+    private var deleteConfirmationTitle: String {
+        let count = selectedClientIDs.count
+        return count == 1
+            ? "Supprimer le client sélectionné ?"
+            : "Supprimer les \(count) clients sélectionnés ?"
+    }
+
+    private func createClient() {
+        activeSheet = .createClient
+    }
+
+    private func toggleEditing() {
+        if editMode.isEditing {
+            selectedClientIDs.removeAll()
+            editMode = .inactive
         } else {
-            activeSheet = .editClient(client: client)
+            editMode = .active
         }
     }
-    
-    private func deleteClient(client: Client) {
-        // Trouver l'indice du client dans le tableau
-        if let indexToDelete = clients.firstIndex(of: client) {
-            // Créer un IndexSet avec cet indice
-            let indexSet = IndexSet(integer: indexToDelete)
-            // Appeler la fonction de suppression existante
-            delete(at: indexSet)
+
+    private func deleteSelectedClients() {
+        for client in clients where selectedClientIDs.contains(client.objectID) {
+            moc.delete(client)
         }
-    }
-    
-    func delete(at offsets: IndexSet) {
-        for index in offsets {
-            let clientToDelete = clients[index]
-            moc.delete(clientToDelete)
-        }
-        
+
         do {
             try moc.save()
-            print("Success")
-        } catch let err {
-            print(err.localizedDescription)
+            selectedClientIDs.removeAll()
+        } catch {
+            moc.rollback()
+            print(error.localizedDescription)
         }
     }
     
@@ -200,43 +219,18 @@ struct ListClients: View {
     }
 }
 
-struct SectionIndexButton: View {
-    let letter: String
-    let proxy: ScrollViewProxy
-    var filteredClients: [Client] = []
-
-    var body: some View {
-        HStack {
-            Spacer()
-            Button(action: {
-                // Logique de défilement ajustée
-                if letter == "#" {
-                    if filteredClients.first(where: { $0.name_?.isEmpty ?? true }) != nil {
-                        withAnimation {
-                            proxy.scrollTo("#")
-                        }
-                    }
-                } else {
-                    if filteredClients.first(where: { $0.name_?.prefix(1) ?? "0" == letter }) != nil {
-                        withAnimation {
-                            proxy.scrollTo(letter)
-                        }
-                    }
-                }
-            }, label: {
-                Text(letter)
-                    .font(.system(size: 12))
-                    .padding(.trailing, 7)
-            })
-        }
-    }
-}
-
 struct ClientRow: View {
     @Environment(\.dismiss) private var dismiss
     
     let client: Client
     let callback : ((Client) -> Void)?
+    
+    var ligneAvecNom : some View {
+        HStack {
+            Text("\(client.firstname) \(Text(client.lastname).bold())")
+            Spacer()
+        }
+    }
     
     var body: some View {
         VStack {
@@ -245,24 +239,14 @@ struct ClientRow: View {
                     call(client)
                     dismiss()
                 } label: {
-                    HStack {
-                        Text(client.firstname)
-                        + Text(" ")
-                        + Text(client.lastname).bold()
-                        Spacer()
-                    }
-                    .tint(.primary)
+                    ligneAvecNom
+                        .tint(.primary)
                 }
             } else {
                 NavigationLink{
                     ClientDetailView(client: client)
                 } label: {
-                    HStack {
-                        Text(client.firstname)
-                        + Text(" ")
-                        + Text(client.lastname).bold()
-                        Spacer()
-                    }
+                    ligneAvecNom
                 }
             }
         }
@@ -281,6 +265,18 @@ extension Client : Comparable {
     }
 }
 
-//#Preview {
-//    ListClients(path: NavigationPath())
-//}
+#if DEBUG
+#Preview("Avec liste factives") {
+    NavigationStack {
+        ListClients()
+    }
+        .environment(\.managedObjectContext, PreviewDataController.invoices.context)
+}
+#endif
+
+#if DEBUG
+#Preview("Liste vide") {
+    ListClients()
+        .environment(\.managedObjectContext, PreviewDataController.empty.context)
+}
+#endif

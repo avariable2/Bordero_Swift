@@ -40,17 +40,21 @@ struct HomeView: View {
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
             
-            Section("Historique des paiements") {
-                if payments.isEmpty {
-                    ContentUnavailableView(
-                        "Pas de paiement",
-                        systemImage: "person.and.background.striped.horizontal",
-                        description: Text(
-                            "Ici sera affichée la liste des paiements de vos clients."
-                        )
-                    )
-                } else {
-                    PaiementsListRows(payments: Array(payments))
+            Section {
+                ListHistoriquesPaiements()
+            } header : {
+                HStack {
+                    Text("Historique des paiements")
+                        .fontWeight(.medium)
+                    
+                    Spacer()
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Voir plus")
+                            .font(.callout)
+                    }
                 }
             }
         }
@@ -67,8 +71,11 @@ struct HomeView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         HomeView()
     }
+    .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
+#endif
