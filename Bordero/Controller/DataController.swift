@@ -82,10 +82,10 @@ import Observation
         // 1. Configure for App Group
         let groupIdentifier = "group.com.bigVariable.bordero"
         let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier)
-        let storeDescription = NSPersistentStoreDescription(url: sharedContainerURL!.appendingPathComponent("Model.sqlite")) // Replace with your data model name
+        let storeDescription = NSPersistentStoreDescription(url: sharedContainerURL!.appendingPathComponent("Model.sqlite"))
         
         // 2. Configure for CloudKit
-        let cloudKitContainerIdentifier = "iCloud.com.bigVariable.Bordero" // Replace with your CloudKit container identifier
+        let cloudKitContainerIdentifier = "iCloud.com.bigVariable.Bordero"
         let cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitContainerIdentifier)
         storeDescription.cloudKitContainerOptions = cloudKitOptions
         

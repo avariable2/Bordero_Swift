@@ -10,8 +10,8 @@ import SwiftUI
 struct HighlightedText: View {
     let text: String
     let highlight: String
-    let primaryColor: Color
-    let secondaryColor: Color
+    var primaryColor: Color = .primary
+    var secondaryColor: Color = .secondary
     
     var body: some View {
         let parts = splitText(text: text, highlight: highlight)

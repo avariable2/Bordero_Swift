@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseAnalytics
 
 class AnalyticsService {
     static let shared = AnalyticsService()

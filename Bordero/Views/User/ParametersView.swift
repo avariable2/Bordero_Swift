@@ -185,15 +185,6 @@ struct ParametersView: View {
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        activeSheet = nil
-                    } label: {
-                        Text("OK")
-                    }
-                }
-            }
             .headerProminence(.increased)
         }
     }

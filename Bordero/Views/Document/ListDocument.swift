@@ -179,7 +179,7 @@ struct ListDocument: View {
                         Section("Suggestions") {
                             ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
                                 Label {
-                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                                    HighlightedText(text: suggestion, highlight: searchText)
                                 } icon: {
                                     Image(systemName: "doc")
                                         .foregroundStyle(.blue)
@@ -190,7 +190,7 @@ struct ListDocument: View {
                             
                             ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
                                 Label {
-                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                                    HighlightedText(text: suggestion, highlight: searchText)
                                 } icon: {
                                     Image(systemName: "person.crop.circle")
                                         .foregroundStyle(.blue)
@@ -201,7 +201,7 @@ struct ListDocument: View {
                             
                             ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
                                 Label {
-                                    HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
+                                    HighlightedText(text: suggestion, highlight: searchText)
                                 } icon: {
                                     Image(systemName: "calendar")
                                         .foregroundStyle(.blue)

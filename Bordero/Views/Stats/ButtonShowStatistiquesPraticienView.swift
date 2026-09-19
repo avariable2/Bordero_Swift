@@ -21,7 +21,7 @@ struct ButtonShowStatistiquesPraticienView: View {
         NavigationLink {
             PraticienDataView()
         } label: {
-            TitleWithIconColorComponentView(titre : "Voir les statistiques") {
+            TitleWithIconColorComponentView(title : "Voir les statistiques") {
                 Image(systemName: "chart.dots.scatter")
                     .foregroundStyle(.green, .gray)
             }

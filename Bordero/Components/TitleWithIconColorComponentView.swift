@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TitleWithIconColorComponentView<Content : View>: View {
     
-    var titre : String
+    var title : String
     
     // Just pass the image and the color
     @ViewBuilder var image : Content
@@ -19,7 +19,7 @@ struct TitleWithIconColorComponentView<Content : View>: View {
             image
                 .imageScale(.large)
             
-            Text(titre)
+            Text(title)
             
             Spacer()
             
@@ -34,8 +34,9 @@ struct TitleWithIconColorComponentView<Content : View>: View {
 }
 
 #Preview {
-    TitleWithIconColorComponentView(titre: "OUI") {
+    TitleWithIconColorComponentView(title: "Créer un document") {
         Image(systemName: "doc.badge.plus")
             .foregroundStyle(.blue, .primary)
     }
+    .padding()
 }

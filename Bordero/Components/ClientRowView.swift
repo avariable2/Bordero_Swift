@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct ClientRowView: View {
-    let firstname : String
-    let name : String
+    let firstname: String
+    let name: String
     
     var body: some View {
         Label {
-            VStack {
-                Text(firstname)
-                + Text(" ")
-                + Text(name)
-                    .bold()
-            }
+            Text("\(firstname) \(Text(name).bold())")
         } icon: {
             ProfilImageView(imageData: nil)
         }
@@ -26,5 +21,5 @@ struct ClientRowView: View {
 }
 
 #Preview {
-    ClientRowView(firstname: "AAAAAA", name: "AAAAAA")
+    ClientRowView(firstname: "Jean", name: "Dujardin")
 }

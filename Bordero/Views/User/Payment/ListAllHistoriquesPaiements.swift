@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 private struct TokenPaiementModel: Identifiable, Hashable, Equatable {
     enum TokenPaiementType {
@@ -18,9 +19,26 @@ private struct TokenPaiementModel: Identifiable, Hashable, Equatable {
     var type : TokenPaiementType
 }
 
+struct PaiementsListRows: View {
+    let payments: [Paiement]
+    
+    var body: some View {
+        ForEach(payments) { payment in
+            NavigationLink {
+                DisplayPayementSheet(paiement: payment)
+            } label: {
+                TextPaiementView(payment: payment)
+            }
+        }
+    }
+}
+
 struct ListAllClientPaiements: View {
-    @Environment(\.dismiss) var dismiss
-    @State var payments : FetchedResults<Paiement>
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: [
+        NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+    ]) var payments : FetchedResults<Paiement>
+    
     @State private var searchText = ""
     @State private var tags: [TokenPaiementModel] = []
     
@@ -41,16 +59,23 @@ struct ListAllClientPaiements: View {
     
     var body: some View {
         NavigationStack {
-            List(filteredPayments) { payment in
-                NavigationLink {
-                    DisplayPayementSheet(paiement: payment)
-                } label: {
-                    TextPaiementView(payment: payment)
+            List {
+                PaiementsListRows(payments: filteredPayments)
+            }
+            .overlay {
+                if filteredPayments.isEmpty {
+                    ContentUnavailableView(
+                        "Pas de paiement",
+                        systemImage: "person.and.background.striped.horizontal",
+                        description: Text(
+                            "Ici sera affichée la liste des paiements de vos clients."
+                        )
+                    )
                 }
             }
             .searchable(
                 text: $searchText,
-                tokens: $tags, 
+                tokens: $tags,
                 placement: .navigationBarDrawer(displayMode: .always),
                 prompt: "Recherche",
                 token: { token in
@@ -90,16 +115,7 @@ struct ListAllClientPaiements: View {
                 }
             })
             .trackEventOnAppear(event: .paymentListBrowsed, category: .paymentManagement)
-            .navigationTitle("Historique paiements")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Retour")
-                    }
-                }
-            }
+            .navigationTitle("Historique des paiements")
         }
     }
     
@@ -113,5 +129,12 @@ struct ListAllClientPaiements: View {
         let dates = payments.map { $0.date }
         let uniqueDates = Set(dates.map { $0.formatted(.dateTime.month().year()) })
         return uniqueDates.filter { $0.lowercased().contains(searchText.lowercased()) }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        ListAllClientPaiements()
+            
     }
 }

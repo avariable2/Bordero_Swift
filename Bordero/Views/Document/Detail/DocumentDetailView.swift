@@ -17,7 +17,7 @@ struct DocumentDetailView: View {
     
     @ObservedObject var document : Document
     
-    @State private var selectedTab: Tab = .résumé
+    @State private var selectedTab: DocumentTab = .résumé
     @State var pdfDocument : PDFDocument? = nil
     @State private var urlSharing : URL? = nil
     
@@ -38,7 +38,7 @@ struct DocumentDetailView: View {
     var body: some View {
         VStack {
             Picker("Afficher", selection: $selectedTab.animation()) {
-                ForEach(Tab.allCases) { tab in
+                ForEach(DocumentTab.allCases) { tab in
                     Text(tab.rawValue.capitalized).tag(tab.rawValue)
                 }
             }
@@ -214,14 +214,14 @@ struct DocumentDetailView: View {
     }
 }
 
-enum Tab : String, CaseIterable, Identifiable {
+enum DocumentTab : String, CaseIterable, Identifiable {
     case résumé, aperçu, historique
     
     var id: Self { self }
 }
 
 struct ChoosenView : View {
-    var selectedElement : Tab
+    var selectedElement : DocumentTab
     @ObservedObject var document : Document
     
     var body: some View {

@@ -5,6 +5,7 @@
 //  Created by Grande Variable on 17/05/2024.
 //
 
+import CoreData
 import SwiftUI
 
 struct ListHistoriquesPaiements: View {
@@ -16,12 +17,9 @@ struct ListHistoriquesPaiements: View {
     @State private var activeSheet : ActiveSheet? = nil
     
     var body: some View {
-        if payments.isEmpty {
-            ContentUnavailableView("Pas de paiement", systemImage: "person.and.background.striped.horizontal", description: Text("Ici sera affichée la liste des paiements de vos clients."))
-        } else {
+        VStack {
             ForEach(payments.prefix(5), id: \.id) { payment in
                 RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
-                
             }
             
             Button {
@@ -32,7 +30,7 @@ struct ListHistoriquesPaiements: View {
             .sheet(item: $activeSheet) { activeSheet in
                 switch activeSheet {
                 case .showAllHistoriquePaiement:
-                    ListAllClientPaiements(payments: payments)
+                    ListAllClientPaiements()
                 case .showDetailPaiement(paiement: let paiement):
                     NavigationView {
                         DisplayPayementSheet(paiement: paiement)
@@ -42,6 +40,17 @@ struct ListHistoriquesPaiements: View {
                 default:
                     EmptyView() // Impossible
                 }
+            }
+        }
+        .overlay {
+            if payments.isEmpty {
+                ContentUnavailableView(
+                    "Pas de paiement",
+                    systemImage: "person.and.background.striped.horizontal",
+                    description: Text(
+                        "Ici sera affichée la liste des paiements de vos clients."
+                    )
+                )
             }
         }
     }
@@ -66,7 +75,7 @@ struct TextPaiementView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("\(payment.client?.firstname ?? "Inconnu") ") + Text("\(payment.client?.lastname ?? "Inconnu")").bold()
+                Text("\(payment.client?.firstname ?? "Inconnu") \(Text(payment.client?.lastname ?? "Inconnu").bold())")
                 
                 Text(payment.date, format: .dateTime)
                     .foregroundStyle(.secondary)
