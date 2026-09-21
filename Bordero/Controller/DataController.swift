@@ -13,7 +13,7 @@ import Observation
 @Observable class DataController {
     static let shared = DataController()
     
-    var container: NSPersistentCloudKitContainer
+    let container: NSPersistentCloudKitContainer
     
     static var sharedStoreURL: URL {
         let id = "group.com.bigVariable.bordero" // Use App Group's id here.
@@ -23,15 +23,7 @@ import Observation
     
     private init() {
 //        DataController.resetAppData()
-        self.container = DataController.setupSyncContainer(iCloudIsOn: false) // Charge une premiere fois pour initialiser la description à nul puis le refresh si nécessaire.
-        
-        updateICloudSettings()
-    }
-    
-    func updateICloudSettings() {
-        if DataController.getStatusiCloud() {
-            self.container = DataController.setupSyncContainer(iCloudIsOn: true)
-        }
+        self.container = DataController.setupSyncContainer()
     }
     
     static func resetAppData() {
@@ -67,8 +59,6 @@ import Observation
             }
         }
         
-        // Recréer le conteneur sans iCloud
-        let _ = DataController.setupSyncContainer(iCloudIsOn: false)
     }
     
     static func getStatusiCloud() -> Bool {
@@ -76,7 +66,7 @@ import Observation
         return iCloudToken != nil
     }
     
-    static func setupSyncContainer(iCloudIsOn : Bool) -> NSPersistentCloudKitContainer {
+    static func setupSyncContainer() -> NSPersistentCloudKitContainer {
         let container = NSPersistentCloudKitContainer(name: "Model")
         
         // 1. Configure for App Group
@@ -96,15 +86,6 @@ import Observation
         
         // 4. Assign store description
         container.persistentStoreDescriptions = [storeDescription]
-        
-        guard let description = container.persistentStoreDescriptions.first else {
-            fatalError("###\(#function): Failed to retrieve a persistent store description.")
-        }
-        
-        // leave the default cloudKitContainerOptions value as it is, then it will sync automatically
-        if !iCloudIsOn {
-            description.cloudKitContainerOptions = nil
-        }
         
 //        description.url = sharedStoreURL
 //        

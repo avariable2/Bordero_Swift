@@ -17,7 +17,8 @@ enum PeriodStats: String, CaseIterable {
 
 struct FacturesStatutView: View {
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)]
+        sortDescriptors: [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
+         ]
     ) private var documents: FetchedResults<Document>
     
     var selectedPeriod: PeriodStats = .week

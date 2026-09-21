@@ -16,9 +16,6 @@ struct BorderoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(userNeediCloud: userController.accountAvailable)
-                .onChange(of: userController.accountAvailable) { oldValue, newValue in
-                    DataController.shared.updateICloudSettings()
-                }
                 .environment(\.managedObjectContext, dataController.container.viewContext)
         }
     }
