@@ -39,7 +39,7 @@ struct PaiementPraticienGraphView: View {
                 .symbol(by: .value("Date", data.date))
             }
             .chartXScale(domain: selectedDateInterval.start...selectedDateInterval.end)
-            .frame(height: 300)
+            .frame(minHeight: 220)
             
             // Optionnel : Sélecteur de période
             DatePicker("Début", selection: Binding(get: {

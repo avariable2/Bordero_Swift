@@ -55,11 +55,13 @@ struct HomeView: View {
                         selectedPeriod: periodStatSelected
                     )
                     
-                    ListHistoriquesPaiements()
+                    PerformanceClientsGraphView(
+                        selectedPeriod: periodStatSelected
+                    )
                     
-                    PerformanceClientsGraphView()
-                    
-                    ClientPaymentEstimateGraphView()
+                    ClientPaymentEstimateGraphView(
+                        selectedPeriod: periodStatSelected
+                    )
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
@@ -76,6 +78,7 @@ struct HomeView: View {
                         periodStatSelected = period
                     }
                     .foregroundStyle(periodStatSelected == period ? .purple : .primary)
+                    .fontWeight(.medium)
                 }
             }
         }
@@ -88,6 +91,6 @@ struct HomeView: View {
     NavigationStack {
         HomeView()
     }
-    .environment(\.managedObjectContext, PreviewDataController.empty.context)
+    .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
 #endif
