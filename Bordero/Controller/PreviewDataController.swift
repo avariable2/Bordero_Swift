@@ -26,9 +26,13 @@ final class PreviewDataController {
             }
         }
 
-        if withInvoices {
-            let clients = seedClients()
-            seedInvoices(for: clients)
+        let clients = seedClients()
+        seedInvoices(for: clients)
+
+        if !withInvoices {
+            // Instancie les classes Core Data avant le premier @FetchRequest, puis
+            // retire les objets afin de conserver un contexte de preview vide.
+            context.rollback()
         }
     }
 

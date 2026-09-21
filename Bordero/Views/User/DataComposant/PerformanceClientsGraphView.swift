@@ -7,12 +7,15 @@
 
 import SwiftUI
 import Charts
+import CoreData
 
 struct PerformanceClientsGraphView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [
-        NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
-    ]) var payments : FetchedResults<Paiement>
+    @FetchRequest(
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+        ]
+    ) private var payments: FetchedResults<Paiement>
     
     @State var clientRevenues: [ClientRevenue] = []
     
@@ -30,12 +33,13 @@ struct PerformanceClientsGraphView: View {
                         x: .value("Client", clientRevenue.clientName),
                         y: .value("Revenu", clientRevenue.revenue)
                     )
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(.purple)
                 }
                 .frame(height: 250)
                 .padding()
             }
         }
+        .background()
         .onAppear {
             clientRevenues = calculateClientRevenues(payments: Array(payments))
         }

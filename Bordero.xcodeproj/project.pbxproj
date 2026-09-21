@@ -56,6 +56,8 @@
 		F7710D332BF141D5009D43C0 /* PaiementClientGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7710D322BF141D5009D43C0 /* PaiementClientGraphView.swift */; };
 		F772821E2C14BF9500FF153D /* DocumentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772821D2C14BF9500FF153D /* DocumentFormView.swift */; };
 		F77282202C14BFC300FF153D /* SectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772821F2C14BFC300FF153D /* SectionFormView.swift */; };
+		F772D8D33061252200C42CD0 /* GridTotalStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772D8D23061252200C42CD0 /* GridTotalStatistics.swift */; };
+		F772D8D63061353500C42CD0 /* PlainGroupBoxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772D8D53061353500C42CD0 /* PlainGroupBoxStyle.swift */; };
 		F77312872B8CC2F500413820 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77312862B8CC2F500413820 /* Protocol.swift */; };
 		F773729D2BEFC099001C85CE /* ClientDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729C2BEFC099001C85CE /* ClientDataUtils.swift */; };
 		F773729F2BEFC628001C85CE /* DataBrutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773729E2BEFC628001C85CE /* DataBrutView.swift */; };
@@ -156,6 +158,8 @@
 		F7710D322BF141D5009D43C0 /* PaiementClientGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementClientGraphView.swift; sourceTree = "<group>"; };
 		F772821D2C14BF9500FF153D /* DocumentFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentFormView.swift; sourceTree = "<group>"; };
 		F772821F2C14BFC300FF153D /* SectionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionFormView.swift; sourceTree = "<group>"; };
+		F772D8D23061252200C42CD0 /* GridTotalStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTotalStatistics.swift; sourceTree = "<group>"; };
+		F772D8D53061353500C42CD0 /* PlainGroupBoxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainGroupBoxStyle.swift; sourceTree = "<group>"; };
 		F77312862B8CC2F500413820 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		F773729C2BEFC099001C85CE /* ClientDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataUtils.swift; sourceTree = "<group>"; };
 		F773729E2BEFC628001C85CE /* DataBrutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBrutView.swift; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 			children = (
 				F7010082305D3CFC00B46694 /* TotalStatsView.swift */,
 				F7010084305D422D00B46694 /* GridTotalStatsView.swift */,
+				F772D8D23061252200C42CD0 /* GridTotalStatistics.swift */,
 			);
 			path = GridTotalStats;
 			sourceTree = "<group>";
@@ -387,6 +392,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		F772D8D4306134E300C42CD0 /* GroupBox */ = {
+			isa = PBXGroup;
+			children = (
+				F772D8D53061353500C42CD0 /* PlainGroupBoxStyle.swift */,
+			);
+			path = GroupBox;
+			sourceTree = "<group>";
+		};
 		F777A2E82B8DEF2E001E0169 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +429,7 @@
 		F780966D2BAC853E00B3AF4A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F772D8D4306134E300C42CD0 /* GroupBox */,
 				F7010081305D3CA600B46694 /* GridTotalStats */,
 				F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */,
 				F71364532B8CDB3100C68853 /* ProfilView.swift */,
@@ -667,6 +681,7 @@
 				F7878F422BD87F3500EC53E0 /* PDFTableView.swift in Sources */,
 				F78096652BAC66DF00B3AF4A /* ModeleDocumentView.swift in Sources */,
 				F773729F2BEFC628001C85CE /* DataBrutView.swift in Sources */,
+				F772D8D63061353500C42CD0 /* PlainGroupBoxStyle.swift in Sources */,
 				F77F531A2B7BA121004329B9 /* DocumentOptionsView.swift in Sources */,
 				F7010083305D3CFC00B46694 /* TotalStatsView.swift in Sources */,
 				F781153F2BB1A68C00F2026E /* PDFData.swift in Sources */,
@@ -704,6 +719,7 @@
 				F7710D332BF141D5009D43C0 /* PaiementClientGraphView.swift in Sources */,
 				F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */,
 				F76704262BC840EE00257315 /* PDFGridInfoInvoiceView.swift in Sources */,
+				F772D8D33061252200C42CD0 /* GridTotalStatistics.swift in Sources */,
 				F76ECAC32BD27CDF0089C739 /* Model.xcdatamodeld in Sources */,
 				F7B6678B2BFBD39E00061908 /* TextSettingsSendClientView.swift in Sources */,
 				F79D41AD2C120315001D5C27 /* ListAllHistoriquesPaiements.swift in Sources */,

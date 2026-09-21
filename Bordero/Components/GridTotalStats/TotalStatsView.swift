@@ -9,43 +9,43 @@ import SwiftUI
 
 struct TotalStatsView: View {
     let title : String
-    var totalNumber : Int
-    var amount : Float
-    var progress : Float
-    var color : Color = .purple
+    let totalNumber: Int
+    let amount: Double
+    let progress: Double
+    var color: Color = .purple
     
     private let systemCurrency = Locale.current.currency?.identifier ?? "EUR"
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text(title)
-                    .foregroundStyle(.secondary)
+        GroupBox {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text(title)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                    
+                    Text(totalNumber, format: .number)
+                        .font(.headline)
+                        .foregroundStyle(color)
+                        .contentTransition(.numericText(value: Double(totalNumber)))
+                        .animation(.snappy, value: totalNumber)
+                }
                 
-                Spacer()
+                Text(amount, format: .currency(code: systemCurrency))
+                    .font(.title2)
+                    .bold()
+                    .contentTransition(.numericText(value: amount))
+                    .animation(.snappy, value: amount)
                 
-                Text(totalNumber, format: .number)
-                    .font(.headline)
-                    .foregroundStyle(color)
+                ProgressView(value: progress)
+                    .progressViewStyle(.linear)
+                    .tint(color)
             }
-            
-            Text(amount, format: .currency(code: systemCurrency))
-                .font(.title2)
-                .bold()
-            
-            ProgressView(value: progress)
-                .progressViewStyle(.linear)
-                .tint(color)
+            .frame(maxHeight: .infinity)
+//            .padding(20)
         }
-        .frame(maxHeight: .infinity)
-        .padding(20)
-        .background()
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        
-        
-        
+        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
 

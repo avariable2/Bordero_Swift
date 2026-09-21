@@ -32,13 +32,13 @@ struct ContentView: View {
                 }
             }
             
-            Tab("Paramètres", systemImage: "person.crop.circle.fill") {
+            Tab("Paramètres", systemImage: "gearshape") {
                 NavigationStack {
                     ParametersView(activeSheet: .constant(nil))
                 }
             }
-            
         }
+        .tabViewStyle(.sidebarAdaptable)
     }
 }
 

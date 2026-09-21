@@ -305,7 +305,7 @@ extension Document {
     }
     
     static func fetch(_ predicate: NSPredicate = .all) -> NSFetchRequest<Document> {
-        let request = Document.fetchRequest()
+        let request = NSFetchRequest<Document>(entityName: "Document")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)]
         request.predicate = predicate
         

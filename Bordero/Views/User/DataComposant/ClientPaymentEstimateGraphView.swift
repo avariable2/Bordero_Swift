@@ -7,12 +7,11 @@
 
 import SwiftUI
 import Charts
+import CoreData
 
 struct ClientPaymentEstimateGraphView: View {
-    @FetchRequest(
-        entity: Client.entity(),
-        sortDescriptors: []
-    ) var clients: FetchedResults<Client>
+    @FetchRequest(sortDescriptors: [])
+    private var clients: FetchedResults<Client>
     
     var body: some View {
         let clientData = calculateClientPaymentData(clients: Array(clients))
@@ -53,6 +52,7 @@ struct CombinedChartView: View {
             .frame(height: 300)
         }
         .padding()
+        .background()
     }
 }
 

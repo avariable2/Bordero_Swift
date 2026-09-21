@@ -11,7 +11,6 @@ import SwiftUI
 struct ListHistoriquesPaiements: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(
-        entity: Paiement.entity(),
         sortDescriptors: [
             NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
         ]
@@ -20,42 +19,45 @@ struct ListHistoriquesPaiements: View {
     @State private var activeSheet : ActiveSheet? = nil
     
     var body: some View {
-        if payments.isEmpty {
-            ContentUnavailableView(
-                "Pas de paiement",
-                systemImage: "person.and.background.striped.horizontal",
-                description: Text(
-                    "Ici sera affichée la liste des paiements de vos clients."
+        Group {
+            if payments.isEmpty {
+                ContentUnavailableView(
+                    "Pas de paiement",
+                    systemImage: "person.and.background.striped.horizontal",
+                    description: Text(
+                        "Ici sera affichée la liste des paiements de vos clients."
+                    )
                 )
-            )
-        } else {
-            LazyVStack(alignment: .center, spacing: 12) {
-                ForEach(payments.prefix(15), id: \.id) { payment in
-                    RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
+            } else {
+                LazyVStack(alignment: .center, spacing: 12) {
+                    ForEach(payments.prefix(5), id: \.id) { payment in
+                        RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
+                        
+                        Divider()
+                    }
                     
-                    Divider()
-                }
-                
-                Button {
-                    activeSheet = .showAllHistoriquePaiement
-                } label: {
-                    Text("Voir plus")
-                }
-                .sheet(item: $activeSheet) { activeSheet in
-                    switch activeSheet {
-                    case .showAllHistoriquePaiement:
-                        ListAllClientPaiements()
-                    case .showDetailPaiement(paiement: let paiement):
-                        NavigationView {
-                            DisplayPayementSheet(paiement: paiement)
+                    Button {
+                        activeSheet = .showAllHistoriquePaiement
+                    } label: {
+                        Text("Voir plus")
+                    }
+                    .sheet(item: $activeSheet) { activeSheet in
+                        switch activeSheet {
+                        case .showAllHistoriquePaiement:
+                            ListAllClientPaiements()
+                        case .showDetailPaiement(paiement: let paiement):
+                            NavigationView {
+                                DisplayPayementSheet(paiement: paiement)
+                            }
+                            .presentationDetents([.medium, .large])
+                        default:
+                            EmptyView() // Impossible
                         }
-                        .presentationDetents([.medium, .large])
-                    default:
-                        EmptyView() // Impossible
                     }
                 }
             }
         }
+        .background()
     }
 }
 
@@ -131,7 +133,9 @@ struct TextPaiementView: View {
 }
 
 #Preview("Sans données") {
-    ListHistoriquesPaiements()
+    List {
+        ListHistoriquesPaiements()
+    }
         .environment(\.managedObjectContext, PreviewDataController.empty.context)
         .padding()
 }

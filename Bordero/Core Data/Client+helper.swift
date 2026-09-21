@@ -86,7 +86,7 @@ extension Client {
     }
     
     static func fetch(_ predicate : NSPredicate = .all) -> NSFetchRequest<Client> {
-        let request = Client.fetchRequest()
+        let request = NSFetchRequest<Client>(entityName: "Client")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Client.name_, ascending: true)]
         request.predicate = predicate
         

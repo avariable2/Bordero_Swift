@@ -7,12 +7,16 @@
 
 import SwiftUI
 import Charts
+import CoreData
 
 struct PaiementPraticienGraphView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [
-        NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
-    ]) var payments : FetchedResults<Paiement>
+    @FetchRequest(
+        entity: Paiement.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+        ]
+    ) private var payments: FetchedResults<Paiement>
     
     @State private var selectedDateInterval: DateInterval = {
         let calendar = Calendar.current
@@ -50,7 +54,7 @@ struct PaiementPraticienGraphView: View {
                 self.selectedDateInterval = DateInterval(start: self.selectedDateInterval.start, end: newEnd)
             }), displayedComponents: .date)
         }
-        
+        .background()
         .padding()
     }
     
