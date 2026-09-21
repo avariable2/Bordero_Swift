@@ -26,8 +26,6 @@ struct ClientPaymentEstimateGraphView: View {
             CombinedChartView(clientData: clientData)
         } label: {
             Text("Temps de paiement moyen")
-                .font(.title2)
-                .fontWeight(.medium)
         }
         .groupBoxStyle(PlainGroupBoxStyle())
         
@@ -78,7 +76,7 @@ struct CombinedChartView: View {
 }
 
 struct ClientPaymentData: Identifiable {
-    let id = UUID()
+    let id: NSManagedObjectID
     let clientName: String
     let averagePaymentTime: Double // in days
 }
@@ -113,7 +111,13 @@ func calculateClientPaymentData(
         
         if totalPaidDocuments > 0 {
             let averagePaymentTime = totalPaymentTime / Double(totalPaidDocuments)
-            clientData.append(ClientPaymentData(clientName: client.lastname, averagePaymentTime: averagePaymentTime))
+            clientData.append(
+                ClientPaymentData(
+                    id: client.objectID,
+                    clientName: client.lastname,
+                    averagePaymentTime: averagePaymentTime
+                )
+            )
         }
     }
     

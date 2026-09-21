@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.accessibilityReduceMotion)
+    private var accessibilityReduceMotion
     
     private var columns: [GridItem] {
         let count = horizontalSizeClass == .compact ? 1 : 2
@@ -50,6 +52,11 @@ struct HomeView: View {
                     FacturesStatutView(
                         selectedPeriod: periodStatSelected
                     )
+                    .transaction { transaction in
+                        transaction.animation = nil
+                    }
+                    .id("invoice-status-\(periodStatSelected.rawValue)")
+                    .transition(.opacity)
                     
                     GridTotalStatsView(
                         selectedPeriod: periodStatSelected
@@ -58,16 +65,28 @@ struct HomeView: View {
                     PerformanceClientsGraphView(
                         selectedPeriod: periodStatSelected
                     )
+                    .transaction { transaction in
+                        transaction.animation = nil
+                    }
+                    .id("client-performance-\(periodStatSelected.rawValue)")
+                    .transition(.opacity)
                     
                     ClientPaymentEstimateGraphView(
                         selectedPeriod: periodStatSelected
                     )
+                    .transaction { transaction in
+                        transaction.animation = nil
+                    }
+                    .id("payment-estimate-\(periodStatSelected.rawValue)")
+                    .transition(.opacity)
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
             }
             
-            ListHistoriquesPaiements()
+            Section("Liste de paiements") {
+                ListHistoriquesPaiements()
+            }
         }
         .headerProminence(.increased)
         .navigationTitle("Accueil")
@@ -75,7 +94,9 @@ struct HomeView: View {
             ToolbarItemGroup {
                 ForEach(PeriodStats.allCases, id: \.self) { period in
                     Button(period.rawValue.capitalized) {
-                        periodStatSelected = period
+                        withAnimation(accessibilityReduceMotion ? nil : .easeInOut(duration: 0.35)) {
+                            periodStatSelected = period
+                        }
                     }
                     .foregroundStyle(periodStatSelected == period ? .purple : .primary)
                     .fontWeight(.medium)

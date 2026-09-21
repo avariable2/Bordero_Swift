@@ -19,25 +19,22 @@ struct FacturesStatutView: View {
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)]
     ) private var documents: FetchedResults<Document>
-    let selectedPeriod: PeriodStats
     
-    init(selectedPeriod: PeriodStats = .week) {
-        self.selectedPeriod = selectedPeriod
+    var selectedPeriod: PeriodStats = .week
+    
+    private var statistics : FacturesChartStatistics {
+        FacturesChartStatistics(
+            documents: Array(documents),
+            period: selectedPeriod
+        )
     }
-    
-    private var statistics: FacturesChartStatistics {
-        FacturesChartStatistics(documents: Array(documents), period: selectedPeriod)
-    }
-    
-    private var isRevenueImproving: Bool {
+    private var isRevenueImproving : Bool {
         statistics.currentRevenue > statistics.previousRevenue
     }
-    
-    private var isRevenueDeclining: Bool {
+    private var isRevenueDeclining : Bool {
         statistics.currentRevenue < statistics.previousRevenue
     }
-    
-    private var colorIndicator: Color {
+    private var colorIndicator : Color {
         if isRevenueImproving {
             .green
         } else if isRevenueDeclining {
@@ -46,8 +43,7 @@ struct FacturesStatutView: View {
             .secondary
         }
     }
-    
-    private var imageIndicator: String {
+    private var imageIndicator : String {
         if isRevenueImproving {
             "arrow.up.right"
         } else if isRevenueDeclining {
@@ -63,27 +59,25 @@ struct FacturesStatutView: View {
         } label: {
             VStack(alignment: .leading) {
                 Text("Chiffre d’affaires")
-                    .font(.title2)
-                    .fontWeight(.medium)
                 
                 Label {
                     if let revenueChange = statistics.revenueChange {
                         Text(
-                            "\(Text(abs(revenueChange), format: .percent.precision(.fractionLength(1))).foregroundStyle(colorIndicator)) par rapport à \(selectedPeriod.previousPeriodDescription)"
+                            "\(Text(abs(revenueChange), format: .percent.precision(.fractionLength(1))).foregroundStyle(colorIndicator)) vs \(selectedPeriod.previousPeriodDescription)"
                         )
                     } else if statistics.currentRevenue > 0 {
                         Text(
-                            "\(Text("Nouveau chiffre d’affaires").foregroundStyle(colorIndicator)) par rapport à \(selectedPeriod.previousPeriodDescription)"
+                            "\(Text("Nouveau chiffre d’affaires").foregroundStyle(colorIndicator)) vs \(selectedPeriod.previousPeriodDescription)"
                         )
                     } else {
-                        Text("Aucun changement par rapport à \(selectedPeriod.previousPeriodDescription)")
+                        Text("Aucun changement vs \(selectedPeriod.previousPeriodDescription)")
                     }
                 } icon: {
                     Image(systemName: imageIndicator)
                         .foregroundStyle(colorIndicator)
                         .imageScale(.medium)
                 }
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundStyle(.secondary)
                 .labelIconToTitleSpacing(4)
             }

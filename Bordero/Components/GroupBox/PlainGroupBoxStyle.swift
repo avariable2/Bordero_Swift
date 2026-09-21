@@ -11,6 +11,8 @@ struct PlainGroupBoxStyle: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             configuration.label
+                .font(.title3)
+                .fontWeight(.medium)
             configuration.content
         }
         .padding()

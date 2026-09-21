@@ -21,7 +21,7 @@ struct GridTotalStatsView: View {
             period: selectedPeriod
         )
     }
-
+    
     var body: some View {
         Grid(horizontalSpacing: 10, verticalSpacing: 10) {
             GridRow {

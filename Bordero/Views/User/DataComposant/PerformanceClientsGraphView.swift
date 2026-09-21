@@ -16,6 +16,8 @@ struct PerformanceClientsGraphView: View {
         ]
     ) private var payments: FetchedResults<Paiement>
     
+    var selectedPeriod: PeriodStats = .week
+    
     private var clientRevenues: [ClientRevenue] {
         calculateClientRevenues(
             payments: Array(payments),
@@ -23,11 +25,9 @@ struct PerformanceClientsGraphView: View {
         )
     }
     
-    private var maximumRevenue: Double {
+    private var maximumRevenue : Double {
         max(clientRevenues.map(\.revenue).max() ?? 0, 1)
     }
-    
-    var selectedPeriod: PeriodStats = .week
     
     var body: some View {
         GroupBox {
@@ -42,9 +42,7 @@ struct PerformanceClientsGraphView: View {
             .frame(minHeight: 220)
             .padding()
         } label: {
-             Text("Répartition paiement par client")
-                .font(.title2)
-                .fontWeight(.medium)
+             Text("Répartition paiement récent")
         }
         .groupBoxStyle(PlainGroupBoxStyle())
     }
@@ -75,7 +73,7 @@ struct PerformanceClientsGraphView: View {
 }
 
 struct ClientRevenue: Identifiable {
-    let id = UUID()
+    var id: String { clientName }
     let clientName: String
     let revenue: Double
 }
