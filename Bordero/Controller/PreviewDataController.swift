@@ -60,10 +60,10 @@ final class PreviewDataController {
         let calendar = Calendar.current
         let now = Date.now
 
-        // Quatre mois de factures avec les trois statuts de paiement.
-        for monthOffset in 0..<4 {
+        // Une année de factures pour couvrir les trois périodes du tableau de bord.
+        for monthOffset in 0..<12 {
             let emissionDate = calendar.date(byAdding: .month, value: -monthOffset, to: now) ?? now
-            for index in 0..<(12 + monthOffset * 3) {
+            for index in 0..<6 {
                 let document = Document(context: context)
                 let amount = Double(80 + (index % 8) * 35)
 

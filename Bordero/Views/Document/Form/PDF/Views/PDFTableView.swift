@@ -108,10 +108,7 @@ struct TableGridRowView : View {
                     }
                     
                     if !purchase.remarque.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                        Text("Remarques : ")
-                            .foregroundStyle(.primary.opacity(0.8)).fontWeight(.medium)
-                        +
-                        Text(purchase.remarque)
+                        Text("Remarques : \(purchase.remarque)")
                             .foregroundStyle(.primary.opacity(0.8))
                             .font(.footnote)
                     }

@@ -37,16 +37,16 @@
 					<key>text-context</key>
 					<dict>
 						<key>focused</key>
-						<string>                if ProcessInfo.processInfo.isiOSAppOnMac {
+						<string>                    
 </string>
 						<key>leading</key>
-						<string>                }
-                
+						<string>                
+                if ProcessInfo.processInfo.isiOSAppOnMac {
 </string>
 						<key>trailing</key>
-						<string>                    
-                    Section {
+						<string>                    Section {
                         Text("Si un problème survient, contactez le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
+                            .contextMenu {
 </string>
 					</dict>
 					<key>title</key>

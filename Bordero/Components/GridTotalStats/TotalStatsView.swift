@@ -8,42 +8,51 @@
 import SwiftUI
 
 struct TotalStatsView: View {
-    let title : String
-    let totalNumber: Int
-    let amount: Double
-    let progress: Double
+    @Environment(\.locale) private var locale
+
+    var title: LocalizedStringKey
+    var totalNumber: Int
+    var amount: Double
+    var progress: Double
     var color: Color = .purple
-    
-    private let systemCurrency = Locale.current.currency?.identifier ?? "EUR"
-    
+
+    private var currencyCode: String {
+        locale.currency?.identifier ?? "EUR"
+    }
+
     var body: some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text(title)
                         .foregroundStyle(.secondary)
-                    
+
                     Spacer()
-                    
+
                     Text(totalNumber, format: .number)
                         .font(.headline)
                         .foregroundStyle(color)
                         .contentTransition(.numericText(value: Double(totalNumber)))
                         .animation(.snappy, value: totalNumber)
                 }
-                
-                Text(amount, format: .currency(code: systemCurrency))
+
+                Text(amount, format: .currency(code: currencyCode))
                     .font(.title2)
                     .bold()
                     .contentTransition(.numericText(value: amount))
                     .animation(.snappy, value: amount)
-                
+
                 ProgressView(value: progress)
                     .progressViewStyle(.linear)
                     .tint(color)
+                    .accessibilityLabel("Progression")
+                    .accessibilityValue(
+                        Text(
+                            progress,
+                            format: .percent.precision(.fractionLength(0))
+                        ))
             }
             .frame(maxHeight: .infinity)
-//            .padding(20)
         }
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
@@ -51,7 +60,7 @@ struct TotalStatsView: View {
 
 #Preview {
     TotalStatsView(title: "Total", totalNumber: 8, amount: 9450, progress: 0.4)
-    .padding(.horizontal, 150)
-    .background(.fill)
-        
+        .padding(.horizontal, 150)
+        .background(.fill)
+
 }

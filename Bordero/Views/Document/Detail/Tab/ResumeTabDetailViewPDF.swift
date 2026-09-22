@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 import SafariServices
 import MessageUI
 import PDFKit
@@ -19,8 +20,12 @@ struct ResumeTabDetailViewPDF: View {
     @Environment(\.managedObjectContext) var context
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
-    @State var presentURL: URL? = nil
+    @State private var isShowingLegalInformation = false
     @ObservedObject var document : Document
+
+    private let legalInformationURL = URL(
+        string: "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191855"
+    )!
     
     
     var body: some View {
@@ -38,7 +43,7 @@ struct ResumeTabDetailViewPDF: View {
                             .frame(maxHeight: 65)
                             
                             Button {
-                                presentURL = URL(string: "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006191855")!
+                                isShowingLegalInformation = true
                             } label: {
                                 Text("En savoir plus")
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -123,8 +128,8 @@ struct ResumeTabDetailViewPDF: View {
                     Text("Détails")
                 }
             }
-            .sheet(item: $presentURL) { url in
-                SafariView(url: url)
+            .sheet(isPresented: $isShowingLegalInformation) {
+                SafariView(url: legalInformationURL)
             }
             
         }
@@ -151,10 +156,4 @@ struct RowMontantDetail: View {
 
 #Preview {
     ResumeTabDetailViewPDF(document: Document.example)
-}
-
-extension URL: Identifiable {
-    public var id: String {
-        self.absoluteString
-    }
 }

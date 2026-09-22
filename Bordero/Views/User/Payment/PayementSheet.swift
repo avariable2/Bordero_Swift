@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct PayementSheet: View {
     @Environment(\.managedObjectContext) var moc
@@ -130,7 +131,7 @@ struct RowPaiementView : View {
     
     var body: some View {
         NavigationLink {
-            DisplayPayementSheet(paiement: paiement)
+            DetailPaiementView(paiement: paiement)
         } label: {
             HStack {
                 Text(paiement.date_?.formatted() ?? "Date inconnue")

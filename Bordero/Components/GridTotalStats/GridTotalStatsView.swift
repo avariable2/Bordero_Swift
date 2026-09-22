@@ -9,58 +9,58 @@ import SwiftUI
 import CoreData
 
 struct GridTotalStatsView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)]
     ) private var documents: FetchedResults<Document>
 
-    let selectedPeriod: PeriodStats
-    
-    private var statistics : GridTotalStatistics {
-        GridTotalStatistics(
+    var selectedPeriod: StatisticsPeriod
+
+    private var columns: [GridItem] {
+        let count = horizontalSizeClass == .regular ? 4 : 2
+        return Array(repeating: GridItem(.flexible(), spacing: 10), count: count)
+    }
+
+    var body: some View {
+        let statistics = GridTotalStatistics(
             documents: Array(documents),
             period: selectedPeriod
         )
-    }
-    
-    var body: some View {
-        Grid(horizontalSpacing: 10, verticalSpacing: 10) {
-            GridRow {
-                TotalStatsView(
-                    title: "Total en attente",
-                    totalNumber: statistics.totalPending.count,
-                    amount: statistics.totalPending.amount,
-                    progress: statistics.totalPending.progress
-                )
 
-                TotalStatsView(
-                    title: "Encaissé",
-                    totalNumber: statistics.collected.count,
-                    amount: statistics.collected.amount,
-                    progress: statistics.collected.progress,
-                    color: .green
-                )
-            }
+        LazyVGrid(columns: columns, spacing: 10) {
+            TotalStatsView(
+                title: "Reste à encaisser",
+                totalNumber: statistics.totalPending.count,
+                amount: statistics.totalPending.amount,
+                progress: statistics.totalPending.progress
+            )
 
-            GridRow {
-                TotalStatsView(
-                    title: "En attente",
-                    totalNumber: statistics.pending.count,
-                    amount: statistics.pending.amount,
-                    progress: statistics.pending.progress,
-                    color: .orange
-                )
+            TotalStatsView(
+                title: "Encaissé",
+                totalNumber: statistics.collected.count,
+                amount: statistics.collected.amount,
+                progress: statistics.collected.progress,
+                color: .green
+            )
 
-                TotalStatsView(
-                    title: "Impayé",
-                    totalNumber: statistics.overdue.count,
-                    amount: statistics.overdue.amount,
-                    progress: statistics.overdue.progress,
-                    color: .red
-                )
-            }
+            TotalStatsView(
+                title: "À échéance",
+                totalNumber: statistics.pending.count,
+                amount: statistics.pending.amount,
+                progress: statistics.pending.progress,
+                color: .orange
+            )
+
+            TotalStatsView(
+                title: "En retard",
+                totalNumber: statistics.overdue.count,
+                amount: statistics.overdue.amount,
+                progress: statistics.overdue.progress,
+                color: .red
+            )
         }
         .groupBoxStyle(PlainGroupBoxStyle())
-        
     }
 }
 
@@ -69,13 +69,13 @@ struct GridTotalStatsView: View {
     List {
         GridTotalStatsView(selectedPeriod: .month)
     }
-        .environment(\.managedObjectContext, PreviewDataController.invoices.context)
+    .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
 
 #Preview("Sans données") {
     List {
         GridTotalStatsView(selectedPeriod: .month)
     }
-        .environment(\.managedObjectContext, PreviewDataController.empty.context)
+    .environment(\.managedObjectContext, PreviewDataController.empty.context)
 }
 #endif

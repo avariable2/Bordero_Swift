@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		F7006BD3305C4CCA00A0F2E0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7006BD2305C4CCA00A0F2E0 /* HomeView.swift */; };
+		F7CC10010000000000000001 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20010000000000000001 /* StatisticsPeriod.swift */; };
+		F7CC10020000000000000002 /* StatisticsLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20020000000000000002 /* StatisticsLimits.swift */; };
+		F7CC10030000000000000003 /* DashboardChartAxesModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20030000000000000003 /* DashboardChartAxesModifier.swift */; };
+		F7CC10040000000000000004 /* ClientRevenueStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20040000000000000004 /* ClientRevenueStatistics.swift */; };
+		F7CC10050000000000000005 /* ClientPaymentDelayStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20050000000000000005 /* ClientPaymentDelayStatistics.swift */; };
+		F7CC30010000000000000001 /* PaiementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC40010000000000000001 /* PaiementRowView.swift */; };
 		F7006BD5305C704D00A0F2E0 /* PreviewDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7006BD4305C704D00A0F2E0 /* PreviewDataController.swift */; };
 		F7006BD7305C70FE00A0F2E0 /* FacturesChartStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7006BD6305C70FE00A0F2E0 /* FacturesChartStatistics.swift */; };
 		F7006BD9305C70FE00A0F2E0 /* FacturesStatutChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7006BD8305C70FE00A0F2E0 /* FacturesStatutChart.swift */; };
@@ -72,7 +78,7 @@
 		F780966F2BAC855F00B3AF4A /* RowIconColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780966E2BAC855F00B3AF4A /* RowIconColor.swift */; };
 		F78096722BAC8CE600B3AF4A /* SwiftUIDigitalSignature in Frameworks */ = {isa = PBXBuildFile; productRef = F78096712BAC8CE600B3AF4A /* SwiftUIDigitalSignature */; };
 		F78096742BAC8F3500B3AF4A /* DigitalSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78096732BAC8F3500B3AF4A /* DigitalSignature.swift */; };
-		F780FA612C134D4D00CDAAAF /* DisplayPayementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780FA602C134D4D00CDAAAF /* DisplayPayementSheet.swift */; };
+		F780FA612C134D4D00CDAAAF /* DetailPaiementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F780FA602C134D4D00CDAAAF /* DetailPaiementView.swift */; };
 		F781153B2BB1A54900F2026E /* PDFDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153A2BB1A54900F2026E /* PDFDisplayView.swift */; };
 		F781153D2BB1A59700F2026E /* PDFUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153C2BB1A59700F2026E /* PDFUIView.swift */; };
 		F781153F2BB1A68C00F2026E /* PDFData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781153E2BB1A68C00F2026E /* PDFData.swift */; };
@@ -111,6 +117,12 @@
 
 /* Begin PBXFileReference section */
 		F7006BD2305C4CCA00A0F2E0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F7CC20010000000000000001 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
+		F7CC20020000000000000002 /* StatisticsLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsLimits.swift; sourceTree = "<group>"; };
+		F7CC20030000000000000003 /* DashboardChartAxesModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardChartAxesModifier.swift; sourceTree = "<group>"; };
+		F7CC20040000000000000004 /* ClientRevenueStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRevenueStatistics.swift; sourceTree = "<group>"; };
+		F7CC20050000000000000005 /* ClientPaymentDelayStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPaymentDelayStatistics.swift; sourceTree = "<group>"; };
+		F7CC40010000000000000001 /* PaiementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaiementRowView.swift; sourceTree = "<group>"; };
 		F7006BD4305C704D00A0F2E0 /* PreviewDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataController.swift; sourceTree = "<group>"; };
 		F7006BD6305C70FE00A0F2E0 /* FacturesChartStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacturesChartStatistics.swift; sourceTree = "<group>"; };
 		F7006BD8305C70FE00A0F2E0 /* FacturesStatutChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacturesStatutChart.swift; sourceTree = "<group>"; };
@@ -174,7 +186,7 @@
 		F780966B2BAC803C00B3AF4A /* PencilUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilUIView.swift; sourceTree = "<group>"; };
 		F780966E2BAC855F00B3AF4A /* RowIconColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowIconColor.swift; sourceTree = "<group>"; };
 		F78096732BAC8F3500B3AF4A /* DigitalSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalSignature.swift; sourceTree = "<group>"; };
-		F780FA602C134D4D00CDAAAF /* DisplayPayementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPayementSheet.swift; sourceTree = "<group>"; };
+		F780FA602C134D4D00CDAAAF /* DetailPaiementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPaiementView.swift; sourceTree = "<group>"; };
 		F781153A2BB1A54900F2026E /* PDFDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDisplayView.swift; sourceTree = "<group>"; };
 		F781153C2BB1A59700F2026E /* PDFUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUIView.swift; sourceTree = "<group>"; };
 		F781153E2BB1A68C00F2026E /* PDFData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFData.swift; sourceTree = "<group>"; };
@@ -271,10 +283,11 @@
 		F75083B92C10EF7B00B32E1F /* Payment */ = {
 			isa = PBXGroup;
 			children = (
+				F7CC40010000000000000001 /* PaiementRowView.swift */,
 				F7710D2E2BF11C13009D43C0 /* PayementSheet.swift */,
 				F7C75DA42BF77EB000A75DBB /* ListHistoriquesPaiements.swift */,
 				F79D41AC2C120315001D5C27 /* ListAllHistoriquesPaiements.swift */,
-				F780FA602C134D4D00CDAAAF /* DisplayPayementSheet.swift */,
+				F780FA602C134D4D00CDAAAF /* DetailPaiementView.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -429,6 +442,9 @@
 		F780966D2BAC853E00B3AF4A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F7CC20010000000000000001 /* StatisticsPeriod.swift */,
+				F7CC20020000000000000002 /* StatisticsLimits.swift */,
+				F7CC20030000000000000003 /* DashboardChartAxesModifier.swift */,
 				F772D8D4306134E300C42CD0 /* GroupBox */,
 				F7010081305D3CA600B46694 /* GridTotalStats */,
 				F7E88C892B8A432700AAF73C /* TitleWithIconColorComponentView.swift */,
@@ -471,6 +487,8 @@
 		F7985E112BF5490C005362A4 /* DataComposant */ = {
 			isa = PBXGroup;
 			children = (
+				F7CC20040000000000000004 /* ClientRevenueStatistics.swift */,
+				F7CC20050000000000000005 /* ClientPaymentDelayStatistics.swift */,
 				F72B0FDD2BF3EDE700740770 /* PaiementPraticienGraphView.swift */,
 				F7985E142BF562B3005362A4 /* PerformanceClientsGraphView.swift */,
 				F7C75DA62BF7DA2F00A75DBB /* ClientPaymentEstimateGraphView.swift */,
@@ -645,6 +663,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7CC10010000000000000001 /* StatisticsPeriod.swift in Sources */,
+				F7CC10020000000000000002 /* StatisticsLimits.swift in Sources */,
+				F7CC10030000000000000003 /* DashboardChartAxesModifier.swift in Sources */,
+				F7CC10040000000000000004 /* ClientRevenueStatistics.swift in Sources */,
+				F7CC10050000000000000005 /* ClientPaymentDelayStatistics.swift in Sources */,
+				F7CC30010000000000000001 /* PaiementRowView.swift in Sources */,
 				F7006BE2305C737100A0F2E0 /* FacturesStatutSelection.swift in Sources */,
 				F76264302B7AC1D8009C15F4 /* FormPraticienView.swift in Sources */,
 				F786F7572BEE9C8B00382B21 /* PDFPayementAndSignature.swift in Sources */,
@@ -736,7 +760,7 @@
 				F79D41AF2C122C8A001D5C27 /* HighlightText.swift in Sources */,
 				F7587B492BCB33A0007007B8 /* HistoriqueTabDetailView.swift in Sources */,
 				F78748622BE9221800EAE35F /* ClientDataView.swift in Sources */,
-				F780FA612C134D4D00CDAAAF /* DisplayPayementSheet.swift in Sources */,
+				F780FA612C134D4D00CDAAAF /* DetailPaiementView.swift in Sources */,
 				F748ADD42B669B3600B82C5D /* ListTypeActe.swift in Sources */,
 				F767E0E32C04C25000701BFE /* ToolBarView.swift in Sources */,
 				F78227982BB3428D0033429F /* FormTypeActeView.swift in Sources */,

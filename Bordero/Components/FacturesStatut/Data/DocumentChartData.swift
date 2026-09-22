@@ -1,9 +1,14 @@
 import Foundation
 
 struct DocumentChartData: Identifiable {
-    var id: String { "\(date.timeIntervalSinceReferenceDate)-\(status.rawValue)" }
-    let period: String
-    let date: Date
-    let status: DocumentStatus
-    let count: Int
+    struct ID: Hashable {
+        var date: Date
+        var status: DocumentStatus
+    }
+
+    var id: ID { ID(date: date, status: status) }
+    var period: String
+    var date: Date
+    var status: DocumentStatus
+    var count: Int
 }

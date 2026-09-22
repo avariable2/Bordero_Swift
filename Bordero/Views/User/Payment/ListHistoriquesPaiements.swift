@@ -9,134 +9,98 @@ import CoreData
 import SwiftUI
 
 struct ListHistoriquesPaiements: View {
-    @Environment(\.managedObjectContext) var moc
+    private static let maximumDisplayedPayments = 8
+
     @FetchRequest(
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+            NSSortDescriptor(keyPath: \Paiement.date_, ascending: false)
         ]
-    ) var payments: FetchedResults<Paiement>
-    
-    @State private var activeSheet : ActiveSheet? = nil
-    
+    )
+    private var payments: FetchedResults<Paiement>
+
+    private var recentPayments: [Paiement] {
+        Array(payments.prefix(Self.maximumDisplayedPayments))
+    }
+
     var body: some View {
         Group {
             if payments.isEmpty {
                 ContentUnavailableView(
                     "Pas de paiement",
-                    systemImage: "person.and.background.striped.horizontal",
-                    description: Text(
-                        "Ici sera affichée la liste des paiements de vos clients."
-                    )
+                    systemImage: "creditcard",
+                    description: Text("Les paiements de vos clients apparaîtront ici.")
                 )
+                .frame(minHeight: 120)
             } else {
-                LazyVStack(alignment: .center, spacing: 12) {
-                    ForEach(payments.prefix(5), id: \.id) { payment in
-                        RowHistoriquePaiements(activeSheet: $activeSheet, payment: payment)
-                        
-                        Divider()
-                    }
-                    
-                    Button {
-                        activeSheet = .showAllHistoriquePaiement
-                    } label: {
-                        Text("Voir plus")
-                    }
-                    .sheet(item: $activeSheet) { activeSheet in
-                        switch activeSheet {
-                        case .showAllHistoriquePaiement:
-                            ListAllClientPaiements()
-                        case .showDetailPaiement(paiement: let paiement):
-                            NavigationView {
-                                DisplayPayementSheet(paiement: paiement)
-                            }
-                            .presentationDetents([.medium, .large])
-                        default:
-                            EmptyView() // Impossible
+                VStack(spacing: 0) {
+                    ForEach(recentPayments) { payment in
+                        NavigationLink {
+                            DetailPaiementView(paiement: payment)
+                        } label: {
+                            PaiementRowView(payment: payment)
+                        }
+                        .buttonStyle(.plain)
+
+                        if payment.objectID != recentPayments.last?.objectID {
+                            Divider()
                         }
                     }
+
+                    if payments.count > Self.maximumDisplayedPayments {
+                        Divider()
+                            .padding(.top, 8)
+
+                        NavigationLink {
+                            ListAllClientPaiements()
+                        } label: {
+                            HStack(spacing: 10) {
+                                Label("Voir tous les paiements", systemImage: "list.bullet")
+                                    .fontWeight(.semibold)
+
+                                Spacer()
+
+                                Text(payments.count, format: .number)
+                                    .foregroundStyle(.secondary)
+
+                                Image(systemName: "chevron.right")
+                                    .font(.caption.weight(.semibold))
+                                    .accessibilityHidden(true)
+                            }
+                            .font(.subheadline)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 12)
+                            .background(.tint.opacity(0.1), in: .rect(cornerRadius: 12))
+                            .contentShape(.rect(cornerRadius: 12))
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.tint)
+                        .padding(.top, 12)
+                        .accessibilityHint("Affiche l’historique complet")
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .background()
     }
 }
 
-struct RowHistoriquePaiements : View {
-    
-    @Binding var activeSheet : ActiveSheet?
-    let payment : Paiement
-    
-    var body: some View {
-        Button {
-            activeSheet = .showDetailPaiement(paiement: payment)
-        } label: {
-            TextPaiementView(payment: payment)
-        }
-    }
-}
-
-struct TextPaiementView: View {
-    let payment : Paiement
-    
-    private var statusBadgeFacture: some View {
-        if (payment.document?.resteAPayer ?? 0) > 0 {
-            Text(DocumentStatus.envoyer.rawValue)
-                .foregroundStyle(.orange)
-        } else {
-            Text(DocumentStatus.paye.rawValue)
-                .foregroundStyle(.green)
-        }
-    }
-    
-    var body: some View {
-        HStack(spacing: 10) {
-            
-            RoundedRectangle(cornerRadius: 5)
-                .fill(.fill)
-                .frame(width: 110)
-                .overlay {
-                    Text("#\(payment.document?.numero ?? "Inconnu")")
-                        .multilineTextAlignment(.center)
-                        .padding(2)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                }
-            
-            VStack(alignment: .leading) {
-                Text("\(payment.client?.firstname ?? "Inconnu") \(Text(payment.client?.lastname ?? "Inconnu").bold())")
-                
-                Text(payment.date, format: .dateTime.day().month().year())
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-            }
-            
-            Spacer()
-            
-            VStack(alignment: .trailing) {
-                Text(payment.montant, format: .currency(code: "EUR"))
-                    .fontWeight(.medium)
-                
-                statusBadgeFacture
-            }
-            
-        }
-        .tint(.primary)
-    }
-}
-
 #if DEBUG
 #Preview("Paiements fictifs") {
-    ListHistoriquesPaiements()
-        .environment(\.managedObjectContext, PreviewDataController.invoices.context)
-        .padding()
+    NavigationStack {
+        List {
+            ListHistoriquesPaiements()
+        }
+    }
+    .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
 
 #Preview("Sans données") {
-    List {
-        ListHistoriquesPaiements()
+    NavigationStack {
+        List {
+            ListHistoriquesPaiements()
+        }
     }
-        .environment(\.managedObjectContext, PreviewDataController.empty.context)
-        .padding()
+    .environment(\.managedObjectContext, PreviewDataController.empty.context)
 }
 #endif

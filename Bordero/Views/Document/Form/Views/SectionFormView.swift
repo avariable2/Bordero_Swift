@@ -212,12 +212,8 @@ struct TypeActeRowView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Remarques :")
                                 .foregroundStyle(.secondary)
-                            Text("«")
-                            +
-                            Text(snapshotTypeActe.remarque)
+                            Text("« \(snapshotTypeActe.remarque) »")
                                 .foregroundStyle(.secondary)
-                            +
-                            Text("»")
                         }
                     }
                 }
@@ -437,4 +433,3 @@ private extension View {
 #Preview {
     DocumentFormView()
 }
-

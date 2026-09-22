@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
-    @Environment(\.accessibilityReduceMotion)
-    private var accessibilityReduceMotion
-    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     private var columns: [GridItem] {
         let count = horizontalSizeClass == .compact ? 1 : 2
-        
+
         return Array(
             repeating: GridItem(
                 .flexible(),
@@ -25,85 +22,65 @@ struct HomeView: View {
             count: count
         )
     }
-    
-    @State private var periodStatSelected = PeriodStats.week
+
+    @AppStorage("home.selectedStatisticsPeriod")
+    private var selectedStatisticsPeriod = StatisticsPeriod.week
 
     private var selectedPeriodTitle: String {
         let now = Date.now
         let calendar = Calendar.current
-        let component: Calendar.Component = switch periodStatSelected {
-        case .week: .weekOfYear
-        case .month: .month
-        case .year: .year
-        }
-
-        guard let interval = calendar.dateInterval(of: component, for: now) else {
-            return now.formatted(date: .abbreviated, time: .omitted)
-        }
+        let interval = selectedStatisticsPeriod.interval(
+            containing: now,
+            calendar: calendar
+        )
 
         let endDate = interval.end.addingTimeInterval(-1)
         return (interval.start..<endDate).formatted(date: .abbreviated, time: .omitted)
     }
-    
+
     var body: some View {
         List {
             Section(selectedPeriodTitle) {
-                LazyVGrid(columns: columns, spacing: 20) {
+                VStack(spacing: 20) {
                     FacturesStatutView(
-                        selectedPeriod: periodStatSelected
+                        selectedPeriod: selectedStatisticsPeriod
                     )
-                    .transaction { transaction in
-                        transaction.animation = nil
-                    }
-                    .id("invoice-status-\(periodStatSelected.rawValue)")
-                    .transition(.opacity)
-                    
+
                     GridTotalStatsView(
-                        selectedPeriod: periodStatSelected
+                        selectedPeriod: selectedStatisticsPeriod
                     )
-                    
-                    PerformanceClientsGraphView(
-                        selectedPeriod: periodStatSelected
-                    )
-                    .transaction { transaction in
-                        transaction.animation = nil
+
+                    LazyVGrid(columns: columns, spacing: 20) {
+                        PerformanceClientsGraphView(
+                            selectedPeriod: selectedStatisticsPeriod
+                        )
+
+                        ClientPaymentEstimateGraphView(
+                            selectedPeriod: selectedStatisticsPeriod
+                        )
                     }
-                    .id("client-performance-\(periodStatSelected.rawValue)")
-                    .transition(.opacity)
-                    
-                    ClientPaymentEstimateGraphView(
-                        selectedPeriod: periodStatSelected
-                    )
-                    .transaction { transaction in
-                        transaction.animation = nil
-                    }
-                    .id("payment-estimate-\(periodStatSelected.rawValue)")
-                    .transition(.opacity)
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
             }
-            
-            Section("Liste de paiements") {
+
+            Section("Paiements récents") {
                 ListHistoriquesPaiements()
             }
         }
         .headerProminence(.increased)
         .navigationTitle("Accueil")
         .toolbar {
-            ToolbarItemGroup {
-                ForEach(PeriodStats.allCases, id: \.self) { period in
-                    Button(period.rawValue.capitalized) {
-                        withAnimation(accessibilityReduceMotion ? nil : .easeInOut(duration: 0.35)) {
-                            periodStatSelected = period
-                        }
+            ToolbarItem(placement: .topBarTrailing) {
+                Picker("Période", selection: $selectedStatisticsPeriod) {
+                    ForEach(StatisticsPeriod.allCases) { period in
+                        Text(period.displayName)
                     }
-                    .foregroundStyle(periodStatSelected == period ? .purple : .primary)
-                    .fontWeight(.medium)
                 }
+                .pickerStyle(.segmented)
+                .accessibilityLabel("Période des statistiques")
             }
         }
-
     }
 }
 

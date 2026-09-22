@@ -5,145 +5,166 @@
 //  Created by Grande Variable on 06/06/2024.
 //
 
-import SwiftUI
 import CoreData
-
-private struct TokenPaiementModel: Identifiable, Hashable, Equatable {
-    enum TokenPaiementType {
-        case client
-        case date
-    }
-    
-    var id = UUID()
-    var value : String
-    var type : TokenPaiementType
-}
-
-struct PaiementsListRows: View {
-    let payments: [Paiement]
-    
-    var body: some View {
-        ForEach(payments) { payment in
-            NavigationLink {
-                DisplayPayementSheet(paiement: payment)
-            } label: {
-                TextPaiementView(payment: payment)
-            }
-        }
-    }
-}
+import SwiftUI
 
 struct ListAllClientPaiements: View {
-    @Environment(\.managedObjectContext) var moc
     @FetchRequest(
-        entity: Paiement.entity(),
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
+            NSSortDescriptor(keyPath: \Paiement.date_, ascending: false)
         ]
-    ) var payments: FetchedResults<Paiement>
-    
+    )
+    private var payments: FetchedResults<Paiement>
+
     @State private var searchText = ""
-    @State private var tags: [TokenPaiementModel] = []
-    
-    var filteredPayments: [Paiement] {
-        let tokens = tags.map { $0.value }.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-        if tokens.isEmpty {
-            return Array(self.payments)
-        } else {
-            return payments.filter { paiement in
-                tokens.allSatisfy { term in
-                    let clientName = "\(paiement.client?.firstname ?? "") \(paiement.client?.lastname ?? "")".lowercased()
-                    let dateFormatted = paiement.date.formatted(.dateTime.month().year()).lowercased()
-                    return clientName.contains(term.lowercased()) || dateFormatted.contains(term.lowercased())
-                }
+    @State private var searchTokens: [SearchToken] = []
+
+    private var filteredPayments: [Paiement] {
+        let terms = (searchTokens.map(\.value) + [searchText])
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+
+        guard !terms.isEmpty else { return Array(payments) }
+        return payments.filter { payment in
+            let clientName = [payment.client?.firstname, payment.client?.lastname]
+                .compactMap { $0 }
+                .joined(separator: " ")
+                .lowercased()
+            let date = payment.date
+                .formatted(.dateTime.month().year())
+                .lowercased()
+
+            return terms.allSatisfy { term in
+                clientName.contains(term.lowercased()) || date.contains(term.lowercased())
             }
         }
     }
-    
+
+    private var suggestedClients: [String] {
+        let names = payments.map { payment in
+            [payment.client?.firstname, payment.client?.lastname]
+                .compactMap { $0 }
+                .filter { !$0.isEmpty }
+                .joined(separator: " ")
+        }
+        return Array(Set(names))
+            .filter { !$0.isEmpty && $0.localizedCaseInsensitiveContains(searchText) }
+            .sorted()
+    }
+
+    private var suggestedDates: [String] {
+        let dates = payments.map {
+            $0.date.formatted(.dateTime.month().year())
+        }
+        return Array(Set(dates))
+            .filter { $0.localizedCaseInsensitiveContains(searchText) }
+            .sorted()
+    }
+
     var body: some View {
-        NavigationStack {
-            List {
-                PaiementsListRows(payments: filteredPayments)
+        List {
+            ForEach(filteredPayments) { payment in
+                NavigationLink {
+                    DetailPaiementView(paiement: payment)
+                } label: {
+                    PaiementRowView(payment: payment)
+                }
             }
-            .overlay {
-                if filteredPayments.isEmpty {
-                    ContentUnavailableView(
-                        "Pas de paiement",
-                        systemImage: "person.and.background.striped.horizontal",
-                        description: Text(
-                            "Ici sera affichée la liste des paiements de vos clients."
-                        )
-                    )
-                }
-                
-            }
-            .searchable(
-                text: $searchText,
-                tokens: $tags,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "Recherche",
-                token: { token in
-                    switch token.type {
-                    case .client:
-                        Label(token.value, systemImage: "person.crop.circle")
-                    case .date:
-                        Label(token.value, systemImage: "calendar")
-                    }
-                }
-            )
-            .searchSuggestions({
-                if !suggestedClients.isEmpty || !suggestedDates.isEmpty {
-                    Section("Suggestions") {
-                        ForEach(suggestedClients, id: \.self) { suggestion in
-                            Label {
-                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                            } icon : {
-                                Image(systemName: "person.crop.circle")
-                                    .foregroundStyle(.blue)
-                                    .imageScale(.large)
-                            }
-                            .searchCompletion(TokenPaiementModel(value: suggestion, type: .client))
-                        }
-                        
-                        ForEach(suggestedDates, id: \.self) { suggestion in
-                            Label {
-                                HighlightedText(text: suggestion, highlight: searchText, primaryColor: .primary, secondaryColor: .secondary)
-                            } icon : {
-                                Image(systemName: "calendar")
-                                    .foregroundStyle(.blue)
-                                    .imageScale(.large)
-                            }
-                            .searchCompletion(TokenPaiementModel(value: suggestion, type: .date))
-                        }
-                    }
-                }
-            })
-            .trackEventOnAppear(event: .paymentListBrowsed, category: .paymentManagement)
-            .navigationTitle("Historique des paiements")
         }
+        .overlay {
+            if filteredPayments.isEmpty {
+                ContentUnavailableView(
+                    "Pas de paiement",
+                    systemImage: "creditcard",
+                    description: Text("Aucun paiement ne correspond à votre recherche.")
+                )
+            }
+        }
+        .searchable(
+            text: $searchText,
+            tokens: $searchTokens,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Recherche"
+        ) { token in
+            switch token.type {
+            case .client:
+                Label(token.value, systemImage: "person.crop.circle")
+            case .date:
+                Label(token.value, systemImage: "calendar")
+            }
+        }
+        .searchSuggestions {
+            if !suggestedClients.isEmpty || !suggestedDates.isEmpty {
+                Section("Suggestions") {
+                    ForEach(suggestedClients, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(
+                                text: suggestion,
+                                highlight: searchText,
+                                primaryColor: .primary,
+                                secondaryColor: .secondary
+                            )
+                        } icon: {
+                            Image(systemName: "person.crop.circle")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
+                        }
+                        .searchCompletion(
+                            SearchToken(value: suggestion, type: .client)
+                        )
+                    }
+
+                    ForEach(suggestedDates, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(
+                                text: suggestion,
+                                highlight: searchText,
+                                primaryColor: .primary,
+                                secondaryColor: .secondary
+                            )
+                        } icon: {
+                            Image(systemName: "calendar")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
+                        }
+                        .searchCompletion(
+                            SearchToken(value: suggestion, type: .date)
+                        )
+                    }
+                }
+            }
+        }
+        .trackEventOnAppear(
+            event: .paymentListBrowsed,
+            category: .paymentManagement
+        )
+        .navigationTitle("Historique des paiements")
     }
-    
-    var suggestedClients : [String] {
-        let clients = payments.map { $0.client }
-        let uniqueClients = Set(clients.map { "\($0?.firstname ?? "") \($0?.lastname ?? "Inconnu")"})
-        return uniqueClients.filter { $0.lowercased().contains(searchText.lowercased()) }
-    }
-    
-    var suggestedDates: [String] {
-        let dates = payments.map { $0.date }
-        let uniqueDates = Set(dates.map { $0.formatted(.dateTime.month().year()) })
-        return uniqueDates.filter { $0.lowercased().contains(searchText.lowercased()) }
+
+    private struct SearchToken: Identifiable, Hashable {
+        enum TokenType: String, Hashable {
+            case client
+            case date
+        }
+
+        var id: String { "\(type.rawValue)-\(value)" }
+        var value: String
+        var type: TokenType
     }
 }
 
 #if DEBUG
 #Preview("Paiements fictifs") {
-    ListAllClientPaiements()
-        .environment(\.managedObjectContext, PreviewDataController.invoices.context)
+    NavigationStack {
+        ListAllClientPaiements()
+    }
+    .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
 
 #Preview("Sans données") {
-    ListAllClientPaiements()
-        .environment(\.managedObjectContext, PreviewDataController.empty.context)
+    NavigationStack {
+        ListAllClientPaiements()
+    }
+    .environment(\.managedObjectContext, PreviewDataController.empty.context)
 }
 #endif

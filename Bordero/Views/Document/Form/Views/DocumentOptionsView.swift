@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct DocumentOptionsView: View, Saveable {
     @Environment(\.managedObjectContext) var moc

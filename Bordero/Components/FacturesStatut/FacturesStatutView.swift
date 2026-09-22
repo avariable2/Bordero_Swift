@@ -1,90 +1,107 @@
 import SwiftUI
 import CoreData
 
-enum PeriodStats: String, CaseIterable {
-    case week = "semaine"
-    case month = "mois"
-    case year = "année"
-    
-    var previousPeriodDescription: String {
-        switch self {
-        case .week: "la semaine précédente"
-        case .month: "le mois précédent"
-        case .year: "l’année précédente"
-        }
-    }
-}
-
 struct FacturesStatutView: View {
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
-         ]
-    ) private var documents: FetchedResults<Document>
-    
-    var selectedPeriod: PeriodStats = .week
-    
-    private var statistics : FacturesChartStatistics {
-        FacturesChartStatistics(
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: true)
+        ]
+    )
+    private var documents: FetchedResults<Document>
+
+    var selectedPeriod: StatisticsPeriod = .week
+
+    var body: some View {
+        let statistics = FacturesChartStatistics(
             documents: Array(documents),
             period: selectedPeriod
         )
-    }
-    private var isRevenueImproving : Bool {
-        statistics.currentRevenue > statistics.previousRevenue
-    }
-    private var isRevenueDeclining : Bool {
-        statistics.currentRevenue < statistics.previousRevenue
-    }
-    private var colorIndicator : Color {
-        if isRevenueImproving {
-            .green
-        } else if isRevenueDeclining {
-            .red
-        } else {
-            .secondary
-        }
-    }
-    private var imageIndicator : String {
-        if isRevenueImproving {
-            "arrow.up.right"
-        } else if isRevenueDeclining {
-            "arrow.down.forward"
-        } else {
-            "equal.circle"
-        }
-    }
-    
-    var body: some View {
+
         GroupBox {
-            FacturesStatutChart(statistics: statistics)
-        } label: {
-            VStack(alignment: .leading) {
-                Text("Chiffre d’affaires")
-                
-                Label {
-                    if let revenueChange = statistics.revenueChange {
-                        Text(
-                            "\(Text(abs(revenueChange), format: .percent.precision(.fractionLength(1))).foregroundStyle(colorIndicator)) vs \(selectedPeriod.previousPeriodDescription)"
-                        )
-                    } else if statistics.currentRevenue > 0 {
-                        Text(
-                            "\(Text("Nouveau chiffre d’affaires").foregroundStyle(colorIndicator)) vs \(selectedPeriod.previousPeriodDescription)"
-                        )
-                    } else {
-                        Text("Aucun changement vs \(selectedPeriod.previousPeriodDescription)")
-                    }
-                } icon: {
-                    Image(systemName: imageIndicator)
-                        .foregroundStyle(colorIndicator)
-                        .imageScale(.medium)
-                }
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .labelIconToTitleSpacing(4)
+            if statistics.data.isEmpty {
+                ContentUnavailableView(
+                    "Aucune donnée",
+                    systemImage: "chart.xyaxis.line",
+                    description: Text("Les documents de cette période apparaîtront ici.")
+                )
+                .frame(minHeight: 120)
+            } else {
+                FacturesStatutChart(statistics: statistics)
             }
-            
+        } label: {
+            header(for: statistics)
         }
         .groupBoxStyle(PlainGroupBoxStyle())
+    }
+
+    private func header(for statistics: FacturesChartStatistics) -> some View {
+        let trend = RevenueTrend(
+            currentRevenue: statistics.currentRevenue,
+            previousRevenue: statistics.previousRevenue
+        )
+
+        return VStack(alignment: .leading) {
+            Text("Chiffre d’affaires")
+
+            Label {
+                HStack(spacing: 3) {
+                    if let revenueChange = statistics.revenueChange {
+                        Text(
+                            abs(revenueChange),
+                            format: .percent.precision(.fractionLength(1))
+                        )
+                        .foregroundStyle(trend.color)
+                    } else if statistics.currentRevenue > 0 {
+                        Text("Nouveau chiffre d’affaires")
+                            .foregroundStyle(trend.color)
+                    } else {
+                        Text("Aucun changement")
+                    }
+
+                    Text("vs")
+                    Text(selectedPeriod.previousPeriodDescription)
+                }
+            } icon: {
+                Image(systemName: trend.symbolName)
+                    .foregroundStyle(trend.color)
+                    .imageScale(.medium)
+            }
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .labelIconToTitleSpacing(4)
+        }
+    }
+
+    private enum RevenueTrend {
+        case improving
+        case declining
+        case unchanged
+
+        init(currentRevenue: Double, previousRevenue: Double) {
+            if currentRevenue > previousRevenue {
+                self = .improving
+            } else if currentRevenue < previousRevenue {
+                self = .declining
+            } else {
+                self = .unchanged
+            }
+        }
+
+        var color: Color {
+            switch self {
+            case .improving: .green
+            case .declining: .red
+            case .unchanged: .secondary
+            }
+        }
+
+        var symbolName: String {
+            switch self {
+            case .improving: "arrow.up.right"
+            case .declining: "arrow.down.forward"
+            case .unchanged: "equal"
+            }
+        }
     }
 }
 

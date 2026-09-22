@@ -13,7 +13,6 @@ enum ActiveSheet : Identifiable {
     case profil(user : Praticien?)
     case parameters
     case optionsDocument, apercusDocument, selectClient, selectTypeActe
-    case showAllHistoriquePaiement, showDetailPaiement(paiement : Paiement)
     
     var id : Int {
         switch self {
@@ -46,12 +45,6 @@ enum ActiveSheet : Identifiable {
             
         case .selectTypeActe:
             return 6
-            
-        case .showAllHistoriquePaiement:
-            return 7
-            
-        case .showDetailPaiement(paiement: let paiement):
-            return paiement.hashValue
         }
     }
 }

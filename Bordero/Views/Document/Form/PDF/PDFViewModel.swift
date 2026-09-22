@@ -205,20 +205,16 @@ class PDFViewModel {
         )
     }
     
+    @MainActor
     func finalizeAndSave() async -> Document? {
         let moc = DataController.shared.container.viewContext
+
+        guard let url = renderView() else { return nil }
+        let pdfDocument = PDFDocument(url: url)
+        let document = attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
+        DataController.saveContext()
         
-        let pdfDocument = await Task.detached(priority: .userInitiated) {
-            return PDFDocument(url: await self.renderView()!)
-        }.value
-        
-        var document: Document?
-        await moc.perform {
-            document = self.attributeViewModelToDocument(context: moc, pdfDocument: pdfDocument)
-            DataController.saveContext()
-        }
-        
-        self.reset(needToDeleteFile: false) // reset before launch the new screen
+        reset(needToDeleteFile: false) // reset before launch the new screen
         
         return document
     }

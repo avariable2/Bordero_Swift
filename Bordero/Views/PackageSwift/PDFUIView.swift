@@ -52,7 +52,7 @@ struct DocumentPDFKitView: UIViewRepresentable {
     }
 }
 
-extension PDFDocument : Transferable {
+extension PDFDocument: @retroactive Transferable {
     public static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(contentType: .pdf) { pdf in
             return pdf.dataRepresentation() ?? Data()

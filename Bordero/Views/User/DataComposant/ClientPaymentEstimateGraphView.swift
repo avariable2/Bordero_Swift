@@ -10,118 +10,70 @@ import Charts
 import CoreData
 
 struct ClientPaymentEstimateGraphView: View {
+    private static let barWidth = 18.0
+
     @FetchRequest(sortDescriptors: [])
     private var clients: FetchedResults<Client>
-    var selectedPeriod: PeriodStats = .week
-    
-    private var clientData :  [ClientPaymentData] {
-        calculateClientPaymentData(
+
+    var selectedPeriod: StatisticsPeriod = .week
+
+    var body: some View {
+        let statistics = ClientPaymentDelayStatistics(
             clients: Array(clients),
             period: selectedPeriod
         )
-    }
-    
-    var body: some View {
+
         GroupBox {
-            CombinedChartView(clientData: clientData)
+            if statistics.values.isEmpty {
+                ContentUnavailableView(
+                    "Aucun délai calculé",
+                    systemImage: "clock.badge.questionmark",
+                    description: Text("Les délais apparaîtront après les premiers paiements.")
+                )
+                .frame(minHeight: 120)
+            } else {
+                chart(for: statistics)
+            }
         } label: {
-            Text("Temps de paiement moyen")
+            Text("Délai moyen de paiement")
         }
         .groupBoxStyle(PlainGroupBoxStyle())
-        
     }
-}
 
-struct CombinedChartView: View {
-    let clientData: [ClientPaymentData]
-    
-    private var averageTime : Double? {
-        clientData.isEmpty
-        ? nil
-        : clientData.map(\.averagePaymentTime).reduce(0, +) / Double(clientData.count)
-    }
-    
-    var body: some View {
-        VStack {
-            Chart {
-                ForEach(clientData) { data in
-                    BarMark(
-                        x: .value("Client", data.clientName),
-                        y: .value("Temps moyen de paiement (jours)", data.averagePaymentTime)
-                    )
-                    .foregroundStyle(.blue)
-                }
-                
-                if let averageTime {
-                    RuleMark(y: .value("Moyenne", averageTime))
-                        .foregroundStyle(.green)
-                        .annotation(position: .top, alignment: .leading) {
-                            Text("Moyenne: \(averageTime, specifier: "%.1f") jours")
-                                .font(.caption)
-                                .foregroundStyle(.green)
-                        }
-                }
+    private func chart(
+        for statistics: ClientPaymentDelayStatistics
+    ) -> some View {
+        Chart {
+            ForEach(statistics.values) { client in
+                BarMark(
+                    x: .value("Client", client.clientName),
+                    y: .value("Délai moyen en jours", client.averageDelayInDays),
+                    width: .fixed(Self.barWidth)
+                )
+                .foregroundStyle(.blue)
+                .accessibilityLabel(client.clientName)
+                .accessibilityValue(
+                    "\(client.averageDelayInDays.formatted(.number.precision(.fractionLength(1)))) jours"
+                )
             }
-            .chartScrollableAxes(.horizontal)
-            .chartXVisibleDomain(length: 5)
-            .chartYScale(domain: 0...maximumPaymentTime)
+
+            if let average = statistics.averageDelayInDays {
+                RuleMark(y: .value("Moyenne", average))
+                    .foregroundStyle(.green)
+                    .annotation(position: .top, alignment: .leading) {
+                        Text(
+                            "Moyenne: \(average.formatted(.number.precision(.fractionLength(1)))) jours"
+                        )
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                    }
+            }
         }
+        .chartYScale(domain: statistics.delayDomain)
+        .dashboardChartAxes()
         .frame(minHeight: 220)
         .padding()
     }
-    
-    private var maximumPaymentTime: Double {
-        max(clientData.map(\.averagePaymentTime).max() ?? 0, 1)
-    }
-}
-
-struct ClientPaymentData: Identifiable {
-    let id: NSManagedObjectID
-    let clientName: String
-    let averagePaymentTime: Double // in days
-}
-
-func calculateClientPaymentData(
-    clients: [Client],
-    period: PeriodStats,
-    now: Date = .now,
-    calendar: Calendar = .current
-) -> [ClientPaymentData] {
-    let component: Calendar.Component = switch period {
-    case .week: .weekOfYear
-    case .month: .month
-    case .year: .year
-    }
-    let interval = calendar.dateInterval(of: component, for: now)
-    ?? DateInterval(start: now, duration: 0)
-    var clientData = [ClientPaymentData]()
-    
-    for client in clients {
-        let documents = client.listDocuments
-        var totalPaymentTime: Double = 0
-        var totalPaidDocuments: Int = 0
-        
-        for document in documents {
-            for paiement in document.listPayements where interval.contains(paiement.date) {
-                let paymentTime = paiement.date.timeIntervalSince(document.dateEmission) / (60 * 60 * 24) // in days
-                totalPaymentTime += paymentTime
-                totalPaidDocuments += 1
-            }
-        }
-        
-        if totalPaidDocuments > 0 {
-            let averagePaymentTime = totalPaymentTime / Double(totalPaidDocuments)
-            clientData.append(
-                ClientPaymentData(
-                    id: client.objectID,
-                    clientName: client.lastname,
-                    averagePaymentTime: averagePaymentTime
-                )
-            )
-        }
-    }
-    
-    return clientData
 }
 
 #Preview {

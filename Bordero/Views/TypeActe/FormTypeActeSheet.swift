@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct FormTypeActeSheet: View, Saveable, Modifyable, Versionnable {
     static func getVersion() -> Int32 {

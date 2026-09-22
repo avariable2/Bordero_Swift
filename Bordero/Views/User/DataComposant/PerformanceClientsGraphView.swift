@@ -10,72 +10,62 @@ import Charts
 import CoreData
 
 struct PerformanceClientsGraphView: View {
+    private static let barWidth = 18.0
+
+    @Environment(\.locale) private var locale
+
     @FetchRequest(
         sortDescriptors: [
             NSSortDescriptor(keyPath: \Paiement.date_, ascending: true)
         ]
-    ) private var payments: FetchedResults<Paiement>
-    
-    var selectedPeriod: PeriodStats = .week
-    
-    private var clientRevenues: [ClientRevenue] {
-        calculateClientRevenues(
+    )
+    private var payments: FetchedResults<Paiement>
+
+    var selectedPeriod: StatisticsPeriod = .week
+
+    private var currencyCode: String {
+        locale.currency?.identifier ?? "EUR"
+    }
+
+    var body: some View {
+        let statistics = ClientRevenueStatistics(
             payments: Array(payments),
             period: selectedPeriod
         )
-    }
-    
-    private var maximumRevenue : Double {
-        max(clientRevenues.map(\.revenue).max() ?? 0, 1)
-    }
-    
-    var body: some View {
+
         GroupBox {
-            Chart(clientRevenues.prefix(10)) { clientRevenue in
-                BarMark(
-                    x: .value("Client", clientRevenue.clientName),
-                    y: .value("Revenu", clientRevenue.revenue)
+            if statistics.values.isEmpty {
+                ContentUnavailableView(
+                    "Aucun paiement",
+                    systemImage: "chart.bar.xaxis",
+                    description: Text("Les paiements de cette période apparaîtront ici.")
                 )
-                .foregroundStyle(.purple)
+                .frame(minHeight: 120)
+            } else {
+                Chart(statistics.values) { client in
+                    BarMark(
+                        x: .value("Client", client.clientName),
+                        y: .value("Revenu", client.revenue),
+                        width: .fixed(Self.barWidth)
+                    )
+                    .foregroundStyle(.tint)
+                    .accessibilityLabel(client.clientName)
+                    .accessibilityValue(
+                        Text(
+                            client.revenue,
+                            format: .currency(code: currencyCode)
+                        ))
+                }
+                .chartYScale(domain: statistics.revenueDomain)
+                .dashboardChartAxes()
+                .frame(minHeight: 220)
+                .padding()
             }
-            .chartYScale(domain: 0...maximumRevenue)
-            .frame(minHeight: 220)
-            .padding()
         } label: {
-             Text("Répartition paiement récent")
+            Text("Paiements par client")
         }
         .groupBoxStyle(PlainGroupBoxStyle())
     }
-    
-    private func calculateClientRevenues(
-        payments: [Paiement],
-        period: PeriodStats,
-        now: Date = .now,
-        calendar: Calendar = .current
-    ) -> [ClientRevenue] {
-        let component: Calendar.Component = switch period {
-        case .week: .weekOfYear
-        case .month: .month
-        case .year: .year
-        }
-        let interval = calendar.dateInterval(of: component, for: now)
-            ?? DateInterval(start: now, duration: 0)
-        var revenueByClient: [String: Double] = [:]
-        
-        for payment in payments where interval.contains(payment.date) {
-            let clientName = "\(payment.client?.firstname ?? "Inconnu") \(payment.client?.lastname ?? "")"
-            revenueByClient[clientName, default: 0] += payment.montant
-        }
-        
-        return revenueByClient.map { ClientRevenue(clientName: $0.key, revenue: $0.value) }
-            .sorted { $0.revenue > $1.revenue } // Sort by revenue in descending order
-    }
-}
-
-struct ClientRevenue: Identifiable {
-    var id: String { clientName }
-    let clientName: String
-    let revenue: Double
 }
 
 #Preview {

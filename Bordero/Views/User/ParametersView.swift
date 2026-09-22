@@ -26,8 +26,7 @@ struct ParametersView: View {
                         .font(.system(size: 60))
                         .shadow(radius: 5)
                     
-                    Text("\(praticien?.firstname ?? "")")
-                        + Text(" \(praticien?.lastname ?? "")")
+                    Text("\(praticien?.firstname ?? "") \(praticien?.lastname ?? "")")
                 }
                 .font(.title)
                 .bold()

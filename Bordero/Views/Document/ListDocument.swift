@@ -27,6 +27,7 @@ struct ListDocument: View {
     @State private var searchText = ""
     @State private var tags: [TokenDocumentModel] = []
     @State private var documentScope : Document.Status = .all
+    @State private var isPresentingDocumentForm = false
     
     init() {
         let request: NSFetchRequest<Document> = Document.fetchRequest()
@@ -122,40 +123,70 @@ struct ListDocument: View {
     var filteredSuggestionsDates: [String] {
         suggestedDates.filter { $0.lowercased().contains(searchText.lowercased()) }
     }
+
+    private var emptyFilterTitle: String {
+        switch documentScope {
+        case .created:
+            "Aucun document ouvert"
+        case .payed:
+            "Aucun document payé"
+        case .send:
+            "Aucun document envoyé"
+        case .all, .unknow:
+            "Aucun document"
+        }
+    }
     
     var body: some View {
-        VStack {
-            Picker(selection: $documentScope) {
-                Text(Document.Status.all.rawValue).tag(Document.Status.all)
-                Text(Document.Status.created.rawValue).tag(Document.Status.created)
-                Text(Document.Status.payed.rawValue).tag(Document.Status.payed)
-                Text(Document.Status.send.rawValue).tag(Document.Status.send)
-            } label: {
-                Text("Tri des documents")
+        VStack(spacing: 0) {
+            HStack {
+                Picker("Filtrer les documents", selection: $documentScope) {
+                    Text("Tous").tag(Document.Status.all)
+                    Text("Ouverts").tag(Document.Status.created)
+                    Text("Payés").tag(Document.Status.payed)
+                    Text("Envoyés").tag(Document.Status.send)
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 520)
+
+                Spacer(minLength: 0)
             }
-            .pickerStyle(.segmented)
-            .padding([.trailing, .leading])
+            .padding(.horizontal)
+            .padding(.bottom, 8)
             
             if documents.isEmpty {
-                ContentUnavailableView(
-                    "Aucun document",
-                    systemImage: "folder.badge.questionmark",
-                    description: Text("Les documents créés apparaîtront ici.").foregroundStyle(.secondary)
-                )
+                ContentUnavailableView {
+                    Label("Aucun document", systemImage: "doc.badge.plus")
+                } description: {
+                    Text("Les documents créés apparaîtront ici.")
+                } actions: {
+                    Button("Créer un document", systemImage: "plus", action: createDocument)
+                        .buttonStyle(.borderedProminent)
+                }
             } else {
                 List {
-                    if filteredListDocuments.isEmpty {
-                        ContentUnavailableView.search(text: searchText)
-                    } else {
+                    if !filteredListDocuments.isEmpty {
                         ForEach(sectionOrder, id: \.self) { key in
                             if let documentsForSection = filteredListDocuments[key] {
-                                Section(header: Text(key)) {
+                                Section(key) {
                                     ForEach(documentsForSection, id: \.self) { document in
                                         RowDocumentView(document: document)
-                                            .tag(document.status)
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+                .overlay {
+                    if filteredListDocuments.isEmpty {
+                        if !searchText.isEmpty || !tags.isEmpty {
+                            ContentUnavailableView.search
+                        } else {
+                            ContentUnavailableView(
+                                emptyFilterTitle,
+                                systemImage: "line.3.horizontal.decrease.circle",
+                                description: Text("Essayez un autre filtre.")
+                            )
                         }
                     }
                 }
@@ -163,6 +194,7 @@ struct ListDocument: View {
                     text: $searchText,
                     tokens: $tags,
                     placement: .navigationBarDrawer(displayMode: .always),
+                    prompt: Text("Client, date ou type"),
                     token: { token in
                         switch token.type {
                         case .client:
@@ -215,74 +247,187 @@ struct ListDocument: View {
             }
         }
         .navigationTitle("Documents")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Créer un document", systemImage: "plus", action: createDocument)
+            }
+        }
+        .sheet(isPresented: $isPresentingDocumentForm) {
+            DocumentFormView()
+        }
         .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
+    }
+
+    private func createDocument() {
+        isPresentingDocumentForm = true
     }
 }
 
-struct RowDocumentView :View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @ObservedObject var document : Document
-    
-    var body: some View {
-        HStack {
-            Image(systemName: "doc.circle.fill")
-                .imageScale(.large)
-                .foregroundStyle(.white, .blue)
-            
-            VStack(alignment: .leading, spacing: 6) {
-                Text(document.getNameOfDocument())
-                    .fontWeight(.semibold)
-                if horizontalSizeClass == .regular {
-                    Text("N° : \(document.numero)")
-                        .font(.footnote)
-                }
-                Text("Créé le: \(document.dateEmission.formatted(.dateTime.day().month().year()))")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-                if horizontalSizeClass == .regular {
-                    Text("Date d'échéance: \(document.dateEcheance.formatted(.dateTime.day().month().year()))")
-                        .foregroundStyle(.secondary)
-                        .font(.footnote)
-                }
-            }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 6) {
-                Text(document.totalTTC, format: .currency(code: "EUR"))
-                
-                if horizontalSizeClass == .compact {
-                    if document.dateEcheance <= Date() && document.status == .send {
-                        Label("En retard", systemImage: "hourglass.tophalf.filled")
-                            .foregroundStyle(.pink)
-                    } else {
-                        viewStatus
-                    }
-                } else {
-                    viewStatus
-                    
-                    if document.dateEcheance <= Date() && document.status == .send {
-                        Label("En retard", systemImage: "hourglass.tophalf.filled")
-                            .foregroundStyle(.pink)
-                    }
-                }
-            }
-        }
-        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-            return 0
-        }
-        .background(
-            NavigationLink("") {
-                DocumentDetailView(document: document)
-            }.opacity(0)
-        )
+struct RowDocumentView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    @ObservedObject var document: Document
+
+    private var isOverdue: Bool {
+        document.dateEcheance <= .now && document.status == .send
     }
-    
-    var viewStatus : some View {
-        HStack(spacing: nil) {
-            Image(systemName: "circle.circle.fill")
-                .foregroundStyle(.black, document.determineColor())
-            Text(document.determineStatut())
-                .foregroundStyle(.primary)
-                .fontWeight(.light)
+
+    private var documentTitle: String {
+        let type = document.estDeTypeFacture ? "Facture" : "Devis"
+        return document.numero.isEmpty ? type : "\(type) #\(document.numero)"
+    }
+
+    private var clientName: String {
+        let name = "\(document.client_?.firstname ?? "") \(document.client_?.lastname ?? "")"
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty ? "Client inconnu" : name
+    }
+
+    private var statusTitle: String {
+        if isOverdue {
+            return "En retard"
+        }
+
+        switch document.status {
+        case .created:
+            return document.estDeTypeFacture ? "Ouverte" : "Ouvert"
+        case .payed:
+            return document.estDeTypeFacture ? "Payée" : "Payé"
+        case .send:
+            return document.estDeTypeFacture ? "Envoyée" : "Envoyé"
+        case .all, .unknow:
+            return "Inconnu"
+        }
+    }
+
+    private var statusSymbol: String {
+        if isOverdue {
+            return "exclamationmark.triangle.fill"
+        }
+
+        return switch document.status {
+        case .created: "pencil"
+        case .payed: "checkmark"
+        case .send: "paperplane.fill"
+        case .all, .unknow: "questionmark"
+        }
+    }
+
+    private var statusColor: Color {
+        if isOverdue {
+            return .red
+        }
+
+        return document.determineColor()
+    }
+
+    var body: some View {
+        NavigationLink {
+            DocumentDetailView(document: document)
+        } label: {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 12) {
+                    DocumentRowDetails(
+                        title: documentTitle,
+                        clientName: clientName,
+                        issueDate: document.dateEmission,
+                        dueDate: document.dateEcheance,
+                        showsDueDate: horizontalSizeClass == .regular
+                    )
+
+                    DocumentRowSummary(
+                        amount: document.totalTTC,
+                        statusTitle: statusTitle,
+                        statusSymbol: statusSymbol,
+                        statusColor: statusColor,
+                        alignment: .leading
+                    )
+                }
+            } else {
+                HStack(alignment: .top, spacing: 12) {
+                    DocumentRowDetails(
+                        title: documentTitle,
+                        clientName: clientName,
+                        issueDate: document.dateEmission,
+                        dueDate: document.dateEcheance,
+                        showsDueDate: horizontalSizeClass == .regular
+                    )
+
+                    Spacer(minLength: 12)
+
+                    DocumentRowSummary(
+                        amount: document.totalTTC,
+                        statusTitle: statusTitle,
+                        statusSymbol: statusSymbol,
+                        statusColor: statusColor,
+                        alignment: .trailing
+                    )
+                }
+            }
+        }
+        .foregroundStyle(.primary)
+        .padding(.vertical, 4)
+        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+    }
+}
+
+private struct DocumentRowDetails: View {
+    var title: String
+    var clientName: String
+    var issueDate: Date
+    var dueDate: Date
+    var showsDueDate: Bool
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "doc.text.fill")
+                .font(.title3)
+                .foregroundStyle(.tint)
+                .frame(width: 28, height: 28)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+
+                Text(clientName)
+                    .foregroundStyle(.secondary)
+
+                Text("Créé le \(issueDate.formatted(.dateTime.day().month().year()))")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+
+                if showsDueDate {
+                    Text("Échéance le \(dueDate.formatted(.dateTime.day().month().year()))")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+}
+
+private struct DocumentRowSummary: View {
+    var amount: Double
+    var statusTitle: String
+    var statusSymbol: String
+    var statusColor: Color
+    var alignment: HorizontalAlignment
+
+    var body: some View {
+        VStack(alignment: alignment, spacing: 8) {
+            Text(amount, format: .currency(code: "EUR"))
+                .font(.headline)
+                .monospacedDigit()
+
+            Label(statusTitle, systemImage: statusSymbol)
+                .font(.caption)
+                .bold()
+                .foregroundStyle(statusColor)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(statusColor.opacity(0.12), in: Capsule())
         }
     }
 }
