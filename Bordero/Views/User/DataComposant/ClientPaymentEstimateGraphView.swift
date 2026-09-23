@@ -12,6 +12,8 @@ import CoreData
 struct ClientPaymentEstimateGraphView: View {
     private static let barWidth = 18.0
 
+    @Environment(\.homeVisualTheme) private var theme
+
     @FetchRequest(sortDescriptors: [])
     private var clients: FetchedResults<Client>
 
@@ -43,14 +45,16 @@ struct ClientPaymentEstimateGraphView: View {
     private func chart(
         for statistics: ClientPaymentDelayStatistics
     ) -> some View {
-        Chart {
+        let palette = theme?.palette
+
+        return Chart {
             ForEach(statistics.values) { client in
                 BarMark(
                     x: .value("Client", client.clientName),
                     y: .value("Délai moyen en jours", client.averageDelayInDays),
                     width: .fixed(Self.barWidth)
                 )
-                .foregroundStyle(.blue)
+                .foregroundStyle(palette?.accent ?? .blue)
                 .accessibilityLabel(client.clientName)
                 .accessibilityValue(
                     "\(client.averageDelayInDays.formatted(.number.precision(.fractionLength(1)))) jours"
@@ -59,13 +63,13 @@ struct ClientPaymentEstimateGraphView: View {
 
             if let average = statistics.averageDelayInDays {
                 RuleMark(y: .value("Moyenne", average))
-                    .foregroundStyle(.green)
+                    .foregroundStyle(palette?.collected ?? .green)
                     .annotation(position: .top, alignment: .leading) {
                         Text(
                             "Moyenne: \(average.formatted(.number.precision(.fractionLength(1)))) jours"
                         )
                         .font(.caption)
-                        .foregroundStyle(.green)
+                        .foregroundStyle(palette?.collected ?? .green)
                     }
             }
         }

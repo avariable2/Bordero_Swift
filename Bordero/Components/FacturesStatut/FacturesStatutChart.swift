@@ -4,11 +4,15 @@ import Charts
 struct FacturesStatutChart: View {
     private static let barWidth = 16.0
 
+    @Environment(\.homeVisualTheme) private var theme
+
     @State private var selectedPeriod: String?
 
     var statistics: FacturesChartStatistics
 
     var body: some View {
+        let palette = theme?.palette
+
         Chart {
             ForEach(statistics.data) { element in
                 BarMark(
@@ -49,9 +53,9 @@ struct FacturesStatutChart: View {
         .chartYScale(domain: statistics.countDomain)
         .dashboardChartAxes()
         .chartForegroundStyleScale([
-            DocumentStatus.paye.rawValue: Color.green,
-            DocumentStatus.envoyer.rawValue: Color.orange,
-            DocumentStatus.enRetard.rawValue: Color.red,
+            DocumentStatus.paye.rawValue: palette?.collected ?? Color.green,
+            DocumentStatus.envoyer.rawValue: palette?.due ?? Color.orange,
+            DocumentStatus.enRetard.rawValue: palette?.overdue ?? Color.red,
         ])
         .frame(minHeight: 220)
         .padding()

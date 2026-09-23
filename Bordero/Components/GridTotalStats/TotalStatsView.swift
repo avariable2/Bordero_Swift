@@ -54,7 +54,7 @@ struct TotalStatsView: View {
             }
             .frame(maxHeight: .infinity)
         }
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .clipShape(Rectangle())
     }
 }
 

@@ -8,87 +8,41 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
-    private var columns: [GridItem] {
-        let count = horizontalSizeClass == .compact ? 1 : 2
-
-        return Array(
-            repeating: GridItem(
-                .flexible(),
-                spacing: 20,
-                alignment: .center
-            ),
-            count: count
-        )
-    }
-
     @AppStorage("home.selectedStatisticsPeriod")
     private var selectedStatisticsPeriod = StatisticsPeriod.week
 
-    private var selectedPeriodTitle: String {
-        let now = Date.now
-        let calendar = Calendar.current
-        let interval = selectedStatisticsPeriod.interval(
-            containing: now,
-            calendar: calendar
-        )
+    @State private var isPresentingInvoiceForm = false
 
-        let endDate = interval.end.addingTimeInterval(-1)
-        return (interval.start..<endDate).formatted(date: .abbreviated, time: .omitted)
-    }
+    private var theme: HomeVisualTheme { .facturierOriginal }
 
     var body: some View {
-        List {
-            Section(selectedPeriodTitle) {
-                VStack(spacing: 20) {
-                    FacturesStatutView(
-                        selectedPeriod: selectedStatisticsPeriod
-                    )
-
-                    GridTotalStatsView(
-                        selectedPeriod: selectedStatisticsPeriod
-                    )
-
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        PerformanceClientsGraphView(
-                            selectedPeriod: selectedStatisticsPeriod
-                        )
-
-                        ClientPaymentEstimateGraphView(
-                            selectedPeriod: selectedStatisticsPeriod
-                        )
-                    }
-                }
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
-            }
-
-            Section("Paiements récents") {
-                ListHistoriquesPaiements()
-            }
-        }
-        .headerProminence(.increased)
+        HomeClarteView(
+            selectedPeriod: $selectedStatisticsPeriod
+        )
+        .environment(\.homeVisualTheme, theme)
+        .tint(theme.palette.accent)
         .navigationTitle("Accueil")
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                EditButton()
+            }
+
             ToolbarItem(placement: .topBarTrailing) {
-                Picker("Période", selection: $selectedStatisticsPeriod) {
-                    ForEach(StatisticsPeriod.allCases) { period in
-                        Text(period.displayName)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .accessibilityLabel("Période des statistiques")
+                Button(
+                    "Créer une facture",
+                    systemImage: "doc.badge.plus",
+                    action: createInvoice
+                )
+                .labelStyle(.iconOnly)
+                .accessibilityHint("Ouvre le formulaire d’une nouvelle facture")
             }
         }
+        .sheet(isPresented: $isPresentingInvoiceForm) {
+            DocumentFormView()
+        }
     }
-}
 
-#if DEBUG
-#Preview {
-    NavigationStack {
-        HomeView()
+    private func createInvoice() {
+        isPresentingInvoiceForm = true
     }
-    .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
-#endif

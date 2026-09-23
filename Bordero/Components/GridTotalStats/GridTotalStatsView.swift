@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct GridTotalStatsView: View {
+    @Environment(\.homeVisualTheme) private var theme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @FetchRequest(
@@ -23,6 +24,7 @@ struct GridTotalStatsView: View {
     }
 
     var body: some View {
+        let palette = theme?.palette
         let statistics = GridTotalStatistics(
             documents: Array(documents),
             period: selectedPeriod
@@ -33,7 +35,8 @@ struct GridTotalStatsView: View {
                 title: "Reste à encaisser",
                 totalNumber: statistics.totalPending.count,
                 amount: statistics.totalPending.amount,
-                progress: statistics.totalPending.progress
+                progress: statistics.totalPending.progress,
+                color: palette?.primaryMetric ?? .purple
             )
 
             TotalStatsView(
@@ -41,7 +44,7 @@ struct GridTotalStatsView: View {
                 totalNumber: statistics.collected.count,
                 amount: statistics.collected.amount,
                 progress: statistics.collected.progress,
-                color: .green
+                color: palette?.collected ?? .green
             )
 
             TotalStatsView(
@@ -49,7 +52,7 @@ struct GridTotalStatsView: View {
                 totalNumber: statistics.pending.count,
                 amount: statistics.pending.amount,
                 progress: statistics.pending.progress,
-                color: .orange
+                color: palette?.due ?? .orange
             )
 
             TotalStatsView(
@@ -57,7 +60,7 @@ struct GridTotalStatsView: View {
                 totalNumber: statistics.overdue.count,
                 amount: statistics.overdue.amount,
                 progress: statistics.overdue.progress,
-                color: .red
+                color: palette?.overdue ?? .red
             )
         }
         .groupBoxStyle(PlainGroupBoxStyle())

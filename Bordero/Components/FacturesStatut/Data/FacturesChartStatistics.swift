@@ -10,17 +10,9 @@ struct FacturesChartStatistics {
     var data: [DocumentChartData]
     var periods: [String]
     var countDomain: ClosedRange<Double>
-    var currentRevenue: Double
-    var previousRevenue: Double
 
     private var currentPeriod: Date
     private var maximumDistance: TimeInterval
-
-    var revenueChange: Double? {
-        guard previousRevenue > 0 else { return nil }
-        let change = (currentRevenue - previousRevenue) / previousRevenue
-        return change.isFinite ? change : nil
-    }
 
     init(
         documents: [Document],
@@ -29,11 +21,6 @@ struct FacturesChartStatistics {
         calendar: Calendar = .current
     ) {
         let interval = period.interval(containing: now, calendar: calendar)
-        let previousInterval = Self.previousInterval(
-            before: interval,
-            period: period,
-            calendar: calendar
-        )
         let periodStarts = Self.periodStarts(
             in: interval,
             component: period.chartComponent,
@@ -53,12 +40,6 @@ struct FacturesChartStatistics {
         }
 
         periods = labels
-        currentRevenue = Self.revenue(for: eligibleDocuments)
-        previousRevenue = Self.revenue(
-            for: documents.filter {
-                previousInterval.contains($0.dateEmission) && ($0.status == .payed || $0.status == .send)
-            }
-        )
         data = zip(periodStarts, labels).flatMap { date, label in
             Self.chartData(
                 for: documentsByPeriod[date] ?? [],
@@ -87,23 +68,6 @@ struct FacturesChartStatistics {
         let distance = abs(element.date.timeIntervalSince(currentPeriod))
         guard distance.isFinite else { return 1 }
         return min(max(1 - 0.4 * distance / maximumDistance, 0.6), 1)
-    }
-
-    private static func previousInterval(
-        before interval: DateInterval,
-        period: StatisticsPeriod,
-        calendar: Calendar
-    ) -> DateInterval {
-        guard
-            let previousDate = calendar.date(
-                byAdding: period.calendarComponent,
-                value: -1,
-                to: interval.start
-            )
-        else {
-            return DateInterval(start: interval.start, duration: 0)
-        }
-        return period.interval(containing: previousDate, calendar: calendar)
     }
 
     private static func periodStarts(
@@ -181,9 +145,4 @@ struct FacturesChartStatistics {
         return document.dateEcheance < now ? .enRetard : .envoyer
     }
 
-    private static func revenue(for documents: [Document]) -> Double {
-        documents.reduce(0) { total, document in
-            StatisticsLimits.addingAmount(document.totalTTC, to: total)
-        }
-    }
 }

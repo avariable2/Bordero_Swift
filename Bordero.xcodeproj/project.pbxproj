@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		F7006BD3305C4CCA00A0F2E0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7006BD2305C4CCA00A0F2E0 /* HomeView.swift */; };
+		F8A100000000000000000001 /* HomeVisualTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A200000000000000000001 /* HomeVisualTheme.swift */; };
+		F8A100000000000000000004 /* HomePeriodControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A200000000000000000004 /* HomePeriodControlView.swift */; };
+		F8A100000000000000000005 /* HomeGraphPairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A200000000000000000005 /* HomeGraphPairView.swift */; };
+		F8A100000000000000000006 /* HomePaperBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A200000000000000000006 /* HomePaperBackgroundView.swift */; };
+		F8A100000000000000000007 /* HomeClarteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A200000000000000000007 /* HomeClarteView.swift */; };
+		F8A100000000000000000008 /* HomeThemePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A200000000000000000008 /* HomeThemePalette.swift */; };
+		F8D100000000000000000001 /* HomeDashboardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D200000000000000000001 /* HomeDashboardComponent.swift */; };
+		F8D100000000000000000002 /* HomeDashboardComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D200000000000000000002 /* HomeDashboardComponentView.swift */; };
+		F8D100000000000000000003 /* RevenueTimelinePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D200000000000000000003 /* RevenueTimelinePoint.swift */; };
+		F8D100000000000000000004 /* RevenueTimelineStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D200000000000000000004 /* RevenueTimelineStatistics.swift */; };
+		F8D100000000000000000005 /* RevenueOverviewChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D200000000000000000005 /* RevenueOverviewChart.swift */; };
+		F8D100000000000000000006 /* RevenueOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D200000000000000000006 /* RevenueOverviewView.swift */; };
 		F7CC10010000000000000001 /* StatisticsPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20010000000000000001 /* StatisticsPeriod.swift */; };
 		F7CC10020000000000000002 /* StatisticsLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20020000000000000002 /* StatisticsLimits.swift */; };
 		F7CC10030000000000000003 /* DashboardChartAxesModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC20030000000000000003 /* DashboardChartAxesModifier.swift */; };
@@ -117,6 +129,18 @@
 
 /* Begin PBXFileReference section */
 		F7006BD2305C4CCA00A0F2E0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F8A200000000000000000001 /* HomeVisualTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVisualTheme.swift; sourceTree = "<group>"; };
+		F8A200000000000000000004 /* HomePeriodControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePeriodControlView.swift; sourceTree = "<group>"; };
+		F8A200000000000000000005 /* HomeGraphPairView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGraphPairView.swift; sourceTree = "<group>"; };
+		F8A200000000000000000006 /* HomePaperBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePaperBackgroundView.swift; sourceTree = "<group>"; };
+		F8A200000000000000000007 /* HomeClarteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeClarteView.swift; sourceTree = "<group>"; };
+		F8A200000000000000000008 /* HomeThemePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeThemePalette.swift; sourceTree = "<group>"; };
+		F8D200000000000000000001 /* HomeDashboardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardComponent.swift; sourceTree = "<group>"; };
+		F8D200000000000000000002 /* HomeDashboardComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardComponentView.swift; sourceTree = "<group>"; };
+		F8D200000000000000000003 /* RevenueTimelinePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueTimelinePoint.swift; sourceTree = "<group>"; };
+		F8D200000000000000000004 /* RevenueTimelineStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueTimelineStatistics.swift; sourceTree = "<group>"; };
+		F8D200000000000000000005 /* RevenueOverviewChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueOverviewChart.swift; sourceTree = "<group>"; };
+		F8D200000000000000000006 /* RevenueOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueOverviewView.swift; sourceTree = "<group>"; };
 		F7CC20010000000000000001 /* StatisticsPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPeriod.swift; sourceTree = "<group>"; };
 		F7CC20020000000000000002 /* StatisticsLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsLimits.swift; sourceTree = "<group>"; };
 		F7CC20030000000000000003 /* DashboardChartAxesModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardChartAxesModifier.swift; sourceTree = "<group>"; };
@@ -563,6 +587,7 @@
 		F7DFADA92B66894500C905A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8A300000000000000000001 /* HomeVariations */,
 				F78096682BAC7FFA00B3AF4A /* PackageSwift */,
 				F777A2E82B8DEF2E001E0169 /* User */,
 				F7D8E0142B8BA14400D4F28B /* OnBoarding */,
@@ -573,6 +598,25 @@
 				F7006BD2305C4CCA00A0F2E0 /* HomeView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F8A300000000000000000001 /* HomeVariations */ = {
+			isa = PBXGroup;
+			children = (
+				F8A200000000000000000001 /* HomeVisualTheme.swift */,
+				F8A200000000000000000004 /* HomePeriodControlView.swift */,
+				F8A200000000000000000005 /* HomeGraphPairView.swift */,
+				F8A200000000000000000006 /* HomePaperBackgroundView.swift */,
+				F8A200000000000000000007 /* HomeClarteView.swift */,
+				F8A200000000000000000008 /* HomeThemePalette.swift */,
+				F8D200000000000000000001 /* HomeDashboardComponent.swift */,
+				F8D200000000000000000002 /* HomeDashboardComponentView.swift */,
+				F8D200000000000000000003 /* RevenueTimelinePoint.swift */,
+				F8D200000000000000000004 /* RevenueTimelineStatistics.swift */,
+				F8D200000000000000000005 /* RevenueOverviewChart.swift */,
+				F8D200000000000000000006 /* RevenueOverviewView.swift */,
+			);
+			path = HomeVariations;
 			sourceTree = "<group>";
 		};
 		F7E88C7C2B8958FA00AAF73C /* Stats */ = {
@@ -663,6 +707,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8A100000000000000000001 /* HomeVisualTheme.swift in Sources */,
+				F8A100000000000000000004 /* HomePeriodControlView.swift in Sources */,
+				F8A100000000000000000005 /* HomeGraphPairView.swift in Sources */,
+				F8A100000000000000000006 /* HomePaperBackgroundView.swift in Sources */,
+				F8A100000000000000000007 /* HomeClarteView.swift in Sources */,
+				F8A100000000000000000008 /* HomeThemePalette.swift in Sources */,
+				F8D100000000000000000001 /* HomeDashboardComponent.swift in Sources */,
+				F8D100000000000000000002 /* HomeDashboardComponentView.swift in Sources */,
+				F8D100000000000000000003 /* RevenueTimelinePoint.swift in Sources */,
+				F8D100000000000000000004 /* RevenueTimelineStatistics.swift in Sources */,
+				F8D100000000000000000005 /* RevenueOverviewChart.swift in Sources */,
+				F8D100000000000000000006 /* RevenueOverviewView.swift in Sources */,
 				F7CC10010000000000000001 /* StatisticsPeriod.swift in Sources */,
 				F7CC10020000000000000002 /* StatisticsLimits.swift in Sources */,
 				F7CC10030000000000000003 /* DashboardChartAxesModifier.swift in Sources */,
