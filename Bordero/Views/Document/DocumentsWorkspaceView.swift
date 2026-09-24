@@ -77,7 +77,9 @@ struct DocumentsWorkspaceView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     DocumentsWorkspaceView()
         .environment(\.managedObjectContext, PreviewDataController.invoices.context)
 }
+#endif

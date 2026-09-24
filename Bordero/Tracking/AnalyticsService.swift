@@ -16,7 +16,7 @@ class AnalyticsService {
         #if !DEBUG
         var allParameters = parameters ?? [:]
         allParameters["category"] = category.rawValue
-        Analytics.logEvent(event.rawValue, parameters: allParameters)
+//        Analytics.logEvent(event.rawValue, parameters: allParameters)
         #endif
     }
 }

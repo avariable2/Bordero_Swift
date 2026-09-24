@@ -233,7 +233,7 @@ struct ListDocument: View {
                 }
             }
             .listStyle(.plain)
-            .scrollContentBackground(.hidden)
+//            .scrollContentBackground(.hidden)
             .onScrollGeometryChange(
                 for: CGFloat.self,
                 of: { geometry in
