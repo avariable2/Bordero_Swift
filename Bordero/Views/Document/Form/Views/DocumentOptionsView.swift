@@ -1,5 +1,5 @@
 //
-//  DetailFormView.swift
+//  DocumentOptionsView.swift
 //  Bordero
 //
 //  Created by Grande Variable on 13/02/2024.
@@ -10,7 +10,6 @@ import CoreData
 
 struct DocumentOptionsView: View, Saveable {
     @Environment(\.managedObjectContext) var moc
-    @Environment(\.dismiss) var dismiss
     
     @State private var selectedTypeRemise : Remise.TypeRemise = .pourcentage
     
@@ -19,18 +18,18 @@ struct DocumentOptionsView: View, Saveable {
     @State private var virementB : Bool = false
     @State private var cheque : Bool = false
     
-    @FetchRequest(sortDescriptors: [], predicate: PraticienUtils.predicate) var praticien : FetchedResults<Praticien>
+    @FetchRequest(sortDescriptors: []) var praticien : FetchedResults<Praticien>
+    @State private var profileToEdit: Praticien?
+    @State private var isEditingProfile = false
     
     @Bindable var viewModel : PDFViewModel
     
     var body: some View {
-        NavigationStack {
             Form {
                 Section {
-                    NavigationLink {
-                        if let praticien = praticien.first {
-                            FormPraticienView(isOnBoarding: false, praticien: praticien)
-                        }
+                    Button {
+                        profileToEdit = praticien.first ?? Praticien(moc: moc)
+                        isEditingProfile = true
                     } label: {
                         RowIconColor(
                             text: "Vos informations",
@@ -131,9 +130,22 @@ struct DocumentOptionsView: View, Saveable {
                 }
             }
             .onDisappear() {
-                save()
+                if !isEditingProfile {
+                    save()
+                }
             }
-        }
+            .navigationDestination(isPresented: $isEditingProfile) {
+                if let profileToEdit {
+                    FormPraticienView(isOnBoarding: false, praticien: profileToEdit)
+                }
+            }
+            .onChange(of: isEditingProfile) { _, isEditing in
+                guard !isEditing else { return }
+                if let profileToEdit, profileToEdit.isInserted {
+                    moc.delete(profileToEdit)
+                }
+                profileToEdit = nil
+            }
     }
     
     func save() {

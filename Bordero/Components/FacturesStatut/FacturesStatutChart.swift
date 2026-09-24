@@ -4,7 +4,7 @@ import Charts
 struct FacturesStatutChart: View {
     private static let barWidth = 16.0
 
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
 
     @State private var selectedPeriod: String?
 

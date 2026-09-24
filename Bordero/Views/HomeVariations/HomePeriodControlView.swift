@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HomePeriodControlView: View {
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
 
     @Binding var selectedPeriod: StatisticsPeriod
 

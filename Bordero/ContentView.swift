@@ -8,27 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
     @State var userNeediCloud : UseriCloudController.StateCheckiCloud
     
     var body: some View {
         TabView {
-            Tab("Home", systemImage: "house") {
-                NavigationStack {
-                    HomeView()
-                }
-            }
-            
-            Tab("Documents", systemImage: "document") {
-                NavigationStack {
-                    ListDocument()
-                }
+            Tab("Documents", systemImage: "doc.text") {
+                DocumentsWorkspaceView()
             }
             
             Tab("Clients", systemImage: "person.2") {
+                SplitViewListClients()
+            }
+
+            Tab("Paiements", systemImage: "eurosign") {
                 NavigationStack {
-                    ListClients()
+                    ListAllClientPaiements()
                 }
             }
             
@@ -38,7 +32,6 @@ struct ContentView: View {
                 }
             }
         }
-        .tabViewStyle(.sidebarAdaptable)
     }
 }
 

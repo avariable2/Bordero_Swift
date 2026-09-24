@@ -12,7 +12,7 @@ import CoreData
 struct ClientPaymentEstimateGraphView: View {
     private static let barWidth = 18.0
 
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
 
     @FetchRequest(sortDescriptors: [])
     private var clients: FetchedResults<Client>

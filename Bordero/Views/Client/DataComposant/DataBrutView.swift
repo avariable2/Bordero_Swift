@@ -15,7 +15,7 @@ struct DataBrutView: View {
     @State var facturesImpayés : Int = 0
     
     @State var facturePayé : Int = 0
-    @State var factureOuverte : Int = 0
+    @State var facturesBrouillon : Int = 0
     
     @State var nbrFacture : Int = 0
     @State var nbrDevis : Int = 0
@@ -61,9 +61,9 @@ struct DataBrutView: View {
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .green))
                 
                 GroupBox {
-                    DataValueView(value: factureOuverte.description, unit: "sur \(vocabulaireTemporalité)")
+                    DataValueView(value: facturesBrouillon.description, unit: "sur \(vocabulaireTemporalité)")
                 } label: {
-                    Label("Ouvertes", systemImage: "pencil.and.list.clipboard")
+                    Label("Brouillons", systemImage: "pencil.and.list.clipboard")
                 }.groupBoxStyle(GroupBoxStyleDataWithoutDestination(color: .yellow))
             }
             
@@ -121,7 +121,7 @@ struct DataBrutView: View {
         facturesImpayés = getFacturesImpayés(list)
         
         facturePayé = getFacturesPayé(list)
-        factureOuverte = getFacturesCreer(list)
+        facturesBrouillon = getFacturesCreer(list)
         
         nbrFacture = getNbrFacture(list)
         nbrDevis = getNbrDevis(list)

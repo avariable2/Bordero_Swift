@@ -2,7 +2,7 @@ import Charts
 import SwiftUI
 
 struct RevenueOverviewChart: View {
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
 
     var statistics: RevenueTimelineStatistics
     var selectedPeriod: StatisticsPeriod

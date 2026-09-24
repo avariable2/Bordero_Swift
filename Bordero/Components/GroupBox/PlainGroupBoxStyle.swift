@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlainGroupBoxStyle: GroupBoxStyle {
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
 
     func makeBody(configuration: Configuration) -> some View {
         let palette = theme?.palette

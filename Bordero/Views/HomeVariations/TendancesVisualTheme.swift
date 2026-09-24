@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct HomeVisualTheme {
-    var palette: HomeThemePalette
+struct TendancesVisualTheme {
+    var palette: TendancesThemePalette
 
     static var facturierOriginal: Self {
         Self(
-            palette: HomeThemePalette(
+            palette: TendancesThemePalette(
                 accent: .green,
                 canvasTint: .green.opacity(0.018),
-                border: .green.opacity(0.34),
+                border: .green.opacity(0.55),
                 primaryMetric: .green,
                 collected: .teal,
                 due: .brown,
@@ -25,5 +25,5 @@ struct HomeVisualTheme {
 }
 
 extension EnvironmentValues {
-    @Entry var homeVisualTheme: HomeVisualTheme?
+    @Entry var tendancesVisualTheme: TendancesVisualTheme?
 }

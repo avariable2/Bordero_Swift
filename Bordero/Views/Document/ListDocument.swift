@@ -8,28 +8,35 @@
 import SwiftUI
 import CoreData
 
-private struct TokenDocumentModel: Identifiable, Hashable, Equatable {
-    enum TokenDocumentType {
+private struct DocumentSearchToken: Identifiable, Hashable {
+    enum Category {
         case client
         case date
         case typeDoc
     }
     
     var id = UUID()
-    var value : String
-    var type : TokenDocumentType
+    var value: String
+    var type: Category
 }
 
 struct ListDocument: View {
-    
-    @Environment(\.managedObjectContext) var moc
+    @Environment(\.tendancesVisualTheme) private var theme
     @FetchRequest var documents: FetchedResults<Document>
     @State private var searchText = ""
-    @State private var tags: [TokenDocumentModel] = []
+    @State private var tags: [DocumentSearchToken] = []
     @State private var documentScope : Document.Status = .all
-    @State private var isPresentingDocumentForm = false
+    @State private var scrollOffset: CGFloat = 0
+
+    var selectedDocumentID: Binding<NSManagedObjectID?>?
+    var onCreateDocument: () -> Void
     
-    init() {
+    init(
+        selectedDocumentID: Binding<NSManagedObjectID?>? = nil,
+        onCreateDocument: @escaping () -> Void = {}
+    ) {
+        self.selectedDocumentID = selectedDocumentID
+        self.onCreateDocument = onCreateDocument
         let request: NSFetchRequest<Document> = Document.fetchRequest()
         let sortByDate = NSSortDescriptor(keyPath: \Document.dateEmission_, ascending: false)
         request.sortDescriptors = [ sortByDate]
@@ -63,23 +70,23 @@ struct ListDocument: View {
         }
         
         // Filter based on tokens
-        let tokens = tags.map { $0.value }.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        let tokens = (tags.map(\.value) + [searchText])
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
         let documentsToGroup: [Document]
         if tokens.isEmpty {
             documentsToGroup = filteredDocuments
         } else {
             documentsToGroup = filteredDocuments.filter { document in
                 tokens.allSatisfy { term in
-                    let matchesClient = document.client_?.fullname.lowercased().contains(term.lowercased()) ?? false
-                    let matchesDate = document.dateEmission.formatted(.dateTime.month().year()).lowercased().contains(term.lowercased())
-                    let matchesType = (term == "Factures" && document.estDeTypeFacture) || (term == "Devis" && !document.estDeTypeFacture)
-                    
-                    switch term {
-                    case _ where term == "Factures" || term == "Devis":
-                        return matchesType
-                    default:
-                        return matchesClient || matchesDate
-                    }
+                    let type = document.estDeTypeFacture ? "Facture" : "Devis"
+                    let matchesType = type.localizedCaseInsensitiveContains(term)
+                        || (term.localizedCaseInsensitiveCompare("Factures") == .orderedSame
+                            && document.estDeTypeFacture)
+                    return document.client_?.getFullName().localizedCaseInsensitiveContains(term) == true
+                        || document.dateEmission.formatted(.dateTime.month().year()).localizedCaseInsensitiveContains(term)
+                        || matchesType
+                        || document.numero.localizedCaseInsensitiveContains(term)
                 }
             }
         }
@@ -90,44 +97,38 @@ struct ListDocument: View {
         }
     }
     
-    var suggestedClients : [String] {
-        let clients = documents.map { $0.client_ }
-        let uniqueClients = Set(clients.map { "\($0?.firstname ?? "") \($0?.lastname ?? "Inconnu")"})
-        return uniqueClients.filter { $0.lowercased().contains(searchText.lowercased()) }
+    var suggestedClients: [String] {
+        let names = documents.compactMap { $0.client_?.getFullName() }
+        return Array(Set(names))
+            .filter { name in
+                !name.isEmpty
+                    && name.localizedCaseInsensitiveContains(searchText)
+                    && !tags.contains { $0.type == .client && $0.value == name }
+            }
+            .sorted()
     }
     
     var suggestedDates: [String] {
-        let dates = documents.map { $0.dateEmission }
-        let uniqueDates = Set(dates.map { $0.formatted(.dateTime.month().year()) })
-        return uniqueDates.filter { $0.lowercased().contains(searchText.lowercased()) }
+        let dates = documents.map { $0.dateEmission.formatted(.dateTime.month().year()) }
+        return Array(Set(dates))
+            .filter { date in
+                date.localizedCaseInsensitiveContains(searchText)
+                    && !tags.contains { $0.type == .date && $0.value == date }
+            }
+            .sorted()
     }
     
-    var suggestedTypeDocs : [String] {
-        let uniqueType = ["Factures", "Devis"]
-        return uniqueType.filter { $0.lowercased().contains(searchText.lowercased()) }
-    }
-    
-    
-    // Pré-calcul pour réduire le besoin de vérification conditionnelle de rendu
     var filteredSuggestionsTypeDocs: [String] {
-        let uniqueType = ["Factures", "Devis"]
-        return uniqueType.filter { type in
-            !tags.contains(where: { $0.value == type && $0.type == .typeDoc }) && type.lowercased().contains(searchText.lowercased())
+        ["Factures", "Devis"].filter { type in
+            !tags.contains(where: { $0.value == type && $0.type == .typeDoc })
+                && type.localizedCaseInsensitiveContains(searchText)
         }
     }
     
-    var filteredSuggestionsClients: [String] {
-        suggestedClients.filter { $0.lowercased().contains(searchText.lowercased()) }
-    }
-    
-    var filteredSuggestionsDates: [String] {
-        suggestedDates.filter { $0.lowercased().contains(searchText.lowercased()) }
-    }
-
     private var emptyFilterTitle: String {
         switch documentScope {
         case .created:
-            "Aucun document ouvert"
+            "Aucun brouillon"
         case .payed:
             "Aucun document payé"
         case .send:
@@ -136,50 +137,88 @@ struct ListDocument: View {
             "Aucun document"
         }
     }
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Picker("Filtrer les documents", selection: $documentScope) {
-                    Text("Tous").tag(Document.Status.all)
-                    Text("Ouverts").tag(Document.Status.created)
-                    Text("Payés").tag(Document.Status.payed)
-                    Text("Envoyés").tag(Document.Status.send)
-                }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 520)
 
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 8)
-            
-            if documents.isEmpty {
-                ContentUnavailableView {
-                    Label("Aucun document", systemImage: "doc.badge.plus")
-                } description: {
-                    Text("Les documents créés apparaîtront ici.")
-                } actions: {
-                    Button("Créer un document", systemImage: "plus", action: createDocument)
-                        .buttonStyle(.borderedProminent)
+    var body: some View {
+        let resolvedTheme = theme ?? .facturierOriginal
+        let palette = resolvedTheme.palette
+
+        ZStack {
+            LedgerGridBackgroundView(
+                theme: resolvedTheme,
+                verticalOffset: scrollOffset
+            )
+            .ignoresSafeArea()
+
+            List(selection: selectedDocumentID) {
+                if !documents.isEmpty {
+                    Section {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("État des documents", systemImage: "line.3.horizontal.decrease")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(palette.accent)
+
+                            scopePicker.pickerStyle(.segmented)
+                        }
+                        .padding(16)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .overlay {
+                            Rectangle().stroke(palette.border, lineWidth: palette.borderWidth)
+                        }
+                        .shadow(
+                            color: palette.shadowColor,
+                            radius: palette.shadowRadius,
+                            y: palette.shadowRadius / 2
+                        )
+                        .listRowInsets(
+                            EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+                        )
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                    }
                 }
-            } else {
-                List {
-                    if !filteredListDocuments.isEmpty {
-                        ForEach(sectionOrder, id: \.self) { key in
-                            if let documentsForSection = filteredListDocuments[key] {
-                                Section(key) {
-                                    ForEach(documentsForSection, id: \.self) { document in
-                                        RowDocumentView(document: document)
-                                    }
+
+                ForEach(sectionOrder, id: \.self) { key in
+                    if let documentsForSection = filteredListDocuments[key] {
+                        Section(key) {
+                            ForEach(documentsForSection, id: \.objectID) { document in
+                                RowDocumentView(
+                                    document: document,
+                                    usesSplitSelection: selectedDocumentID != nil
+                                )
+                                .padding(16)
+                                .background(Color(.secondarySystemGroupedBackground))
+                                .overlay {
+                                    Rectangle().stroke(
+                                        palette.border,
+                                        lineWidth: palette.borderWidth
+                                    )
                                 }
+                                .shadow(
+                                    color: palette.shadowColor,
+                                    radius: palette.shadowRadius,
+                                    y: palette.shadowRadius / 2
+                                )
+                                .tag(document.objectID)
+                                .listRowInsets(
+                                    EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+                                )
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                             }
                         }
                     }
                 }
-                .overlay {
-                    if filteredListDocuments.isEmpty {
-                        if !searchText.isEmpty || !tags.isEmpty {
+
+                if filteredListDocuments.isEmpty {
+                    Section {
+                        if documents.isEmpty {
+                            ContentUnavailableView(
+                                "Aucun document",
+                                systemImage: "doc.badge.plus",
+                                description: Text("Les documents créés apparaîtront ici.")
+                            )
+                        } else if !searchText.isEmpty || !tags.isEmpty {
                             ContentUnavailableView.search
                         } else {
                             ContentUnavailableView(
@@ -189,85 +228,115 @@ struct ListDocument: View {
                             )
                         }
                     }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
-                .searchable(
-                    text: $searchText,
-                    tokens: $tags,
-                    placement: .navigationBarDrawer(displayMode: .always),
-                    prompt: Text("Client, date ou type"),
-                    token: { token in
-                        switch token.type {
-                        case .client:
-                            Label(token.value, systemImage: "person.crop.circle")
-                        case .date:
-                            Label(token.value, systemImage: "calendar")
-                        case .typeDoc:
-                            Label(token.value, systemImage: "doc.circle")
+            }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .onScrollGeometryChange(
+                for: CGFloat.self,
+                of: { geometry in
+                    geometry.contentOffset.y + geometry.contentInsets.top
+                },
+                action: { _, offset in
+                    scrollOffset = offset
+                }
+            )
+        }
+        .searchable(
+            text: $searchText,
+            tokens: $tags,
+            placement: .toolbar,
+            prompt: Text("Client, date ou type"),
+            token: { token in
+                switch token.type {
+                case .client:
+                    Label(token.value, systemImage: "person.crop.circle")
+                case .date:
+                    Label(token.value, systemImage: "calendar")
+                case .typeDoc:
+                    Label(token.value, systemImage: "doc.circle")
+                }
+            }
+        )
+        .searchSuggestions {
+            if !filteredSuggestionsTypeDocs.isEmpty || !suggestedClients.isEmpty || !suggestedDates.isEmpty {
+                Section("Suggestions") {
+                    ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(text: suggestion, highlight: searchText)
+                        } icon: {
+                            Image(systemName: "doc")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
                         }
+                        .searchCompletion(DocumentSearchToken(value: suggestion, type: .typeDoc))
                     }
-                )
-                .searchSuggestions {
-                    if !filteredSuggestionsTypeDocs.isEmpty || !filteredSuggestionsClients.isEmpty || !filteredSuggestionsDates.isEmpty {
-                        Section("Suggestions") {
-                            ForEach(filteredSuggestionsTypeDocs, id: \.self) { suggestion in
-                                Label {
-                                    HighlightedText(text: suggestion, highlight: searchText)
-                                } icon: {
-                                    Image(systemName: "doc")
-                                        .foregroundStyle(.blue)
-                                        .imageScale(.large)
-                                }
-                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .typeDoc))
-                            }
-                            
-                            ForEach(filteredSuggestionsClients, id: \.self) { suggestion in
-                                Label {
-                                    HighlightedText(text: suggestion, highlight: searchText)
-                                } icon: {
-                                    Image(systemName: "person.crop.circle")
-                                        .foregroundStyle(.blue)
-                                        .imageScale(.large)
-                                }
-                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .client))
-                            }
-                            
-                            ForEach(filteredSuggestionsDates, id: \.self) { suggestion in
-                                Label {
-                                    HighlightedText(text: suggestion, highlight: searchText)
-                                } icon: {
-                                    Image(systemName: "calendar")
-                                        .foregroundStyle(.blue)
-                                        .imageScale(.large)
-                                }
-                                .searchCompletion(TokenDocumentModel(value: suggestion, type: .date))
-                            }
+
+                    ForEach(suggestedClients, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(text: suggestion, highlight: searchText)
+                        } icon: {
+                            Image(systemName: "person.crop.circle")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
                         }
+                        .searchCompletion(DocumentSearchToken(value: suggestion, type: .client))
+                    }
+
+                    ForEach(suggestedDates, id: \.self) { suggestion in
+                        Label {
+                            HighlightedText(text: suggestion, highlight: searchText)
+                        } icon: {
+                            Image(systemName: "calendar")
+                                .foregroundStyle(.blue)
+                                .imageScale(.large)
+                        }
+                        .searchCompletion(DocumentSearchToken(value: suggestion, type: .date))
                     }
                 }
             }
         }
+        .tint(.green)
         .navigationTitle("Documents")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Créer un document", systemImage: "plus", action: createDocument)
+                Button("Créer un document", systemImage: "plus", action: onCreateDocument)
             }
         }
-        .sheet(isPresented: $isPresentingDocumentForm) {
-            DocumentFormView()
+        .onChange(of: visibleDocumentIDs) {
+            guard let selectedDocumentID else { return }
+            if let selectedID = selectedDocumentID.wrappedValue,
+                visibleDocumentIDs.contains(selectedID)
+            {
+                return
+            }
+            selectedDocumentID.wrappedValue = visibleDocumentIDs.first
         }
         .trackEventOnAppear(event: .documentListBrowsed, category: .documentManagement)
     }
 
-    private func createDocument() {
-        isPresentingDocumentForm = true
+    private var visibleDocumentIDs: [NSManagedObjectID] {
+        sectionOrder.flatMap { filteredListDocuments[$0] ?? [] }
+            .map(\.objectID)
+    }
+
+    private var scopePicker: some View {
+        Picker("Filtrer les documents", selection: $documentScope) {
+            Text("Tous").tag(Document.Status.all)
+            Text("Brouillons").tag(Document.Status.created)
+            Text("Payés").tag(Document.Status.payed)
+            Text("Envoyés").tag(Document.Status.send)
+        }
     }
 }
 
 struct RowDocumentView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @ObservedObject var document: Document
+    var usesSplitSelection = false
 
     private var isOverdue: Bool {
         document.dateEcheance <= .now && document.status == .send
@@ -291,7 +360,7 @@ struct RowDocumentView: View {
 
         switch document.status {
         case .created:
-            return document.estDeTypeFacture ? "Ouverte" : "Ouvert"
+            return "Brouillon"
         case .payed:
             return document.estDeTypeFacture ? "Payée" : "Payé"
         case .send:
@@ -323,121 +392,92 @@ struct RowDocumentView: View {
     }
 
     var body: some View {
-        NavigationLink {
-            DocumentDetailView(document: document)
-        } label: {
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 12) {
-                    DocumentRowDetails(
-                        title: documentTitle,
-                        clientName: clientName,
-                        issueDate: document.dateEmission,
-                        dueDate: document.dateEcheance,
-                        showsDueDate: horizontalSizeClass == .regular
-                    )
-
-                    DocumentRowSummary(
-                        amount: document.totalTTC,
-                        statusTitle: statusTitle,
-                        statusSymbol: statusSymbol,
-                        statusColor: statusColor,
-                        alignment: .leading
-                    )
+        Group {
+            if usesSplitSelection {
+                NavigationLink(value: document.objectID) {
+                    rowContent
                 }
             } else {
-                HStack(alignment: .top, spacing: 12) {
-                    DocumentRowDetails(
-                        title: documentTitle,
-                        clientName: clientName,
-                        issueDate: document.dateEmission,
-                        dueDate: document.dateEcheance,
-                        showsDueDate: horizontalSizeClass == .regular
-                    )
-
-                    Spacer(minLength: 12)
-
-                    DocumentRowSummary(
-                        amount: document.totalTTC,
-                        statusTitle: statusTitle,
-                        statusSymbol: statusSymbol,
-                        statusColor: statusColor,
-                        alignment: .trailing
-                    )
-                }
-            }
-        }
-        .foregroundStyle(.primary)
-        .padding(.vertical, 4)
-        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
-    }
-}
-
-private struct DocumentRowDetails: View {
-    var title: String
-    var clientName: String
-    var issueDate: Date
-    var dueDate: Date
-    var showsDueDate: Bool
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: "doc.text.fill")
-                .font(.title3)
-                .foregroundStyle(.tint)
-                .frame(width: 28, height: 28)
-                .accessibilityHidden(true)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.headline)
-
-                Text(clientName)
-                    .foregroundStyle(.secondary)
-
-                Text("Créé le \(issueDate.formatted(.dateTime.day().month().year()))")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-
-                if showsDueDate {
-                    Text("Échéance le \(dueDate.formatted(.dateTime.day().month().year()))")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                NavigationLink {
+                    DocumentDetailView(document: document)
+                } label: {
+                    rowContent
                 }
             }
         }
     }
-}
 
-private struct DocumentRowSummary: View {
-    var amount: Double
-    var statusTitle: String
-    var statusSymbol: String
-    var statusColor: Color
-    var alignment: HorizontalAlignment
+    private var rowContent: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(documentTitle)
+                        .font(.headline)
+                    amount
+                }
+            } else {
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        Text(documentTitle)
+                            .font(.headline)
+                            .fixedSize(horizontal: true, vertical: false)
+                        Spacer(minLength: 0)
+                        amount.fixedSize(horizontal: true, vertical: false)
+                    }
 
-    var body: some View {
-        VStack(alignment: alignment, spacing: 8) {
-            Text(amount, format: .currency(code: "EUR"))
-                .font(.headline)
-                .monospacedDigit()
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(documentTitle)
+                            .font(.headline)
+                        amount
+                    }
+                }
+            }
 
-            Label(statusTitle, systemImage: statusSymbol)
-                .font(.caption)
-                .bold()
-                .foregroundStyle(statusColor)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(statusColor.opacity(0.12), in: Capsule())
+            Text(clientName)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
+
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 4) {
+                    issueDate
+                    statusLabel
+                }
+            } else {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    issueDate
+                    Spacer(minLength: 4)
+                    statusLabel
+                }
+            }
         }
+        .padding(.vertical, 5)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var amount: some View {
+        Text(document.totalTTC, format: .currency(code: "EUR"))
+            .font(.subheadline.weight(.semibold))
+            .monospacedDigit()
+            .lineLimit(1)
+    }
+
+    private var issueDate: some View {
+        Text(document.dateEmission, format: .dateTime.day().month(.abbreviated).year())
+            .font(.caption)
+            .foregroundStyle(.secondary)
+    }
+
+    private var statusLabel: some View {
+        Label(statusTitle, systemImage: statusSymbol)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(statusColor)
+            .lineLimit(1)
     }
 }
 
 #Preview {
     ListDocument()
-}
-
-extension Client {
-    var fullname: String {
-        "\(firstname) \(lastname)"
-    }
 }

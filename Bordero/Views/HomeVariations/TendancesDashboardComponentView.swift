@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct HomeDashboardComponentView: View {
-    var component: HomeDashboardComponent
+struct TendancesDashboardComponentView: View {
+    var component: TendancesDashboardComponent
     @Binding var selectedPeriod: StatisticsPeriod
 
     @ViewBuilder
@@ -17,13 +17,6 @@ struct HomeDashboardComponentView: View {
             GridTotalStatsView(selectedPeriod: selectedPeriod)
         case .clients:
             HomeGraphPairView(selectedPeriod: selectedPeriod)
-        case .recentPayments:
-            GroupBox {
-                ListHistoriquesPaiements()
-            } label: {
-                Text("Paiements récents")
-            }
-            .groupBoxStyle(PlainGroupBoxStyle())
         }
     }
 }

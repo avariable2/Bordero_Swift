@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct GridTotalStatsView: View {
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @FetchRequest(

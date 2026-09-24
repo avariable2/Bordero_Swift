@@ -18,5 +18,10 @@ struct BorderoApp: App {
             ContentView(userNeediCloud: userController.accountAvailable)
                 .environment(\.managedObjectContext, dataController.container.viewContext)
         }
+
+        WindowGroup("Nouvelle facture", id: "invoice-creation", for: UUID.self) { $invoiceID in
+            InvoiceCreationWindowView(invoiceID: invoiceID)
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+        }
     }
 }

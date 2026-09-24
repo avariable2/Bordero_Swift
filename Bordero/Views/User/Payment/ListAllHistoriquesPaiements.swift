@@ -9,6 +9,9 @@ import CoreData
 import SwiftUI
 
 struct ListAllClientPaiements: View {
+    @AppStorage("home.selectedStatisticsPeriod")
+    private var selectedPeriod = StatisticsPeriod.week
+
     @FetchRequest(
         sortDescriptors: [
             NSSortDescriptor(keyPath: \Paiement.date_, ascending: false)
@@ -18,6 +21,7 @@ struct ListAllClientPaiements: View {
 
     @State private var searchText = ""
     @State private var searchTokens: [SearchToken] = []
+    @State private var scrollOffset: CGFloat = 0
 
     private var filteredPayments: [Paiement] {
         let terms = (searchTokens.map(\.value) + [searchText])
@@ -63,16 +67,60 @@ struct ListAllClientPaiements: View {
 
     var body: some View {
         List {
-            ForEach(filteredPayments) { payment in
-                NavigationLink {
-                    DetailPaiementView(paiement: payment)
-                } label: {
-                    PaiementRowView(payment: payment)
+            if searchText.isEmpty && searchTokens.isEmpty {
+                Section("Vue d’ensemble") {
+                    RevenueOverviewView(selectedPeriod: selectedPeriod)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                        .listRowBackground(Color.clear)
+
+                    NavigationLink {
+                        TendancesView()
+                    } label: {
+                        Label("Voir les tendances", systemImage: "chart.xyaxis.line")
+                            .font(.headline)
+                            .padding(.vertical, 4)
+                    }
+                }
+            }
+
+            Section("Tous les paiements") {
+                if payments.isEmpty {
+                    ContentUnavailableView(
+                        "Aucun paiement",
+                        systemImage: "creditcard",
+                        description: Text("Les paiements enregistrés apparaîtront ici.")
+                    )
+                    .frame(minHeight: 120)
+                } else {
+                    ForEach(filteredPayments) { payment in
+                        NavigationLink {
+                            DetailPaiementView(paiement: payment)
+                        } label: {
+                            PaiementRowView(payment: payment)
+                        }
+                    }
                 }
             }
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .onScrollGeometryChange(
+            for: CGFloat.self,
+            of: { geometry in
+                geometry.contentOffset.y + geometry.contentInsets.top
+            },
+            action: { _, offset in
+                scrollOffset = offset
+            }
+        )
+        .background {
+            LedgerGridBackgroundView(
+                theme: .facturierOriginal,
+                verticalOffset: scrollOffset
+            )
+        }
         .overlay {
-            if filteredPayments.isEmpty {
+            if filteredPayments.isEmpty && (!searchText.isEmpty || !searchTokens.isEmpty) {
                 ContentUnavailableView(
                     "Pas de paiement",
                     systemImage: "creditcard",
@@ -83,8 +131,8 @@ struct ListAllClientPaiements: View {
         .searchable(
             text: $searchText,
             tokens: $searchTokens,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Recherche"
+            placement: .toolbar,
+            prompt: "Rechercher un paiement"
         ) { token in
             switch token.type {
             case .client:
@@ -138,7 +186,9 @@ struct ListAllClientPaiements: View {
             event: .paymentListBrowsed,
             category: .paymentManagement
         )
-        .navigationTitle("Historique des paiements")
+        .navigationTitle("Paiements")
+        .environment(\.tendancesVisualTheme, .facturierOriginal)
+        .tint(.green)
     }
 
     private struct SearchToken: Identifiable, Hashable {

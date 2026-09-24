@@ -9,19 +9,56 @@ import SwiftUI
 import CoreData
 
 struct SplitViewListClients : View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @FetchRequest(fetchRequest: Client.fetch(NSPredicate(
+        format: "version <= %d",
+        argumentArray: [FormClientSheet.getVersion()]
+    ))) private var clients: FetchedResults<Client>
+
     @State private var selectedClient : Client?
     
     var body: some View {
-        NavigationSplitView {
-            ListClients { client in
-                selectedClient = client
-            }
-        } detail: {
-            if let selectedClient = selectedClient {
-                ClientDetailView(client: selectedClient)
+        Group {
+            if horizontalSizeClass == .regular && UIDevice.current.userInterfaceIdiom == .pad {
+                NavigationSplitView {
+                    ListClients(
+                        onSelectClient: { client in
+                            selectedClient = client
+                        },
+                        selectedClientID: selectedClient?.objectID
+                    )
+                    .navigationSplitViewColumnWidth(
+                        min: 300,
+                        ideal: 360,
+                        max: 420
+                    )
+                } detail: {
+                    NavigationStack {
+                        if let selectedClient {
+                            ClientDetailView(client: selectedClient)
+                        } else {
+                            ContentUnavailableView(
+                                "Sélectionnez un client",
+                                systemImage: "person.crop.rectangle"
+                            )
+                        }
+                    }
+                }
             } else {
-                Text("Sélectionner un client")
+                NavigationStack {
+                    ListClients()
+                }
             }
+        }
+        .onAppear(perform: ensureSelection)
+        .onChange(of: clients.map(\.objectID)) {
+            ensureSelection()
+        }
+    }
+
+    private func ensureSelection() {
+        if !clients.contains(where: { $0.objectID == selectedClient?.objectID }) {
+            selectedClient = clients.first
         }
     }
 }
@@ -43,6 +80,8 @@ struct ListClients: View {
     private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ").map(String.init)
     
     var callbackClientClick : ((Client) -> Void)?
+    var onSelectClient: ((Client) -> Void)?
+    var selectedClientID: NSManagedObjectID?
     
     var filteredClients : [Client] {
         filteredClients(clients: Array(clients), searchText: searchText)
@@ -68,7 +107,15 @@ struct ListClients: View {
                             if !clientsForLetter.isEmpty {
                                 Section {
                                     ForEach(clientsForLetter) { client in
-                                        ClientRow(client: client, callback: callbackClientClick)
+                                        ClientRow(
+                                            client: client,
+                                            callback: callbackClientClick,
+                                            onSelect: onSelectClient
+                                        )
+                                        .listRowBackground(
+                                            Color(.secondarySystemGroupedBackground)
+                                                .overlay(client.objectID == selectedClientID ? Color.green.opacity(0.12) : Color.clear)
+                                        )
                                             .tag(client.objectID)
                                     }
                                 } header: {
@@ -81,7 +128,15 @@ struct ListClients: View {
                         if !unnamedClients.isEmpty {
                             Section {
                                 ForEach(unnamedClients) { client in
-                                    ClientRow(client: client, callback: callbackClientClick)
+                                    ClientRow(
+                                        client: client,
+                                        callback: callbackClientClick,
+                                        onSelect: onSelectClient
+                                    )
+                                    .listRowBackground(
+                                        Color(.secondarySystemGroupedBackground)
+                                            .overlay(client.objectID == selectedClientID ? Color.green.opacity(0.12) : Color.clear)
+                                    )
                                         .tag(client.objectID)
                                 }
                             } header: {
@@ -91,6 +146,8 @@ struct ListClients: View {
                         }
                     }
                     .environment(\.editMode, $editMode)
+                    .scrollContentBackground(.hidden)
+                    .background(Color(.systemGroupedBackground))
                     .overlay {
                         if !clients.isEmpty && filteredClients.isEmpty {
                             ContentUnavailableView.search
@@ -98,7 +155,7 @@ struct ListClients: View {
                     }
                     .searchable(
                         text: $searchText,
-                        placement: .navigationBarDrawer(displayMode: .always),
+                        placement: .navigationBarDrawer(displayMode: .automatic),
                         prompt: Text("Recherche")
                     )
                     .headerProminence(.increased)
@@ -127,8 +184,8 @@ struct ListClients: View {
             if callbackClientClick == nil && !clients.isEmpty {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button(
-                        editMode.isEditing ? "OK" : "Modifier",
-                        systemImage: editMode.isEditing ? "xmark" : "checkmark.circle"
+                        editMode.isEditing ? "Terminer" : "Sélectionner",
+                        systemImage: editMode.isEditing ? "checkmark" : "checklist"
                     ) {
                         withAnimation {
                             toggleEditing()
@@ -221,9 +278,11 @@ struct ListClients: View {
 
 struct ClientRow: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.editMode) private var editMode
     
     let client: Client
     let callback : ((Client) -> Void)?
+    var onSelect: ((Client) -> Void)?
     
     var ligneAvecNom : some View {
         HStack {
@@ -234,7 +293,17 @@ struct ClientRow: View {
     
     var body: some View {
         VStack {
-            if let call = callback {
+            if editMode?.wrappedValue.isEditing == true {
+                ligneAvecNom
+            } else if let onSelect {
+                Button {
+                    onSelect(client)
+                } label: {
+                    ligneAvecNom
+                        .tint(.primary)
+                }
+                .buttonStyle(.plain)
+            } else if let call = callback {
                 Button {
                     call(client)
                     dismiss()

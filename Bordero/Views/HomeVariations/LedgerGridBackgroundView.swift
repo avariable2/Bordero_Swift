@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct HomePaperBackgroundView: View {
-    var theme: HomeVisualTheme
+struct LedgerGridBackgroundView: View {
+    var theme: TendancesVisualTheme
     var verticalOffset: CGFloat = 0
 
     var body: some View {

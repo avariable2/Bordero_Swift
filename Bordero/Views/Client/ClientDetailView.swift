@@ -43,13 +43,27 @@ struct ClientDetailView: View {
             Section {
                 DisclosureGroup(isExpanded: $topExpanded) {
                     if listDocumentsToShow.isEmpty {
-                        ContentUnavailableView(
-                            "Aucun document",
-                            systemImage: "tray"
-                        )
+                        Label("Aucun document", systemImage: "tray")
+                            .foregroundStyle(.secondary)
+                            .padding(.vertical, 8)
                     } else {
-                        List(listDocumentsToShow) { document in
-                            RowDocumentView(document: document)
+                        ForEach(listDocumentsToShow) { document in
+                            NavigationLink {
+                                DocumentDetailView(document: document)
+                            } label: {
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text("\(document.estDeTypeFacture ? "Facture" : "Devis") #\(document.numero)")
+                                        .font(.body.weight(.semibold))
+                                    Text(document.dateEmission, format: .dateTime.day().month().year())
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    Text(document.totalTTC, format: .currency(code: "EUR"))
+                                        .font(.subheadline.weight(.medium))
+                                        .monospacedDigit()
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 5)
+                            }
                         }
                     }
                 } label: {
@@ -66,10 +80,9 @@ struct ClientDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Modifier") {
+                Button("Modifier le client", systemImage: "square.and.pencil") {
                     activeSheet = .editClient(client: client)
                 }
-                .buttonStyle(.bordered)
             }
         }
         .sheet(item: $activeSheet) { item in

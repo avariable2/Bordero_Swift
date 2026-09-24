@@ -1,16 +1,16 @@
 import SwiftUI
 
-struct HomeClarteView: View {
-    @Environment(\.homeVisualTheme) private var theme
+struct TendancesClarteView: View {
+    @Environment(\.tendancesVisualTheme) private var theme
     @AppStorage("home.dashboardComponentOrder")
-    private var componentOrderStorage = HomeDashboardComponent.defaultStorageValue
+    private var componentOrderStorage = TendancesDashboardComponent.defaultStorageValue
 
     @Binding var selectedPeriod: StatisticsPeriod
     @State private var scrollOffset: CGFloat = 0
 
     var body: some View {
         ZStack {
-            HomePaperBackgroundView(
+            LedgerGridBackgroundView(
                 theme: theme ?? .facturierOriginal,
                 verticalOffset: scrollOffset
             )
@@ -18,7 +18,7 @@ struct HomeClarteView: View {
 
             List {
                 ForEach(orderedComponents) { component in
-                    HomeDashboardComponentView(
+                    TendancesDashboardComponentView(
                         component: component,
                         selectedPeriod: $selectedPeriod
                     )
@@ -45,13 +45,13 @@ struct HomeClarteView: View {
         .animation(.snappy, value: componentOrderStorage)
     }
 
-    private var orderedComponents: [HomeDashboardComponent] {
-        HomeDashboardComponent.order(from: componentOrderStorage)
+    private var orderedComponents: [TendancesDashboardComponent] {
+        TendancesDashboardComponent.order(from: componentOrderStorage)
     }
 
     private func moveComponents(from source: IndexSet, to destination: Int) {
         var components = orderedComponents
         components.move(fromOffsets: source, toOffset: destination)
-        componentOrderStorage = HomeDashboardComponent.storageValue(for: components)
+        componentOrderStorage = TendancesDashboardComponent.storageValue(for: components)
     }
 }

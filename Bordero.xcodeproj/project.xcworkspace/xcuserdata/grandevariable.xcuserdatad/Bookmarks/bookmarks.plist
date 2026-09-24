@@ -37,16 +37,16 @@
 					<key>text-context</key>
 					<dict>
 						<key>focused</key>
-						<string>                    
+						<string>                        RowIconColor(
 </string>
 						<key>leading</key>
-						<string>                
-                if ProcessInfo.processInfo.isiOSAppOnMac {
+						<string>                        
+                    } label: {
 </string>
 						<key>trailing</key>
-						<string>                    Section {
-                        Text("Si un problème survient, contactez le développeur avec cette adresse : feuilles.neutron_0i@icloud.com")
-                            .contextMenu {
+						<string>                            text: "Options de paiement",
+                            systemName: "eurosign.square.fill",
+                            color: .black,
 </string>
 					</dict>
 					<key>title</key>

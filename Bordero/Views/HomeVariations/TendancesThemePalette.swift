@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HomeThemePalette {
+struct TendancesThemePalette {
     var accent: Color
     var canvasTint: Color
     var border: Color

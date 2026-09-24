@@ -9,41 +9,34 @@ import SwiftUI
 import CoreData
 
 struct DocumentFormView: View {
-    static func getVersion() -> Int32 {
-        return 1
-    }
-    
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var praticien: FetchedResults<Praticien>
     
     @State private var isPraticienDataSetup = false
     
-    private var viewModel : PDFViewModel = PDFViewModel()
+    @State private var viewModel = PDFViewModel()
     var document : Document?
+    var onCancel: (() -> Void)?
     
-    init(document: Document? = nil) {
+    init(document: Document? = nil, onCancel: (() -> Void)? = nil) {
         self.document = document
+        self.onCancel = onCancel
     }
     
     var body: some View {
-        NavigationStack {
-            ModifierDocumentView(viewModel: viewModel)
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
+        ModifierDocumentView(viewModel: viewModel)
+            .toolbar {
+                if let onCancel {
                     ToolbarItem(placement: .cancellationAction) {
-                        BackButton(viewModel: viewModel, dismiss: dismiss)
+                        Button("Fermer", systemImage: "xmark", action: onCancel)
                     }
                 }
-                .onAppear {
-                    if !isPraticienDataSetup {
-                        setupViewModel()
-                        isPraticienDataSetup = true
-                    }
-                    
+            }
+            .onAppear {
+                if !isPraticienDataSetup {
+                    setupViewModel()
+                    isPraticienDataSetup = true
                 }
-        }
-       
+            }
     }
     
     private func setupViewModel() {
@@ -56,35 +49,15 @@ struct DocumentFormView: View {
     }
 }
 
-struct BackButton: View {
-    var viewModel: PDFViewModel
-    var dismiss: DismissAction
-    
-    var body: some View {
-        Button {
-            viewModel.reset()
-            dismiss()
-        } label: {
-            withAnimation {
-                HStack {
-                    Image(systemName: "chevron.left")
-                    Text("Retour")
-                }
-            }
-        }
-    }
-}
-
 struct ModifierDocumentView: View {
-    static func getVersion() -> Int32 {
-        return 1
-    }
-    
     @State var viewModel: PDFViewModel
     @State private var activeSheet: ActiveSheet?
     @State private var estPayer: Bool = false
     @State private var selectedPayement: Payement = .carte
     @State private var typeSelected: TypeDoc = .facture
+    @State private var launchSauvegarde = false
+    @State private var showDetail = false
+    @State private var detailDocument: Document?
     
     var body: some View {
         List {
@@ -96,17 +69,36 @@ struct ModifierDocumentView: View {
             }
             NoteSection(notes: $viewModel.pdfModel.optionsDocument.note)
         }
-        .safeAreaInset(edge: .bottom) {
-            FormButtonsPrimaryActionView(activeSheet: $activeSheet, viewModel: $viewModel)
-        }
         .navigationTitle("Document")
-        .listStyle(.plain)
-        .contentMargins(.top, 2)
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .background(Color(.systemGroupedBackground))
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink("Options") {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                NavigationLink {
                     DocumentOptionsView(viewModel: viewModel)
+                } label: {
+                    Label("Options", systemImage: "ellipsis")
                 }
+
+                Button("Aperçu", systemImage: "eye") {
+                    activeSheet = .apercusDocument
+                }
+
+                SaveButton(launchSauvegarde: $launchSauvegarde, viewModel: viewModel)
+            }
+        }
+        .task(id: launchSauvegarde) {
+            guard launchSauvegarde else { return }
+            defer { launchSauvegarde = false }
+            if let document = await viewModel.finalizeAndSave() {
+                detailDocument = document
+                showDetail = true
+            }
+        }
+        .navigationDestination(isPresented: $showDetail) {
+            if let detailDocument {
+                DocumentDetailView(document: detailDocument)
             }
         }
         .sheet(item: $activeSheet) { item in

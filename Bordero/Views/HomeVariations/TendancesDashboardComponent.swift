@@ -1,12 +1,11 @@
 import Foundation
 
-enum HomeDashboardComponent: String, CaseIterable, Identifiable {
+enum TendancesDashboardComponent: String, CaseIterable, Identifiable {
     case period
     case revenue
     case invoiceDistribution
     case totals
     case clients
-    case recentPayments
 
     var id: Self { self }
 
@@ -17,7 +16,6 @@ enum HomeDashboardComponent: String, CaseIterable, Identifiable {
             .invoiceDistribution,
             .totals,
             .clients,
-            .recentPayments,
         ]
     }
 

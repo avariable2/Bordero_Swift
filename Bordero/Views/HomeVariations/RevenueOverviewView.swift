@@ -2,7 +2,7 @@ import CoreData
 import SwiftUI
 
 struct RevenueOverviewView: View {
-    @Environment(\.homeVisualTheme) private var theme
+    @Environment(\.tendancesVisualTheme) private var theme
     @Environment(\.locale) private var locale
 
     @FetchRequest(
@@ -46,7 +46,13 @@ struct RevenueOverviewView: View {
 
     private func header(for statistics: RevenueTimelineStatistics) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("Chiffre d’affaires")
+            HStack(alignment: .firstTextBaseline) {
+                Text("Chiffre d’affaires")
+                Spacer(minLength: 8)
+                Text(selectedPeriod.displayName)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
 
             Text(statistics.total, format: .currency(code: currencyCode))
                 .font(.title2)

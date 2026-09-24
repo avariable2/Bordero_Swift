@@ -7,16 +7,21 @@
 
 import SwiftUI
 import MessageUI
+import CoreData
 
 struct ParametersView: View {
     @Binding var activeSheet : ActiveSheet?
-    @State var praticien : Praticien?
+    @Environment(\.managedObjectContext) private var moc
+    @FetchRequest(sortDescriptors: []) private var praticiens: FetchedResults<Praticien>
+
+    private var praticien: Praticien? { praticiens.first }
+    @State private var profileToEdit: Praticien?
+    @State private var isEditingProfile = false
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
     
     var body: some View {
-        NavigationStack {
             Form {
                 
                 VStack(alignment: .center, spacing: 20) {
@@ -26,7 +31,7 @@ struct ParametersView: View {
                         .font(.system(size: 60))
                         .shadow(radius: 5)
                     
-                    Text("\(praticien?.firstname ?? "") \(praticien?.lastname ?? "")")
+                    Text(profileTitle)
                 }
                 .font(.title)
                 .bold()
@@ -35,18 +40,26 @@ struct ParametersView: View {
                 .listRowBackground(Color.clear)
                 
                 Section {
-                    NavigationLink {
-                        if let praticien = praticien {
-                            FormPraticienView(isOnBoarding: false, praticien : praticien)
-                        }
+                    Button {
+                        profileToEdit = praticien ?? Praticien(moc: moc)
+                        isEditingProfile = true
                     } label: {
-                        RowIconColor(
-                            text: "Vos coordonnées",
-                            systemName: "person.crop.square.fill",
-                            color: .green,
-                            accessibility: "Bouton pour modifier vos informations personnelles"
-                        )
+                        HStack {
+                            RowIconColor(
+                                text: "Vos coordonnées",
+                                systemName: "person.crop.square.fill",
+                                color: .green,
+                                accessibility: "Bouton pour modifier vos informations personnelles"
+                            )
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(.tertiary)
+                                .accessibilityHidden(true)
+                        }
                     }
+                    .buttonStyle(.plain)
+                    .accessibilityHint("Ouvre le formulaire de vos coordonnées")
                 }
                 
                 Section("Documents") {
@@ -77,6 +90,7 @@ struct ParametersView: View {
                             accessibility: "Bouton pour automatiser vos envois de documents"
                         )
                     }
+                    .disabled(praticien == nil)
                     
                     NavigationLink {
                         if let praticien = praticien {
@@ -90,6 +104,7 @@ struct ParametersView: View {
                             accessibility: "Bouton pour configurer les rappels de factures impayées"
                         )
                     }
+                    .disabled(praticien == nil)
                 }
                 
                 Section {
@@ -185,12 +200,36 @@ struct ParametersView: View {
                 }
             }
             .headerProminence(.increased)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $isEditingProfile) {
+                if let profileToEdit {
+                    FormPraticienView(
+                        isOnBoarding: false,
+                        praticien: profileToEdit
+                    )
+                }
+            }
+            .onChange(of: isEditingProfile) { _, isEditing in
+                guard !isEditing else { return }
+                if let profileToEdit, profileToEdit.isInserted {
+                    moc.delete(profileToEdit)
+                }
+                profileToEdit = nil
+            }
+    }
+
+    private var profileTitle: String {
+        guard let firstname = praticien?.firstname.trimmingCharacters(in: .whitespacesAndNewlines),
+              !firstname.isEmpty else {
+            return "Paramètres"
         }
+        let lastname = praticien?.lastname.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        return [firstname, lastname].filter { !$0.isEmpty }.joined(separator: " ")
     }
 }
 
 
 
 #Preview {
-    ParametersView(activeSheet: .constant(nil), praticien: Praticien.example)
+    ParametersView(activeSheet: .constant(nil))
 }
